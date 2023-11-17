@@ -1,0 +1,53 @@
+project:
+  type: book
+
+book:
+  title: "Data Science for Psychology"
+  reader-mode: true
+  
+  page-footer: 
+    left: |
+      Data Science for Psychology was written by Almog Simchon and Louis Teitelbaum.
+    right: |
+      This book was built with <a href="https://quarto.org/">Quarto</a>.
+  chapters:
+    - index.qmd
+    - intro.qmd
+    
+    - part: data-viz.qmd
+      chapters: 
+        - telling-a-story.qmd
+        - aesthetics.qmd
+        - data-types.qmd
+
+    - part: data-sources.qmd
+      chapters: 
+        - ethics.qmd
+        - experiments.qmd
+        - corpora.qmd
+        - apis.qmd
+        - scraping.qmd
+        
+    - part: quantification.qmd
+      chapters: 
+        - quanteda.qmd
+        - tokenization.qmd
+        - eda.qmd
+        - word-counting.qmd
+        - word-counting-improvements.qmd
+        - topic-modeling.qmd
+        - embeddings.qmd
+    - resources.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+    code-link: true
+    
+    author-meta: "Almog Simchon and Louis Teitelbaum"
+    callout-appearance: simple
+
+editor: visual
+
