@@ -1,5 +1,6 @@
 project:
   type: book
+  output-dir: _book
 
 book:
   title: "Data Science for Psychology"
@@ -10,15 +11,21 @@ book:
       Data Science for Psychology was written by Almog Simchon and Louis Teitelbaum.
     right: |
       This book was built with <a href="https://quarto.org/">Quarto</a>.
+  
+  repo-url: https://github.com/rimonim/ds4psych
+  repo-branch: main
+  repo-actions: [source, issue]
+  
   chapters:
     - index.qmd
     - intro.qmd
     
     - part: data-viz.qmd
       chapters: 
-        - telling-a-story.qmd
         - aesthetics.qmd
-        - data-types.qmd
+        - telling-a-story.qmd
+        - word-clouds.qmd
+        - data-viz-resources.qmd
 
     - part: data-sources.qmd
       chapters: 
@@ -40,10 +47,15 @@ book:
     - resources.qmd
 
 bibliography: references.bib
+csl: apa-6th-edition.csl
+suppress-bibliography: false
 
 format:
   html:
     theme: cosmo
+    grid:
+      sidebar-width: 450px
+    
     code-link: true
     
     author-meta: "Almog Simchon and Louis Teitelbaum"

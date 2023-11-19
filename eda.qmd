@@ -1,1 +1,7 @@
+# Recommendations for EDA {#sec-eda}
 
+```{r setup}
+#| echo: false
+
+source("_common.R")
+```

@@ -1,3 +1,7 @@
-# Introduction: Why Does Psychology Need Data Science? {.unnumbered}
+# Welcome {.unnumbered}
 
-"Language is the most common and reliable way for people to translate their internal thoughts and emotions into a form that others can understand. Words and language, then, are the very stuff of psychology and communication." [@tausczik_pennebaker_2010]
+This is the website for **Data Science for Psychology**. 
+
+This book will teach you state-of-the-art methods for analyzing psychological properties of text, and will cover the fundamentals of data visualization, data collection, and scientific methodology necessary to produce meaningful work in the field.
+
+At every step of the way, we will give examples in **R**, using the tools and rules of the **tidyverse**. This book will also teach you the basics of the **quanteda** and **text** packages for natural language processing (NLP), and the **vosonSML** package for collecting data from popular social media sites.

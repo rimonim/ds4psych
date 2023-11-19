@@ -1,4 +1,4 @@
-# Don't Distract From the Story {#sec-telling-a-story}
+# A Special Tutorial on Word Clouds {#sec-word-clouds}
 
 ```{r setup}
 #| echo: false
@@ -6,5 +6,4 @@
 
 source("_common.R")
 ```
-
 
