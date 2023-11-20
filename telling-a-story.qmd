@@ -7,4 +7,222 @@
 source("_common.R")
 ```
 
+The hardest part of data visualization is identifying a story in the first place. This is especially true in natural language processing - since language is such a rich source of information, it is sometimes hard to decide what aspect of it to focus on. The stories are hiding in plain sight. The job of the data visualizer is to find them and bring them out into the open.
 
+## A Small, Compelling Story is Better Than a Big, Confusing One
+
+@schwartz_etal_2013 collected 15.4 million Facebook status updates from participants who had filled out a variety of questionnaires on the *My Personality* application (discussed in @sec-ethics). They analyzed the frequencies of millions of words, phrases, and topics as they correlate with gender, age, and personality traits of the author. The resulting paper focused on methodology, but @schwartz_etal_2013 nevertheless understood the importance of telling a good story. Here is their figure 5B:
+
+[![](images/schwartz_etal_2013_fig5C.png){fig-alt="The older people are, the more they say 'we' and the less they say 'I'"}](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0073791)
+
+This is a beautiful data visualization. The story it tells is so clear and simple that it doesn't need a caption: Older people use "I" less and "we" more. The unstated implication is either that people get less individualistic with age, or that the young people of today are self-centered. Both are excellent stories.
+
+How did Schwartz et al. achieve such a clear story? Let's take a closer look at some of their choices:
+
+First, out of millions of words, phrases, and topics in their analysis, they chose to focus this visualization on only two. This is the first step of story-telling with data: remove distractions. A small, compelling story is better than a big, confusing one.
+
+Second, they chose not to show the data points themselves, but to represent the overall trends with regression lines. This is a major sacrifice, since it makes the graph much less informative - any good scientist will wonder about the distributions surrounding these lines: How rare are community-oriented 20-year-olds? What about self-centered 60-year-olds? Nevertheless, Schwartz et al. decided that including a scatter plot behind the lines would make the graph to confusing to look at, and distract from the main story.
+
+Third, they chose to use bendy LOESS regression lines, even though the main analysis of the paper was conducted with linear regression. This was a great choice because it makes the story more convincing. The fact that even LOESS lines show near-linear trends is impressive. Even though there are no data points to be seen, those steady lines give the impression that the underlying data are reliable. Also, the the LOESS lines give the viewer the opportunity to notice nuances in the story without distracting from the big picture (it is fascinating that "we" reaches it's all-time low around the time most people move out of their parents' house, and not before).
+
+Lastly, let's take a look at the y axis: What is "Standardized Frequency"? We have an intuitive idea that higher means using the word more and lower means using it less. But this intuitive simplicity did not come easily - it had to be carefully constructed by the authors of the paper. Actually, "Standardized Frequency" is calculated using this formula:
+
+[![](images/schwartz_etal_2013_equation.png){fig-alt="Complicated Equation"}](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0073791#s6)
+
+Don't understand any of this? That's OK. We'll cover methods of standardizing word frequencies in @sec-word-counting-improvements. For now, the point is this: **Sometimes you have to do something complicated to make something simple**. If Schwartz et al. had not performed these normalizations and transformations, "I" would likely be much higher frequency than "we" at all ages, and the story, which requires the viewer to focus on the slopes of the lines, would be much harder to appreciate.
+
+## Engineer Your Aesthetics
+
+We have just seen in Schwartz et al.'s beautiful data visualization that choosing to map the "frequency" variable to the y position aesthetic was not enough. In order to make the story clear, they had to carefully engineer the scale on which they were measuring frequency. In their case, this required some complicated standardization tailored to the particular statistics underlying their data. Often though, the solution is much more straightforward.
+
+The remainder of this chapter outlines some common ways to engineer aesthetics that can help make a story clear and intuitive.
+
+### Nonlinear Axes
+
+Often a simple log scale is enough to reveal a much clearer presentation of data. The following graph uses data from @buechel_etal_2018, in which participants read news stories, rated their own empathy and distress after reading them, and then described their thoughts in their own words.
+
+This visualization tells a story about the most and least common words in participant's responses.
+
+```{r}
+#| include: false
+
+library(tidytext)
+
+distressed_texts <- read_csv("https://raw.githubusercontent.com/wwbp/empathic_reactions/master/data/responses/data/messages.csv") %>% 
+  # only texts by distressed participants
+  filter(distress_bin == 1) %>% 
+  mutate(clean_text = tm::removeNumbers(essay),
+         clean_text = tm::removePunctuation(clean_text),
+         clean_text = tm::stripWhitespace(clean_text)) %>%
+  # tokenize and count frequencies
+  unnest_tokens(word, clean_text, to_lower = TRUE) %>%
+  count(word, sort=T) %>%
+  mutate(distressed_freq = n/sum(n)) %>% 
+  select(-n)
+
+nondistressed_texts <- read_csv("https://raw.githubusercontent.com/wwbp/empathic_reactions/master/data/responses/data/messages.csv") %>% 
+  # only texts by non-distressed participants
+  filter(distress_bin == 0) %>% 
+  mutate(clean_text = tm::removeNumbers(essay),
+         clean_text = tm::removePunctuation(clean_text),
+         clean_text = tm::stripWhitespace(clean_text)) %>%
+  # tokenize and count frequencies
+  unnest_tokens(word, clean_text, to_lower = TRUE) %>%
+  count(word, sort=T) %>%
+  mutate(nondistressed_freq = n/sum(n)) %>% 
+  select(-n)
+
+# join the two sets
+distressed_texts <- distressed_texts %>% 
+  left_join(nondistressed_texts) %>% 
+  drop_na()
+```
+
+```{r}
+#| warning: false
+#| fig-height: 6
+library(ggrepel)
+
+distressed_texts_ordered <- distressed_texts %>% 
+  # distressed frequency relative to non-distressed frequency
+  mutate(distressed_rel_freq = distressed_freq/nondistressed_freq) %>% 
+  # refactor in descending order
+  arrange(distressed_rel_freq) %>% 
+  mutate(word = factor(word, levels = word))
+
+badplot1 <- distressed_texts_ordered %>% 
+  ggplot(aes(word, distressed_rel_freq, label = word)) +
+    geom_point(color = "blue3", size = 1, alpha = .2) +
+    geom_text_repel(size = 3, 
+                    data = filter(distressed_texts_ordered, distressed_rel_freq > 8)) +
+    labs(title = "Bad",
+         x = "Words, from least to most distressed",
+         y = "Distressed frequency / non-distressed frequency") +
+    scale_y_continuous(breaks = seq(0, 12, 2)) +
+    coord_cartesian(xlim = c(0, 4400)) +
+    theme_minimal() +
+    theme(plot.title = element_text(color = "red3", hjust = 1, size = 20),
+          panel.grid.major.x = element_blank(),
+          axis.text.x = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.title.x = element_text(size = 15))
+
+goodplot1 <- distressed_texts_ordered %>% 
+  ggplot(aes(word, distressed_rel_freq, label = word, color = distressed_rel_freq < 1)) +
+    geom_point(size = 1, alpha = .2) +
+    geom_text_repel(size = 3, 
+                    data = distressed_texts_ordered %>% filter(distressed_rel_freq > 9 | distressed_rel_freq < .3),
+                    max.overlaps = 20) +
+    geom_hline(linetype = 2, yintercept = 1) +
+    labs(title = "Good",
+         x = "Words, from least to most distressed",
+         y = "Distressed frequency / non-distressed frequency") +
+    scale_y_continuous(breaks = c(2^(-6:6)), trans = "log2", labels = ~MASS::fractions(.x)) +
+    guides(color = "none") +
+    coord_cartesian(xlim = c(0, 4400)) +
+    theme_minimal() +
+    theme(plot.title = element_text(color = "green3", hjust = 1, size = 20),
+          panel.grid.major.x = element_blank(),
+          axis.text.x = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.title.x = element_text(size = 15))
+
+cowplot::plot_grid(goodplot1, badplot1)
+```
+
+When plotting ratios, it is almost always a good idea to use a log scale (left). This way, the viewer can compare the largest and the smallest relative values. Without the log scale (right), the smallest values are squished into oblivion.
+
+### Ordering Categorical Variables
+
+Take another look at the graph labeled "Good" above, and notice the ordering along the x axis. Words, on their own, are an unordered categorical variable. Nevertheless, **in the context of a story, even unordered variables have an order**. Ordering the categorical variable along the continuous variable of interest calls the distribution to attention and removes confusion.
+
+```{r}
+#| warning: false
+#| fig-height: 6
+library(ggrepel)
+
+badplot2 <- distressed_texts %>% 
+  # distressed frequency relative to non-distressed frequency
+  mutate(distressed_rel_freq = distressed_freq/nondistressed_freq) %>% 
+  ggplot(aes(word, distressed_rel_freq, label = word, color = distressed_rel_freq < 1)) +
+    geom_point(size = 1, alpha = .2) +
+    geom_text_repel(size = 3, 
+                    data = distressed_texts_ordered %>% filter(distressed_rel_freq > 9 | distressed_rel_freq < .3),
+                    max.overlaps = 20) +
+    geom_hline(linetype = 2, yintercept = 1) +
+    labs(title = "Bad",
+         x = "Words",
+         y = "Distressed frequency / non-distressed frequency") +
+    scale_y_continuous(breaks = c(2^(-6:6)), trans = "log2", labels = ~MASS::fractions(.x)) +
+    guides(color = "none") +
+    coord_cartesian(xlim = c(0, 4400)) +
+    theme_minimal() +
+    theme(plot.title = element_text(color = "red3", hjust = 1, size = 20),
+          panel.grid.major.x = element_blank(),
+          axis.text.x = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.title.x = element_text(size = 15))
+
+cowplot::plot_grid(goodplot1, badplot2)
+```
+
+### Aspect Ratios
+
+@simchon_etal_2021 investigated whether COVID-19 concern among New Yorkers resulted in higher or lower levels of certainty, as expressed in language on Twitter. Their story: Higher concern leads to greater expressions of certainty, since people use certainty as a coping mechanism. Here is their Figure 3, reproduced in three different aspect ratios:
+
+```{r}
+#| include: false
+covid <- read_csv("https://osf.io/download/mvhzg/") # takes a little while to download
+
+covid_agg <- covid %>% 
+  mutate(created_at = as.POSIXct(created_at, format = "%m/%d/%Y %H:%M"),
+         date = as.Date(created_at)) %>% 
+  group_by(date) %>% 
+  summarise(cert = mean(certain, na.rm=T),
+            tent = mean(tentat, na.rm=T),
+            anx = mean(anx, na.rm = T),
+            anger = mean(anger, na.rm=T),
+            negemo = mean(negemo, na.rm=T)
+            )
+
+covid_concern <- read_csv("https://osf.io/download/846dp/") %>% 
+  mutate(date = as.Date(date, format = "%m/%d/%Y")) %>% 
+  left_join(covid_agg)
+```
+
+```{r}
+#| warning: false
+#| fig-height: 6
+plot <- covid_concern %>% 
+  mutate(z_cert = as.numeric(scale(cert)),
+         z_concern = as.numeric(scale(ny_net_concern))) %>% 
+  pivot_longer(cols = c(z_cert, z_concern)) %>% 
+  mutate(name = if_else(name=="z_cert", "Certainty", "NY Net Concern")) %>% 
+  ggplot() +
+    geom_smooth(aes(date, value, linetype = name), 
+                se=F, method = "loess", color = "black",
+                span = 1/3, method.args = list(degree=1)) +
+    ylab("Z-score") + 
+    xlab("Date") + 
+    scale_colour_grey() +
+    cowplot::theme_cowplot() + 
+    labs(linetype =c(""))
+
+cowplot::plot_grid(
+  cowplot::plot_grid(
+    plot + theme(axis.text.x = element_text(angle = 45, hjust = 1)), 
+    plot, 
+    rel_widths = c(3, 4), labels = c("A", "B"), label_colour = "red3"
+    ), 
+  plot, 
+  nrow = 2, rel_heights = c(2, 1), labels = c("", "C"), label_colour = "red3"
+)
+```
+
+Which aspect ratio is the right one? A good aspect ratio is one that communicates the meaning of the variables in question. Since months are spread out over time (by definition), it makes sense to make the x-axis longer so that the viewer has the feeling of time passing as she scans it. But it shouldn't be too wide, since the aspect ratio should also emphasize important differences in position (here, the positive slope of both lines). Something in between B and C seems appropriate.
+
+### Color Scales
+
+-   sequential (indicates scale from nothing to something), diverging (negative vs positive with zero in the middle), qualitative (maximizing contrast between neighboring values). Keep in mind common color associations.
+
+    -   Accent colors

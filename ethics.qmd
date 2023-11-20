@@ -1,1 +1,9 @@
+# The Ethics of Data Usage {#sec-ethics}
+
+```{r setup}
+#| echo: false
+#| include: false
+
+source("_common.R")
+```
 

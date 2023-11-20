@@ -75,11 +75,11 @@ head(twitter_counties)
 
 There are many ways to present this information graphically. Each choice emphasizes a different aspect of the data, and tells a different story.
 
-In the following visualization, 
+In the following visualization,
 
-- `income` is mapped to the "x" position aesthetic 
-- `posEmotions` (positive emotions) is mapped to the "y" position aesthetic
-- `maj` (racial majority) is mapped to the color aesthetic
+-   `income` is mapped to the "x" position aesthetic
+-   `posEmotions` (positive emotions) is mapped to the "y" position aesthetic
+-   `maj` (racial majority) is mapped to the color aesthetic
 
 ```{r}
 #| warning: false
@@ -110,17 +110,17 @@ twitter_counties %>%
 
 This is the most intuitive way to organize the three variables. By mapping income to the x axis, we lightly suggest that it is the cause of whatever is happening on the y axis - in this case positive emotion. The idea that higher income causes positive emotion is intuitive - many people believe they would be happier with a higher income. People accustomed to languages that are written left-to-right, like English, will tend to think about what happens as they move left to right on the graph. Three LOESS regression lines encourage the viewer to compare the slopes of the three color groups, which they will go through from top to bottom:
 
-1. In counties without a Black or Hispanic majority, greater income means more positive emotion, up to about $60,000 a year, when the line starts flattening out.
-2. In counties with a majority Hispanic population, greater income means dramatically more positive emotion, on average.
-3. In counties with a majority Black population, greater income doesn't seem to make much of a difference.
+1.  In counties without a Black or Hispanic majority, greater income means more positive emotion, up to about \$60,000 a year, when the line starts flattening out.
+2.  In counties with a majority Hispanic population, greater income means dramatically more positive emotion, on average.
+3.  In counties with a majority Black population, greater income doesn't seem to make much of a difference.
 
 But just because this scheme is the most intuitive does not mean it is the best one.
 
 The next visualization shows the same data but tells a different story. This one also has x, y, and color, but they are mapped to the variables differently:
 
-- `income` is binned and mapped to the "x" position aesthetic 
-- `maj` (racial majority) is mapped to the "y" position aesthetic 
-- `posEmotions` (positive emotions) is mapped to the "fill" color aesthetic
+-   `income` is binned and mapped to the "x" position aesthetic
+-   `maj` (racial majority) is mapped to the "y" position aesthetic
+-   `posEmotions` (positive emotions) is mapped to the "fill" color aesthetic
 
 ```{r}
 #| warning: false
@@ -160,13 +160,13 @@ twitter_counties %>%
     coord_equal()
 ```
 
-Using fill makes it harder to see the slope within each racial group, and easier to see the differences between them. The vertical ordering from most positive emotion (in majority non-Black/Hispanic counties) to least positive emotion (majority Black counties) emphasizes this even more. The blank squares on the grid also make the point that there are no majority Black or Hispanic counties with average incomes above $80,000. 
+Using fill makes it harder to see the slope within each racial group, and easier to see the differences between them. The vertical ordering from most positive emotion (in majority non-Black/Hispanic counties) to least positive emotion (majority Black counties) emphasizes this even more. The blank squares on the grid also make the point that there are no majority Black or Hispanic counties with average incomes above \$80,000.
 
-Let's try one more way to present these data. In this visualization, 
+Let's try one more way to present these data. In this visualization,
 
-- `income` is mapped to the "y" position aesthetic 
-- `posEmotions` (positive emotions) is mapped to the "color" aesthetic
-- `maj` (racial majority) is mapped to the "x" position aesthetic 
+-   `income` is mapped to the "y" position aesthetic
+-   `posEmotions` (positive emotions) is mapped to the "color" aesthetic
+-   `maj` (racial majority) is mapped to the "x" position aesthetic
 
 ```{r}
 #| warning: false
@@ -187,11 +187,10 @@ twitter_counties %>%
     theme(axis.text.x = element_text(angle = 30, hjust = 1))
 ```
 
-This is a _sina plot_ (also known as a _beeswarm plot_), in which point clouds are arranged by a continuous variable on one axis, a categorical variable on the other axis, and spread out in proportion to their density along the spaces in between the categories. 
+This is a *sina plot* (also known as a *beeswarm plot*), in which point clouds are arranged by a continuous variable on one axis, a categorical variable on the other axis, and spread out in proportion to their density along the spaces in between the categories.
 
-Sina plots are a good way to compare distributions of different groups (they are almost always more informative than box plots or violin plots); this plot emphasizes that counties with a majority Black population tend to have relatively low average incomes. The other story that this plot tells is the uneven sizes of the three groups - by separating out the points in each group, this visualization emphasizes the fact that there are very few US counties with majority Black or Hispanic population. 
+Sina plots are a good way to compare distributions of different groups (they are almost always more informative than box plots or violin plots); this plot emphasizes that counties with a majority Black population tend to have relatively low average incomes. The other story that this plot tells is the uneven sizes of the three groups - by separating out the points in each group, this visualization emphasizes the fact that there are very few US counties with majority Black or Hispanic population.
 
 This plot makes it very difficult to learn anything about positive emotion in Twitter posts. The colors themselves give some guidance: the white in the middle of the scale suggests that it represents some sort of zero point - a "normal" amount of positive emotion. Nevertheless, the viewer will have to squint in order to notice the trend for higher income counties to be happier. The emotional variable is not adding much to this visualization.
 
 In this section we have seen how choices about which aesthetics to map to variables make a big difference in the way a data visualization is interpreted. Three visualization of the same data can emphasize tell very different stories. Some of these stories are interesting and some of them are not.
-
