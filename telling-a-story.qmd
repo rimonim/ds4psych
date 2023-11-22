@@ -58,7 +58,9 @@ distressed_texts <- read_csv("https://raw.githubusercontent.com/wwbp/empathic_re
   unnest_tokens(word, clean_text, to_lower = TRUE) %>%
   count(word, sort=T) %>%
   mutate(distressed_freq = n/sum(n)) %>% 
-  select(-n)
+  select(-n) %>% 
+  # keep stop words only
+  filter(word %in% stop_words$word)
 
 nondistressed_texts <- read_csv("https://raw.githubusercontent.com/wwbp/empathic_reactions/master/data/responses/data/messages.csv") %>% 
   # only texts by non-distressed participants
@@ -70,7 +72,10 @@ nondistressed_texts <- read_csv("https://raw.githubusercontent.com/wwbp/empathic
   unnest_tokens(word, clean_text, to_lower = TRUE) %>%
   count(word, sort=T) %>%
   mutate(nondistressed_freq = n/sum(n)) %>% 
-  select(-n)
+  select(-n) %>% 
+  # keep stop words only
+  filter(word %in% stop_words$word)
+
 
 # join the two sets
 distressed_texts <- distressed_texts %>% 
@@ -94,12 +99,11 @@ badplot1 <- distressed_texts_ordered %>%
   ggplot(aes(word, distressed_rel_freq, label = word)) +
     geom_point(color = "blue3", size = 1, alpha = .2) +
     geom_text_repel(size = 3, 
-                    data = filter(distressed_texts_ordered, distressed_rel_freq > 8)) +
+                    data = filter(distressed_texts_ordered, distressed_rel_freq > 4)) +
     labs(title = "Bad",
          x = "Words, from least to most distressed",
          y = "Distressed frequency / non-distressed frequency") +
     scale_y_continuous(breaks = seq(0, 12, 2)) +
-    coord_cartesian(xlim = c(0, 4400)) +
     theme_minimal() +
     theme(plot.title = element_text(color = "red3", hjust = 1, size = 20),
           panel.grid.major.x = element_blank(),
@@ -111,7 +115,7 @@ goodplot1 <- distressed_texts_ordered %>%
   ggplot(aes(word, distressed_rel_freq, label = word, color = distressed_rel_freq < 1)) +
     geom_point(size = 1, alpha = .2) +
     geom_text_repel(size = 3, 
-                    data = distressed_texts_ordered %>% filter(distressed_rel_freq > 9 | distressed_rel_freq < .3),
+                    data = distressed_texts_ordered %>% filter(distressed_rel_freq > 3.6 | distressed_rel_freq < .2),
                     max.overlaps = 20) +
     geom_hline(linetype = 2, yintercept = 1) +
     labs(title = "Good",
@@ -119,7 +123,6 @@ goodplot1 <- distressed_texts_ordered %>%
          y = "Distressed frequency / non-distressed frequency") +
     scale_y_continuous(breaks = c(2^(-6:6)), trans = "log2", labels = ~MASS::fractions(.x)) +
     guides(color = "none") +
-    coord_cartesian(xlim = c(0, 4400)) +
     theme_minimal() +
     theme(plot.title = element_text(color = "green3", hjust = 1, size = 20),
           panel.grid.major.x = element_blank(),
@@ -155,7 +158,6 @@ badplot2 <- distressed_texts %>%
          y = "Distressed frequency / non-distressed frequency") +
     scale_y_continuous(breaks = c(2^(-6:6)), trans = "log2", labels = ~MASS::fractions(.x)) +
     guides(color = "none") +
-    coord_cartesian(xlim = c(0, 4400)) +
     theme_minimal() +
     theme(plot.title = element_text(color = "red3", hjust = 1, size = 20),
           panel.grid.major.x = element_blank(),
@@ -164,6 +166,208 @@ badplot2 <- distressed_texts %>%
           axis.title.x = element_text(size = 15))
 
 cowplot::plot_grid(goodplot1, badplot2)
+```
+
+### Color Scales
+
+We have already seen how a data visualizer can clarify a story by spatially ordering a categorical variable. A carefully tailored color scale can be an even more powerful communicator than an x or y axis. This is because color, even though it is usually treated as a single aesthetic, actually has many dimensions: luminosity, saturation, redness, blueness, etc.
+
+The first step in choosing a color scale for any variable is to consider whether the thing being measured is diverging, sequential, or qualitative.
+
+**Diverging scales** measure something with a neutral center. This center is often represented by zero, but beware! Sometimes a neutral center is 4 on a seven point Likert scale (see "Agreement" below). When dealing with fractions, the neutral center is 1 (see "Relative Frequency" below).
+
+When applying diverging scales, keep in mind any associations people might have with the colors involved. For example, red should always be *bad* and blue/green *good* (see the plot in the previous subsection, in which red = distress = bad).
+
+```{r}
+#| echo: false
+library(ggnewscale)
+
+# custom function to lighten dark colors and darken light colors (requires hex format)
+contrast <- function(col, amount = 0.1) {
+  # extract RGB values from hex
+  r <- as.numeric(colorspace::coords(colorspace::hex2RGB(col))[,"R"])
+  g <- as.numeric(colorspace::coords(colorspace::hex2RGB(col))[,"G"])
+  b <- as.numeric(colorspace::coords(colorspace::hex2RGB(col))[,"B"])
+  # compute perceived luminosity
+  luma <- 0.2126*r + 0.7152*g + 0.0722*b
+  # initiate with lightening
+  output <- colorspace::lighten(col, amount)
+  # add darkening where appropriate
+  output[which(luma > .5)] <- colorspace::darken(col, amount)[which(luma > .5)]
+  return(output)
+}
+
+# simple data
+tibble(num = factor(1:7),
+       frequency = c("Low Relative\nFrequency", "1/4", "1/2", "Equal\nFrequency", "2", "4", "High Relative\nFrequency"),
+       agree = c("Strongly\nDisagree", "2", "3", "Neither Agree\nNor Disagree", "5", "6", "Strongly\nAgree"),
+       correlation = c("-.9", "-.6", "-.3", "0", ".3", ".6", ".9")) %>% 
+  ggplot(aes(num)) +
+    # Relative Frequency
+    geom_tile(aes(y = "Relative\nFrequency", fill = num), width = .95, height = .9) +
+    geom_text(aes(y = "Relative\nFrequency", color = num, label = frequency), 
+              size = 2.9, hjust = .5) +
+    scale_fill_manual(palette = function(n) hcl.colors(n, "Berlin"), guide = "none") +
+    scale_color_manual(palette = function(n) contrast(hcl.colors(n, "Berlin"),.7),
+                       guide = "none") +
+    new_scale_fill() +
+    new_scale_color() +
+    # Agreement
+    geom_tile(aes(y = "Agreement", fill = num), width = .95, height = .9) +
+    geom_text(aes(y = "Agreement", color = num, label = agree), 
+              size = 2.9, hjust = .5) +
+    scale_fill_manual(palette = function(n) hcl.colors(n, "Purple-Green"), guide = "none") +
+    scale_color_manual(palette = function(n) contrast(hcl.colors(n, "Purple-Green"),.7),
+                       guide = "none") +
+    new_scale_fill() +
+    new_scale_color() +
+    # Correlation
+    geom_tile(aes(y = "Correlation", fill = num), width = .95, height = .9) +
+    geom_text(aes(y = "Correlation", color = num, label = correlation), 
+              size = 4, hjust = .5) +
+    scale_fill_manual(palette = function(n) hcl.colors(n, "Blue-Red", rev = TRUE), guide = "none") +
+    scale_color_manual(palette = function(n) contrast(hcl.colors(n, "Blue-Red", rev = TRUE),.7),
+                       guide = "none") +
+    labs(title = "Diverging Color Scales",
+         subtitle = "for ordered variables with a neutral center") +
+    coord_fixed(ratio = .95/.9) + 
+    theme_void() +
+    theme(plot.title = element_text(size = 20, hjust = .5),
+          plot.subtitle = element_text(hjust = .5),
+          axis.text.y = element_text())
+```
+
+**Sequential scales** measure something that has an order, but no neutral center. Often, one side of the scale is at zero, so that the scale goes from nothing to something. In these cases, the appropriate color scale will represent amount with luminosity, where zero is the lightest (see "Frequency" and "Anxiety" below). This way, the lower amounts have lower contrast against the white background of the plot (if using a non-white plot background, make sure the low end of the scale matches).
+
+Sometimes sequential scales are not measuring amount, as in "Weekdays" below. Weekdays have an order - from the beginning of the week to the end - but it would be a mistake to use a scale with one side a light color and the other a dark one, since that would suggest that Thursday is somehow 'more' than Wednesday. Likewise, there is no neutral center (there's nothing neutral about Wednesday). In such case, the scale should go from one noticeable color to another. The chart below uses a palette reminiscent of sunset to give the impression of time passing.
+
+```{r}
+#| echo: false
+library(ggnewscale)
+library(RColorBrewer)
+
+# simple data
+tibble(num = factor(1:7),
+       frequency = c("Low Frequency", "", "", "", "", "", "High Frequency"),
+       anxiety = c("Low Anxiety", "", "", "", "", "", "High Anxiety"),
+       weekday = c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")) %>% 
+  ggplot(aes(num)) +
+    # Frequency
+    geom_tile(aes(y = "Frequency", fill = num), width = .95, height = .9) +
+    geom_text(aes(y = "Frequency", color = num, label = frequency), 
+              size = 2.9, hjust = .5) +
+    scale_fill_brewer(palette = "YlGnBu", guide = "none") +
+    scale_color_manual(palette = function(n) contrast(brewer.pal(n, "YlGnBu"),.7),
+                       guide = "none") +    
+    new_scale_fill() +
+    new_scale_color() +
+    # Anxiety
+    geom_tile(aes(y = "Anxiety", fill = num), width = .95, height = .9) +
+    geom_text(aes(y = "Anxiety", color = num, label = anxiety), 
+              size = 2.9, hjust = .5) +
+    scale_fill_brewer(palette = "OrRd", guide = "none") +
+    scale_color_manual(palette = function(n) contrast(brewer.pal(n, "OrRd"),.7),
+                       guide = "none") +
+    new_scale_fill() +
+    new_scale_color() +
+    # Weekdays
+    geom_tile(aes(y = "Weekdays", fill = num), width = .95, height = .9) +
+    geom_text(aes(y = "Weekdays", color = num, label = weekday), 
+              size = 2.9, hjust = .5) +
+    scale_fill_manual(palette = function(n) hcl.colors(n, "Sunset", rev = TRUE), guide = "none") +
+    scale_color_manual(palette = function(n) contrast(hcl.colors(n, "Sunset", rev = TRUE),.7),
+                       guide = "none") +
+    labs(title = "Sequential Color Scales",
+         subtitle = "for ordered variables without a neutral center") +
+    coord_fixed(ratio = .95/.9) + 
+    theme_void() +
+    theme(plot.title = element_text(size = 20, hjust = .5),
+          plot.subtitle = element_text(hjust = .5),
+          axis.text.y = element_text())
+```
+
+We have seen that many seemingly unordered variables should be ordered in the context of a story. Nevertheless, some variables are truly qualitative. In these cases, the color scale should maximize contrast between neighboring values without accidentally suggesting an order. For example, "Parts of Speech" below are all soft pastel colors. If some were darker or more saturated, it might suggest that there is an important difference between the groups.
+
+Again, keep in mind any associations people might have with colors involved. For example, countries should be represented by colors that appear in their flags. This is of course sometimes difficult - all of the countries below have red in their flag, and all but China have blue and white. Nevertheless, try your best. The [Wikipedia page for national colors](https://en.wikipedia.org/wiki/National_colours) was helpful in making the chart below.
+
+```{r}
+#| echo: false
+# custom colors for countries
+country_colors <- c("#b32134", "#679267", "#ffb200", "#4b9ed1", "#00247d")
+# simple data
+tibble(num = factor(1:5),
+       components = c("Verbal\nComprehension", "Visual-Spatial", "Fluid Reasoning", "Working Memory", "Processing Speed"),
+       countries = c("U.S.A.", "Russia", "China", "France", "U.K."),
+       speech_parts = c("Nouns", "Verbs", "Adjectives", "Articles", "Pronouns")) %>% 
+  ggplot(aes(num)) +
+    # Intellingence Component
+    geom_tile(aes(y = "Intelligence\nComponent", fill = num), width = .95, height = .9) +
+    geom_text(aes(y = "Intelligence\nComponent", color = num, label = components), 
+              size = 3.5, hjust = .5) +
+    scale_fill_brewer(palette = "Set1", guide = "none") +
+    scale_color_manual(palette = function(n) contrast(brewer.pal(n, "Set1"),.9),
+                       guide = "none") +    
+    new_scale_fill() +
+    new_scale_color() +
+    # Country
+    geom_tile(aes(y = "Country", fill = num), width = .95, height = .9) +
+    geom_text(aes(y = "Country", color = num, label = countries), 
+              size = 3.5, hjust = .5) +
+    scale_fill_manual(values = country_colors, guide = "none") +
+    scale_color_manual(values = contrast(country_colors,.7),
+                       guide = "none") +
+    new_scale_fill() +
+    new_scale_color() +
+    # Parts of Speech
+    geom_tile(aes(y = "Parts of\nSpeech", fill = num), width = .95, height = .9) +
+    geom_text(aes(y = "Parts of\nSpeech", color = num, label = speech_parts), 
+              size = 3.5, hjust = .5) +
+    scale_fill_manual(palette = function(n) hcl.colors(n, "Pastel 1", rev = TRUE), guide = "none") +
+    scale_color_manual(palette = function(n) contrast(hcl.colors(n, "Pastel 1", rev = TRUE),.7),
+                       guide = "none") +
+    labs(title = "Qualitative Color Scales",
+         subtitle = "for variables with no order") +
+    coord_fixed(ratio = .95/.9) + 
+    theme_void() +
+    theme(plot.title = element_text(size = 20, hjust = .5),
+          plot.subtitle = element_text(hjust = .5),
+          axis.text.y = element_text())
+```
+
+### Accent colors
+
+Because color has many dimensions, it can sometimes be used to represent two scales at the same time. One common tactic is to use luminosity or saturation to emphasize certain values and de-emphasize others. Below, we have redrawn the relative frequency plot from earlier in this section to tell a story about two words in particular. By using accent colors, we remove distractors while maintaining the broader context of the story.
+
+```{r}
+#| fig-width: 6
+#| fig-height: 6
+
+distressed_texts_ordered %>% 
+  ggplot(aes(word, distressed_rel_freq, label = word, color = distressed_rel_freq < 1)) +
+    geom_point() +
+    geom_hline(linetype = 2, yintercept = 1) +
+    scale_color_discrete(type = colorspace::lighten(c("#F8766D", "#00BFC4"), .7)) +
+    geom_text_repel(size = 3, 
+                    data = distressed_texts_ordered %>% filter(distressed_rel_freq > 3.6 | distressed_rel_freq < .2),
+                    max.overlaps = 20) +
+    guides(color = "none") +
+    new_scale_color() +
+    geom_point(aes(color = distressed_rel_freq < 1), size = 3,
+               data = distressed_texts_ordered %>% filter(word %in% c("i", "we"))) +
+    geom_text_repel(size = 4, data = distressed_texts_ordered %>% 
+                      filter(word %in% c("i", "we")),
+                    max.overlaps = 20) +
+    labs(title = '"We" is a Sign of Distress',
+         x = "Words, from least to most distressed",
+         y = "Distressed frequency / non-distressed frequency") +
+    scale_y_continuous(breaks = c(2^(-6:6)), trans = "log2", labels = ~MASS::fractions(.x)) +
+    guides(color = "none") +
+    theme_minimal() +
+    theme(plot.title = element_text(hjust = .5, size = 18),
+          panel.grid.major.x = element_blank(),
+          axis.text.x = element_blank(),
+          axis.ticks.x = element_blank())
+
 ```
 
 ### Aspect Ratios
@@ -221,8 +425,6 @@ cowplot::plot_grid(
 
 Which aspect ratio is the right one? A good aspect ratio is one that communicates the meaning of the variables in question. Since months are spread out over time (by definition), it makes sense to make the x-axis longer so that the viewer has the feeling of time passing as she scans it. But it shouldn't be too wide, since the aspect ratio should also emphasize important differences in position (here, the positive slope of both lines). Something in between B and C seems appropriate.
 
-### Color Scales
+------------------------------------------------------------------------
 
--   sequential (indicates scale from nothing to something), diverging (negative vs positive with zero in the middle), qualitative (maximizing contrast between neighboring values). Keep in mind common color associations.
-
-    -   Accent colors
+As always, press the "View Source" button below to see the hidden code blocks in this section.

@@ -194,3 +194,7 @@ Sina plots are a good way to compare distributions of different groups (they are
 This plot makes it very difficult to learn anything about positive emotion in Twitter posts. The colors themselves give some guidance: the white in the middle of the scale suggests that it represents some sort of zero point - a "normal" amount of positive emotion. Nevertheless, the viewer will have to squint in order to notice the trend for higher income counties to be happier. The emotional variable is not adding much to this visualization.
 
 In this section we have seen how choices about which aesthetics to map to variables make a big difference in the way a data visualization is interpreted. Three visualization of the same data can emphasize tell very different stories. Some of these stories are interesting and some of them are not.
+
+---------------------
+
+Press the "View Source" button below to see the hidden code blocks in this section.
