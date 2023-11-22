@@ -7,3 +7,45 @@
 source("_common.R")
 ```
 
+```{r}
+#| include: false
+
+# data setup copied from the previous section
+library(tidytext)
+
+distressed_texts <- read_csv("https://raw.githubusercontent.com/wwbp/empathic_reactions/master/data/responses/data/messages.csv") %>% 
+  # only texts by distressed participants
+  filter(distress_bin == 1) %>% 
+  mutate(clean_text = tm::removeNumbers(essay),
+         clean_text = tm::removePunctuation(clean_text),
+         clean_text = tm::stripWhitespace(clean_text)) %>%
+  # tokenize and count frequencies
+  unnest_tokens(word, clean_text, to_lower = TRUE) %>%
+  count(word, sort=T) %>%
+  mutate(distressed_freq = n/sum(n)) %>% 
+  select(-n) %>% 
+  # keep stop words only
+  filter(word %in% stop_words$word)
+
+nondistressed_texts <- read_csv("https://raw.githubusercontent.com/wwbp/empathic_reactions/master/data/responses/data/messages.csv") %>% 
+  # only texts by non-distressed participants
+  filter(distress_bin == 0) %>% 
+  mutate(clean_text = tm::removeNumbers(essay),
+         clean_text = tm::removePunctuation(clean_text),
+         clean_text = tm::stripWhitespace(clean_text)) %>%
+  # tokenize and count frequencies
+  unnest_tokens(word, clean_text, to_lower = TRUE) %>%
+  count(word, sort=T) %>%
+  mutate(nondistressed_freq = n/sum(n)) %>% 
+  select(-n) %>% 
+  # keep stop words only
+  filter(word %in% stop_words$word)
+
+
+# join the two sets
+distressed_texts <- distressed_texts %>% 
+  left_join(nondistressed_texts) %>% 
+  # replace na with 0
+  replace_na(list(distressed_freq = 0, nondistressed_freq = 0))
+```
+

@@ -7,9 +7,9 @@
 source("_common.R")
 ```
 
-The hardest part of data visualization is identifying a story in the first place. This is especially true in natural language processing - since language is such a rich source of information, it is sometimes hard to decide what aspect of it to focus on. The stories are hiding in plain sight. The job of the data visualizer is to find them and bring them out into the open.
+The hardest part of data visualization is identifying a story in the first place. This is especially true in natural language processing---ince language is such a rich source of information, it is sometimes hard to decide what aspect of it to focus on. The stories are hiding in plain sight. The job of the data visualizer is to find them and bring them out into the open.
 
-## A Small, Compelling Story is Better Than a Big, Confusing One
+## A Small, Compelling Story is Better Than a Big, Confusing One {#sec-simplify-the-story}
 
 @schwartz_etal_2013 collected 15.4 million Facebook status updates from participants who had filled out a variety of questionnaires on the *My Personality* application (discussed in @sec-ethics). They analyzed the frequencies of millions of words, phrases, and topics as they correlate with gender, age, and personality traits of the author. The resulting paper focused on methodology, but @schwartz_etal_2013 nevertheless understood the importance of telling a good story. Here is their figure 5B:
 
@@ -21,23 +21,23 @@ How did Schwartz et al. achieve such a clear story? Let's take a closer look at 
 
 First, out of millions of words, phrases, and topics in their analysis, they chose to focus this visualization on only two. This is the first step of story-telling with data: remove distractions. A small, compelling story is better than a big, confusing one.
 
-Second, they chose not to show the data points themselves, but to represent the overall trends with regression lines. This is a major sacrifice, since it makes the graph much less informative - any good scientist will wonder about the distributions surrounding these lines: How rare are community-oriented 20-year-olds? What about self-centered 60-year-olds? Nevertheless, Schwartz et al. decided that including a scatter plot behind the lines would make the graph to confusing to look at, and distract from the main story.
+Second, they chose not to show the data points themselves, but to represent the overall trends with regression lines. This is a major sacrifice, since it makes the graph much less informative---any good scientist will wonder about the distributions surrounding these lines: How rare are community-oriented 20-year-olds? What about self-centered 60-year-olds? Nevertheless, Schwartz et al. decided that including a scatter plot behind the lines would make the graph too confusing to look at, and distract from the main story.
 
 Third, they chose to use bendy LOESS regression lines, even though the main analysis of the paper was conducted with linear regression. This was a great choice because it makes the story more convincing. The fact that even LOESS lines show near-linear trends is impressive. Even though there are no data points to be seen, those steady lines give the impression that the underlying data are reliable. Also, the the LOESS lines give the viewer the opportunity to notice nuances in the story without distracting from the big picture (it is fascinating that "we" reaches it's all-time low around the time most people move out of their parents' house, and not before).
 
-Lastly, let's take a look at the y axis: What is "Standardized Frequency"? We have an intuitive idea that higher means using the word more and lower means using it less. But this intuitive simplicity did not come easily - it had to be carefully constructed by the authors of the paper. Actually, "Standardized Frequency" is calculated using this formula:
+Lastly, let's take a look at the y axis: What is "Standardized Frequency"? We have an intuitive idea that higher means using the word more and lower means using it less. But this intuitive simplicity did not come easily---it had to be carefully constructed by the authors of the paper. Actually, "Standardized Frequency" is calculated using this formula:
 
 [![](images/schwartz_etal_2013_equation.png){fig-alt="Complicated Equation"}](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0073791#s6)
 
-Don't understand any of this? That's OK. We'll cover methods of standardizing word frequencies in @sec-word-counting-improvements. For now, the point is this: **Sometimes you have to do something complicated to make something simple**. If Schwartz et al. had not performed these normalizations and transformations, "I" would likely be much higher frequency than "we" at all ages, and the story, which requires the viewer to focus on the slopes of the lines, would be much harder to appreciate.
+Don't understand any of this? That's OK. We'll cover methods of standardizing word frequencies in @sec-word-counting-improvements. For now, the point is this: **Sometimes you have to do something complicated to make something simple**. If Schwartz et al. had not performed them, "I" would likely be much higher frequency than "we" at all ages, and the story, which requires the viewer to focus on the slopes of the lines, would be much harder to appreciate.
 
 ## Engineer Your Aesthetics
 
-We have just seen in Schwartz et al.'s beautiful data visualization that choosing to map the "frequency" variable to the y position aesthetic was not enough. In order to make the story clear, they had to carefully engineer the scale on which they were measuring frequency. In their case, this required some complicated standardization tailored to the particular statistics underlying their data. Often though, the solution is much more straightforward.
+We have just seen in Schwartz et al.'s beautiful data visualization (@sec-simplify-the-story) that choosing to map the "frequency" variable to the y position aesthetic was not enough. In order to make the story clear, they carefully engineered the scale on which they measured frequency. In their case, this required some complicated standardization tailored to the particular statistics underlying their data. Often though, the solution is much more straightforward.
 
 The remainder of this chapter outlines some common ways to engineer aesthetics that can help make a story clear and intuitive.
 
-### Nonlinear Axes
+### Nonlinear Axes {#sec-nonlinear-axes}
 
 Often a simple log scale is enough to reveal a much clearer presentation of data. The following graph uses data from @buechel_etal_2018, in which participants read news stories, rated their own empathy and distress after reading them, and then described their thoughts in their own words.
 
@@ -79,8 +79,9 @@ nondistressed_texts <- read_csv("https://raw.githubusercontent.com/wwbp/empathic
 
 # join the two sets
 distressed_texts <- distressed_texts %>% 
-  left_join(nondistressed_texts) %>% 
-  drop_na()
+  full_join(nondistressed_texts) %>% 
+  # replace na with 0
+  replace_na(list(distressed_freq = 0, nondistressed_freq = 0))
 ```
 
 ```{r}
@@ -100,7 +101,7 @@ badplot1 <- distressed_texts_ordered %>%
     geom_point(color = "blue3", size = 1, alpha = .2) +
     geom_text_repel(size = 3, 
                     data = filter(distressed_texts_ordered, distressed_rel_freq > 4)) +
-    labs(title = "Bad",
+    labs(title = "Linear Scale",
          x = "Words, from least to most distressed",
          y = "Distressed frequency / non-distressed frequency") +
     scale_y_continuous(breaks = seq(0, 12, 2)) +
@@ -118,7 +119,7 @@ goodplot1 <- distressed_texts_ordered %>%
                     data = distressed_texts_ordered %>% filter(distressed_rel_freq > 3.6 | distressed_rel_freq < .2),
                     max.overlaps = 20) +
     geom_hline(linetype = 2, yintercept = 1) +
-    labs(title = "Good",
+    labs(title = "Log Scale",
          x = "Words, from least to most distressed",
          y = "Distressed frequency / non-distressed frequency") +
     scale_y_continuous(breaks = c(2^(-6:6)), trans = "log2", labels = ~MASS::fractions(.x)) +
@@ -135,9 +136,9 @@ cowplot::plot_grid(goodplot1, badplot1)
 
 When plotting ratios, it is almost always a good idea to use a log scale (left). This way, the viewer can compare the largest and the smallest relative values. Without the log scale (right), the smallest values are squished into oblivion.
 
-### Ordering Categorical Variables
+### Ordering Categorical Variables {#sec-ordering-categorical-variables}
 
-Take another look at the graph labeled "Good" above, and notice the ordering along the x axis. Words, on their own, are an unordered categorical variable. Nevertheless, **in the context of a story, even unordered variables have an order**. Ordering the categorical variable along the continuous variable of interest calls the distribution to attention and removes confusion.
+Take another look at the graph labeled "Log Scale" above, and notice the ordering along the x axis. Words, on their own, are an unordered categorical variable. Nevertheless, **in the context of a story, even unordered variables have an order**. Ordering the categorical variable along the continuous variable of interest calls attention to the distribution and removes confusion.
 
 ```{r}
 #| warning: false
@@ -148,12 +149,12 @@ badplot2 <- distressed_texts %>%
   # distressed frequency relative to non-distressed frequency
   mutate(distressed_rel_freq = distressed_freq/nondistressed_freq) %>% 
   ggplot(aes(word, distressed_rel_freq, label = word, color = distressed_rel_freq < 1)) +
-    geom_point(size = 1, alpha = .2) +
+    geom_point(size = 1, alpha = .7) +
     geom_text_repel(size = 3, 
-                    data = distressed_texts_ordered %>% filter(distressed_rel_freq > 9 | distressed_rel_freq < .3),
+                    data = distressed_texts_ordered %>% filter(distressed_rel_freq > 3.6 | distressed_rel_freq < .2),
                     max.overlaps = 20) +
     geom_hline(linetype = 2, yintercept = 1) +
-    labs(title = "Bad",
+    labs(title = "Unordered",
          x = "Words",
          y = "Distressed frequency / non-distressed frequency") +
     scale_y_continuous(breaks = c(2^(-6:6)), trans = "log2", labels = ~MASS::fractions(.x)) +
@@ -165,18 +166,18 @@ badplot2 <- distressed_texts %>%
           axis.ticks.x = element_blank(),
           axis.title.x = element_text(size = 15))
 
-cowplot::plot_grid(goodplot1, badplot2)
+cowplot::plot_grid(goodplot1 + labs(title = "Ordered"), badplot2)
 ```
 
-### Color Scales
+### Color Scales {#sec-color-scales}
 
 We have already seen how a data visualizer can clarify a story by spatially ordering a categorical variable. A carefully tailored color scale can be an even more powerful communicator than an x or y axis. This is because color, even though it is usually treated as a single aesthetic, actually has many dimensions: luminosity, saturation, redness, blueness, etc.
 
 The first step in choosing a color scale for any variable is to consider whether the thing being measured is diverging, sequential, or qualitative.
 
-**Diverging scales** measure something with a neutral center. This center is often represented by zero, but beware! Sometimes a neutral center is 4 on a seven point Likert scale (see "Agreement" below). When dealing with fractions, the neutral center is 1 (see "Relative Frequency" below).
+**Diverging scales** measure something with a neutral center. This center is often represented by zero, but beware! Sometimes a neutral center is 4 on a seven point Likert scale (see "Agreement" in the figure below). When dealing with fractions, the neutral center is 1 (see "Relative Frequency" in the figure below).
 
-When applying diverging scales, keep in mind any associations people might have with the colors involved. For example, red should always be *bad* and blue/green *good* (see the plot in the previous subsection, in which red = distress = bad).
+When applying diverging scales, keep in mind any associations people might have with the colors involved. For example, red should always be *bad* and blue/green *good* (see the plot in @sec-ordering-categorical-variables, in which red = distress = bad).
 
 ```{r}
 #| echo: false
@@ -237,9 +238,9 @@ tibble(num = factor(1:7),
           axis.text.y = element_text())
 ```
 
-**Sequential scales** measure something that has an order, but no neutral center. Often, one side of the scale is at zero, so that the scale goes from nothing to something. In these cases, the appropriate color scale will represent amount with luminosity, where zero is the lightest (see "Frequency" and "Anxiety" below). This way, the lower amounts have lower contrast against the white background of the plot (if using a non-white plot background, make sure the low end of the scale matches).
+**Sequential scales** measure something that has an order, but no neutral center. Often, one side of the scale is at zero, so that the scale goes from nothing to something. In these cases, the appropriate color scale will represent amount with luminosity, where zero is the lightest (see "Frequency" and "Anxiety" in the figure below). This way, the lower amounts have lower contrast against the white background of the plot (if using a non-white plot background, make sure the low end of the scale matches).
 
-Sometimes sequential scales are not measuring amount, as in "Weekdays" below. Weekdays have an order - from the beginning of the week to the end - but it would be a mistake to use a scale with one side a light color and the other a dark one, since that would suggest that Thursday is somehow 'more' than Wednesday. Likewise, there is no neutral center (there's nothing neutral about Wednesday). In such case, the scale should go from one noticeable color to another. The chart below uses a palette reminiscent of sunset to give the impression of time passing.
+Sometimes sequential scales do not measure amount, as in "Weekdays" in the figure below. Weekdays have an order---rom the beginning of the week to the end---ut it would be a mistake to use a scale with one side blending in to the background and the other intensely dark, since that would suggest that Thursday is somehow 'more' than Wednesday. Likewise, there is no neutral center (there's nothing neutral about Wednesday). In such case, the scale should go from one noticeable color to another. The chart below uses a palette reminiscent of sunset to give the impression of time passing.
 
 ```{r}
 #| echo: false
@@ -277,7 +278,7 @@ tibble(num = factor(1:7),
     scale_fill_manual(palette = function(n) hcl.colors(n, "Sunset", rev = TRUE), guide = "none") +
     scale_color_manual(palette = function(n) contrast(hcl.colors(n, "Sunset", rev = TRUE),.7),
                        guide = "none") +
-    labs(title = "Sequential Color Scales",
+    labs(title = "Sequential Color Scale",
          subtitle = "for ordered variables without a neutral center") +
     coord_fixed(ratio = .95/.9) + 
     theme_void() +
@@ -286,9 +287,111 @@ tibble(num = factor(1:7),
           axis.text.y = element_text())
 ```
 
-We have seen that many seemingly unordered variables should be ordered in the context of a story. Nevertheless, some variables are truly qualitative. In these cases, the color scale should maximize contrast between neighboring values without accidentally suggesting an order. For example, "Parts of Speech" below are all soft pastel colors. If some were darker or more saturated, it might suggest that there is an important difference between the groups.
+To emphasize the point about weekdays, consider the following two versions of the same graph (data taken from 1000 [top Reddit communities](https://github.com/umbrae/reddit-top-2.5-million/tree/master)):
 
-Again, keep in mind any associations people might have with colors involved. For example, countries should be represented by colors that appear in their flags. This is of course sometimes difficult - all of the countries below have red in their flag, and all but China have blue and white. Nevertheless, try your best. The [Wikipedia page for national colors](https://en.wikipedia.org/wiki/National_colours) was helpful in making the chart below.
+```{r}
+#| include: false
+#| eval: false
+
+# retrieve file list from github (https://github.com/umbrae/reddit-top-2.5-million/tree/master)
+req <- httr::GET("https://api.github.com/repos/umbrae/reddit-top-2.5-million/git/trees/master?recursive=1")
+filelist <- unlist(lapply(httr::content(req)$tree, "[", "path"), use.names = F)
+filelist <- grep("data/", filelist, value = TRUE, fixed = TRUE)
+filelist <- paste0("https://raw.githubusercontent.com/umbrae/reddit-top-2.5-million/master/", filelist)
+
+# choose 1000 repos at random, and retrieve the raw files from github, selecting only timestamp and text columns
+# WARNING: Takes a while! Choose a smaller number of repos for less wait time.
+reddit_posts <- bind_rows(
+  lapply(filelist[sample(1:length(filelist), 1000)], 
+         function(d){ 
+           read_csv(d) %>% 
+             select(created_utc, selftext) %>% 
+             mutate(created_utc = as.numeric(created_utc))
+           })
+  ) %>% 
+  drop_na()
+
+# NRC "joy" lexicon
+joy <- lexicon::nrc_emotions %>% 
+  filter(joy == 1) %>% 
+  pull(term)
+
+reddit_joy <- reddit_posts %>% 
+  # clean data
+  mutate(date = lubridate::as_date(created_utc),
+         weekday = factor(weekdays(date), levels = c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")),
+         month = month(date, label = TRUE),
+         yday = yday(date),
+         clean_text = tm::removeNumbers(selftext),
+         clean_text = tm::removePunctuation(clean_text),
+         clean_text = tm::stripWhitespace(clean_text)) %>%
+  # tokenize
+  unnest_tokens(word, clean_text, to_lower = TRUE) %>%
+  # count
+  count(yday, weekday, word, sort=T) %>%
+  # frequencies
+  group_by(yday, weekday) %>% 
+  mutate(freq = n/sum(n)) %>% 
+  select(-n) %>% 
+  # keep joyful words only
+  filter(word %in% joy) %>% 
+  # aggregate (add frequencies of all words in lexicon)
+  summarise(freq = sum(freq))
+
+# save to avoid long render time
+# save(reddit_joy, file = "data/reddit_joy.RData")
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-height: 10
+
+load("data/reddit_joy.RData")
+library(ggborderline)
+
+months = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", 
+"Oct", "Nov", "Dec")
+
+goodplot3 <- reddit_joy %>% 
+  ggplot(aes(yday, freq, color = weekday, group = weekday)) +
+    stat_smooth(aes(bordercolor = after_scale(colorspace::darken(color))), geom = "borderline", linewidth = 2, span = 1/3, method.args = list(degree=1), se = FALSE) +
+    scale_color_discrete(type = hcl.colors(7, "Sunset", rev = TRUE)) +
+    scale_x_continuous(breaks = c(15,46,74,105,135,166,196,227,258,288,319,349),
+                       labels = months) +
+    labs(title = "Sequential Color Scale",
+         x = "",
+         y = "Frequency of Joyful Words",
+         color = "") +
+    theme_minimal() +
+    theme(plot.title = element_text(color = "green3", hjust = 1, size = 15),
+          panel.grid.major.x = element_line(linewidth = .2),
+          panel.grid.minor.x = element_line(linewidth = .8)) +
+    coord_cartesian(expand = FALSE)
+
+badplot3 <- reddit_joy %>% 
+  ggplot(aes(yday, freq, color = weekday, group = weekday)) +
+    stat_smooth(aes(bordercolor = after_scale(colorspace::darken(color))), geom = "borderline", linewidth = 2, span = 1/3, method.args = list(degree=1), se = FALSE) +
+    scale_x_continuous(breaks = c(15,46,74,105,135,166,196,227,258,288,319,349),
+                       labels = months) +
+    labs(title = "Qualitative Color Scale",
+         x = "",
+         y = "Frequency of Joyful Words",
+         color = "") +
+    theme_minimal() +
+    theme(plot.title = element_text(color = "red3", hjust = 1, size = 15),
+          panel.grid.major.x = element_line(linewidth = .2),
+          panel.grid.minor.x = element_line(linewidth = .8)) +
+    coord_cartesian(expand = FALSE)
+
+cowplot::plot_grid(goodplot3, badplot3, nrow = 2)
+```
+
+Both versions are confusing to look at (these data might be better represented as a heat map), but the one with the sequential color scale is much better. Whereas the qualitative scale requires the viewer to look constantly back and forth between the legend and the plot, the sequential scale maps to an intuitive understanding of beginning-of-week vs. end-of-week.
+
+We have seen that many seemingly unordered variables should be ordered in the context of a story. Nevertheless, some variables are truly **qualitative**. In these cases, the color scale should maximize contrast between neighboring values without accidentally suggesting an order. For example, "Parts of Speech" in the figure below are all soft pastel colors. If some were darker or more saturated, it might suggest that there is an important difference between the groups.
+
+Again, keep in mind any associations people might have with colors involved. For example, countries should be represented by colors that appear in their flags. This is of course sometimes difficult---all of the countries in the figure below have red in their flag, and all but China have blue and white. Nevertheless, try your best. The [Wikipedia page for national colors](https://en.wikipedia.org/wiki/National_colours) was helpful in making the chart below.
 
 ```{r}
 #| echo: false
@@ -334,9 +437,9 @@ tibble(num = factor(1:5),
           axis.text.y = element_text())
 ```
 
-### Accent colors
+### Accent colors {#sec-accent-colors}
 
-Because color has many dimensions, it can sometimes be used to represent two scales at the same time. One common tactic is to use luminosity or saturation to emphasize certain values and de-emphasize others. Below, we have redrawn the relative frequency plot from earlier in this section to tell a story about two words in particular. By using accent colors, we remove distractors while maintaining the broader context of the story.
+Because color has many dimensions, it can sometimes be used to represent two scales at the same time. One common tactic is to use luminosity or saturation to emphasize certain values and de-emphasize others. Below, we have redrawn the relative frequency plot from earlier in this chapter (@sec-nonlinear-axes) to tell a story about two words in particular. By using accent colors to emphasize the two words of interest, we remove distractors while maintaining the broader context of the story.
 
 ```{r}
 #| fig-width: 6
@@ -370,7 +473,7 @@ distressed_texts_ordered %>%
 
 ```
 
-### Aspect Ratios
+### Aspect Ratios {#sec-aspect-ratios}
 
 @simchon_etal_2021 investigated whether COVID-19 concern among New Yorkers resulted in higher or lower levels of certainty, as expressed in language on Twitter. Their story: Higher concern leads to greater expressions of certainty, since people use certainty as a coping mechanism. Here is their Figure 3, reproduced in three different aspect ratios:
 
@@ -423,8 +526,10 @@ cowplot::plot_grid(
 )
 ```
 
-Which aspect ratio is the right one? A good aspect ratio is one that communicates the meaning of the variables in question. Since months are spread out over time (by definition), it makes sense to make the x-axis longer so that the viewer has the feeling of time passing as she scans it. But it shouldn't be too wide, since the aspect ratio should also emphasize important differences in position (here, the positive slope of both lines). Something in between B and C seems appropriate.
+Which aspect ratio is the right one? A good aspect ratio is one that communicates the meaning of the variables in question. Since months are spread out over time (by definition), it makes sense to make the x-axis longer so that viewers have the feeling of time passing as they scan it. But it shouldn't be too wide, since the aspect ratio should also emphasize important differences in position (here, the positive slope of both lines). Something in between B and C seems appropriate. Indeed, this is the figure printed in the final paper:
+
+![](images/simchon_etal_2021_fig3.png)
 
 ------------------------------------------------------------------------
 
-As always, press the "View Source" button below to see the hidden code blocks in this section.
+As always, press the "View Source" button below to see the hidden code blocks in this chapter.

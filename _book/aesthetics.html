@@ -8,7 +8,7 @@
 
 <meta name="author" content="Almog Simchon and Louis Teitelbaum">
 
-<title>Data Science for Psychology - 1&nbsp; Choose Your Aesthetics Carefully</title>
+<title>Data Science for Psychology - 1&nbsp; Why Aesthetic Choices are Important</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -128,7 +128,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./data-viz.html">Data Visualization</a></li><li class="breadcrumb-item"><a href="./aesthetics.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Choose Your Aesthetics Carefully</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./data-viz.html">Data Visualization</a></li><li class="breadcrumb-item"><a href="./aesthetics.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Why Aesthetic Choices are Important</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -185,7 +185,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./aesthetics.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Choose Your Aesthetics Carefully</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Why Aesthetic Choices are Important</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -203,7 +203,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data-viz-resources.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Gallery and Resources</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Additional Resources for Data Visualization</span></span></a>
   </div>
 </li>
       </ul>
@@ -321,7 +321,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-aesthetics" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Choose Your Aesthetics Carefully</span></span></h1>
+<h1 class="title"><span id="sec-aesthetics" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Why Aesthetic Choices are Important</span></span></h1>
 </div>
 
 
@@ -392,7 +392,7 @@ div.csl-indent {
 <p><img src="aesthetics_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
-<p>This is the most intuitive way to organize the three variables. By mapping income to the x axis, we lightly suggest that it is the cause of whatever is happening on the y axis - in this case positive emotion. The idea that higher income causes positive emotion is intuitive - many people believe they would be happier with a higher income. People accustomed to languages that are written left-to-right, like English, will tend to think about what happens as they move left to right on the graph. Three LOESS regression lines encourage the viewer to compare the slopes of the three color groups, which they will go through from top to bottom:</p>
+<p>This is the most intuitive way to organize the three variables. By mapping income to the x axis, we lightly suggest that it is the cause of whatever is happening on the y axis—in this case positive emotion. The idea that higher income causes positive emotion is intuitive—any people believe they would be happier with a higher income. People accustomed to languages that are written left-to-right, like English, will tend to think about what happens as they move left to right on the graph. Three LOESS regression lines encourage the viewer to compare the slopes of the three color groups, which they will go through from top to bottom:</p>
 <ol type="1">
 <li>In counties without a Black or Hispanic majority, greater income means more positive emotion, up to about $60,000 a year, when the line starts flattening out.</li>
 <li>In counties with a majority Hispanic population, greater income means dramatically more positive emotion, on average.</li>
@@ -470,16 +470,16 @@ div.csl-indent {
 </div>
 </div>
 <p>This is a <em>sina plot</em> (also known as a <em>beeswarm plot</em>), in which point clouds are arranged by a continuous variable on one axis, a categorical variable on the other axis, and spread out in proportion to their density along the spaces in between the categories.</p>
-<p>Sina plots are a good way to compare distributions of different groups (they are almost always more informative than box plots or violin plots); this plot emphasizes that counties with a majority Black population tend to have relatively low average incomes. The other story that this plot tells is the uneven sizes of the three groups - by separating out the points in each group, this visualization emphasizes the fact that there are very few US counties with majority Black or Hispanic population.</p>
-<p>This plot makes it very difficult to learn anything about positive emotion in Twitter posts. The colors themselves give some guidance: the white in the middle of the scale suggests that it represents some sort of zero point - a “normal” amount of positive emotion. Nevertheless, the viewer will have to squint in order to notice the trend for higher income counties to be happier. The emotional variable is not adding much to this visualization.</p>
-<p>In this section we have seen how choices about which aesthetics to map to variables make a big difference in the way a data visualization is interpreted. Three visualization of the same data can emphasize tell very different stories. Some of these stories are interesting and some of them are not.</p>
+<p>Sina plots are a good way to compare distributions of different groups (they are almost always more informative than box plots or violin plots); this plot emphasizes that counties with a majority Black population tend to have relatively low average incomes. The other story that this plot tells is the uneven sizes of the three groups—by separating out the points in each group, this visualization emphasizes the fact that there are very few US counties with majority Black or Hispanic population.</p>
+<p>This plot makes it very difficult to learn anything about positive emotion in Twitter posts. The colors themselves give some guidance: the white in the middle of the scale suggests that it represents some sort of zero point—a “normal” amount of positive emotion. Nevertheless, the viewer will have to squint in order to notice the trend for higher income counties to be happier. The emotional variable is not adding much to this visualization.</p>
+<p>In this chapter we have seen how choices about which aesthetics to map to variables make a big difference in the way a data visualization is interpreted. Three visualization of the same data can emphasize tell very different stories.</p>
 <hr>
-<p>Press the “View Source” button below to see the hidden code blocks in this section.</p>
+<p>Press the “View Source” button below to see the hidden code blocks in this chapter.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
 <div id="ref-eichstaedt_etal_2015" class="csl-entry" role="listitem">
-Eichstaedt, J. C., Schwartz, H. A., Kern, M. L., Park, G., Labarthe, D. R., Merchant, R. M., … Seligman, M. E. P. (2015). Psychological language on twitter predicts county-level heart disease mortality. <em>Psychological Science</em>, <em>26</em>(2), 159–169. <a href="https://doi.org/10.1177/0956797614557867">https://doi.org/10.1177/0956797614557867</a>
+Eichstaedt, J. C., Schwartz, H. andrew, Kern, M. L., Park, G., Labarthe, D. R., Merchant, R. M., Jha, S., Agrawal, M., Dziurzynski, L. A., Sap, M., Weeg, C., Larson, E. E., Ungar, L. H., &amp; Seligman, M. E. P. (2015). Psychological language on twitter predicts county-level heart disease mortality. <em>Psychological Science</em>, <em>26</em>(2), 159–169. <a href="https://doi.org/10.1177/0956797614557867">https://doi.org/10.1177/0956797614557867</a>
 </div>
 </div>
 

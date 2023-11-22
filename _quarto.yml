@@ -47,7 +47,7 @@ book:
     - resources.qmd
 
 bibliography: references.bib
-csl: apa-6th-edition.csl
+csl: apa.csl
 suppress-bibliography: false
 
 format:
