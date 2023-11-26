@@ -7,13 +7,34 @@
 source("_common.R")
 ```
 
+Word clouds are commonly used for purposes like:
+
+-   Summarizing text using word frequencies
+-   Decorating placemats at cheap restaurants
+-   Comparing word usage in two groups of texts
+-   Correlating word usage with a construct of interest
+
+[Word clouds are not a good tool for summarizing text](https://www.niemanlab.org/2011/10/word-clouds-considered-harmful/). They are a perfectly fine tool for [kitschy placemats](https://www.walmart.com/ip/Modern-Placemats-Set-4-Coffee-Words-Cafe-Typography-Point-Sizes-Digital-Illustration-Washable-Fabric-Place-Mats-Dining-Room-Kitchen-Table-Decor-Caram/138605785), but those are beyond the scope of this textbook. In the world of data science, **there are only two legitimate uses for word clouds: comparing words across two groups of texts, and correlating word frequencies with a construct of interest**. Even these legitimate uses break a fundamental rule of data visualization, since by showing many words at the same time they are telling many stories at the same time, each distracting from the others. Nevertheless, analyses often include so many words (or other units of text) that producing a visualization for each one is unfeasible, and a summary graphic is necessary.
+
+Because word clouds as data visualization can be so foreign to those not familiar with natural language processing, we offer an brief tutorial on creating them in R, using the `ggwordcloud` package.
+
+In this tutorial, we will visualize data from @buechel_etal_2018 (see @sec-nonlinear-axes and @sec-accent-colors), in which participants rated their distress after reading various news stories, and described their thoughts in their own words. The distress ratings were then binned into two groups, allowing us to compare the content of "distressed" texts to that of "non-distressed" texts.
+
+```{r}
+distressed_texts <- read_csv("https://raw.githubusercontent.com/wwbp/empathic_reactions/master/data/responses/data/messages.csv", show_col_types = FALSE) %>% 
+  select(essay, distress, distress_bin)
+
+head(distressed_texts)
+```
+
+
 ```{r}
 #| include: false
 
 # data setup copied from the previous section
 library(tidytext)
 
-distressed_texts <- read_csv("https://raw.githubusercontent.com/wwbp/empathic_reactions/master/data/responses/data/messages.csv") %>% 
+distressed_texts_binary <- distressed_texts %>% 
   # only texts by distressed participants
   filter(distress_bin == 1) %>% 
   mutate(clean_text = tm::removeNumbers(essay),
@@ -22,12 +43,11 @@ distressed_texts <- read_csv("https://raw.githubusercontent.com/wwbp/empathic_re
   # tokenize and count frequencies
   unnest_tokens(word, clean_text, to_lower = TRUE) %>%
   count(word, sort=T) %>%
-  mutate(distressed_freq = n/sum(n)) %>% 
-  select(-n) %>% 
+  rename(distressed_count = n) %>% 
   # keep stop words only
   filter(word %in% stop_words$word)
 
-nondistressed_texts <- read_csv("https://raw.githubusercontent.com/wwbp/empathic_reactions/master/data/responses/data/messages.csv") %>% 
+nondistressed_texts_binary <- distressed_texts %>% 
   # only texts by non-distressed participants
   filter(distress_bin == 0) %>% 
   mutate(clean_text = tm::removeNumbers(essay),
@@ -36,16 +56,196 @@ nondistressed_texts <- read_csv("https://raw.githubusercontent.com/wwbp/empathic
   # tokenize and count frequencies
   unnest_tokens(word, clean_text, to_lower = TRUE) %>%
   count(word, sort=T) %>%
-  mutate(nondistressed_freq = n/sum(n)) %>% 
-  select(-n) %>% 
+  rename(nondistressed_count = n) %>% 
   # keep stop words only
   filter(word %in% stop_words$word)
 
 
 # join the two sets
-distressed_texts <- distressed_texts %>% 
-  left_join(nondistressed_texts) %>% 
-  # replace na with 0
-  replace_na(list(distressed_freq = 0, nondistressed_freq = 0))
+distressed_texts_binary <- distressed_texts_binary %>% 
+  inner_join(nondistressed_texts_binary) %>% # removes words with 0 frequency on either side
+  # remove extremely low frequency words
+  filter(distressed_count + nondistressed_count > 50) %>% 
+  # distressed frequency relative to non-distressed frequency
+  mutate(distressed_freq_ratio = distressed_count/nondistressed_count)
 ```
 
+## Word Clouds for Comparing Two Groups
+
+After some preprocessing, we begin with a dataframe in which each word has a row, with three variables:
+
+-   `distressed_count` is the number of times the word appears in texts by distressed authors.
+-   `nondistressed_count` is the number of times the word appears in texts by non-distressed authors.
+-   `distressed_freq_ratio` is equal to `distressed_count`/`nondistressed_count`, or "How many times more common is this word in distressed texts than in non-distressed ones?"
+
+The dataset has been filtered to only include "stop words" (covered in @sec-word-counting-improvements), words that we wouldn't expect to be associated with the topic of the text.
+
+```{r}
+head(distressed_texts_binary)
+```
+
+Word clouds generally have three aesthetics: `label`, `color,` and `size`:
+
+-   `label` will always be the text of the words.
+-   `color` is appropriate for representing relative frequency, since it has a neutral center (where the frequencies in both groups are the same and `distressed_freq_ratio` = 1. Such a neutral center calls for a diverging color scale (@sec-color-scales). Because we are representing the ratio of two frequencies, it is appropriate to use a log scale (see @sec-nonlinear-axes). This will make the scale symmetrical for values above and below the neutral center.
+-   `size` is technically unnecessary, since the diverging color scale already represents both the valence and the magnitude of the relative frequency. In practice though, we are generally most interested in the largest differences. Size is therefore used to emphasize words with greater a discrepancy between the groups. This magnitude value is calculated as `abs(log2(distressed_freq_ratio))`.
+
+```{r}
+distressed_texts_binary <- distressed_texts_binary %>% 
+  mutate(freq_ratio_log_magnitude = abs(log2(distressed_freq_ratio)))
+
+head(distressed_texts_binary)
+```
+
+```{r}
+#| warning: false
+#| fig-height: 8
+library(ggwordcloud)
+set.seed(2)
+
+distressed_texts_binary %>% 
+  # top 100 highest discrepancy words
+  arrange(desc(freq_ratio_log_magnitude)) %>% 
+  slice_head(n = 150) %>% 
+  # plot
+  ggplot(aes(label = word, 
+             size = freq_ratio_log_magnitude, 
+             color = distressed_freq_ratio)) +
+    geom_text_wordcloud(show.legend = TRUE) + # wordcloud geom
+    scale_radius(range = c(2, 18), guide = "none") + # control text size
+    scale_color_gradient2(
+      name = "Distressed /\nNon-distressed\nFrequency",
+      labels = ~ MASS::fractions(.x), # show legend labels as fractions
+      low = "blue3", mid = "white", high = "red3", # set diverging color scale
+      trans = "log2" # log scale
+      ) +
+    theme_void() # blank background
+```
+
+We can now easily see that the word most representative of non-distressed texts is "interesting", which is far more representative of one group than any other word in the analysis. 
+
+The `angle_group` aesthetic can be used to separate out the words more frequent in distressed texts from those more frequent in non-distressed texts:
+
+```{r}
+#| warning: false
+#| fig-height: 8
+set.seed(2)
+
+distressed_texts_binary %>% 
+  # top 100 highest discrepancy words
+  arrange(desc(freq_ratio_log_magnitude)) %>% 
+  slice_head(n = 150) %>% 
+  # plot
+  ggplot(aes(label = word, 
+             size = freq_ratio_log_magnitude, 
+             color = distressed_freq_ratio,
+             angle_group = distressed_freq_ratio > 1)) +
+    geom_text_wordcloud(show.legend = TRUE) + # wordcloud geom
+    scale_radius(range = c(2, 18), guide = "none") + # control text size
+    scale_color_gradient2(
+      name = "Distressed /\nNon-distressed\nFrequency",
+      labels = ~ MASS::fractions(.x), # show legend labels as fractions
+      low = "blue3", mid = "grey", high = "red3", # set diverging color scale
+      trans = "log2" # log scale
+      ) +
+    theme_void() # blank background
+```
+
+Alternatively, we can specify an original position for each label (as `x` and `y` aesthetics) to create multiple clouds:
+
+```{r}
+#| warning: false
+#| fig-height: 8
+set.seed(2)
+
+distressed_texts_binary %>% 
+  # top 100 highest discrepancy words
+  arrange(desc(freq_ratio_log_magnitude)) %>% 
+  slice_head(n = 150) %>% 
+  # plot
+  ggplot(aes(label = word, 
+             size = freq_ratio_log_magnitude, 
+             color = distressed_freq_ratio,
+             x = distressed_freq_ratio < 1,
+             y = distressed_freq_ratio > 1)) +
+    geom_text_wordcloud(show.legend = TRUE) + # wordcloud geom
+    scale_radius(range = c(2, 18), guide = "none") + # control text size
+    scale_color_gradient2(
+      name = "Distressed /\nNon-distressed\nFrequency",
+      labels = ~ MASS::fractions(.x), # show legend labels as fractions
+      low = "blue3", mid = "grey", high = "red3", # set diverging color scale
+      trans = "log2" # log scale
+      ) +
+    theme_void() # blank background
+```
+
+## Word Clouds for Continuous Variables of Interest
+
+Recently, some have advocated using correlation coefficients instead of frequency ratios in word clouds. This approach has three advantages:
+
+1.  Correlation coefficients take variance into account.
+2.  Since correlation coefficients are more commonly used, it is easier to perform significance testing on them. This way we can include only significant results in the visualization.
+3.  Unlike frequency ratios, which always compare two groups, correlation coefficients can be applied to continuous variables of interest.
+
+To apply this method to the data from @buechel_etal_2018, we can use participants' continuous distress ratings for each text. We count the occurrences of each word in each text, and measure the correlation between these frequency variables and the corresponding distress ratings. Since the association may be non-linear, we use the Kendall rank correlation. You can see the full calculations by pressing the "View Source" button at the bottom of this page.
+
+```{r}
+#| include: false
+#| eval: false
+# document - feature matrix with continuous distress variable
+distressed_texts_continuous <- distressed_texts %>% 
+  mutate(docid = seq_along(essay),
+         clean_text = tm::removeNumbers(essay),
+         clean_text = tm::removePunctuation(clean_text),
+         clean_text = tm::stripWhitespace(clean_text)) %>%
+  unnest_tokens(word, clean_text, to_lower = TRUE) %>% 
+  count(docid, distress, word) %>% 
+  pivot_wider(id_cols = c(docid, distress), names_from = word, values_from = n, values_fill = 0)
+
+# calculate correlations - takes a while
+distress_cor <- distressed_texts_continuous %>% 
+  summarise(across(-c(docid, distress), 
+                   function(w){
+                     cor <- cor.test(distress, w, method = "kendall")
+                     ifelse(cor$p.value <= .05, cor$estimate, 0)
+                     })) %>% 
+  pivot_longer(everything(), names_to = "word", values_to = "cor")
+
+# remove non-significant correlations
+distress_cor <- distress_cor %>% 
+  filter(cor != 0) %>% 
+  # include stop words only
+  filter(word %in% stop_words$word)
+
+# write_csv(distress_cor, "data/distress_cor.csv")
+```
+
+We can now map the strength of the correlation (i.e. `abs(cor)`) to size, and use color to show the direction of the correlation. 
+
+```{r}
+distress_cor <- read_csv("data/distress_cor.csv", show_col_types = FALSE)
+head(distress_cor)
+
+set.seed(2)
+
+distress_cor %>% 
+  arrange(desc(abs(cor))) %>% 
+  ggplot(aes(label = word, 
+             color = cor, 
+             size = abs(cor),
+             angle_group = cor < 0)) +
+    geom_text_wordcloud(eccentricity = 1.2, show.legend = TRUE) +
+    scale_radius(range = c(4, 15), guide = "none") +
+    labs(caption = "All correlations passed significance testing at p < .05") + 
+    scale_color_gradient2(
+        name = "Correlation\nwith distress\n(Kendall's τ)",
+        low = "blue3", mid = "white", high = "red3", # set diverging color scale
+        ) +
+    theme_void()
+```
+
+"Interesting" is still the most highly correlated word, indicating lack of distress, but now we can see that "and" and "we" are highly indicative of distress. The assurance that all correlations passed significance testing makes for a particularly convincing graphic.
+
+## Advanced Word Clouds
+
+For more information about how word clouds are generated and how to customize them, see @lepennec_2023. Be careful though - any customization of your word clouds should be in the service of communicating information effectively.

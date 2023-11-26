@@ -48,7 +48,10 @@ This visualization tells a story about the most and least common words in partic
 
 library(tidytext)
 
-distressed_texts <- read_csv("https://raw.githubusercontent.com/wwbp/empathic_reactions/master/data/responses/data/messages.csv") %>% 
+distressed_texts <- read_csv("https://raw.githubusercontent.com/wwbp/empathic_reactions/master/data/responses/data/messages.csv", show_col_types = FALSE) %>% 
+  select(essay, distress, distress_bin)
+
+distressed_texts_binary <- distressed_texts %>% 
   # only texts by distressed participants
   filter(distress_bin == 1) %>% 
   mutate(clean_text = tm::removeNumbers(essay),
@@ -57,12 +60,11 @@ distressed_texts <- read_csv("https://raw.githubusercontent.com/wwbp/empathic_re
   # tokenize and count frequencies
   unnest_tokens(word, clean_text, to_lower = TRUE) %>%
   count(word, sort=T) %>%
-  mutate(distressed_freq = n/sum(n)) %>% 
-  select(-n) %>% 
+  rename(distressed_count = n) %>% 
   # keep stop words only
   filter(word %in% stop_words$word)
 
-nondistressed_texts <- read_csv("https://raw.githubusercontent.com/wwbp/empathic_reactions/master/data/responses/data/messages.csv") %>% 
+nondistressed_texts_binary <- distressed_texts %>% 
   # only texts by non-distressed participants
   filter(distress_bin == 0) %>% 
   mutate(clean_text = tm::removeNumbers(essay),
@@ -71,17 +73,18 @@ nondistressed_texts <- read_csv("https://raw.githubusercontent.com/wwbp/empathic
   # tokenize and count frequencies
   unnest_tokens(word, clean_text, to_lower = TRUE) %>%
   count(word, sort=T) %>%
-  mutate(nondistressed_freq = n/sum(n)) %>% 
-  select(-n) %>% 
+  rename(nondistressed_count = n) %>% 
   # keep stop words only
   filter(word %in% stop_words$word)
 
 
 # join the two sets
-distressed_texts <- distressed_texts %>% 
-  full_join(nondistressed_texts) %>% 
+distressed_texts_binary <- distressed_texts_binary %>% 
+  inner_join(nondistressed_texts_binary) %>% 
+  # remove extremely low frequency words
+  filter(distressed_count + nondistressed_count > 50) %>% 
   # replace na with 0
-  replace_na(list(distressed_freq = 0, nondistressed_freq = 0))
+  replace_na(list(distressed_count = 0, nondistressed_count = 0))
 ```
 
 ```{r}
@@ -89,22 +92,23 @@ distressed_texts <- distressed_texts %>%
 #| fig-height: 6
 library(ggrepel)
 
-distressed_texts_ordered <- distressed_texts %>% 
-  # distressed frequency relative to non-distressed frequency
-  mutate(distressed_rel_freq = distressed_freq/nondistressed_freq) %>% 
+distressed_texts_binary_ordered <- distressed_texts_binary %>% 
+  # ratio of distressed frequency to non-distressed frequency
+  mutate(distressed_freq_ratio = distressed_count/nondistressed_count) %>% 
   # refactor in descending order
-  arrange(distressed_rel_freq) %>% 
+  arrange(distressed_freq_ratio) %>% 
   mutate(word = factor(word, levels = word))
 
-badplot1 <- distressed_texts_ordered %>% 
-  ggplot(aes(word, distressed_rel_freq, label = word)) +
+set.seed(2023)
+badplot1 <- distressed_texts_binary_ordered %>% 
+  ggplot(aes(word, distressed_freq_ratio, label = word)) +
     geom_point(color = "blue3", size = 1, alpha = .2) +
     geom_text_repel(size = 3, 
-                    data = filter(distressed_texts_ordered, distressed_rel_freq > 4)) +
+                    data = filter(distressed_texts_binary_ordered, distressed_freq_ratio > 1.75)) +
     labs(title = "Linear Scale",
          x = "Words, from least to most distressed",
          y = "Distressed frequency / non-distressed frequency") +
-    scale_y_continuous(breaks = seq(0, 12, 2)) +
+    scale_y_continuous(breaks = seq(-.5, 2, .5)) +
     theme_minimal() +
     theme(plot.title = element_text(color = "red3", hjust = 1, size = 20),
           panel.grid.major.x = element_blank(),
@@ -112,11 +116,12 @@ badplot1 <- distressed_texts_ordered %>%
           axis.ticks.x = element_blank(),
           axis.title.x = element_text(size = 15))
 
-goodplot1 <- distressed_texts_ordered %>% 
-  ggplot(aes(word, distressed_rel_freq, label = word, color = distressed_rel_freq < 1)) +
+set.seed(2023)
+goodplot1 <- distressed_texts_binary_ordered %>% 
+  ggplot(aes(word, distressed_freq_ratio, label = word, color = distressed_freq_ratio < 1)) +
     geom_point(size = 1, alpha = .2) +
     geom_text_repel(size = 3, 
-                    data = distressed_texts_ordered %>% filter(distressed_rel_freq > 3.6 | distressed_rel_freq < .2),
+                    data = distressed_texts_binary_ordered %>% filter(distressed_freq_ratio > 1.75 | distressed_freq_ratio < 1/2),
                     max.overlaps = 20) +
     geom_hline(linetype = 2, yintercept = 1) +
     labs(title = "Log Scale",
@@ -145,13 +150,14 @@ Take another look at the graph labeled "Log Scale" above, and notice the orderin
 #| fig-height: 6
 library(ggrepel)
 
-badplot2 <- distressed_texts %>% 
-  # distressed frequency relative to non-distressed frequency
-  mutate(distressed_rel_freq = distressed_freq/nondistressed_freq) %>% 
-  ggplot(aes(word, distressed_rel_freq, label = word, color = distressed_rel_freq < 1)) +
+set.seed(2023)
+badplot2 <- distressed_texts_binary %>% 
+  # ratio of distressed frequency to non-distressed frequency
+  mutate(distressed_freq_ratio = distressed_count/nondistressed_count) %>% 
+  ggplot(aes(word, distressed_freq_ratio, label = word, color = distressed_freq_ratio < 1)) +
     geom_point(size = 1, alpha = .7) +
     geom_text_repel(size = 3, 
-                    data = distressed_texts_ordered %>% filter(distressed_rel_freq > 3.6 | distressed_rel_freq < .2),
+                    data = distressed_texts_binary_ordered %>% filter(distressed_freq_ratio > 1.75 | distressed_freq_ratio < .5),
                     max.overlaps = 20) +
     geom_hline(linetype = 2, yintercept = 1) +
     labs(title = "Unordered",
@@ -175,7 +181,7 @@ We have already seen how a data visualizer can clarify a story by spatially orde
 
 The first step in choosing a color scale for any variable is to consider whether the thing being measured is diverging, sequential, or qualitative.
 
-**Diverging scales** measure something with a neutral center. This center is often represented by zero, but beware! Sometimes a neutral center is 4 on a seven point Likert scale (see "Agreement" in the figure below). When dealing with fractions, the neutral center is 1 (see "Relative Frequency" in the figure below).
+**Diverging scales** measure something with a neutral center. This center is often represented by zero, but beware! Sometimes a neutral center is 4 on a seven point Likert scale (see "Agreement" in the figure below). When dealing with fractions, the neutral center is 1 (see "Frequency Ratio" in the figure below).
 
 When applying diverging scales, keep in mind any associations people might have with the colors involved. For example, red should always be *bad* and blue/green *good* (see the plot in @sec-ordering-categorical-variables, in which red = distress = bad).
 
@@ -200,13 +206,13 @@ contrast <- function(col, amount = 0.1) {
 
 # simple data
 tibble(num = factor(1:7),
-       frequency = c("Low Relative\nFrequency", "1/4", "1/2", "Equal\nFrequency", "2", "4", "High Relative\nFrequency"),
+       frequency = c("Low Frequency\nRatio", "1/4", "1/2", "Equal\nFrequency", "2", "4", "High Frequency\nRatio"),
        agree = c("Strongly\nDisagree", "2", "3", "Neither Agree\nNor Disagree", "5", "6", "Strongly\nAgree"),
        correlation = c("-.9", "-.6", "-.3", "0", ".3", ".6", ".9")) %>% 
   ggplot(aes(num)) +
-    # Relative Frequency
-    geom_tile(aes(y = "Relative\nFrequency", fill = num), width = .95, height = .9) +
-    geom_text(aes(y = "Relative\nFrequency", color = num, label = frequency), 
+    # Frequency Ratio
+    geom_tile(aes(y = "Frequency\nRatio", fill = num), width = .95, height = .9) +
+    geom_text(aes(y = "Frequency\nRatio", color = num, label = frequency), 
               size = 2.9, hjust = .5) +
     scale_fill_manual(palette = function(n) hcl.colors(n, "Berlin"), guide = "none") +
     scale_color_manual(palette = function(n) contrast(hcl.colors(n, "Berlin"),.7),
@@ -329,7 +335,7 @@ reddit_joy <- reddit_posts %>%
   unnest_tokens(word, clean_text, to_lower = TRUE) %>%
   # count
   count(yday, weekday, word, sort=T) %>%
-  # frequencies
+  # relative frequencies
   group_by(yday, weekday) %>% 
   mutate(freq = n/sum(n)) %>% 
   select(-n) %>% 
@@ -361,7 +367,7 @@ goodplot3 <- reddit_joy %>%
                        labels = months) +
     labs(title = "Sequential Color Scale",
          x = "",
-         y = "Frequency of Joyful Words",
+         y = "Proportion of Joyful Words",
          color = "") +
     theme_minimal() +
     theme(plot.title = element_text(color = "green3", hjust = 1, size = 15),
@@ -376,7 +382,7 @@ badplot3 <- reddit_joy %>%
                        labels = months) +
     labs(title = "Qualitative Color Scale",
          x = "",
-         y = "Frequency of Joyful Words",
+         y = "Proportion of Joyful Words",
          color = "") +
     theme_minimal() +
     theme(plot.title = element_text(color = "red3", hjust = 1, size = 15),
@@ -439,25 +445,25 @@ tibble(num = factor(1:5),
 
 ### Accent colors {#sec-accent-colors}
 
-Because color has many dimensions, it can sometimes be used to represent two scales at the same time. One common tactic is to use luminosity or saturation to emphasize certain values and de-emphasize others. Below, we have redrawn the relative frequency plot from earlier in this chapter (@sec-nonlinear-axes) to tell a story about two words in particular. By using accent colors to emphasize the two words of interest, we remove distractors while maintaining the broader context of the story.
+Because color has many dimensions, it can sometimes be used to represent two scales at the same time. One common tactic is to use luminosity or saturation to emphasize certain values and de-emphasize others. Below, we have redrawn the frequency ratio plot from earlier in this chapter (@sec-nonlinear-axes) to tell a story about two words in particular. By using accent colors to emphasize the two words of interest, we remove distractors while maintaining the broader context of the story.
 
 ```{r}
 #| fig-width: 6
 #| fig-height: 6
-
-distressed_texts_ordered %>% 
-  ggplot(aes(word, distressed_rel_freq, label = word, color = distressed_rel_freq < 1)) +
+set.seed(2023)
+distressed_texts_binary_ordered %>% 
+  ggplot(aes(word, distressed_freq_ratio, label = word, color = distressed_freq_ratio < 1)) +
     geom_point() +
     geom_hline(linetype = 2, yintercept = 1) +
     scale_color_discrete(type = colorspace::lighten(c("#F8766D", "#00BFC4"), .7)) +
     geom_text_repel(size = 3, 
-                    data = distressed_texts_ordered %>% filter(distressed_rel_freq > 3.6 | distressed_rel_freq < .2),
+                    data = distressed_texts_binary_ordered %>% filter(distressed_freq_ratio > 3.6 | distressed_freq_ratio < .2),
                     max.overlaps = 20) +
     guides(color = "none") +
     new_scale_color() +
-    geom_point(aes(color = distressed_rel_freq < 1), size = 3,
-               data = distressed_texts_ordered %>% filter(word %in% c("i", "we"))) +
-    geom_text_repel(size = 4, data = distressed_texts_ordered %>% 
+    geom_point(aes(color = distressed_freq_ratio < 1), size = 3,
+               data = distressed_texts_binary_ordered %>% filter(word %in% c("i", "we"))) +
+    geom_text_repel(size = 4, data = distressed_texts_binary_ordered %>% 
                       filter(word %in% c("i", "we")),
                     max.overlaps = 20) +
     labs(title = '"We" is a Sign of Distress',

@@ -171,6 +171,7 @@ Let's try one more way to present these data. In this visualization,
 ```{r}
 #| warning: false
 
+set.seed(2023)
 twitter_counties %>% 
   ggplot(aes(maj, income, fill = posEmotions)) +
     # sina plot
