@@ -42,7 +42,7 @@ distressed_texts_binary <- distressed_texts %>%
          clean_text = tm::stripWhitespace(clean_text)) %>%
   # tokenize and count frequencies
   unnest_tokens(word, clean_text, to_lower = TRUE) %>%
-  count(word, sort=T) %>%
+  count(word, sort = TRUE) %>%
   rename(distressed_count = n) %>% 
   # keep stop words only
   filter(word %in% stop_words$word)
@@ -55,7 +55,7 @@ nondistressed_texts_binary <- distressed_texts %>%
          clean_text = tm::stripWhitespace(clean_text)) %>%
   # tokenize and count frequencies
   unnest_tokens(word, clean_text, to_lower = TRUE) %>%
-  count(word, sort=T) %>%
+  count(word, sort = TRUE) %>%
   rename(nondistressed_count = n) %>% 
   # keep stop words only
   filter(word %in% stop_words$word)

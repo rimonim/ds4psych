@@ -3,6 +3,7 @@ set.seed(2023)
 library(tidyverse)
 
 knitr::opts_chunk$set(
+  tidy = TRUE,
   comment = "#>",
   collapse = TRUE,
   # cache = TRUE,

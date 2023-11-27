@@ -53,6 +53,7 @@ suppress-bibliography: false
 format:
   html:
     theme: cosmo
+    code-overflow: wrap
     grid:
       sidebar-width: 450px
     
