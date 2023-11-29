@@ -89,18 +89,27 @@ twitter_counties %>%
   ggplot(
     aes(income, posEmotions, 
         # rearrange the categorical variable so that the order in the legend matches the order in the plot
-        color = factor(maj, levels = c("Majority Non-Black/Hispanic", "Majority Hispanic", "Majority Black")))
+        color = factor(maj, 
+                       levels = c("Majority Non-Black/Hispanic", 
+                                  "Majority Hispanic", 
+                                  "Majority Black")
+                       )
+        )
     ) +
     # scatterplot
     geom_point(alpha = .5, 
                # draw sample such that the "Majority Non-Black/Hispanic" points don't overpower the others
-               data = twitter_counties %>% group_by(maj) %>% slice_sample(n = 100)) +
+               data = twitter_counties %>% 
+                 group_by(maj) %>% 
+                 slice_sample(n = 100)) +
     # loess regression
     stat_smooth(aes(bordercolor = after_scale(colorspace::darken(color))), # borders that match the lines, but are slightly darker
-                se = FALSE, geom = "borderline", linewidth = 1, lineend = "square") +
+                se = FALSE, geom = "borderline", 
+                linewidth = 1, lineend = "square") +
     theme_bw() +
     # nicer color palette
-    scale_color_brewer(palette = "Paired", direction = -1) +
+    scale_color_brewer(palette = "Paired", 
+                       direction = -1) +
     # proper formatting for income
     scale_x_continuous(labels=scales::dollar_format()) +
     labs(x = "County Average Income",
@@ -127,21 +136,27 @@ The next visualization shows the same data but tells a different story. This one
 
 twitter_counties %>% 
   # hand-made bins (note the inconsistent bin width to give more space to the center of the distribution) 
-  mutate(income = factor( case_when(income > 100000 ~ "$100,000+",
-                                    income > 80000 ~ "$80,000-$100,000",
+  mutate(
+    income = factor( 
+      case_when(income > 100000 ~ "$100,000+",
+                income > 80000 ~ "$80,000-$100,000",
                                     income > 60000 ~ "$60,000-$80,000",
                                     income > 50000 ~ "$50,000-$60,00",
                                     income > 40000 ~ "$40,000-$50,00",
                                     .default = "$20,000-$40,00"),
-                          levels = c("$20,000-$40,00", 
-                                     "$40,000-$50,00",
-                                     "$50,000-$60,00", 
-                                     "$60,000-$80,000",
-                                     "$80,000-$100,000",
-                                     "$100,000+"))) %>% 
+      levels = c("$20,000-$40,00", 
+                 "$40,000-$50,00",
+                 "$50,000-$60,00", 
+                 "$60,000-$80,000",
+                 "$80,000-$100,000",
+                 "$100,000+")
+      )
+    ) %>% 
   # aggregate by the new bins
   group_by(income, maj) %>% 
-  summarise(posEmotions = mean(posEmotions, na.rm = TRUE)) %>% 
+  summarise(
+    posEmotions = mean(posEmotions, na.rm = TRUE)
+    ) %>% 
   # plot
   ggplot(aes(income, maj, fill = posEmotions)) +
     # tiles with a little bit of space in between
@@ -149,7 +164,10 @@ twitter_counties %>%
     # minimal theme
     theme_minimal() +
     # color scale to emphasize differences between extremes
-    scale_fill_gradient2(low = "blue", mid = "green", high = "yellow", midpoint = .0055) +
+    scale_fill_gradient2(low = "blue", 
+                         mid = "green", 
+                         high = "yellow", 
+                         midpoint = .0055) +
     labs(x = "County Average Income",
          y = "",
          fill = "Positive Emotional Words\nin Twitter Posts\n(proportion of total words)") +
@@ -175,13 +193,23 @@ set.seed(2023)
 twitter_counties %>% 
   ggplot(aes(maj, income, fill = posEmotions)) +
     # sina plot
-    ggbeeswarm::geom_quasirandom(aes(color = after_scale(colorspace::darken(fill, .3))), alpha = .5, method = "pseudorandom", shape = 21, varwidth = TRUE) +
+    ggbeeswarm::geom_quasirandom(
+      aes(color = after_scale(colorspace::darken(fill, .3))), 
+      alpha = .5, method = "pseudorandom", 
+      shape = 21, varwidth = TRUE
+      ) +
     # color scheme which maximizes the visibility of different values among the crowd (this is a losing battle)
-    scale_fill_gradient2(low = "red", mid = "white", high = "blue", midpoint = .005) +
+    scale_fill_gradient2(low = "red", 
+                         mid = "white", 
+                         high = "blue", 
+                         midpoint = .005) +
     # unintrusive theme
     theme_bw() +
     # log scale, and proper formatting for income
-    scale_y_continuous(labels=scales::dollar_format(), trans = "log10") +
+    scale_y_continuous(
+      labels=scales::dollar_format(), 
+      trans = "log10"
+      ) +
     labs(x = " ",
          y = "County Average Income",
          fill = "Positive Emotional Words\nin Twitter Posts\n(proportion of total words)") +
@@ -199,3 +227,6 @@ In this chapter we have seen how choices about which aesthetics to map to variab
 ------------------------------------------------------------------------
 
 Press the "View Source" button below to see the hidden code blocks in this chapter.
+
+------------------------------------------------------------------------
+

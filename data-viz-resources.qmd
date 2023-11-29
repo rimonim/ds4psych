@@ -19,6 +19,7 @@ source("_common.R")
 -   [ggnewscale](https://eliocamp.github.io/ggnewscale/): An intuitive method for incorporating multiple color scales in a single ggplot2 graphic (used in multiple visualizations in this chapter)
 -   [ggrepel](https://ggrepel.slowkow.com): Tools for avoiding overlapping text labels in ggplot2 (used in multiple visualizations in this chapter)
 -   [gganimate](https://gganimate.com/): A principled approach to animating with ggplot2
+-   [ggiraph](https://www.ardata.fr/ggiraph-book/): Dynamic and interactive html graphics for ggplot2
 -   [ggforce](https://ggforce.data-imaginist.com): Various advanced shapes, lines, scales, and plot types for ggplot2
 -   [ggborderline](https://wurli.github.io/ggborderline/) Lines that pop in ggplot2 (used in multiple visualizations in this chapter)
 -   [rayshader](https://www.tylermw.com/3d-ggplots-with-rayshader/): Cinematic 3D graphics for ggplot2
@@ -28,7 +29,7 @@ source("_common.R")
 -   [ggwordcloud](https://lepennec.github.io/ggwordcloud/): Word clouds
 -   [ggbeeswarm](https://github.com/eclarke/ggbeeswarm): Sina (AKA beeswarm) plots---almost always an improvement on box plots or violin plots
 -   [ggcorrplot](http://www.sthda.com/english/wiki/ggcorrplot-visualization-of-a-correlation-matrix-using-ggplot2): Correlation matrices
--   [Different Ways of Plotting U.S. Map in R](https://jtr13.github.io/cc19/different-ways-of-plotting-u-s-map-in-r.html) A book chapter comparing eight different methods for plotting map data in R
+-   [Different Ways of Plotting U.S. Map in R](https://jtr13.github.io/cc19/different-ways-of-plotting-u-s-map-in-r.html): A book chapter comparing eight different methods for plotting map data in R
 -   [ggridges](https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html): Ridgeline plots
 -   [ggnetwork](https://briatte.github.io/ggnetwork/articles/ggnetwork.html): Network data
 -   [wormsplot](https://rimonim.github.io/projects/wormsplot.html): step charts with smooth transitions (in development by one of the authors of this book)

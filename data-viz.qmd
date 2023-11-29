@@ -20,3 +20,5 @@ The first two purposes are an important aspects of *exploratory data analysis* (
 Communication is hard. It is especially hard for scientists, who often need to balance the needs of multiple target audiences. While insiders in a particular field may want detailed, objective analysis of results and the uncertainty surrounding them, **everyone else wants a story**.
 
 A story is clear, oversimplified and sensational. Stories are what grab people's attention and hold it. Even for experts, stories are what make one study (or news article, or social media post) stand out among many. If you tell a good story, people will want to learn more about the details. If you don't tell a good story, nobody will want to read your supplementary materials. In this way, **all scientists are journalists**.
+
+

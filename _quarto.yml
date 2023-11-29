@@ -24,7 +24,7 @@ book:
       chapters: 
         - aesthetics.qmd
         - telling-a-story.qmd
-        - word-clouds.qmd
+        - word-viz.qmd
         - data-viz-resources.qmd
 
     - part: data-sources.qmd
@@ -62,5 +62,5 @@ format:
     author-meta: "Almog Simchon and Louis Teitelbaum"
     callout-appearance: simple
 
-editor: visual
+editor: source
 
