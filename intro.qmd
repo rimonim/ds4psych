@@ -1,3 +1,3 @@
-# Introduction: Why Does Psychology Need Data Science? {.unnumbered}
+# Introduction: Why Does Psychology Need Data Science?
 
 "Language is the most common and reliable way for people to translate their internal thoughts and emotions into a form that others can understand. Words and language, then, are the very stuff of psychology and communication." [@tausczik_pennebaker_2010]

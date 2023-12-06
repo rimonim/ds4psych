@@ -156,6 +156,7 @@ Take another look at the graph labeled "Log Scale" above, and notice the orderin
 #| warning: false
 #| fig-height: 6
 library(ggrepel)
+library(patchwork)
 
 set.seed(2023)
 badplot2 <- distressed_texts_binary %>% 
@@ -363,6 +364,7 @@ reddit_joy <- reddit_posts %>%
 #| fig-height: 10
 
 load("data/reddit_joy.RData")
+library(patchwork)
 library(ggborderline)
 
 months = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", 
@@ -454,11 +456,13 @@ tibble(num = factor(1:5),
 
 ### Accent colors {#sec-accent-colors}
 
-Because color has many dimensions, it can sometimes be used to represent two scales at the same time. One common tactic is to use luminosity or saturation to emphasize certain values and de-emphasize others. Below, we have redrawn the frequency ratio plot from earlier in this chapter (@sec-nonlinear-axes) to tell a story about two words in particular. By using accent colors to emphasize the two words of interest, we remove distractors while maintaining the broader context of the story.
+Because color has many dimensions, it can sometimes be used to represent two scales at the same time. One common tactic is to use luminosity or saturation to emphasize certain values and de-emphasize others. Below, we have redrawn the frequency ratio plot from earlier in this chapter (@sec-nonlinear-axes) to tell a story about two words in particular. By using accent colors to emphasize the two words of interest, we remove distractors while maintaining the broader context of the story.^[In the example here, we used `ggnewscale` to control the accented an non-accented color scales separately. If you'd like a simpler method for accenting values without using layered geoms, we recommend the `gghighlight` package.]
 
 ```{r}
 #| fig-width: 6
 #| fig-height: 6
+library(ggnewscale)
+
 set.seed(2023)
 distressed_texts_binary_ordered %>% 
   ggplot(aes(word, distressed_freq_ratio, 
@@ -498,7 +502,6 @@ distressed_texts_binary_ordered %>%
           panel.grid.major.x = element_blank(),
           axis.text.x = element_blank(),
           axis.ticks.x = element_blank())
-
 ```
 
 ### Aspect Ratios {#sec-aspect-ratios}
@@ -529,6 +532,8 @@ covid_concern <- read_csv("https://osf.io/download/846dp/") %>%
 #| warning: false
 #| fig-width: 10
 #| fig-height: 8
+library(patchwork)
+
 plot <- covid_concern %>% 
   mutate(z_cert = as.numeric(scale(cert)),
          z_concern = as.numeric(scale(ny_net_concern))) %>% 

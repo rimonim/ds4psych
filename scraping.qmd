@@ -1,1 +1,8 @@
+# Web Scraping {#sec-scraping}
 
+
+https://r4ds.hadley.nz/webscraping
+
+use the [polite](https://dmi3kno.github.io/polite/) package by Dmytro Perepolkin 
+
+------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-# The Ethics of Data Usage {#sec-ethics}
+# The Ethics of Data Science in Psychology {#sec-ethics}
 
 ```{r setup}
 #| echo: false
@@ -7,3 +7,28 @@
 source("_common.R")
 ```
 
+Ethical data usage is a tricky business, and legal compliance is even trickier. Rather than trying to come up with an exhaustive list of ethical pitfalls, we use this chapter to make two general points that you should keep in mind when retrieving, analyzing, and publishing text data: First, anonymizing data is very hard. Second, data science in psychology can be very powerful, for good and for evil.
+
+## Anonymization is Hard
+
+Sharing data is an important way for researchers to stay accountable to their colleagues and to promote further research. Nevertheless, data sharing can become problematic when individual subjects can be identified. This is especially true in psychology, which often deals with sensitive personal information. As such, it is important to *anonymize* data before sharing it. You might think that removing personal names would be enough to accomplish this. It is not.
+
+In August 2006, the online service provider AOL released the search queries of 657,000 users over a 3-month period. The dataset was anonymized by replacing personal names with a numeric user ID. Within days, [New York Times reporters were able to identify user No. 4417749 as a 62-year-old widow from Lilburn, Georgia](https://www.nytimes.com/2006/08/09/technology/09aol.html) by putting together searches involving place names, family names, and ages. AOL quickly took the dataset down, but it was too late. The data are still widely available on the internet, and many more users have been identified based on their search histories.
+
+As technology improves, data that previously seemed innocuous can be leveraged to reveal personal information. For example, Facebook users' "likes" were once public information. @kosinski_etal_2013 then showed that likes alone could be used to predict a user's age, gender, sexual orientation, ethnicity, religion, intelligence, drug use, and more. Facebook now makes likes private by default.
+
+@kosinski_etal_2013 did their work without the aid of deep neural networks. With more advanced language processing algorithms emerging every day, text data in particular are becoming increasingly difficult to anonymize. The text that people write (and read) is a window into their soul. This is why NLP is so useful for psychology, but it is also a reason to be vigilant.
+
+## Text-Based Psychology is Powerful
+
+[Cambridge Analytica](https://en.wikipedia.org/wiki/Facebook–Cambridge_Analytica_data_scandal) is the prime example of the power of data science in psychology. In the 2010s, Cambridge Analytica used an app to collect demographic and psychological data from tens of millions of Facebook users, and paired this with users' behavior on Facebook. They then used the resulting psychological measures ([based on the well-known Big Five personality traits](https://web.archive.org/web/20160216023554/https://cambridgeanalytica.org/about)) to create tailored advertisements for political campaigns. The revelation of this privacy breach created an international scandal for both Facebook and Cambridge Analytica.
+
+Cambridge Analytica used methods not unlike many of those described in this book---methods for extracting psychological characteristics from naturalistic online behavior. In fact, due to developments in the field over the last decade, many of the methods described in this book can be quite a bit *more* powerful than those employed by Cambridge Analytica. Be careful---the research you conduct can be used for the kind of things that create international scandals.
+
+## What to do About it
+
+There are no universally accepted rules for ethical text data usage. Many countries have developed data protection laws, for example those of the [European Data Protection Supervisor (EDPS)](https://edps.europa.eu/sites/default/files/publication/edps_2015-2019_summary_en.pdf) or [Israel's Privacy Protection Authority](https://www.gov.il/he/departments/the_privacy_protection_authority/govil-landing-page). Nevertheless, as with any ethical problem, the best policy is to think for yourself, weighing risks against benefits. 
+
+If you want to share your data widely, but are worried about sensitive private information contained in it, consider using one of many advanced anonymization techniques, such as those that leverage generative AI models to create [synthetic data while maintaining statistical properties of the original](https://en.wikipedia.org/wiki/Synthetic_data#Scientific_research). These techniques are sometimes costly or labor-intensive, but can be worthwhile for high-impact studies.
+
+------------------------------------------------------------------------

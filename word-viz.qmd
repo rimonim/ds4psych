@@ -153,7 +153,7 @@ girafe_options(
   ) 
 ```
 
-### Rotated Frequency/Frequency Plots
+### Rotated Frequency/Frequency Plots {#sec-rotated-freq-freq}
 
 A disadvantage of simple F/F plots: **When people see a scatterplot, they think, "Aha! A correlation!"** Any two samples of text in the same language will have highly correlated word frequencies. This boring story about the correlation is distracting from the more interesting stories about words that are especially characteristic of one group or another. This distraction can be removed by "rotating" the axes. Mathematically, we achieve this by plotting the average of the two frequencies `(nondistressed_count + distressed_count)/2` on the y axis, and the ratio between the two frequencies on the x axis. The result is a much more intuitive plot. Remember, **sometimes you have to do something complicated to make something simple** [@sec-simplify-the-story].
 
@@ -257,7 +257,7 @@ girafe_options(
 
 ### Advanced Frequency/Frequency Plots
 
-For more information about frequency/frequency plots and other related plot types incorporating various statistics, see the [scattertext tutorial](https://github.com/JasonKessler/scattertext#tutorial). While the tutorial is intended for the `scattertext` library in Python, almost all examples can be produced in R with `ggplot2` and `ggiraph`. Search bars and other responsive interactivity can be accomplished with `shiny`.
+For more information about frequency/frequency plots and other related plot types incorporating various statistics, see the [scattertext tutorial](https://github.com/JasonKessler/scattertext#tutorial) [@kessler_2017]. While the tutorial is intended for the `scattertext` library in Python, almost all examples can be produced in R with `ggplot2` and `ggiraph`. Search bars and other responsive interactivity can be accomplished with `shiny`.
 
 ------------------------------------------------------------------------
 
@@ -471,7 +471,7 @@ For more information about how word clouds are generated and how to customize th
 ::: {.callout-important icon="false"}
 ## Disadvantages of Word Clouds
 
--   Size and color aesthetics make it difficult to compare values of different words (e.g. Is x twice as blue as y?)
+-   Size and color aesthetics make it extremely difficult to compare values of different words (e.g. Is x twice as blue as y?). 
 -   By showing many words at the same time, word clouds make it difficult to focus in on particular stories.
 :::
 

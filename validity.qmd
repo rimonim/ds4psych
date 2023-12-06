@@ -1,0 +1,5 @@
+# Validity and Bias in Language Data {#sec-validity}
+
+### Demographic Bias
+-  WEIRD, Henrich et al. (2010)
+- @hovy_spruit_2016

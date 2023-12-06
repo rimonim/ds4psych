@@ -1,1 +1,24 @@
+# Experiments {#sec-experiments}
 
+Experiments are the backbone of causal inference, and text analysis is no exception. Carefully controlled experimental designs, whether in a laboratory or on [Amazon's Mechanical Turk](https://www.mturk.com), are a good way to mitigate the effects of confounding variables.
+
+For example, @sap_etal_2020 had online participants write either true stories that happened to them recently, or fictional stories about the same topic. They then used a large language model, GPT, to measure two likelihoods for each sentence in the story: the likelihood of the sentence given the previous sentence, and the likelihood of the sentence given a rough summary of the story. The ratio of these two likelihoods is a measure of how predictably the story flows from one point to another. @sap_etal_2020 found that fictional stories flow much more predictably than true ones. They also found that true stories begin to become flow more predictably when they are retold 2-3 months later. @sap_etal_2022 reproduced these findings using a more advanced language model, GPT-3.
+
+------------------------------------------------------------------------
+
+::: {.callout-tip icon="false"}
+## Advantages of Experimental Data Collection
+
+-   Experiments mitigate the effects of confounding variables.
+-   Experimenters can tailor the experiment to fit their particular research questions.
+:::
+
+::: {.callout-important icon="false"}
+## Disadvantages of Experimental Data Collection
+
+-   Experiments are costly.
+-   Experiments are time-consuming.
+-   Because they are costly and time-consuming, experiments generally result in small datasets.
+:::
+
+------------------------------------------------------------------------

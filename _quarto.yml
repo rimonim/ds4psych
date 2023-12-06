@@ -19,7 +19,8 @@ book:
   chapters:
     - index.qmd
     - intro.qmd
-    
+    - ethics.qmd
+
     - part: data-viz.qmd
       chapters: 
         - aesthetics.qmd
@@ -29,7 +30,6 @@ book:
 
     - part: data-sources.qmd
       chapters: 
-        - ethics.qmd
         - experiments.qmd
         - corpora.qmd
         - apis.qmd

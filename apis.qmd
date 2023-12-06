@@ -1,1 +1,45 @@
+# Social Media APIs {#sec-apis}
+
+https://github.com/vosonlab/vosonSML 
+
+
+## Reddit
+
+@ashokkumar_pennebaker_2022 used both experimental data and naturalistic data retrieved from the Reddit API (r/The_Donald and r/hillaryclinton)
+
+::: {.callout-tip icon="false"}
+## Advantages of Reddit Data
+
+-   
+:::
+
+::: {.callout-important icon="false"}
+## Disadvantages of Reddit Data
+
+-   
+:::
+
+## Twitter and Mastadon
+
+::: {.callout-tip icon="false"}
+## Advantages of Twitter/Mastadon Data
+
+-   
+:::
+
+::: {.callout-important icon="false"}
+## Disadvantages of Twitter/Mastadon Data
+
+-   
+:::
+
+## Other Data Sources with APIs
+
+- Youtube
+- Wikipedia (including user data)
+- Facebook
+- Semantic Scholar
+- [CORE](https://core.ac.uk/services/dataset)
+
+------------------------------------------------------------------------
 

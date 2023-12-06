@@ -8,7 +8,7 @@
 
 <meta name="author" content="Almog Simchon and Louis Teitelbaum">
 
-<title>Data Science for Psychology – corpora</title>
+<title>Data Science for Psychology - 8&nbsp; Corpus Data</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,7 +21,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -66,7 +85,7 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-sidebar floating fullcontent">
+<body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -75,7 +94,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./data-sources.html">Sources of Data</a></li><li class="breadcrumb-item"><a href="./corpora.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">corpora.html</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./data-sources.html">Sources of Data</a></li><li class="breadcrumb-item"><a href="./corpora.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Corpus Data</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -117,7 +136,13 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Introduction: Why Does Psychology Need Data Science?</span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction: Why Does Psychology Need Data Science?</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ethics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Ethics of Data Science in Psychology</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -132,25 +157,25 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./aesthetics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Why Aesthetic Choices are Important</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Why Aesthetic Choices are Important</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./telling-a-story.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Don’t Distract From the Story</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Don’t Distract From the Story</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./word-viz.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Visualizing Distributions of Words</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Visualizing Distributions of Words</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data-viz-resources.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Additional Resources for Data Visualization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Additional Resources for Data Visualization</span></span></a>
   </div>
 </li>
       </ul>
@@ -166,32 +191,26 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./ethics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">The Ethics of Data Usage</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./experiments.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">experiments.html</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Experiments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./corpora.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">corpora.html</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Corpus Data</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./apis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">apis.html</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Social Media APIs</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./scraping.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">scraping.html</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Web Scraping</span></span></a>
   </div>
 </li>
       </ul>
@@ -208,43 +227,43 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./quanteda.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">quanteda.html</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">quanteda.html</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./tokenization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Tokenization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Tokenization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./eda.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Recommendations for EDA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Recommendations for EDA</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./word-counting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">word-counting.html</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Bag of Words (BOW): Dictionary-Based Word Counts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./word-counting-improvements.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Improvements on Word Counts</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Improvements on Word Counts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./topic-modeling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">topic-modeling.html</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">topic-modeling.html</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">embeddings.html</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">embeddings.html</span></span></a>
   </div>
 </li>
       </ul>
@@ -252,7 +271,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resources.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">resources.html</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">resources.html</span></span></a>
   </div>
 </li>
     </ul>
@@ -260,14 +279,218 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#archived-experimental-data" id="toc-archived-experimental-data" class="nav-link active" data-scroll-target="#archived-experimental-data"><span class="header-section-number">8.1</span> Archived Experimental Data</a></li>
+  <li><a href="#linguistics-corpora" id="toc-linguistics-corpora" class="nav-link" data-scroll-target="#linguistics-corpora"><span class="header-section-number">8.2</span> Linguistics Corpora</a></li>
+  <li><a href="#data-gathered-from-the-internet" id="toc-data-gathered-from-the-internet" class="nav-link" data-scroll-target="#data-gathered-from-the-internet"><span class="header-section-number">8.3</span> Data Gathered From the Internet</a></li>
+  <li><a href="#other-public-data-sources" id="toc-other-public-data-sources" class="nav-link" data-scroll-target="#other-public-data-sources"><span class="header-section-number">8.4</span> Other Public Data Sources</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rimonim/ds4psych/blob/main/corpora.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-corpora" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Corpus Data</span></span></h1>
+</div>
 
 
 
+<div class="quarto-title-meta">
 
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>The amount of data available for free on the internet is astounding. Before you go through the trouble of running your own experiment or scraping data from sites, ask yourself: Has somebody else already done the work before me?</p>
+<p>This chapter is a brief guide to corpus resources for language data, with links to all of our favorite sources.</p>
+<section id="archived-experimental-data" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="archived-experimental-data"><span class="header-section-number">8.1</span> Archived Experimental Data</h2>
+<p>Scientists who run large experiments often publish their data online for use in further research. For example, data from <span class="citation" data-cites="sap_etal_2020">Sap et al. (<a href="#ref-sap_etal_2020" role="doc-biblioref">2020</a>)</span> and <span class="citation" data-cites="sap_etal_2022">Sap et al. (<a href="#ref-sap_etal_2022" role="doc-biblioref">2022</a>)</span>, summarized in <a href="experiments.html"><span>Chapter&nbsp;7</span></a>, are available online as the <a href="https://www.microsoft.com/en-us/download/details.aspx?id=105291">Hippocorpus dataset</a>. Another good example is <a href="https://github.com/wwbp/empathic_reactions">the Empathic Reactions dataset</a> <span class="citation" data-cites="buechel_etal_2018">(<a href="#ref-buechel_etal_2018" role="doc-biblioref">Buechel et al., 2018</a>)</span>, used in <a href="telling-a-story.html#sec-nonlinear-axes"><span>Section&nbsp;4.2.1</span></a> and <a href="word-viz.html"><span>Chapter&nbsp;5</span></a>, in which participants read news stories, rated their own empathy and distress after reading them, and then described their thoughts about it verbally.</p>
+<p>Open experimental data are often linked in published papers, especially since the founding of the <a href="https://en.wikipedia.org/wiki/Center_for_Open_Science#Open_Science_Framework">Center for Open Science</a> in 2013. Many psychology-related datasets can be browsed freely on <a href="https://osf.io">osf.io</a>, <a href="https://dataverse.harvard.edu/">the Harvard Dataverse</a>, and other locations.</p>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Advantages of Archived Experimental Data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Experiments conducted by trained academics are generally well designed.</li>
+<li>Datasets used in published papers have extensive documentation of the methods used to produce them.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Disadvantages of Archived Experimental Data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Datasets not used in published papers often have poor documentation.</li>
+<li>Experiments often result in relatively small datasets, which can pose problems for certain NLP methods.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="linguistics-corpora" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="linguistics-corpora"><span class="header-section-number">8.2</span> Linguistics Corpora</h2>
+<p>The field of linguistics has a long tradition of corpus data. Linguistics corpora provide extensive records of spoken and written speech in a wide range of contexts. These corpora are often very large and professionally curated, making them ideal for the techniques described in this book. On the other hand, they are generally curated with linguistics in mind, not psychology. This means that applying them to psychological questions requires some ingenuity.</p>
+<p>One popular semi-experimental linguistics corpus is the <a href="https://groups.inf.ed.ac.uk/maptask/">HCRC Map Task Corpus</a> <span class="citation" data-cites="anderson_etal_1991">(<a href="#ref-anderson_etal_1991" role="doc-biblioref">Anderson et al., 1991</a>)</span>, in which pairs of participants collaborated in a communication game. In each pair, one partner could see a treasure map with a path through various landmarks, while the other partner had a similar map without a path. The first partner explained to the second how to draw the path. The partners’ communication accuracy can be measured as the distance between the drawn path and the original. Full dialogue transcriptions, as well as accuracy scores, are available online. The Map Task Corpus has been reproduced in many languages, <a href="http://www.openu.ac.il/en/academicstudies/matacop/">including Hebrew</a> and is commonly used in psychology. For example, <span class="citation" data-cites="dideriksen_etal_2023">Dideriksen et al. (<a href="#ref-dideriksen_etal_2023" role="doc-biblioref">2023</a>)</span> used a Danish version of the Map Task Corpus, along with other dialogue corpora, to track the ways that speakers collaborate to achieve mutual understanding in different contexts.</p>
+<ul>
+<li><a href="https://www.english-corpora.org">English-Corpora.org</a>: A list of the most widely used corpora of naturalistic English speech and writing, with download links for each. Also included preprocessed data, such as word frequency counts for nearly 100 genres, from the Corpus of Contemporary American English <span class="citation" data-cites="davies_2009">(<a href="#ref-davies_2009" role="doc-biblioref">Davies, 2009</a>)</span>, used in <a href="word-viz.html#sec-rotated-freq-freq"><span>Section&nbsp;5.1.1</span></a>.</li>
+<li><a href="https://guides.library.ubc.ca/c.php?g=306932&amp;p=2051153">University of British Columbia Language Corpora List</a>: Links to written and spoken language data in dozens of languages, including from bilingual and multilingual speakers.</li>
+<li><a href="https://en.wikipedia.org/wiki/List_of_text_corpora">Wikipedia’s List of Text Corpora</a></li>
+<li><a href="https://github.com/jojonki/NLP-Corpora#dialog-task-oriented">List of NLP Corpora</a>: Links to useful corpora for NLP tasks like task-oriented dialogue, translation, and sentiment analysis.</li>
+</ul>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Advantages of Linguistics Corpora
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Linguistics corpora are generally well-curated and well-documented.</li>
+<li>Corpora are often large and naturalistic—including for spoken dialogue, a domain that is otherwise out of reach for NLP.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Disadvantages of Linguistics Corpora
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Linguistics corpora are generally created by linguists for linguists.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="data-gathered-from-the-internet" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="data-gathered-from-the-internet"><span class="header-section-number">8.3</span> Data Gathered From the Internet</h2>
+<p>The internet is full of text, and you are not the first one to want to use it for research. Many corpora of online text data are free to download.</p>
+<p>Some sets of internet data are professionally curated and well balanced. For example, <a href="https://u.cs.biu.ac.il/~koppel/BlogCorpus.htm">the Blog Authorship Corpus</a> <span class="citation" data-cites="schler_etal_2006">(<a href="#ref-schler_etal_2006" role="doc-biblioref">Schler et al., 2006</a>)</span> includes 681,288 blog posts annotated with age group (binned into ages 13-17, 23-27, and 33-47) and gender of author, with an equal number of male and female bloggers in each age group. Similarly, the <a href="http://qwone.com/~jason/20Newsgroups/">20 Newsgroups data set</a> includes 20,000 newsgroup documents, partitioned evenly across 20 different newsgroups.</p>
+<p>Some sets of internet data are available only post-processing. For example, <span class="citation" data-cites="eichstaedt_etal_2015">Eichstaedt et al. (<a href="#ref-eichstaedt_etal_2015" role="doc-biblioref">2015</a>)</span> published <a href="https://osf.io/rt6w2/files/osfstorage">Twitter n-gram (and LDA topic) frequencies by US county</a>, along with corresponding measures of well-being <a href="aesthetics.html">featured in&nbsp;<span>3</span></a>.</p>
+<p>Some sets of internet data are very lightly curated. For example, the <a href="https://github.com/umbrae/reddit-top-2.5-million/tree/master">Reddit Top 2.5 Million dataset</a> contains the top 1,000 all-time posts from the top 2,500 subreddits in August 2013, excluding <a href="https://en.wikipedia.org/wiki/Not_safe_for_work">NSFW</a> subreddits.</p>
+<p>Some sets of archived internet data are not curated at all. These are sometimes referred to as <em>data dumps</em>. For example, <span class="citation" data-cites="baumgartner_etal_2020">Baumgartner et al. (<a href="#ref-baumgartner_etal_2020" role="doc-biblioref">2020</a>)</span> published <a href="https://zenodo.org/records/3608135">all Reddit Submissions and Comments posted during April 2019</a>. Even more extensive data dumps of Reddit, covering historical data back to Reddit’s inception, can be found in records of <a href="https://the-eye.eu/redarcs/">Pushshift Reddit</a>. <a href="https://archive.org/details/twitterstream">Similar archives exist for Twitter</a>.</p>
+<p>Most research topics in psychology do not require up-to-date data. As such, historical archives can be an invaluable resource. For example, <span class="citation" data-cites="biester_etal_2022">Biester et al. (<a href="#ref-biester_etal_2022" role="doc-biblioref">2022</a>)</span> used patterns curated by <span class="citation" data-cites="cohan_etal_2018">Cohan et al. (<a href="#ref-cohan_etal_2018" role="doc-biblioref">2018</a>)</span> to search Pushshift Reddit for users who publicly shared a depression diagnosis (e.g.&nbsp;“I have been diagnosed with depression”). They then used dictionary-based methods <a href="word-counting.html"><span>Chapter&nbsp;14</span></a> to measure various emotional qualities in users’ post during the weeks leading their declaration of the depression diagnosis, and in the weeks following. They found that anxiety, sadness, and cognitive processing increases in the weeks leading up to the declaration, and decreases afterwards.</p>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Advantages of Archival Internet Data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Pre-gathered datasets are low-cost and low-effort, often for very large sample sizes.</li>
+<li>With pre-gathered datasets, you don’t have to worry about API usage limits or web scraping etiquette.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Disadvantages of Archival Internet Data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Archival data do not reflect current events or recent trends.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+A Disclaimer on Social Media Data Dumps
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Since <a href="https://www.theverge.com/2023/6/5/23749188/reddit-subreddit-private-protest-api-changes-apollo-charges">Reddit</a> and <a href="https://www.wired.com/story/twitter-data-api-prices-out-nearly-everyone/">Twitter</a> restricted their API access in 2023, the legal status of large archival data dumps from those platforms (such as Pushshift Reddit) has been unclear. We are not qualified to give legal advice, but as long as you are not using the data for profit, you are unlikely to get in trouble.</p>
+</div>
+</div>
+</section>
+<section id="other-public-data-sources" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="other-public-data-sources"><span class="header-section-number">8.4</span> Other Public Data Sources</h2>
+<ul>
+<li><a href="https://www.kaggle.com">Kaggle</a>: An online hub for data science, including many text- and psychology-related datasets</li>
+<li><a href="https://www.hathitrust.org/the-collection/">HathiTrust</a>: A digital library of 18+ million digitized books, including many curated collections</li>
+<li><a href="https://www.forbes.com/sites/bernardmarr/2018/02/26/big-data-and-ai-30-amazing-and-free-public-data-sources-for-2018/?sh=7fbffcc45f8a">Forbes list of 30 Amazing (And Free) Public Data Sources</a></li>
+</ul>
+<hr>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="ref-anderson_etal_1991" class="csl-entry" role="listitem">
+Anderson, A. H., Bader, M., Bard, E. G., Boyle, E., Doherty, G., Garrod, S., Isard, S., Kowtko, J., McAllister, J., Miller, J., Sotillo, C., Thompson, H. S., &amp; Weinert, R. (1991). The HCRC map task corpus. <em>Language and Speech</em>, <em>34</em>(4), 351–366. <a href="https://doi.org/10.1177/002383099103400404">https://doi.org/10.1177/002383099103400404</a>
+</div>
+<div id="ref-baumgartner_etal_2020" class="csl-entry" role="listitem">
+Baumgartner, J., Zannettou, S., Keegan, B., Squire, M., &amp; Blackburn, J. (2020). <em>The pushshift reddit dataset</em>. Zenodo. <a href="https://doi.org/10.5281/zenodo.3608135">https://doi.org/10.5281/zenodo.3608135</a>
+</div>
+<div id="ref-biester_etal_2022" class="csl-entry" role="listitem">
+Biester, L., Pennebaker, J., &amp; Mihalcea, R. (2022). Emotional and cognitive changes surrounding online depression identity claims. <em>PLOS ONE</em>, <em>17</em>(12), 1–20. <a href="https://doi.org/10.1371/journal.pone.0278179">https://doi.org/10.1371/journal.pone.0278179</a>
+</div>
+<div id="ref-buechel_etal_2018" class="csl-entry" role="listitem">
+Buechel, S., Buffone, A., Slaff, B., Ungar, L. H., &amp; Sedoc, J. (2018). Modeling empathy and distress in reaction to news stories. <em>CoRR</em>, <em>abs/1808.10399</em>. <a href="http://arxiv.org/abs/1808.10399">http://arxiv.org/abs/1808.10399</a>
+</div>
+<div id="ref-cohan_etal_2018" class="csl-entry" role="listitem">
+Cohan, A., Desmet, B., Yates, A., Soldaini, L., MacAvaney, S., &amp; Goharian, N. (2018). <span>SMHD</span>: A large-scale resource for exploring online language usage for multiple mental health conditions. In E. M. Bender, L. Derczynski, &amp; P. Isabelle (Eds.), <em>Proceedings of the 27th international conference on computational linguistics</em> (pp. 1485–1497). Association for Computational Linguistics. <a href="https://aclanthology.org/C18-1126">https://aclanthology.org/C18-1126</a>
+</div>
+<div id="ref-davies_2009" class="csl-entry" role="listitem">
+Davies, M. (2009). The 385+ million word corpus of contemporary american english (1990―2008+): Design, architecture, and linguistic insights. <em>International Journal of Corpus Linguistics</em>, <em>14</em>, 159–190. <a href="https://www.english-corpora.org//coca/">https://www.english-corpora.org//coca/</a>
+</div>
+<div id="ref-dideriksen_etal_2023" class="csl-entry" role="listitem">
+Dideriksen, C., Christiansen, M. H., Tylén, K., Dingemanse, M., &amp; Fusaroli, R. (2023). Quantifying the interplay of conversational devices in building mutual understanding. <em>Journal of Experimental Psychology: General</em>, <em>152</em>, 864–889. <a href="https://doi.org/10.1037/xge0001301">https://doi.org/10.1037/xge0001301</a>
+</div>
+<div id="ref-eichstaedt_etal_2015" class="csl-entry" role="listitem">
+Eichstaedt, J. C., Schwartz, H. andrew, Kern, M. L., Park, G., Labarthe, D. R., Merchant, R. M., Jha, S., Agrawal, M., Dziurzynski, L. A., Sap, M., Weeg, C., Larson, E. E., Ungar, L. H., &amp; Seligman, M. E. P. (2015). Psychological language on twitter predicts county-level heart disease mortality. <em>Psychological Science</em>, <em>26</em>(2), 159–169. <a href="https://doi.org/10.1177/0956797614557867">https://doi.org/10.1177/0956797614557867</a>
+</div>
+<div id="ref-sap_etal_2020" class="csl-entry" role="listitem">
+Sap, M., Horvitz, E., Choi, Y., Smith, N. A., &amp; Pennebaker, J. (2020). Recollection versus imagination: Exploring human memory and cognition via neural language models. In D. Jurafsky, J. Chai, N. Schluter, &amp; J. Tetreault (Eds.), <em>Proceedings of the 58th annual meeting of the association for computational linguistics</em> (pp. 1970–1978). Association for Computational Linguistics. <a href="https://doi.org/10.18653/v1/2020.acl-main.178">https://doi.org/10.18653/v1/2020.acl-main.178</a>
+</div>
+<div id="ref-sap_etal_2022" class="csl-entry" role="listitem">
+Sap, M., Jafarpour, A., Choi, Y., Smith, N. A., Pennebaker, J. W., &amp; Horvitz, E. (2022). Quantifying the narrative flow of imagined versus autobiographical stories. <em>Proceedings of the National Academy of Sciences</em>, <em>119</em>(45), e2211715119. <a href="https://doi.org/10.1073/pnas.2211715119">https://doi.org/10.1073/pnas.2211715119</a>
+</div>
+<div id="ref-schler_etal_2006" class="csl-entry" role="listitem">
+Schler, J., Koppel, M., Argamon, S., &amp; Pennebaker, J. (2006). <em>Effects of age and gender on blogging.</em> 199–205.
+</div>
+</div>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -506,12 +729,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./experiments.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">experiments.html</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Experiments</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./apis.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">apis.html</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Social Media APIs</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -521,7 +744,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-left">Data Science for Psychology was written by Almog Simchon and Louis Teitelbaum.</div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rimonim/ds4psych/blob/main/corpora.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action">Report an issue</a></p></div></div></div>
+    </div>
     <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
   </div>
 </footer>

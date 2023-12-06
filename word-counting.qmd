@@ -1,1 +1,2 @@
+# Bag of Words (BOW): Dictionary-Based Word Counts {#sec-word-counting}
 
