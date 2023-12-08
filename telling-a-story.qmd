@@ -48,41 +48,41 @@ This visualization tells a story about the most and least common words in partic
 
 library(tidytext)
 
-distressed_texts <- read_csv("https://raw.githubusercontent.com/wwbp/empathic_reactions/master/data/responses/data/messages.csv", show_col_types = FALSE) %>% 
+distressed_texts <- read_csv("https://raw.githubusercontent.com/wwbp/empathic_reactions/master/data/responses/data/messages.csv", show_col_types = FALSE) |> 
   select(essay, distress, distress_bin)
 
-distressed_texts_binary <- distressed_texts %>% 
+distressed_texts_binary <- distressed_texts |> 
   # only texts by distressed participants
-  filter(distress_bin == 1) %>% 
+  filter(distress_bin == 1) |> 
   mutate(clean_text = tm::removeNumbers(essay),
          clean_text = tm::removePunctuation(clean_text),
-         clean_text = tm::stripWhitespace(clean_text)) %>%
+         clean_text = tm::stripWhitespace(clean_text)) |>
   # tokenize and count frequencies
-  unnest_tokens(word, clean_text, to_lower = TRUE) %>%
-  count(word, sort = TRUE) %>%
-  rename(distressed_count = n) %>% 
+  unnest_tokens(word, clean_text, to_lower = TRUE) |>
+  count(word, sort = TRUE) |>
+  rename(distressed_count = n) |> 
   # keep stop words only
   filter(word %in% stop_words$word)
 
-nondistressed_texts_binary <- distressed_texts %>% 
+nondistressed_texts_binary <- distressed_texts |> 
   # only texts by non-distressed participants
-  filter(distress_bin == 0) %>% 
+  filter(distress_bin == 0) |> 
   mutate(clean_text = tm::removeNumbers(essay),
          clean_text = tm::removePunctuation(clean_text),
-         clean_text = tm::stripWhitespace(clean_text)) %>%
+         clean_text = tm::stripWhitespace(clean_text)) |>
   # tokenize and count frequencies
-  unnest_tokens(word, clean_text, to_lower = TRUE) %>%
-  count(word, sort = TRUE) %>%
-  rename(nondistressed_count = n) %>% 
+  unnest_tokens(word, clean_text, to_lower = TRUE) |>
+  count(word, sort = TRUE) |>
+  rename(nondistressed_count = n) |> 
   # keep stop words only
   filter(word %in% stop_words$word)
 
 
 # join the two sets
-distressed_texts_binary <- distressed_texts_binary %>% 
-  inner_join(nondistressed_texts_binary) %>% 
+distressed_texts_binary <- distressed_texts_binary |> 
+  inner_join(nondistressed_texts_binary) |> 
   # remove extremely low frequency words
-  filter(distressed_count + nondistressed_count > 50) %>% 
+  filter(distressed_count + nondistressed_count > 50) |> 
   # replace na with 0
   replace_na(list(distressed_count = 0, nondistressed_count = 0))
 ```
@@ -93,55 +93,66 @@ distressed_texts_binary <- distressed_texts_binary %>%
 library(ggrepel)
 library(patchwork)
 
-distressed_texts_binary_ordered <- distressed_texts_binary %>% 
+distressed_texts_binary_ordered <- distressed_texts_binary |> 
   # ratio of distressed frequency to non-distressed frequency
-  mutate(distressed_freq_ratio = distressed_count/nondistressed_count) %>% 
+  mutate(distressed_freq_ratio = distressed_count/nondistressed_count) |> 
   # refactor in descending order
-  arrange(distressed_freq_ratio) %>% 
+  arrange(distressed_freq_ratio) |> 
   mutate(word = factor(word, levels = word))
 
 set.seed(2023)
-badplot1 <- distressed_texts_binary_ordered %>% 
+badplot1 <- distressed_texts_binary_ordered |> 
   ggplot(aes(word, distressed_freq_ratio, label = word)) +
     geom_point(color = "blue3", 
                size = 1, 
                alpha = .2) +
     geom_text_repel(
       size = 3, 
-      data = distressed_texts_binary_ordered %>% 
+      data = distressed_texts_binary_ordered |> 
         filter(distressed_freq_ratio > 1.75)) +
     labs(title = "Linear Scale",
          x = "Words, from least to most distressed",
          y = "Distressed frequency / non-distressed frequency") +
     scale_y_continuous(breaks = seq(-.5, 2, .5)) +
     theme_minimal() +
-    theme(plot.title = element_text(color = "red3", hjust = 1, size = 20),
-          panel.grid.major.x = element_blank(),
-          axis.text.x = element_blank(),
-          axis.ticks.x = element_blank(),
-          axis.title.x = element_text(size = 15))
+    theme(
+      plot.title = element_text(color = "red3", hjust = 1, size = 20),
+      panel.grid.major.x = element_blank(),
+      axis.text.x = element_blank(),
+      axis.ticks.x = element_blank(),
+      axis.title.x = element_text(size = 15)
+      )
 
 set.seed(2023)
-goodplot1 <- distressed_texts_binary_ordered %>% 
-  ggplot(aes(word, distressed_freq_ratio, label = word, color = distressed_freq_ratio < 1)) +
+goodplot1 <- distressed_texts_binary_ordered |> 
+  ggplot(aes(word, distressed_freq_ratio, 
+             label = word, 
+             color = distressed_freq_ratio < 1)
+         ) +
     geom_point(size = 1, alpha = .2) +
     geom_text_repel(
       size = 3, 
-      data = distressed_texts_binary_ordered %>% 
+      data = distressed_texts_binary_ordered |> 
         filter(distressed_freq_ratio > 1.75 | distressed_freq_ratio < 1/2),
       max.overlaps = 20) +
     geom_hline(linetype = 2, yintercept = 1) +
     labs(title = "Log Scale",
          x = "Words, from least to most distressed",
          y = "Distressed frequency / non-distressed frequency") +
-    scale_y_continuous(breaks = c(2^(-6:6)), trans = "log2", labels = ~MASS::fractions(.x)) +
+    scale_y_continuous(
+      breaks = c(2^(-6:6)), 
+      trans = "log2", 
+      labels = ~MASS::fractions(.x)
+      ) +
     guides(color = "none") +
     theme_minimal() +
-    theme(plot.title = element_text(color = "green3", hjust = 1, size = 20),
-          panel.grid.major.x = element_blank(),
-          axis.text.x = element_blank(),
-          axis.ticks.x = element_blank(),
-          axis.title.x = element_text(size = 15))
+    theme(
+      plot.title = element_text(color = "green3", hjust = 1, size = 20),
+      panel.grid.major.x = element_blank(),
+      axis.text.x = element_blank(),
+      axis.ticks.x = element_blank(),
+      axis.title.x = element_text(size = 15)
+      )
 
 goodplot1 + badplot1
 ```
@@ -159,26 +170,43 @@ library(ggrepel)
 library(patchwork)
 
 set.seed(2023)
-badplot2 <- distressed_texts_binary %>% 
+badplot2 <- distressed_texts_binary |> 
   # ratio of distressed frequency to non-distressed frequency
-  mutate(distressed_freq_ratio = distressed_count/nondistressed_count) %>% 
-  ggplot(aes(word, distressed_freq_ratio, label = word, color = distressed_freq_ratio < 1)) +
+  mutate(distressed_freq_ratio = distressed_count/nondistressed_count) |> 
+  ggplot(
+    aes(
+      word, distressed_freq_ratio, 
+      label = word, 
+      color = distressed_freq_ratio < 1
+      )
+    ) +
     geom_point(size = 1, alpha = .7) +
-    geom_text_repel(size = 3, 
-                    data = distressed_texts_binary_ordered %>% filter(distressed_freq_ratio > 1.75 | distressed_freq_ratio < .5),
-                    max.overlaps = 20) +
+    geom_text_repel(
+      size = 3, 
+      data = distressed_texts_binary_ordered |> 
+        filter(distressed_freq_ratio > 1.75 | distressed_freq_ratio < .5),
+      max.overlaps = 20
+      ) +
     geom_hline(linetype = 2, yintercept = 1) +
-    labs(title = "Unordered",
-         x = "Words",
-         y = "Distressed frequency / non-distressed frequency") +
-    scale_y_continuous(breaks = c(2^(-6:6)), trans = "log2", labels = ~MASS::fractions(.x)) +
+    labs(
+      title = "Unordered",
+      x = "Words",
+      y = "Distressed frequency / non-distressed frequency"
+      ) +
+    scale_y_continuous(
+      breaks = c(2^(-6:6)), 
+      trans = "log2", 
+      labels = ~MASS::fractions(.x)
+      ) +
     guides(color = "none") +
     theme_minimal() +
-    theme(plot.title = element_text(color = "red3", hjust = 1, size = 20),
-          panel.grid.major.x = element_blank(),
-          axis.text.x = element_blank(),
-          axis.ticks.x = element_blank(),
-          axis.title.x = element_text(size = 15))
+    theme(
+      plot.title = element_text(color = "red3", hjust = 1, size = 20),
+      panel.grid.major.x = element_blank(),
+      axis.text.x = element_blank(),
+      axis.ticks.x = element_blank(),
+      axis.title.x = element_text(size = 15)
+      )
 
 goodplot2 <- goodplot1 + labs(title = "Ordered")
 
@@ -199,7 +227,8 @@ When applying diverging scales, keep in mind any associations people might have 
 #| echo: false
 library(ggnewscale)
 
-# custom function to lighten dark colors and darken light colors (requires hex format)
+# custom function to lighten dark colors and darken light colors 
+# (requires hex format)
 contrast <- function(col, amount = 0.1) {
   # extract RGB values from hex
   r <- as.numeric(colorspace::coords(colorspace::hex2RGB(col))[,"R"])
@@ -216,42 +245,96 @@ contrast <- function(col, amount = 0.1) {
 
 # simple data
 tibble(num = factor(1:7),
-       frequency = c("Low Frequency\nRatio", "1/4", "1/2", "Equal\nFrequency", "2", "4", "High Frequency\nRatio"),
-       agree = c("Strongly\nDisagree", "2", "3", "Neither Agree\nNor Disagree", "5", "6", "Strongly\nAgree"),
-       correlation = c("-.9", "-.6", "-.3", "0", ".3", ".6", ".9")) %>% 
+       frequency = c("Low Frequency\nRatio", "1/4", 
+                     "1/2", "Equal\nFrequency", "2", 
+                     "4", "High Frequency\nRatio"),
+       agree = c("Strongly\nDisagree", "2", 
+                 "3", "Neither Agree\nNor Disagree", "5", 
+                 "6", "Strongly\nAgree"),
+       correlation = c("-.9", "-.6", "-.3", 
+                       "0", ".3", ".6", ".9")) |> 
   ggplot(aes(num)) +
     # Frequency Ratio
-    geom_tile(aes(y = "Frequency\nRatio", fill = num), width = .95, height = .9) +
-    geom_text(aes(y = "Frequency\nRatio", color = num, label = frequency), 
-              size = 2.9, hjust = .5) +
-    scale_fill_manual(palette = function(n) hcl.colors(n, "Berlin"), guide = "none") +
-    scale_color_manual(palette = function(n) contrast(hcl.colors(n, "Berlin"),.7),
-                       guide = "none") +
+    geom_tile(
+      aes(
+        y = "Frequency\nRatio", 
+        fill = num
+        ), 
+      width = .95, height = .9) +
+    geom_text(
+      aes(
+        y = "Frequency\nRatio", 
+        color = num, 
+        label = frequency
+        ), 
+      size = 2.9, hjust = .5) +
+    scale_fill_manual(
+      palette = function(n) hcl.colors(n, "Berlin"), 
+      guide = "none"
+      ) +
+    scale_color_manual(
+      palette = function(n) contrast(hcl.colors(n, "Berlin"),.7),
+      guide = "none"
+      ) +
     new_scale_fill() +
     new_scale_color() +
     # Agreement
-    geom_tile(aes(y = "Agreement", fill = num), width = .95, height = .9) +
-    geom_text(aes(y = "Agreement", color = num, label = agree), 
-              size = 2.9, hjust = .5) +
-    scale_fill_manual(palette = function(n) hcl.colors(n, "Purple-Green"), guide = "none") +
-    scale_color_manual(palette = function(n) contrast(hcl.colors(n, "Purple-Green"),.7),
-                       guide = "none") +
+    geom_tile(
+      aes(
+        y = "Agreement", 
+        fill = num
+        ), 
+      width = .95, height = .9) +
+    geom_text(
+      aes(
+        y = "Agreement", 
+        color = num, 
+        label = agree
+        ), 
+      size = 2.9, hjust = .5) +
+    scale_fill_manual(
+      palette = function(n) hcl.colors(n, "Purple-Green"), 
+      guide = "none"
+      ) +
+    scale_color_manual(
+      palette = function(n) contrast(hcl.colors(n, "Purple-Green"),.7),
+      guide = "none"
+      ) +
     new_scale_fill() +
     new_scale_color() +
     # Correlation
-    geom_tile(aes(y = "Correlation", fill = num), width = .95, height = .9) +
-    geom_text(aes(y = "Correlation", color = num, label = correlation), 
-              size = 4, hjust = .5) +
-    scale_fill_manual(palette = function(n) hcl.colors(n, "Blue-Red", rev = TRUE), guide = "none") +
-    scale_color_manual(palette = function(n) contrast(hcl.colors(n, "Blue-Red", rev = TRUE),.7),
-                       guide = "none") +
-    labs(title = "Diverging Color Scales",
-         subtitle = "for ordered variables with a neutral center") +
+    geom_tile(
+      aes(
+        y = "Correlation", 
+        fill = num
+        ), 
+      width = .95, height = .9) +
+    geom_text(
+      aes(
+        y = "Correlation", 
+        color = num, 
+        label = correlation
+        ), 
+      size = 4, hjust = .5) +
+    scale_fill_manual(
+      palette = function(n) hcl.colors(n, "Blue-Red", rev = TRUE), 
+      guide = "none"
+      ) +
+    scale_color_manual(
+      palette = function(n) contrast(hcl.colors(n, "Blue-Red", rev = TRUE),.7),
+      guide = "none"
+      ) +
+    labs(
+      title = "Diverging Color Scales",
+      subtitle = "for ordered variables with a neutral center"
+      ) +
     coord_fixed(ratio = .95/.9) + 
     theme_void() +
-    theme(plot.title = element_text(size = 20, hjust = .5),
-          plot.subtitle = element_text(hjust = .5),
-          axis.text.y = element_text())
+    theme(
+      plot.title = element_text(size = 20, hjust = .5),
+      plot.subtitle = element_text(hjust = .5),
+      axis.text.y = element_text()
+      )
 ```
 
 **Sequential scales** measure something that has an order, but no neutral center. Often, one side of the scale is at zero, so that the scale goes from nothing to something. In these cases, the appropriate color scale will represent amount with luminosity, where zero is the lightest (see "Frequency" and "Anxiety" in the figure below). This way, the lower amounts have lower contrast against the white background of the plot (if using a non-white plot background, make sure the low end of the scale matches).
@@ -265,35 +348,50 @@ library(RColorBrewer)
 
 # simple data
 tibble(num = factor(1:7),
-       frequency = c("Low Frequency", "", "", "", "", "", "High Frequency"),
-       anxiety = c("Low Anxiety", "", "", "", "", "", "High Anxiety"),
-       weekday = c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")) %>% 
+       frequency = c("Low Frequency", "", "", 
+                     "", "", "", "High Frequency"),
+       anxiety = c("Low Anxiety", "", 
+                   "", "", "", "", "High Anxiety"),
+       weekday = c("Sunday", "Monday", "Tuesday", 
+                   "Wednesday", "Thursday", "Friday", "Saturday")) |> 
   ggplot(aes(num)) +
     # Frequency
-    geom_tile(aes(y = "Frequency", fill = num), width = .95, height = .9) +
+    geom_tile(aes(y = "Frequency", fill = num), 
+              width = .95, height = .9) +
     geom_text(aes(y = "Frequency", color = num, label = frequency), 
               size = 2.9, hjust = .5) +
     scale_fill_brewer(palette = "YlGnBu", guide = "none") +
-    scale_color_manual(palette = function(n) contrast(brewer.pal(n, "YlGnBu"),.7),
-                       guide = "none") +    
+    scale_color_manual(
+      palette = function(n) contrast(brewer.pal(n, "YlGnBu"),.7),
+      guide = "none"
+      ) +    
     new_scale_fill() +
     new_scale_color() +
     # Anxiety
-    geom_tile(aes(y = "Anxiety", fill = num), width = .95, height = .9) +
+    geom_tile(aes(y = "Anxiety", fill = num), 
+              width = .95, height = .9) +
     geom_text(aes(y = "Anxiety", color = num, label = anxiety), 
               size = 2.9, hjust = .5) +
     scale_fill_brewer(palette = "OrRd", guide = "none") +
-    scale_color_manual(palette = function(n) contrast(brewer.pal(n, "OrRd"),.7),
-                       guide = "none") +
+    scale_color_manual(
+      palette = function(n) contrast(brewer.pal(n, "OrRd"),.7),
+      guide = "none"
+      ) +
     new_scale_fill() +
     new_scale_color() +
     # Weekdays
-    geom_tile(aes(y = "Weekdays", fill = num), width = .95, height = .9) +
+    geom_tile(aes(y = "Weekdays", fill = num), 
+              width = .95, height = .9) +
     geom_text(aes(y = "Weekdays", color = num, label = weekday), 
               size = 2.9, hjust = .5) +
-    scale_fill_manual(palette = function(n) hcl.colors(n, "Sunset", rev = TRUE), guide = "none") +
-    scale_color_manual(palette = function(n) contrast(hcl.colors(n, "Sunset", rev = TRUE),.7),
-                       guide = "none") +
+    scale_fill_manual(
+      palette = function(n) hcl.colors(n, "Sunset", rev = TRUE), 
+      guide = "none"
+      ) +
+    scale_color_manual(
+      palette = function(n) contrast(hcl.colors(n, "Sunset", rev = TRUE),.7),
+      guide = "none"
+      ) +
     labs(title = "Sequential Color Scale",
          subtitle = "for ordered variables without a neutral center") +
     coord_fixed(ratio = .95/.9) + 
@@ -315,24 +413,25 @@ filelist <- unlist(lapply(httr::content(req)$tree, "[", "path"), use.names = F)
 filelist <- grep("data/", filelist, value = TRUE, fixed = TRUE)
 filelist <- paste0("https://raw.githubusercontent.com/umbrae/reddit-top-2.5-million/master/", filelist)
 
-# choose 1000 repos at random, and retrieve the raw files from github, selecting only timestamp and text columns
+# choose 1000 repos at random, and retrieve the raw files from github, 
+# selecting only timestamp and text columns
 # WARNING: Takes a while! Choose a smaller number of repos for less wait time.
 reddit_posts <- bind_rows(
   lapply(filelist[sample(1:length(filelist), 1000)], 
          function(d){ 
-           read_csv(d) %>% 
-             select(created_utc, selftext) %>% 
+           read_csv(d) |> 
+             select(created_utc, selftext) |> 
              mutate(created_utc = as.numeric(created_utc))
            })
-  ) %>% 
+  ) |> 
   drop_na()
 
 # NRC "joy" lexicon
-joy <- lexicon::nrc_emotions %>% 
-  filter(joy == 1) %>% 
+joy <- lexicon::nrc_emotions |> 
+  filter(joy == 1) |> 
   pull(term)
 
-reddit_joy <- reddit_posts %>% 
+reddit_joy <- reddit_posts |> 
   # clean data
   mutate(date = lubridate::as_date(created_utc),
          weekday = factor(weekdays(date), levels = c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")),
@@ -340,17 +439,17 @@ reddit_joy <- reddit_posts %>%
          yday = yday(date),
          clean_text = tm::removeNumbers(selftext),
          clean_text = tm::removePunctuation(clean_text),
-         clean_text = tm::stripWhitespace(clean_text)) %>%
+         clean_text = tm::stripWhitespace(clean_text)) |>
   # tokenize
-  unnest_tokens(word, clean_text, to_lower = TRUE) %>%
+  unnest_tokens(word, clean_text, to_lower = TRUE) |>
   # count
-  count(yday, weekday, word, sort = TRUE) %>%
+  count(yday, weekday, word, sort = TRUE) |>
   # relative frequencies
-  group_by(yday, weekday) %>% 
-  mutate(freq = n/sum(n)) %>% 
-  select(-n) %>% 
+  group_by(yday, weekday) |> 
+  mutate(freq = n/sum(n)) |> 
+  select(-n) |> 
   # keep joyful words only
-  filter(word %in% joy) %>% 
+  filter(word %in% joy) |> 
   # aggregate (add frequencies of all words in lexicon)
   summarise(freq = sum(freq))
 
@@ -367,10 +466,11 @@ load("data/reddit_joy.RData")
 library(patchwork)
 library(ggborderline)
 
-months = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", 
-"Oct", "Nov", "Dec")
+months = c("Jan", "Feb", "Mar", "Apr", 
+           "May", "Jun", "Jul", "Aug", 
+           "Sep", "Oct", "Nov", "Dec")
 
-goodplot3 <- reddit_joy %>% 
+goodplot3 <- reddit_joy |> 
   ggplot(aes(yday, freq, color = weekday, group = weekday)) +
     stat_smooth(aes(bordercolor = after_scale(colorspace::darken(color))), geom = "borderline", linewidth = 2, span = 1/3, method.args = list(degree=1), se = FALSE) +
     scale_color_discrete(type = hcl.colors(7, "Sunset", rev = TRUE)) +
@@ -386,7 +486,7 @@ goodplot3 <- reddit_joy %>%
           panel.grid.minor.x = element_line(linewidth = .8)) +
     coord_cartesian(expand = FALSE)
 
-badplot3 <- reddit_joy %>% 
+badplot3 <- reddit_joy |> 
   ggplot(aes(yday, freq, color = weekday, group = weekday)) +
     stat_smooth(aes(bordercolor = after_scale(colorspace::darken(color))), geom = "borderline", linewidth = 2, span = 1/3, method.args = list(degree=1), se = FALSE) +
     scale_x_continuous(breaks = c(15,46,74,105,135,166,196,227,258,288,319,349),
@@ -416,9 +516,10 @@ Again, keep in mind any associations people might have with colors involved. For
 country_colors <- c("#b32134", "#679267", "#ffb200", "#4b9ed1", "#00247d")
 # simple data
 tibble(num = factor(1:5),
-       components = c("Verbal\nComprehension", "Visual-Spatial", "Fluid Reasoning", "Working Memory", "Processing Speed"),
+       components = c("Verbal\nComprehension", "Visual-Spatial", 
+                      "Fluid Reasoning", "Working Memory", "Processing Speed"),
        countries = c("U.S.A.", "Russia", "China", "France", "U.K."),
-       speech_parts = c("Nouns", "Verbs", "Adjectives", "Articles", "Pronouns")) %>% 
+       speech_parts = c("Nouns", "Verbs", "Adjectives", "Articles", "Pronouns")) |> 
   ggplot(aes(num)) +
     # Intellingence Component
     geom_tile(aes(y = "Intelligence\nComponent", fill = num), width = .95, height = .9) +
@@ -442,9 +543,13 @@ tibble(num = factor(1:5),
     geom_tile(aes(y = "Parts of\nSpeech", fill = num), width = .95, height = .9) +
     geom_text(aes(y = "Parts of\nSpeech", color = num, label = speech_parts), 
               size = 3.5, hjust = .5) +
-    scale_fill_manual(palette = function(n) hcl.colors(n, "Pastel 1", rev = TRUE), guide = "none") +
-    scale_color_manual(palette = function(n) contrast(hcl.colors(n, "Pastel 1", rev = TRUE),.7),
-                       guide = "none") +
+    scale_fill_manual(
+      palette = function(n) hcl.colors(n, "Pastel 1", rev = TRUE), guide = "none"
+      ) +
+    scale_color_manual(
+      palette = function(n) contrast(hcl.colors(n, "Pastel 1", rev = TRUE),.7),
+      guide = "none"
+      ) +
     labs(title = "Qualitative Color Scales",
          subtitle = "for variables with no order") +
     coord_fixed(ratio = .95/.9) + 
@@ -464,7 +569,7 @@ Because color has many dimensions, it can sometimes be used to represent two sca
 library(ggnewscale)
 
 set.seed(2023)
-distressed_texts_binary_ordered %>% 
+distressed_texts_binary_ordered |> 
   ggplot(aes(word, distressed_freq_ratio, 
              label = word, 
              color = distressed_freq_ratio < 1)) +
@@ -474,7 +579,7 @@ distressed_texts_binary_ordered %>%
       type = colorspace::lighten(c("#F8766D", "#00BFC4"), .7)) +
     geom_text_repel(
       size = 3, 
-      data = distressed_texts_binary_ordered %>% 
+      data = distressed_texts_binary_ordered |> 
         filter(distressed_freq_ratio > 3.6 
                | distressed_freq_ratio < .2),
       max.overlaps = 20) +
@@ -483,11 +588,11 @@ distressed_texts_binary_ordered %>%
     geom_point(
       aes(color = distressed_freq_ratio < 1), 
       size = 3,
-      data = distressed_texts_binary_ordered %>% 
+      data = distressed_texts_binary_ordered |> 
         filter(word %in% c("i", "we"))) +
     geom_text_repel(
       size = 4, 
-      data = distressed_texts_binary_ordered %>% 
+      data = distressed_texts_binary_ordered |> 
         filter(word %in% c("i", "we")),
       max.overlaps = 20) +
     labs(title = '"We" is a Sign of Distress',
@@ -512,10 +617,10 @@ distressed_texts_binary_ordered %>%
 #| include: false
 covid <- read_csv("https://osf.io/download/mvhzg/") # takes a little while to download
 
-covid_agg <- covid %>% 
+covid_agg <- covid |> 
   mutate(created_at = as.POSIXct(created_at, format = "%m/%d/%Y %H:%M"),
-         date = as.Date(created_at)) %>% 
-  group_by(date) %>% 
+         date = as.Date(created_at)) |> 
+  group_by(date) |> 
   summarise(cert = mean(certain, na.rm = TRUE),
             tent = mean(tentat, na.rm = TRUE),
             anx = mean(anx, na.rm = TRUE),
@@ -523,8 +628,8 @@ covid_agg <- covid %>%
             negemo = mean(negemo, na.rm = TRUE)
             )
 
-covid_concern <- read_csv("https://osf.io/download/846dp/") %>% 
-  mutate(date = as.Date(date, format = "%m/%d/%Y")) %>% 
+covid_concern <- read_csv("https://osf.io/download/846dp/") |> 
+  mutate(date = as.Date(date, format = "%m/%d/%Y")) |> 
   left_join(covid_agg)
 ```
 
@@ -534,11 +639,11 @@ covid_concern <- read_csv("https://osf.io/download/846dp/") %>%
 #| fig-height: 8
 library(patchwork)
 
-plot <- covid_concern %>% 
+plot <- covid_concern |> 
   mutate(z_cert = as.numeric(scale(cert)),
-         z_concern = as.numeric(scale(ny_net_concern))) %>% 
-  pivot_longer(cols = c(z_cert, z_concern)) %>% 
-  mutate(name = if_else(name=="z_cert", "Certainty", "NY Net Concern")) %>% 
+         z_concern = as.numeric(scale(ny_net_concern))) |> 
+  pivot_longer(cols = c(z_cert, z_concern)) |> 
+  mutate(name = if_else(name=="z_cert", "Certainty", "NY Net Concern")) |> 
   ggplot() +
     geom_smooth(aes(date, value, 
                     linetype = name), 

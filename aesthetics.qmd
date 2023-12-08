@@ -17,7 +17,7 @@ There are many options. Below are six different ways to represent the numbers "1
 #| echo: false
 
 # Some simple data
-tibble(num = c(1, 2, 3)) %>% 
+tibble(num = c(1, 2, 3)) |> 
   ggplot() +
     # position
     geom_point(aes(x = factor(num), y = "position"),
@@ -59,13 +59,17 @@ Let's take a concrete example. @eichstaedt_etal_2015 collected Twitters posts fr
 
 ```{r}
 #| include: false
-twitter_counties <- read_csv("data/eichstaedt_etal_2015_county.freqs.dictionaries_dense.csv") %>% 
-  rename(fips = group_id) %>% 
-  left_join(read_csv("data/eichstaedt_etal_2015_countyoutcomes.csv")) %>% 
-  mutate(income = `incomeHC01_VC85ACS3yr$10`,
-         maj = case_when(`blackPOP255210D$10` >= 50 ~ "Majority Black", 
-                         `hispanicPOP405210D$10` >= 50 ~ "Majority Hispanic",
-                         .default = "Majority Non-Black/Hispanic")) %>% 
+twitter_counties <- read_csv("data/eichstaedt_etal_2015_county.freqs.dictionaries_dense.csv") |> 
+  rename(fips = group_id) |> 
+  left_join(read_csv("data/eichstaedt_etal_2015_countyoutcomes.csv")) |> 
+  mutate(
+    income = `incomeHC01_VC85ACS3yr$10`,
+    maj = case_when(
+      `blackPOP255210D$10` >= 50 ~ "Majority Black", 
+      `hispanicPOP405210D$10` >= 50 ~ "Majority Hispanic",
+      .default = "Majority Non-Black/Hispanic"
+      )
+    ) |> 
   select(county, state, income, posEmotions, maj)
 ```
 
@@ -85,36 +89,46 @@ In the following visualization,
 #| warning: false
 library(ggborderline) # for making the lines pop
 
-twitter_counties %>% 
+twitter_counties |> 
   ggplot(
     aes(income, posEmotions, 
-        # rearrange the categorical variable so that the order in the legend matches the order in the plot
-        color = factor(maj, 
-                       levels = c("Majority Non-Black/Hispanic", 
-                                  "Majority Hispanic", 
-                                  "Majority Black")
-                       )
+        # rearrange the categorical variable so that the order 
+        # in the legend matches the order in the plot
+        color = factor(
+          maj, 
+          levels = c("Majority Non-Black/Hispanic", 
+                     "Majority Hispanic", 
+                     "Majority Black")
+          )
         )
     ) +
     # scatterplot
     geom_point(alpha = .5, 
-               # draw sample such that the "Majority Non-Black/Hispanic" points don't overpower the others
-               data = twitter_counties %>% 
-                 group_by(maj) %>% 
+               # draw sample such that "Majority Non-Black/Hispanic" 
+               # points don't overpower the others
+               data = twitter_counties |> 
+                 group_by(maj) |> 
                  slice_sample(n = 100)) +
     # loess regression
-    stat_smooth(aes(bordercolor = after_scale(colorspace::darken(color))), # borders that match the lines, but are slightly darker
-                se = FALSE, geom = "borderline", 
-                linewidth = 1, lineend = "square") +
+    stat_smooth(
+      # borders that match the lines, but are slightly darker
+      aes(bordercolor = after_scale(colorspace::darken(color))), 
+      se = FALSE, geom = "borderline", 
+      linewidth = 1, lineend = "square"
+      ) +
     theme_bw() +
     # nicer color palette
-    scale_color_brewer(palette = "Paired", 
-                       direction = -1) +
+    scale_color_brewer(
+      palette = "Paired", 
+      direction = -1
+      ) +
     # proper formatting for income
     scale_x_continuous(labels=scales::dollar_format()) +
-    labs(x = "County Average Income",
-         y = "Positive Emotional Words in Twitter Posts\n(proportion of total words)",
-         color = "")
+    labs(
+      x = "County Average Income",
+      y = "Positive Emotional Words in Twitter Posts\n(proportion of total words)",
+      color = ""
+      )
 ```
 
 This is the most intuitive way to organize the three variables. By mapping income to the x axis, we lightly suggest that it is the cause of whatever is happening on the y axis---in this case positive emotion. The idea that higher income causes positive emotion is intuitive---any people believe they would be happier with a higher income. People accustomed to languages that are written left-to-right, like English, will tend to think about what happens as they move left to right on the graph. Three LOESS regression lines encourage the viewer to compare the slopes of the three color groups, which they will go through from top to bottom:
@@ -134,16 +148,18 @@ The next visualization shows the same data but tells a different story. This one
 ```{r}
 #| warning: false
 
-twitter_counties %>% 
-  # hand-made bins (note the inconsistent bin width to give more space to the center of the distribution) 
+twitter_counties |> 
+  # hand-made bins (note the inconsistent bin width to 
+  # give more space to the center of the distribution) 
   mutate(
     income = factor( 
-      case_when(income > 100000 ~ "$100,000+",
-                income > 80000 ~ "$80,000-$100,000",
-                                    income > 60000 ~ "$60,000-$80,000",
-                                    income > 50000 ~ "$50,000-$60,00",
-                                    income > 40000 ~ "$40,000-$50,00",
-                                    .default = "$20,000-$40,00"),
+      case_when(
+        income > 100000 ~ "$100,000+",
+        income > 80000 ~ "$80,000-$100,000",
+        income > 60000 ~ "$60,000-$80,000",
+        income > 50000 ~ "$50,000-$60,00",
+        income > 40000 ~ "$40,000-$50,00",
+        .default = "$20,000-$40,00"),
       levels = c("$20,000-$40,00", 
                  "$40,000-$50,00",
                  "$50,000-$60,00", 
@@ -151,12 +167,13 @@ twitter_counties %>%
                  "$80,000-$100,000",
                  "$100,000+")
       )
-    ) %>% 
+    ) |> 
   # aggregate by the new bins
-  group_by(income, maj) %>% 
+  group_by(income, maj) |> 
   summarise(
-    posEmotions = mean(posEmotions, na.rm = TRUE)
-    ) %>% 
+    posEmotions = mean(posEmotions, 
+                       na.rm = TRUE)
+    ) |> 
   # plot
   ggplot(aes(income, maj, fill = posEmotions)) +
     # tiles with a little bit of space in between
@@ -168,12 +185,17 @@ twitter_counties %>%
                          mid = "green", 
                          high = "yellow", 
                          midpoint = .0055) +
-    labs(x = "County Average Income",
-         y = "",
-         fill = "Positive Emotional Words\nin Twitter Posts\n(proportion of total words)") +
-    theme(axis.text.x = element_text(angle = 30, hjust = 1), # angles x axis text to fit it all in
-          axis.title = element_text(size = 8),
-          legend.title = element_text(size = 8)) +
+    labs(
+      x = "County Average Income",
+      y = "",
+      fill = "Positive Emotional Words\nin Twitter Posts\n(proportion of total words)"
+      ) +
+    theme(
+      # angles x axis text to fit it all in
+      axis.text.x = element_text(angle = 30, hjust = 1), 
+      axis.title = element_text(size = 8),
+      legend.title = element_text(size = 8)
+      ) +
     # constrain the tiles to be perfectly square
     coord_equal()
 ```
@@ -190,7 +212,7 @@ Let's try one more way to present these data. In this visualization,
 #| warning: false
 
 set.seed(2023)
-twitter_counties %>% 
+twitter_counties |> 
   ggplot(aes(maj, income, fill = posEmotions)) +
     # sina plot
     ggbeeswarm::geom_quasirandom(
@@ -198,7 +220,8 @@ twitter_counties %>%
       alpha = .5, method = "pseudorandom", 
       shape = 21, varwidth = TRUE
       ) +
-    # color scheme which maximizes the visibility of different values among the crowd (this is a losing battle)
+    # color scheme which maximizes the visibility of different 
+    # values among the crowd (this is a losing battle)
     scale_fill_gradient2(low = "red", 
                          mid = "white", 
                          high = "blue", 
@@ -210,9 +233,11 @@ twitter_counties %>%
       labels=scales::dollar_format(), 
       trans = "log10"
       ) +
-    labs(x = " ",
-         y = "County Average Income",
-         fill = "Positive Emotional Words\nin Twitter Posts\n(proportion of total words)") +
+    labs(
+      x = " ",
+      y = "County Average Income",
+      fill = "Positive Emotional Words\nin Twitter Posts\n(proportion of total words)"
+      ) +
     theme(axis.text.x = element_text(angle = 30, hjust = 1))
 ```
 

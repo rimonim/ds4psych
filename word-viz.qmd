@@ -16,7 +16,7 @@ Because visualizing words can be so foreign to those not familiar with natural l
 In this tutorial, we will visualize data from Buechel et al. [-@buechel_etal_2018, see @sec-nonlinear-axes and @sec-accent-colors], in which participants rated their distress after reading various news stories, and described their thoughts in their own words. The distress ratings were then binned into two groups, allowing us to compare the content of "distressed" texts to that of "non-distressed" texts.
 
 ```{r}
-distressed_texts <- read_csv("https://raw.githubusercontent.com/wwbp/empathic_reactions/master/data/responses/data/messages.csv", show_col_types = FALSE) %>% 
+distressed_texts <- read_csv("https://raw.githubusercontent.com/wwbp/empathic_reactions/master/data/responses/data/messages.csv", show_col_types = FALSE) |> 
   select(essay, distress, distress_bin)
 
 head(distressed_texts)
@@ -28,38 +28,39 @@ head(distressed_texts)
 # data setup copied from the previous section
 library(tidytext)
 
-distressed_texts_binary <- distressed_texts %>% 
+distressed_texts_binary <- distressed_texts |> 
   # only texts by distressed participants
-  filter(distress_bin == 1) %>% 
+  filter(distress_bin == 1) |> 
   mutate(clean_text = tm::removeNumbers(essay),
          clean_text = tm::removePunctuation(clean_text),
-         clean_text = tm::stripWhitespace(clean_text)) %>%
+         clean_text = tm::stripWhitespace(clean_text)) |>
   # tokenize and count frequencies
-  unnest_tokens(word, clean_text, to_lower = TRUE) %>%
-  count(word, sort = TRUE) %>%
-  rename(distressed_count = n) %>% 
+  unnest_tokens(word, clean_text, to_lower = TRUE) |>
+  count(word, sort = TRUE) |>
+  rename(distressed_count = n) |> 
   # keep stop words only
   filter(word %in% stop_words$word)
 
-nondistressed_texts_binary <- distressed_texts %>% 
+nondistressed_texts_binary <- distressed_texts |> 
   # only texts by non-distressed participants
-  filter(distress_bin == 0) %>% 
+  filter(distress_bin == 0) |> 
   mutate(clean_text = tm::removeNumbers(essay),
          clean_text = tm::removePunctuation(clean_text),
-         clean_text = tm::stripWhitespace(clean_text)) %>%
+         clean_text = tm::stripWhitespace(clean_text)) |>
   # tokenize and count frequencies
-  unnest_tokens(word, clean_text, to_lower = TRUE) %>%
-  count(word, sort = TRUE) %>%
-  rename(nondistressed_count = n) %>% 
+  unnest_tokens(word, clean_text, to_lower = TRUE) |>
+  count(word, sort = TRUE) |>
+  rename(nondistressed_count = n) |> 
   # keep stop words only
   filter(word %in% stop_words$word)
 
 
 # join the two sets
-distressed_texts_binary <- distressed_texts_binary %>% 
-  inner_join(nondistressed_texts_binary) %>% # removes words with 0 frequency on either side
+distressed_texts_binary <- distressed_texts_binary |> 
+  # removes words with 0 frequency on either side
+  inner_join(nondistressed_texts_binary) |> 
   # remove extremely low frequency words
-  filter(distressed_count + nondistressed_count > 50) %>% 
+  filter(distressed_count + nondistressed_count > 50) |> 
   # distressed frequency relative to non-distressed frequency
   mutate(distressed_freq_ratio = distressed_count/nondistressed_count)
 ```
@@ -86,7 +87,7 @@ Since we are comparing frequency in one group to frequency in another, we can pu
 #| warning: false
 library(ggrepel)
 
-distressed_texts_binary %>% 
+distressed_texts_binary |> 
   ggplot(aes(nondistressed_count, distressed_count, 
              label = word,
              color = distressed_freq_ratio)) +
@@ -94,19 +95,23 @@ distressed_texts_binary %>%
     geom_text_repel(max.overlaps = 20) +
     scale_x_continuous(trans = "log10", n.breaks = 5) +
     scale_y_continuous(trans = "log10", n.breaks = 6) +
-    scale_color_gradient2(low = "blue4", 
-                          mid = "#E2E2E2", 
-                          high = "red4", 
-                          trans = "log2", # log scale for ratios
-                          limits = c(.25, 4), 
-                          breaks = c(.25, 1, 4),
-                          labels = c("Characteristically\nNon-Distressed",
-                                     "Equal Proportion",
-                                     "Characteristically\nDistressed")) +
-    labs(title = "Stop Words in Distressed and Non-Distressed Texts",
-         x = "Occurrences in Non-Distressed Texts",
-         y = "Occurrences in Distressed Texts",
-         color = "") +
+    scale_color_gradient2(
+      low = "blue4", 
+      mid = "#E2E2E2", 
+      high = "red4", 
+      trans = "log2", # log scale for ratios
+      limits = c(.25, 4), 
+      breaks = c(.25, 1, 4),
+      labels = c("Characteristically\nNon-Distressed",
+                 "Equal Proportion",
+                 "Characteristically\nDistressed")
+      ) +
+    labs(
+      title = "Stop Words in Distressed and Non-Distressed Texts",
+      x = "Occurrences in Non-Distressed Texts",
+      y = "Occurrences in Distressed Texts",
+      color = ""
+      ) +
     coord_fixed() +
     theme_minimal()
 ```
@@ -120,7 +125,7 @@ To allow viewers to explore these patterns in greater detail, we can make the pl
 library(ggiraph, verbose = FALSE)
 library(ggrepel)
 
-p <- distressed_texts_binary %>% 
+p <- distressed_texts_binary |> 
   ggplot(aes(nondistressed_count, distressed_count, 
              label = word,
              color = distressed_freq_ratio,
@@ -131,20 +136,25 @@ p <- distressed_texts_binary %>%
     geom_text_repel_interactive() +
     scale_x_continuous(trans = "log10", n.breaks = 5) +
     scale_y_continuous(trans = "log10", n.breaks = 6) +
-    scale_color_gradient2(low = "blue4", 
-                          mid = "#E2E2E2", 
-                          high = "red4", 
-                          trans = "log2", # log scale for ratios
-                          limits = c(.25, 4), 
-                          breaks = c(.25, 1, 4),
-                          labels = c("Characteristically\nNon-Distressed",
-                                     "Equal Proportion",
-                                     "Characteristically\nDistressed")) +
-    labs(title = "Stop Words in Distressed and Non-Distressed Texts",
-         x = "Occurrences in Non-Distressed Texts",
-         y = "Occurrences in Distressed Texts",
-         color = "") +
-    coord_fixed() + # fixed coordinates since x and y use the same units
+    scale_color_gradient2(
+      low = "blue4", 
+      mid = "#E2E2E2", 
+      high = "red4", 
+      trans = "log2", # log scale for ratios
+      limits = c(.25, 4), 
+      breaks = c(.25, 1, 4),
+      labels = c("Characteristically\nNon-Distressed",
+                 "Equal Proportion",
+                 "Characteristically\nDistressed")
+    ) +
+    labs(
+      title = "Stop Words in Distressed and Non-Distressed Texts",
+      x = "Occurrences in Non-Distressed Texts",
+      y = "Occurrences in Distressed Texts",
+      color = ""
+    ) +
+    # fixed coordinates since x and y use the same units
+    coord_fixed() + 
     theme_minimal()
 
 girafe_options(
@@ -162,8 +172,8 @@ A disadvantage of simple F/F plots: **When people see a scatterplot, they think,
 library(ggiraph, verbose = FALSE)
 library(ggrepel)
 
-p1 <- distressed_texts_binary %>% 
-  mutate(common = (nondistressed_count + distressed_count)/2) %>% 
+p1 <- distressed_texts_binary |> 
+  mutate(common = (nondistressed_count + distressed_count)/2) |> 
   ggplot(aes(distressed_freq_ratio, common, 
              label = word,
              color = distressed_freq_ratio,
@@ -203,14 +213,14 @@ Because we love these rotated F/F plots so much, we couldn't help showing off on
 # get frequency data
 httr::GET("https://www.wordfrequency.info/files/genres_sample.xls",
           httr::write_disk(tf <- tempfile(fileext = ".xls")))
-word_freqs <- readxl::read_excel(tf) %>% 
+word_freqs <- readxl::read_excel(tf) |> 
   select(lemma, ACADEMIC, SPOKEN)
 ```
 
 ```{r}
 #| warning: false
-p2 <- word_freqs %>% 
-  filter(ACADEMIC != 0, SPOKEN != 0) %>% 
+p2 <- word_freqs |> 
+  filter(ACADEMIC != 0, SPOKEN != 0) |> 
   # generate tooltip text
   mutate(rep = if_else(ACADEMIC/SPOKEN > 1, 
                        "more common in academic texts",
@@ -219,7 +229,7 @@ p2 <- word_freqs %>%
                         as.character(round(ACADEMIC/SPOKEN, 2)),
                         as.character(round(SPOKEN/ACADEMIC, 2))),
          tooltip = paste0("<b>",lemma, "</b>", "<br/>", 
-                          mult, "x ", rep)) %>% 
+                          mult, "x ", rep)) |> 
   ggplot(aes(ACADEMIC/SPOKEN, (ACADEMIC + SPOKEN)/2, 
              label = lemma,
              color = ACADEMIC/SPOKEN,
@@ -297,7 +307,7 @@ Word clouds generally have three aesthetics: `label`, `color,` and `size`:
 -   `size` is technically unnecessary, since the diverging color scale already represents both the valence and the magnitude of the relative frequency. In practice though, we are generally most interested in the largest differences. Size is therefore used to emphasize words with greater a discrepancy between the groups. This magnitude value is calculated as `abs(log2(distressed_freq_ratio))`.
 
 ```{r}
-distressed_texts_binary <- distressed_texts_binary %>% 
+distressed_texts_binary <- distressed_texts_binary |> 
   mutate(freq_ratio_log_magnitude = abs(log2(distressed_freq_ratio)))
 
 head(distressed_texts_binary)
@@ -311,10 +321,10 @@ For creating word clouds in R we use the `ggwordcloud` package, with its `geom_t
 library(ggwordcloud)
 set.seed(2)
 
-distressed_texts_binary %>% 
+distressed_texts_binary |> 
   # top 100 highest discrepancy words
-  arrange(desc(freq_ratio_log_magnitude)) %>% 
-  slice_head(n = 150) %>% 
+  arrange(desc(freq_ratio_log_magnitude)) |> 
+  slice_head(n = 150) |> 
   # plot
   ggplot(aes(label = word, 
              size = freq_ratio_log_magnitude, 
@@ -339,10 +349,10 @@ The `angle_group` aesthetic can be used to separate out the words more frequent 
 #| fig-height: 8
 set.seed(2)
 
-distressed_texts_binary %>% 
+distressed_texts_binary |> 
   # top 100 highest discrepancy words
-  arrange(desc(freq_ratio_log_magnitude)) %>% 
-  slice_head(n = 150) %>% 
+  arrange(desc(freq_ratio_log_magnitude)) |> 
+  slice_head(n = 150) |> 
   # plot
   ggplot(aes(label = word, 
              size = freq_ratio_log_magnitude, 
@@ -366,23 +376,28 @@ Alternatively, we can specify an original position for each label (as `x` and `y
 #| fig-height: 8
 set.seed(2)
 
-distressed_texts_binary %>% 
+distressed_texts_binary |> 
   # top 100 highest discrepancy words
-  arrange(desc(freq_ratio_log_magnitude)) %>% 
-  slice_head(n = 150) %>% 
+  arrange(desc(freq_ratio_log_magnitude)) |> 
+  slice_head(n = 150) |> 
   # plot
   ggplot(aes(label = word, 
              size = freq_ratio_log_magnitude, 
              color = distressed_freq_ratio,
              x = distressed_freq_ratio < 1,
              y = distressed_freq_ratio > 1)) +
-    geom_text_wordcloud(show.legend = TRUE) + # wordcloud geom
-    scale_radius(range = c(2, 18), guide = "none") + # control text size
+    # wordcloud geom
+    geom_text_wordcloud(show.legend = TRUE) + 
+    # control text size
+    scale_radius(range = c(2, 18), guide = "none") + 
     scale_color_gradient2(
       name = "Distressed /\nNon-distressed\nFrequency",
-      labels = ~ MASS::fractions(.x), # show legend labels as fractions
-      low = "blue3", mid = "grey", high = "red3", # set diverging color scale
-      trans = "log2" # log scale
+      # show legend labels as fractions
+      labels = ~ MASS::fractions(.x), 
+      # set diverging color scale
+      low = "blue3", mid = "grey", high = "red3", 
+      # log scale
+      trans = "log2" 
       ) +
     theme_void() # blank background
 ```
@@ -401,27 +416,30 @@ To apply this method to the data from @buechel_etal_2018, we can use participant
 #| include: false
 #| eval: false
 # document - feature matrix with continuous distress variable
-distressed_texts_continuous <- distressed_texts %>% 
+distressed_texts_continuous <- distressed_texts |> 
   mutate(docid = seq_along(essay),
          clean_text = tm::removeNumbers(essay),
          clean_text = tm::removePunctuation(clean_text),
-         clean_text = tm::stripWhitespace(clean_text)) %>%
-  unnest_tokens(word, clean_text, to_lower = TRUE) %>% 
-  count(docid, distress, word) %>% 
-  pivot_wider(id_cols = c(docid, distress), names_from = word, values_from = n, values_fill = 0)
+         clean_text = tm::stripWhitespace(clean_text)) |>
+  unnest_tokens(word, clean_text, to_lower = TRUE) |> 
+  count(docid, distress, word) |> 
+  pivot_wider(id_cols = c(docid, distress), 
+              names_from = word, 
+              values_from = n, 
+              values_fill = 0)
 
 # calculate correlations - takes a while
-distress_cor <- distressed_texts_continuous %>% 
+distress_cor <- distressed_texts_continuous |> 
   summarise(across(-c(docid, distress), 
                    function(w){
                      cor <- cor.test(distress, w, method = "kendall")
                      ifelse(cor$p.value <= .05, cor$estimate, 0)
-                     })) %>% 
+                     })) |> 
   pivot_longer(everything(), names_to = "word", values_to = "cor")
 
 # remove non-significant correlations
-distress_cor <- distress_cor %>% 
-  filter(cor != 0) %>% 
+distress_cor <- distress_cor |> 
+  filter(cor != 0) |> 
   # include stop words only
   filter(word %in% stop_words$word)
 
@@ -436,8 +454,8 @@ head(distress_cor)
 
 set.seed(2)
 
-distress_cor %>% 
-  arrange(desc(abs(cor))) %>% 
+distress_cor |> 
+  arrange(desc(abs(cor))) |> 
   ggplot(aes(label = word, 
              color = cor, 
              size = abs(cor),
