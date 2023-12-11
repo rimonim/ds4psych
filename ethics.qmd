@@ -31,4 +31,6 @@ There are no universally accepted rules for ethical text data usage. Many countr
 
 If you want to share your data widely, but are worried about sensitive private information contained in it, consider using one of many advanced anonymization techniques, such as those that leverage generative AI models to create [synthetic data while maintaining statistical properties of the original](https://en.wikipedia.org/wiki/Synthetic_data#Scientific_research). These techniques are sometimes costly or labor-intensive, but can be worthwhile for high-impact studies.
 
+This chapter is far from a thorough treatment of ethical problems and possible solutions for data collection on the internet. For further reading, we suggest the [Association of Internet Researchers Ethical Guidelines](https://aoir.org/ethics/).
+
 ------------------------------------------------------------------------

@@ -7,6 +7,8 @@
 source("_common.R")
 ```
 
+[![](https://imgs.xkcd.com/comics/compact_graphs.png){fig-alt="Comic from xkcd.com"}](https://xkcd.com/2864/)
+
 For most people, aesthetics is the art of making things pleasant to look at. To the data visualizer though, "aesthetics" means something much more precise: Aesthetics are the visual representation of variables.
 
 Just as journalists need to decide which words to use to express their ideas, data visualizers need to decide which aesthetics to use to express their variables.
@@ -254,4 +256,3 @@ In this chapter we have seen how choices about which aesthetics to map to variab
 Press the "View Source" button below to see the hidden code blocks in this chapter.
 
 ------------------------------------------------------------------------
-

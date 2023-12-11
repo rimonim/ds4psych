@@ -5,6 +5,8 @@ project:
 book:
   title: "Data Science for Psychology"
   reader-mode: true
+  cover-image: images/cover.png
+  favicon: images/favicon.png
   
   page-footer: 
     left: |

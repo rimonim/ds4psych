@@ -265,6 +265,8 @@ girafe_options(
   )   
 ```
 
+This is a particularly good visualization, because it tells an interesting story. The story it tells is "Academic English is very different from spoken English". The wide aspect ratio and the tooltip text with "_X more common in _ texts" especially emphasize this point. The F/F plot is an appropriate visualization method because this story pertains to the full distribution of words---look at how many are more than 10 times more common in one or the other!
+
 ### Advanced Frequency/Frequency Plots
 
 For more information about frequency/frequency plots and other related plot types incorporating various statistics, see the [scattertext tutorial](https://github.com/JasonKessler/scattertext#tutorial) [@kessler_2017]. While the tutorial is intended for the `scattertext` library in Python, almost all examples can be produced in R with `ggplot2` and `ggiraph`. Search bars and other responsive interactivity can be accomplished with `shiny`.
@@ -274,17 +276,18 @@ For more information about frequency/frequency plots and other related plot type
 ::: {.callout-tip icon="false"}
 ## Advantages of Frequency/Frequency Plots
 
--   F/F plots make it easy to compare values of different words.
--   The layout is easy to interpret, especially when rotated and properly labeled.
--   F/F plots convey the full shape of the frequency distribution, rather than singling out words most characteristic of one side or the other.
+-   **Spatial Mapping:** F/F plots use axes, which make it easy to compare values of different words.
+-   **Readability:** The layout of F/F plots is easy to interpret, especially when rotated and properly labeled.
+-   **Full Picture:** F/F plots convey the full shape of the frequency distribution, rather than singling out words most characteristic of one side or the other. This can be useful when the distribution itself is interesting.
 :::
 
 ::: {.callout-important icon="false"}
 ## Disadvantages of Frequency/Frequency Plots
 
--   F/F plots require interactivity to be maximally informative.
--   Without interactivity, labels can be messy and confusing.
--   F/F plots may imply that the point of the graph is to show the correlation between frequencies in the two texts. Rotating the axes mostly solves this problem.
+-   **Interactivity Required:** F/F plots require interactivity to be maximally informative.
+-   **Messy:** Without interactivity, labels can be messy and confusing.
+-   **Implies that Correlation is Interesting:** F/F plots may imply that the point of the graph is to show the correlation between frequencies in the two texts. Rotating the axes mostly solves this problem.
+-   **Vague:** By showing many words at the same time, F/F plots make it difficult to focus in on particular stories (unless the story is about the distribution itself).
 :::
 
 ## Word Clouds
@@ -481,16 +484,16 @@ For more information about how word clouds are generated and how to customize th
 ::: {.callout-tip icon="false"}
 ## Advantages of Word Clouds
 
--   Word clouds emphasize words most characteristic of the variable of interest.
--   Word clouds show many words at once without requiring interactivity.
--   Word clouds look fancy.
+-   **To the Point:** Word clouds emphasize words most characteristic of the variable of interest.
+-   **No Interactivity Required:** Word clouds show many words at once without requiring interactivity.
+-   **Looks Fancy**
 :::
 
 ::: {.callout-important icon="false"}
 ## Disadvantages of Word Clouds
 
--   Size and color aesthetics make it extremely difficult to compare values of different words (e.g. Is x twice as blue as y?). 
--   By showing many words at the same time, word clouds make it difficult to focus in on particular stories.
+-   **Hard to Interpret Proportions:** Size and color aesthetics make it extremely difficult to compare values of different words (e.g. Is x twice as blue as y?). 
+-   **Vague:** By showing many words at the same time, word clouds make it difficult to focus in on particular stories.
 :::
 
 ------------------------------------------------------------------------

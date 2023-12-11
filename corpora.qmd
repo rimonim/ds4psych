@@ -13,15 +13,15 @@ Open experimental data are often linked in published papers, especially since th
 ::: {.callout-tip icon="false"}
 ## Advantages of Archived Experimental Data
 
--   Experiments conducted by trained academics are generally well designed.
--   Datasets used in published papers have extensive documentation of the methods used to produce them.
+-   **Professional:** Experiments conducted by trained academics are generally well designed.
+-   **Well-Documented:** Datasets used in published papers have extensive documentation of the methods used to produce them.
 :::
 
 ::: {.callout-important icon="false"}
 ## Disadvantages of Archived Experimental Data
 
--   Datasets not used in published papers often have poor documentation.
--   Experiments often result in relatively small datasets, which can pose problems for certain NLP methods.
+-   **Sometimes Not Documented:** Datasets not used in published papers often have poor documentation.
+-   **Small Sample Size:** Experiments often result in relatively small datasets, which can pose problems for certain NLP methods.
 :::
 
 ## Linguistics Corpora
@@ -38,14 +38,14 @@ One popular semi-experimental linguistics corpus is the [HCRC Map Task Corpus](h
 ::: {.callout-tip icon="false"}
 ## Advantages of Linguistics Corpora
 
--   Linguistics corpora are generally well-curated and well-documented. 
--   Corpora are often large and naturalistic---including for spoken dialogue, a domain that is otherwise out of reach for NLP. 
+-   **Professional:** Linguistics corpora are generally well-curated and well-documented. 
+-   **Ecological Validity:** Corpora are often large and naturalistic---including for spoken dialogue, a domain that is otherwise out of reach for NLP. 
 :::
 
 ::: {.callout-important icon="false"}
 ## Disadvantages of Linguistics Corpora
 
--   Linguistics corpora are generally created by linguists for linguists.
+-   **Domain-Specific:** Linguistics corpora are generally created by linguists for linguists.
 :::
 
 ## Data Gathered From the Internet
@@ -65,14 +65,14 @@ Most research topics in psychology do not require up-to-date data. As such, hist
 ::: {.callout-tip icon="false"}
 ## Advantages of Archival Internet Data
 
--   Pre-gathered datasets are low-cost and low-effort, often for very large sample sizes.
--   With pre-gathered datasets, you don't have to worry about API usage limits or web scraping etiquette.
+-   **Easy:** Pre-gathered datasets are low-cost and low-effort, often for very large sample sizes.
+-   **Unintrusive:** With pre-gathered datasets, you don't have to worry about API usage limits or web scraping etiquette.
 :::
 
 ::: {.callout-important icon="false"}
 ## Disadvantages of Archival Internet Data
 
--   Archival data do not reflect current events or recent trends.
+-   **Old:** Archival data do not reflect current events or recent trends.
 :::
 
 ::: {.callout-important}

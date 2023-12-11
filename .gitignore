@@ -2,5 +2,9 @@
 .Rhistory
 .RData
 .Ruserdata
+data/ra_posts.rds
+data/top_reddit_posts.csv
+data/emobank_distilroberta.rds
+data/ra_posts_distilroberta.rds
 
 /.quarto/

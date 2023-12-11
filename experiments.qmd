@@ -7,16 +7,16 @@ For example, @sap_etal_2020 had online participants write either true stories th
 ::: {.callout-tip icon="false"}
 ## Advantages of Experimental Data Collection
 
--   Experiments mitigate the effects of confounding variables.
--   Experimenters can tailor the experiment to fit their particular research questions.
+-   **Control:** Experiments mitigate the effects of confounding variables.
+-   **Customization:** Experimenters can tailor the experiment to fit their particular research questions.
 :::
 
 ::: {.callout-important icon="false"}
 ## Disadvantages of Experimental Data Collection
 
--   Experiments are costly.
--   Experiments are time-consuming.
--   Because they are costly and time-consuming, experiments generally result in small datasets.
+-   **Expensive**
+-   **Time-Consuming** 
+-   **Small Sample Size:** Because they are costly and time-consuming, experiments generally result in small datasets.
 :::
 
 ------------------------------------------------------------------------

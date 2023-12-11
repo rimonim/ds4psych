@@ -1,45 +1,162 @@
-# Social Media APIs {#sec-apis}
+# Web APIs {#sec-apis}
 
-https://github.com/vosonlab/vosonSML 
+In @sec-corpora, we listed numerous placed to find datasets online. The sorts of datasets discussed there are generally formatted as a .csv file---or something like it---which you can download directly to your computer and import into R using `read_csv()`. Lot's of online data, however, are not pre-packaged in this way. When datasets are very large or complex, or are being updated regularly, the hosts of the data will instead provide a **web API**.
 
+You can think of web APIs as little programming languages that are written inside a URL (URLs are the things you write in the top of your web browser to tell it which web page you want to access). When you access your custom-written URL, the host will perform whatever computations are necessary to get you your data, and send it to you in the same way that it would send you a website.
+
+Web APIs are sometimes difficult to use because each one works differently. Learning to use a new API can be like learning a new programming language. For this reason, web APIs sometimes have associated **wrappers**, packages that allow you to communicate with the API in a more familiar format.
+
+In the first part of this chapter, we introduce the [`vosonSML` package](https://github.com/vosonlab/vosonSML), an R-friendly wrapper that provides easy access to the Reddit, Twitter, Mastadon, and YouTube APIs. At the end of the chapter, we will discuss web APIs that do not have a convenient wrapper in R.
+
+## API Basic Concepts
+
+-   **Requests:** Each time you visit a URL associated with an API, you are submitting a *request* for data.
+-   **Endpoints:** Every API has at least one *endpoint*, a contact point for particular types of requests.
+-   **Rate Limits:** Many APIs set limits on the number of requests you can make per minute (or per second). This is because processing requests costs time and money for the host. If you go beyond the rate limit, the API will return an error like *"429 Too Many Requests"*.
+-   **Authentication:** Some APIs are not open to the public, instead requiring users to apply for access or pay for a subscription. When accessing these APIs, you need an *API key* or an *access token*. This is your password for the API.
+
+### vosonSML
+
+```{r}
+library(vosonSML)
+```
+
+For accessing social media APIs with vosonSML, you only need two functions:
+
+-   `Authenticate()` creates a credential object that contains any keys or access tokens needed to access a particular API. This credential object can be reused as long as your credentials don't change.
+-   `Collect()` initiates a series of API requests and stores the results as a dataframe or list of dataframes.
+
+vosonSML also provides tools for working with network data (i.e. the ways in which users or posts are connected to one another), but these will not be covered in this textbook.
 
 ## Reddit
 
+Reddit [generated over 3 billion posts and comments in 2022](https://www.statista.com/statistics/1319008/reddit-content-created/). Many of these contain long-form text. And its API is free. These traits make it very useful to researchers.
+
+Reddit content exists on three levels:
+
+- **Communities**, called "subreddits" are spaces for users to post about a specific topic. Individual subreddits are referred to as "r/SUBREDDIT". For example, [r/dataisbeautiful](https://www.reddit.com/r/dataisbeautiful/) is for data visualizations, [r/NaturalLanguage](https://www.reddit.com/r/NaturalLanguage/) is for posts about natural language processing, and [r/SampleSize](https://www.reddit.com/r/SampleSize/) is a place to gather volunteer participants for surveys and polls. Communities are policed by _moderators_, users who can remove posts or ban other users from the community. 
+- **Posts** are posted by users to a particular subreddit. Each post has a **title**, which is always text, and **content**, which can contain text, images, and videos.
+- **Comments** are responses to posts, responses to responses to posts, responses to responses to responses to posts, etc. These are always text.
+
+### The Reddit Algorithm
+
+See @proferes_etal_2021
+
+### Demographics on Reddit
+
+e.g. "(25M)", "[25M]"
+
+### Threads
+
+A post with all of its associated comments is called a _thread_. 
+
+@xiao_mensah_2022
+
+```{r}
+
+```
+
+### Communities
+
 @ashokkumar_pennebaker_2022 used both experimental data and naturalistic data retrieved from the Reddit API (r/The_Donald and r/hillaryclinton)
+
+```{r}
+
+```
 
 ::: {.callout-tip icon="false"}
 ## Advantages of Reddit Data
 
--   
+-   **Diverse Communities:**
+-   **Long-form Responses:**
+-   **Anonymity:** Users can remain relatively anonymous, which might encourage more honest and open sharing of experiences.
 :::
 
 ::: {.callout-important icon="false"}
 ## Disadvantages of Reddit Data
 
--   
+-   **Selection Bias:** Certain subreddits may attract specific demographics, leading to potential selection bias in the data.
+-   **Limited Generalizability:** Findings from Reddit may not generalize to the broader population due to the specific demographics and interests of its user base.
 :::
 
-## Twitter and Mastadon
+## Twitter
 
 ::: {.callout-tip icon="false"}
-## Advantages of Twitter/Mastadon Data
+## Advantages of Twitter Data
+
+-   **Hashtag Tracking:** Researchers can track specific hashtags related to psychological phenomena.
+-   **Character Limit:**
+:::
+
+::: {.callout-important icon="false"}
+## Disadvantages of Twitter Data
+
+-   **Character Limit:** The character limit on tweets may limit the depth of responses and the ability to convey complex psychological experiences.
+-   **Sampling Bias:** Twitter users may not be representative of the general population, leading to potential sampling bias.
+-   **Limited Context:** Tweets may lack context, making it challenging to fully understand the meaning behind short messages.
+:::
+
+## Mastadon
+
+Many servers have a theme based on a specific interest. It is also common for servers to be based around a particular locality, region, ethnicity, or country.
+
+Twitter and Mastodon use hashtags to categorize and organize content. subreddits on Reddit, instances on Mastodon
+
+On a standard Mastodon instance, these messages can include up to 500 text-based characters, greater than Twitter's 280-character limit.
+
+Mastodon uses community-based moderation, in which each server can limit or filter out undesirable types of content, while Twitter uses a single, global policy on content moderation.
+
+-   organized into servers for topic-specific *users*
+
+```{r}
+
+```
+
+::: {.callout-tip icon="false"}
+## Advantages of Mastadon Data
+
+-   **Hashtag Tracking:** Researchers can track specific hashtags related to psychological phenomena.
+-   **Character Limit:**
+:::
+
+::: {.callout-important icon="false"}
+## Disadvantages of Mastadon Data
+
+-   **Character Limit:** The character limit on tweets may limit the depth of responses and the ability to convey complex psychological experiences.
+-   **Sampling Bias:** Twitter users may not be representative of the general population, leading to potential sampling bias.
+-   **Limited Context:** Tweets may lack context, making it challenging to fully understand the meaning behind short messages.
+-   MASTADON **Customization:** Users can choose or create instances with specific rules and communities, allowing for more targeted data collection.
+-   MASTADON **Smaller User Base:** Mastodon has a smaller user base compared to major platforms, potentially limiting the diversity of data.
+-   MASTADON **Less Visibility:** The decentralized nature may make it harder to discover relevant conversations or trends.
+:::
+
+## YouTube
+
+```{r}
+
+```
+
+@rosenbusch_etal_2019
+
+::: {.callout-tip icon="false"}
+## Advantages of YouTube Data
 
 -   
 :::
 
 ::: {.callout-important icon="false"}
-## Disadvantages of Twitter/Mastadon Data
+## Disadvantages of YouTube Data
 
 -   
 :::
 
-## Other Data Sources with APIs
+## Other Web APIs {#sec-other-apis}
 
-- Youtube
-- Wikipedia (including user data)
-- Facebook
-- Semantic Scholar
-- [CORE](https://core.ac.uk/services/dataset)
+https://en.wikipedia.org/wiki/Comparison_of_microblogging_and_similar_services https://the-federation.info
+
+-   Wikipedia (including user data)
+-   Facebook
+-   Semantic Scholar
+-   [CORE](https://core.ac.uk/services/dataset)
 
 ------------------------------------------------------------------------
-

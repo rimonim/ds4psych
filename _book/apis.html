@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.433">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="author" content="Almog Simchon and Louis Teitelbaum">
-
-<title>Data Science for Psychology - 9&nbsp; Social Media APIs</title>
+<title>Data Science for Psychology - 9&nbsp; Web APIs</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +17,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 /* CSS for citations */
 div.csl-bib-body { }
@@ -42,7 +73,6 @@ div.csl-indent {
   margin-left: 2em;
 }</style>
 
-
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
@@ -52,6 +82,7 @@ div.csl-indent {
 <meta name="quarto:offset" content="./">
 <link href="./scraping.html" rel="next">
 <link href="./corpora.html" rel="prev">
+<link href="./images/favicon.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -60,8 +91,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -81,33 +111,24 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
-
-
 </head>
-
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./data-sources.html">Sources of Data</a></li><li class="breadcrumb-item"><a href="./apis.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Social Media APIs</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./data-sources.html">Sources of Data</a></li><li class="breadcrumb-item"><a href="./apis.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Web APIs</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Data Science for Psychology</a> 
         <div class="sidebar-tools-main">
@@ -127,7 +148,7 @@ div.csl-indent {
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Welcome</span></a>
@@ -153,8 +174,8 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./aesthetics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Why Aesthetic Choices are Important</span></span></a>
@@ -179,7 +200,7 @@ div.csl-indent {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./data-sources.html" class="sidebar-item-text sidebar-link">
@@ -188,8 +209,8 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./experiments.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Experiments</span></span></a>
@@ -204,7 +225,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./apis.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Social Media APIs</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Web APIs</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -214,7 +235,7 @@ div.csl-indent {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./quantification.html" class="sidebar-item-text sidebar-link">
@@ -223,11 +244,11 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./quanteda.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">quanteda.html</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Introduction to Quanteda</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -257,45 +278,55 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./topic-modeling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">topic-modeling.html</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Topic Modelling</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">embeddings.html</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Working with Embeddings</span></span></a>
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resources.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">resources.html</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
   </div>
 </li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#reddit" id="toc-reddit" class="nav-link active" data-scroll-target="#reddit"><span class="header-section-number">9.1</span> Reddit</a></li>
-  <li><a href="#twitter-and-mastadon" id="toc-twitter-and-mastadon" class="nav-link" data-scroll-target="#twitter-and-mastadon"><span class="header-section-number">9.2</span> Twitter and Mastadon</a></li>
-  <li><a href="#other-data-sources-with-apis" id="toc-other-data-sources-with-apis" class="nav-link" data-scroll-target="#other-data-sources-with-apis"><span class="header-section-number">9.3</span> Other Data Sources with APIs</a></li>
+<li>
+<a href="#api-basic-concepts" id="toc-api-basic-concepts" class="nav-link active" data-scroll-target="#api-basic-concepts"><span class="header-section-number">9.1</span> API Basic Concepts</a>
+  <ul class="collapse">
+<li><a href="#vosonsml" id="toc-vosonsml" class="nav-link" data-scroll-target="#vosonsml"><span class="header-section-number">9.1.1</span> vosonSML</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rimonim/ds4psych/blob/main/apis.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+</li>
+  <li>
+<a href="#reddit" id="toc-reddit" class="nav-link" data-scroll-target="#reddit"><span class="header-section-number">9.2</span> Reddit</a>
+  <ul class="collapse">
+<li><a href="#the-reddit-algorithm" id="toc-the-reddit-algorithm" class="nav-link" data-scroll-target="#the-reddit-algorithm"><span class="header-section-number">9.2.1</span> The Reddit Algorithm</a></li>
+  <li><a href="#demographics-on-reddit" id="toc-demographics-on-reddit" class="nav-link" data-scroll-target="#demographics-on-reddit"><span class="header-section-number">9.2.2</span> Demographics on Reddit</a></li>
+  <li><a href="#threads" id="toc-threads" class="nav-link" data-scroll-target="#threads"><span class="header-section-number">9.2.3</span> Threads</a></li>
+  <li><a href="#communities" id="toc-communities" class="nav-link" data-scroll-target="#communities"><span class="header-section-number">9.2.4</span> Communities</a></li>
+  </ul>
+</li>
+  <li><a href="#twitter" id="toc-twitter" class="nav-link" data-scroll-target="#twitter"><span class="header-section-number">9.3</span> Twitter</a></li>
+  <li><a href="#mastadon" id="toc-mastadon" class="nav-link" data-scroll-target="#mastadon"><span class="header-section-number">9.4</span> Mastadon</a></li>
+  <li><a href="#youtube" id="toc-youtube" class="nav-link" data-scroll-target="#youtube"><span class="header-section-number">9.5</span> YouTube</a></li>
+  <li><a href="#sec-other-apis" id="toc-sec-other-apis" class="nav-link" data-scroll-target="#sec-other-apis"><span class="header-section-number">9.6</span> Other Web APIs</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rimonim/ds4psych/blob/main/apis.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title"><span id="sec-apis" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Social Media APIs</span></span></h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title"><span id="sec-apis" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Web APIs</span></span></h1>
 </div>
 
 
@@ -308,11 +339,59 @@ div.csl-indent {
   </div>
   
 
-</header>
-
-<p>https://github.com/vosonlab/vosonSML</p>
-<section id="reddit" class="level2" data-number="9.1">
-<h2 data-number="9.1" class="anchored" data-anchor-id="reddit"><span class="header-section-number">9.1</span> Reddit</h2>
+</header><p>In <a href="corpora.html"><span>Chapter&nbsp;8</span></a>, we listed numerous placed to find datasets online. The sorts of datasets discussed there are generally formatted as a .csv file—or something like it—which you can download directly to your computer and import into R using <code>read_csv()</code>. Lot’s of online data, however, are not pre-packaged in this way. When datasets are very large or complex, or are being updated regularly, the hosts of the data will instead provide a <strong>web API</strong>.</p>
+<p>You can think of web APIs as little programming languages that are written inside a URL (URLs are the things you write in the top of your web browser to tell it which web page you want to access). When you access your custom-written URL, the host will perform whatever computations are necessary to get you your data, and send it to you in the same way that it would send you a website.</p>
+<p>Web APIs are sometimes difficult to use because each one works differently. Learning to use a new API can be like learning a new programming language. For this reason, web APIs sometimes have associated <strong>wrappers</strong>, packages that allow you to communicate with the API in a more familiar format.</p>
+<p>In the first part of this chapter, we introduce the <a href="https://github.com/vosonlab/vosonSML"><code>vosonSML</code> package</a>, an R-friendly wrapper that provides easy access to the Reddit, Twitter, Mastadon, and YouTube APIs. At the end of the chapter, we will discuss web APIs that do not have a convenient wrapper in R.</p>
+<section id="api-basic-concepts" class="level2" data-number="9.1"><h2 data-number="9.1" class="anchored" data-anchor-id="api-basic-concepts">
+<span class="header-section-number">9.1</span> API Basic Concepts</h2>
+<ul>
+<li>
+<strong>Requests:</strong> Each time you visit a URL associated with an API, you are submitting a <em>request</em> for data.</li>
+<li>
+<strong>Endpoints:</strong> Every API has at least one <em>endpoint</em>, a contact point for particular types of requests.</li>
+<li>
+<strong>Rate Limits:</strong> Many APIs set limits on the number of requests you can make per minute (or per second). This is because processing requests costs time and money for the host. If you go beyond the rate limit, the API will return an error like <em>“429 Too Many Requests”</em>.</li>
+<li>
+<strong>Authentication:</strong> Some APIs are not open to the public, instead requiring users to apply for access or pay for a subscription. When accessing these APIs, you need an <em>API key</em> or an <em>access token</em>. This is your password for the API.</li>
+</ul>
+<section id="vosonsml" class="level3" data-number="9.1.1"><h3 data-number="9.1.1" class="anchored" data-anchor-id="vosonsml">
+<span class="header-section-number">9.1.1</span> vosonSML</h3>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vosonlab/vosonSML">vosonSML</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For accessing social media APIs with vosonSML, you only need two functions:</p>
+<ul>
+<li>
+<code><a href="https://rdrr.io/pkg/vosonSML/man/Authenticate.html">Authenticate()</a></code> creates a credential object that contains any keys or access tokens needed to access a particular API. This credential object can be reused as long as your credentials don’t change.</li>
+<li>
+<code><a href="https://rdrr.io/pkg/vosonSML/man/Collect.html">Collect()</a></code> initiates a series of API requests and stores the results as a dataframe or list of dataframes.</li>
+</ul>
+<p>vosonSML also provides tools for working with network data (i.e.&nbsp;the ways in which users or posts are connected to one another), but these will not be covered in this textbook.</p>
+</section></section><section id="reddit" class="level2" data-number="9.2"><h2 data-number="9.2" class="anchored" data-anchor-id="reddit">
+<span class="header-section-number">9.2</span> Reddit</h2>
+<p>Reddit <a href="https://www.statista.com/statistics/1319008/reddit-content-created/">generated over 3 billion posts and comments in 2022</a>. Many of these contain long-form text. And its API is free. These traits make it very useful to researchers.</p>
+<p>Reddit content exists on three levels:</p>
+<ul>
+<li>
+<strong>Communities</strong>, called “subreddits” are spaces for users to post about a specific topic. Individual subreddits are referred to as “r/SUBREDDIT”. For example, <a href="https://www.reddit.com/r/dataisbeautiful/">r/dataisbeautiful</a> is for data visualizations, <a href="https://www.reddit.com/r/NaturalLanguage/">r/NaturalLanguage</a> is for posts about natural language processing, and <a href="https://www.reddit.com/r/SampleSize/">r/SampleSize</a> is a place to gather volunteer participants for surveys and polls. Communities are policed by <em>moderators</em>, users who can remove posts or ban other users from the community.</li>
+<li>
+<strong>Posts</strong> are posted by users to a particular subreddit. Each post has a <strong>title</strong>, which is always text, and <strong>content</strong>, which can contain text, images, and videos.</li>
+<li>
+<strong>Comments</strong> are responses to posts, responses to responses to posts, responses to responses to responses to posts, etc. These are always text.</li>
+</ul>
+<section id="the-reddit-algorithm" class="level3" data-number="9.2.1"><h3 data-number="9.2.1" class="anchored" data-anchor-id="the-reddit-algorithm">
+<span class="header-section-number">9.2.1</span> The Reddit Algorithm</h3>
+<p>See <span class="citation" data-cites="proferes_etal_2021">Proferes et al. (<a href="#ref-proferes_etal_2021" role="doc-biblioref">2021</a>)</span></p>
+</section><section id="demographics-on-reddit" class="level3" data-number="9.2.2"><h3 data-number="9.2.2" class="anchored" data-anchor-id="demographics-on-reddit">
+<span class="header-section-number">9.2.2</span> Demographics on Reddit</h3>
+<p>e.g.&nbsp;“(25M)”, “[25M]”</p>
+</section><section id="threads" class="level3" data-number="9.2.3"><h3 data-number="9.2.3" class="anchored" data-anchor-id="threads">
+<span class="header-section-number">9.2.3</span> Threads</h3>
+<p>A post with all of its associated comments is called a <em>thread</em>.</p>
+<p><span class="citation" data-cites="xiao_mensah_2022">Xiao &amp; Mensah (<a href="#ref-xiao_mensah_2022" role="doc-biblioref">2022</a>)</span></p>
+</section><section id="communities" class="level3" data-number="9.2.4"><h3 data-number="9.2.4" class="anchored" data-anchor-id="communities">
+<span class="header-section-number">9.2.4</span> Communities</h3>
 <p><span class="citation" data-cites="ashokkumar_pennebaker_2022">Ashokkumar &amp; Pennebaker (<a href="#ref-ashokkumar_pennebaker_2022" role="doc-biblioref">2022</a>)</span> used both experimental data and naturalistic data retrieved from the Reddit API (r/The_Donald and r/hillaryclinton)</p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -325,7 +404,10 @@ Advantages of Reddit Data
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li></li>
+<li><strong>Diverse Communities:</strong></li>
+<li><strong>Long-form Responses:</strong></li>
+<li>
+<strong>Anonymity:</strong> Users can remain relatively anonymous, which might encourage more honest and open sharing of experiences.</li>
 </ul>
 </div>
 </div>
@@ -340,25 +422,29 @@ Disadvantages of Reddit Data
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li></li>
+<li>
+<strong>Selection Bias:</strong> Certain subreddits may attract specific demographics, leading to potential selection bias in the data.</li>
+<li>
+<strong>Limited Generalizability:</strong> Findings from Reddit may not generalize to the broader population due to the specific demographics and interests of its user base.</li>
 </ul>
 </div>
 </div>
-</section>
-<section id="twitter-and-mastadon" class="level2" data-number="9.2">
-<h2 data-number="9.2" class="anchored" data-anchor-id="twitter-and-mastadon"><span class="header-section-number">9.2</span> Twitter and Mastadon</h2>
+</section></section><section id="twitter" class="level2" data-number="9.3"><h2 data-number="9.3" class="anchored" data-anchor-id="twitter">
+<span class="header-section-number">9.3</span> Twitter</h2>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Advantages of Twitter/Mastadon Data
+Advantages of Twitter Data
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li></li>
+<li>
+<strong>Hashtag Tracking:</strong> Researchers can track specific hashtags related to psychological phenomena.</li>
+<li><strong>Character Limit:</strong></li>
 </ul>
 </div>
 </div>
@@ -368,20 +454,107 @@ Advantages of Twitter/Mastadon Data
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Disadvantages of Twitter/Mastadon Data
+Disadvantages of Twitter Data
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li></li>
+<li>
+<strong>Character Limit:</strong> The character limit on tweets may limit the depth of responses and the ability to convey complex psychological experiences.</li>
+<li>
+<strong>Sampling Bias:</strong> Twitter users may not be representative of the general population, leading to potential sampling bias.</li>
+<li>
+<strong>Limited Context:</strong> Tweets may lack context, making it challenging to fully understand the meaning behind short messages.</li>
 </ul>
 </div>
 </div>
-</section>
-<section id="other-data-sources-with-apis" class="level2" data-number="9.3">
-<h2 data-number="9.3" class="anchored" data-anchor-id="other-data-sources-with-apis"><span class="header-section-number">9.3</span> Other Data Sources with APIs</h2>
+</section><section id="mastadon" class="level2" data-number="9.4"><h2 data-number="9.4" class="anchored" data-anchor-id="mastadon">
+<span class="header-section-number">9.4</span> Mastadon</h2>
+<p>Many servers have a theme based on a specific interest. It is also common for servers to be based around a particular locality, region, ethnicity, or country.</p>
+<p>Twitter and Mastodon use hashtags to categorize and organize content. subreddits on Reddit, instances on Mastodon</p>
+<p>On a standard Mastodon instance, these messages can include up to 500 text-based characters, greater than Twitter’s 280-character limit.</p>
+<p>Mastodon uses community-based moderation, in which each server can limit or filter out undesirable types of content, while Twitter uses a single, global policy on content moderation.</p>
 <ul>
-<li>Youtube</li>
+<li>organized into servers for topic-specific <em>users</em>
+</li>
+</ul>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Advantages of Mastadon Data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>
+<strong>Hashtag Tracking:</strong> Researchers can track specific hashtags related to psychological phenomena.</li>
+<li><strong>Character Limit:</strong></li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Disadvantages of Mastadon Data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>
+<strong>Character Limit:</strong> The character limit on tweets may limit the depth of responses and the ability to convey complex psychological experiences.</li>
+<li>
+<strong>Sampling Bias:</strong> Twitter users may not be representative of the general population, leading to potential sampling bias.</li>
+<li>
+<strong>Limited Context:</strong> Tweets may lack context, making it challenging to fully understand the meaning behind short messages.</li>
+<li>MASTADON <strong>Customization:</strong> Users can choose or create instances with specific rules and communities, allowing for more targeted data collection.</li>
+<li>MASTADON <strong>Smaller User Base:</strong> Mastodon has a smaller user base compared to major platforms, potentially limiting the diversity of data.</li>
+<li>MASTADON <strong>Less Visibility:</strong> The decentralized nature may make it harder to discover relevant conversations or trends.</li>
+</ul>
+</div>
+</div>
+</section><section id="youtube" class="level2" data-number="9.5"><h2 data-number="9.5" class="anchored" data-anchor-id="youtube">
+<span class="header-section-number">9.5</span> YouTube</h2>
+<p><span class="citation" data-cites="rosenbusch_etal_2019">Rosenbusch et al. (<a href="#ref-rosenbusch_etal_2019" role="doc-biblioref">2019</a>)</span></p>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Advantages of YouTube Data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>
+</li></ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Disadvantages of YouTube Data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>
+</li></ul>
+</div>
+</div>
+</section><section id="sec-other-apis" class="level2" data-number="9.6"><h2 data-number="9.6" class="anchored" data-anchor-id="sec-other-apis">
+<span class="header-section-number">9.6</span> Other Web APIs</h2>
+<p>https://en.wikipedia.org/wiki/Comparison_of_microblogging_and_similar_services https://the-federation.info</p>
+<ul>
 <li>Wikipedia (including user data)</li>
 <li>Facebook</li>
 <li>Semantic Scholar</li>
@@ -394,11 +567,17 @@ Disadvantages of Twitter/Mastadon Data
 <div id="ref-ashokkumar_pennebaker_2022" class="csl-entry" role="listitem">
 Ashokkumar, A., &amp; Pennebaker, J. W. (2022). Tracking group identity through natural language within groups. <em>PNAS Nexus</em>, <em>1</em>(2), pgac022. <a href="https://doi.org/10.1093/pnasnexus/pgac022">https://doi.org/10.1093/pnasnexus/pgac022</a>
 </div>
+<div id="ref-proferes_etal_2021" class="csl-entry" role="listitem">
+Proferes, N., Jones, N., Gilbert, S., Fiesler, C., &amp; Zimmer, M. (2021). Studying reddit: A systematic overview of disciplines, approaches, methods, and ethics. <em>Social Media + Society</em>, <em>7</em>(2), 20563051211019004. <a href="https://doi.org/10.1177/20563051211019004">https://doi.org/10.1177/20563051211019004</a>
 </div>
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+<div id="ref-rosenbusch_etal_2019" class="csl-entry" role="listitem">
+Rosenbusch, H., Evans, A. M., &amp; Zeelenberg, M. (2019). Multilevel emotion transfer on YouTube: Disentangling the effects of emotional contagion and homophily on video audiences. <em>Social Psychological and Personality Science</em>, <em>10</em>(8), 1028–1035. <a href="https://doi.org/10.1177/1948550618820309">https://doi.org/10.1177/1948550618820309</a>
+</div>
+<div id="ref-xiao_mensah_2022" class="csl-entry" role="listitem">
+Xiao, L., &amp; Mensah, H. (2022). How does the thread level of a comment affect its perceived persuasiveness? A reddit study. In K. Arai (Ed.), <em>Intelligent computing</em> (pp. 800–813). Springer International Publishing.
+</div>
+</div>
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -630,9 +809,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./corpora.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Corpus Data</span></span>
       </a>          
@@ -644,8 +821,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">Data Science for Psychology was written by Almog Simchon and Louis Teitelbaum.</div>   
     <div class="nav-footer-center">
       &nbsp;
@@ -653,7 +829,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
   </div>
 </footer>
-
 
 
 </body></html>

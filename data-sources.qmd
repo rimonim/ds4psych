@@ -2,4 +2,4 @@
 
 Language is everywhere. The aspiring data science in psychology researcher can find data in a variety of sources, ranging from novel experiments to web scraping. In this unit, we introduce the most popular sources of data, along with the advantages and disadvantages of each one. 
 
-In the sections on APIs and web scraping, we give a detailed tutorial in accessing these resources with code.
+In the sections on APIs and web scraping, we give a detailed tutorial on accessing these resources with code.
