@@ -1,5 +1,7 @@
 # Why Aesthetic Choices are Important {#sec-aesthetics}
 
+Take a moment to appreciate this comic from [xkcd.com](https://xkcd.com/2864/):
+
 ```{r setup}
 #| echo: false
 #| include: false

@@ -277,14 +277,32 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./topic-modeling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Topic Modelling</span></span></a>
+  <a href="./vectorspace-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Thinking in Vector Space</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Working with Embeddings</span></span></a>
+  <a href="./topic-modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Topic Modelling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./decontextualized-embeddings.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./contextualized-embeddings.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./navigating-vectorspace.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Navigating Vector Space</span></span></a>
   </div>
 </li>
       </ul>
@@ -292,7 +310,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resources.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
   </div>
 </li>
     </ul>
@@ -314,7 +332,7 @@ div.csl-indent {
   <ul class="collapse">
 <li><a href="#the-reddit-algorithm" id="toc-the-reddit-algorithm" class="nav-link" data-scroll-target="#the-reddit-algorithm"><span class="header-section-number">9.2.1</span> The Reddit Algorithm</a></li>
   <li><a href="#demographics-on-reddit" id="toc-demographics-on-reddit" class="nav-link" data-scroll-target="#demographics-on-reddit"><span class="header-section-number">9.2.2</span> Demographics on Reddit</a></li>
-  <li><a href="#threads" id="toc-threads" class="nav-link" data-scroll-target="#threads"><span class="header-section-number">9.2.3</span> Threads</a></li>
+  <li><a href="#sec-reddit-threads" id="toc-sec-reddit-threads" class="nav-link" data-scroll-target="#sec-reddit-threads"><span class="header-section-number">9.2.3</span> Threads</a></li>
   <li><a href="#communities" id="toc-communities" class="nav-link" data-scroll-target="#communities"><span class="header-section-number">9.2.4</span> Communities</a></li>
   </ul>
 </li>
@@ -382,17 +400,25 @@ div.csl-indent {
 </ul>
 <section id="the-reddit-algorithm" class="level3" data-number="9.2.1"><h3 data-number="9.2.1" class="anchored" data-anchor-id="the-reddit-algorithm">
 <span class="header-section-number">9.2.1</span> The Reddit Algorithm</h3>
-<p>See <span class="citation" data-cites="proferes_etal_2021">Proferes et al. (<a href="#ref-proferes_etal_2021" role="doc-biblioref">2021</a>)</span></p>
+<p>Reddit data are not representative samples of the global population. They are not even representative samples of Reddit users. This is partly due to the dynamics of the Reddit ranking algorithm, which gives precedent to viral content. The details of the algorithm are <a href="https://medium.com/hacking-and-gonzo/how-reddit-ranking-algorithms-work-ef111e33d0d9">no longer public</a>, but it is largely based on “upvotes” and “downvotes” from the community, and probably also incorporates the time since posting. The ranking system for comments is almost certainly different from the ranking system for posts. Reddit also has a “Karma” system, by which users who post popular content get subsequent content boosted. This creates an incentive system which is <a href="https://www.reddit.com/r/ModSupport/comments/162p502/why_is_reddit_doing_nothing_to_handle_the_obvious/">sometimes exploited by the advertising industry</a>. The bottom line: <strong>Reddit posts are disproportionately viral</strong>. To partially counteract this when gathering Reddit data, set the API to sort by recency (<code>sort = "new"</code>) rather than the default, “best” <a href="#sec-reddit-threads"><span>Section&nbsp;9.2.3</span></a>.</p>
 </section><section id="demographics-on-reddit" class="level3" data-number="9.2.2"><h3 data-number="9.2.2" class="anchored" data-anchor-id="demographics-on-reddit">
 <span class="header-section-number">9.2.2</span> Demographics on Reddit</h3>
-<p>e.g.&nbsp;“(25M)”, “[25M]”</p>
-</section><section id="threads" class="level3" data-number="9.2.3"><h3 data-number="9.2.3" class="anchored" data-anchor-id="threads">
+<p>Although Reddit accounts are almost always anonymous, users sometimes publicize aspects of their identity in a normative format. The most common of these is the convention to record age and sex (or gender) in parentheses or square brackets. For example, a 25-year-old man might refer to himself as “me (25M)” or a 30-year-old woman might refer to herself as “myself [30F]”. By extracting such patterns, information about the age and gender of users can be extracted. This information should be used with caution for three reasons: First, extracting demographic information of users can lead to ethical issues <a href="ethics.html">see&nbsp;<span>2</span></a>. Second, self-reporting of demographic information happens disproportionately in certain subreddits, which themselves can be demographically skewed. Third, many users have more than one account. Especially for sensitive topics of the sort where demographic information is relevant, users will often generate <em>throwaway accounts</em> to disconnect their sensitive activity from their every-day use. Because of this, the average activity of users who identify themselves as “30F” is unlikely to be representative of the average overall activity of 30-year-old women.</p>
+</section><section id="sec-reddit-threads" class="level3" data-number="9.2.3"><h3 data-number="9.2.3" class="anchored" data-anchor-id="sec-reddit-threads">
 <span class="header-section-number">9.2.3</span> Threads</h3>
 <p>A post with all of its associated comments is called a <em>thread</em>.</p>
 <p><span class="citation" data-cites="xiao_mensah_2022">Xiao &amp; Mensah (<a href="#ref-xiao_mensah_2022" role="doc-biblioref">2022</a>)</span></p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># sort = "new"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section><section id="communities" class="level3" data-number="9.2.4"><h3 data-number="9.2.4" class="anchored" data-anchor-id="communities">
 <span class="header-section-number">9.2.4</span> Communities</h3>
 <p><span class="citation" data-cites="ashokkumar_pennebaker_2022">Ashokkumar &amp; Pennebaker (<a href="#ref-ashokkumar_pennebaker_2022" role="doc-biblioref">2022</a>)</span> used both experimental data and naturalistic data retrieved from the Reddit API (r/The_Donald and r/hillaryclinton)</p>
+<ul>
+<li>r/depression, r/ SuicideWatch, r/bipolarreddit, and r/opiates,</li>
+<li>r/changemyview, r/IAmA, and r/ExplainLikeImFive</li>
+<li>r/politics</li>
+</ul>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -566,9 +592,6 @@ Disadvantages of YouTube Data
 <div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
 <div id="ref-ashokkumar_pennebaker_2022" class="csl-entry" role="listitem">
 Ashokkumar, A., &amp; Pennebaker, J. W. (2022). Tracking group identity through natural language within groups. <em>PNAS Nexus</em>, <em>1</em>(2), pgac022. <a href="https://doi.org/10.1093/pnasnexus/pgac022">https://doi.org/10.1093/pnasnexus/pgac022</a>
-</div>
-<div id="ref-proferes_etal_2021" class="csl-entry" role="listitem">
-Proferes, N., Jones, N., Gilbert, S., Fiesler, C., &amp; Zimmer, M. (2021). Studying reddit: A systematic overview of disciplines, approaches, methods, and ethics. <em>Social Media + Society</em>, <em>7</em>(2), 20563051211019004. <a href="https://doi.org/10.1177/20563051211019004">https://doi.org/10.1177/20563051211019004</a>
 </div>
 <div id="ref-rosenbusch_etal_2019" class="csl-entry" role="listitem">
 Rosenbusch, H., Evans, A. M., &amp; Zeelenberg, M. (2019). Multilevel emotion transfer on YouTube: Disentangling the effects of emotional contagion and homophily on video audiences. <em>Social Psychological and Personality Science</em>, <em>10</em>(8), 1028–1035. <a href="https://doi.org/10.1177/1948550618820309">https://doi.org/10.1177/1948550618820309</a>

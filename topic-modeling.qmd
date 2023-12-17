@@ -1,1 +1,7 @@
 # Topic Modelling {#sec-topic-modeling}
+
+## LDA
+
+## LSA
+
+@deerwester_etal_1990

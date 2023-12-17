@@ -44,8 +44,11 @@ book:
         - eda.qmd
         - word-counting.qmd
         - word-counting-improvements.qmd
+        - vectorspace-intro.qmd
         - topic-modeling.qmd
-        - embeddings.qmd
+        - decontextualized-embeddings.qmd
+        - contextualized-embeddings.qmd
+        - navigating-vectorspace.qmd
     - resources.qmd
 
 bibliography: references.bib

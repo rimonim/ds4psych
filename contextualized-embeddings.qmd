@@ -1,0 +1,15 @@
+# Contextualization and Large Language Models {#sec-contextualized-embeddings}
+
+```{r setup}
+#| echo: false
+#| include: false
+
+source("_common.R")
+```
+
+### Hugging Face and the `text` Package
+
+@kjell_etal_2021
+
+@kjell_etal_2022
+

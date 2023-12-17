@@ -1,0 +1,25 @@
+# Navigating Vector Space {#sec-navigating-vectorspace}
+
+```{r setup}
+#| echo: false
+#| include: false
+
+source("_common.R")
+```
+
+## Parallelograms
+
+Introduced with word2vec by @mikolov_etal_2013
+
+Glove [@pennington_etal_2014] is designed with this property in mind. Transformer models are not.
+
+In CCR, for example, there’s a difference between agreeing with statements in a questionnaire and actually writing like a questionnaire. How do I know that I’m measuring how anxious/depressed the comments are and not how questionnaire-y they are?
+Potential workaround: reverse all of the statements in the questionnaire (as for reverse-coded items), add them to the original questionnaire, and get the average embedding of the construct-neutral questionnaire. Then subtract this embedding from the original questionnaire average embedding.
+
+## Advanced Similarity Measures
+
+- Jensen–Shannon distance
+
+## Dimension Projection
+
+## Machine Learning Methods

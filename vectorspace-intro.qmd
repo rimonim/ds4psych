@@ -1,0 +1,237 @@
+# Thinking in Vector Space {#sec-vectorspace-intro}
+
+```{r setup}
+#| echo: false
+#| include: false
+
+source("_common.R")
+```
+
+Thus far we have covered various forms of counting. But more advanced methods in NLP often rely on _comparing_ instead. To understand these methods, we must get comfortable with the idea of vector space. 
+
+This chapter is a basic introduction to the concept of representing documents as vectors. We also introduce two basic vector-based measurement techniques: euclidean distance and cosine similarity. A more advanced and in-depth guide to navigating vector space will be covered in @sec-navigating-vectorspace.
+
+---
+
+A fictional example^[This section is adapted from @alammar_2019]: Daniel and Amos filled out a psychology questionnaire. The questionnaire measured three aspects of their personalities: extraversion, openness to experience, and neuroticism. 
+
+```{r}
+#| echo: false
+
+personality <- tribble(
+  ~person, ~extraversion, ~openness, ~neuroticism,
+  "Daniel", 4,             6,         5,
+  "Amos",   2,             7,         3
+)
+```
+
+On the extraversion scale, Amos scored a 2 and Daniel scored a 4: 
+
+```{r}
+#| echo: false
+
+personality |> 
+  ggplot(aes(1, extraversion, fill = extraversion)) +
+    # axis scale
+    annotate("segment", 
+             x = c(1, rep.int(.9, 7)), xend = c(1, rep.int(1.1, 7)), 
+             y = c(1, 1:7), yend = c(7, 1:7)) + 
+    geom_point(size = 5, shape = 21) +
+    scale_y_continuous(breaks = 1:7, limits = c(-1.5,7.5)) + 
+    # number tiles
+    annotate("tile", color = "black",
+             x = 1:3, y = -1, width = .9, height = .9) +
+    geom_tile(aes(x = 1, y = -1), width = .8, height = .8) + 
+    geom_text(aes(x = 1, y = -1, label = extraversion), size = 5) +
+    # colors
+    scale_fill_gradientn(limits = c(1,7), guide = "none",
+                         colours = hcl.colors(7, palette = "Blue-Red")) + 
+    # general
+    coord_equal() +
+    facet_wrap(~person) +
+    labs(x = "", y = "Extraversion") +
+    theme_void() +
+    theme(panel.grid.major.y = element_line(color = "#E5E5E5"),
+          axis.text.y = element_text(),
+          axis.title = element_text(angle = 90, hjust = .67, size = 15,
+                                    margin = margin(r = 15)),
+          strip.text = element_text(size = 20))
+```
+
+On the openness scale, Amos scored a 7 and Daniel scored a 6:
+
+```{r}
+#| echo: false
+
+personality |> 
+  ggplot(aes(2, openness, fill = openness)) +
+    # axis scale
+    annotate("segment", 
+             x = c(2, rep.int(1.9, 7)), xend = c(2, rep.int(2.1, 7)), 
+             y = c(1, 1:7), yend = c(7, 1:7)) + 
+    geom_point(size = 5, shape = 21) +
+    scale_y_continuous(breaks = 1:7, limits = c(-1.5,7.5)) + 
+    # number tiles
+    annotate("tile", color = "black",
+             x = 1:3, y = -1, width = .9, height = .9) +
+    geom_tile(aes(x = 1, y = -1, fill = extraversion), width = .8, height = .8) + 
+    geom_tile(aes(x = 2, y = -1), width = .8, height = .8) + 
+    geom_text(aes(x = 1, y = -1, label = extraversion), size = 5) +
+    geom_text(aes(x = 2, y = -1, label = openness), size = 5) +
+    # colors
+    scale_fill_gradientn(limits = c(1,7), guide = "none",
+                         colours = hcl.colors(7, palette = "Blue-Red")) + 
+    # general
+    coord_equal() +
+    facet_wrap(~person) +
+    labs(x = "", y = "Openness") +
+    theme_void() +
+    theme(panel.grid.major.y = element_line(color = "#E5E5E5"),
+          axis.text.y = element_text(),
+          axis.title = element_text(angle = 90, hjust = .67, size = 15,
+                                    margin = margin(r = 15)),
+          strip.text = element_text(size = 20))
+```
+
+
+On the neuroticism scale, Amos scored a 4 and Daniel scored a 5.
+
+```{r}
+#| echo: false
+
+personality |> 
+  ggplot(aes(3, neuroticism, fill = neuroticism)) +
+    # axis scale
+    annotate("segment", 
+             x = c(3, rep.int(2.9, 7)), xend = c(3, rep.int(3.1, 7)), 
+             y = c(1, 1:7), yend = c(7, 1:7)) + 
+    geom_point(size = 5, shape = 21) +
+    scale_y_continuous(breaks = 1:7, limits = c(-1.5,7.5)) + 
+    # number tiles
+    annotate("tile", color = "black",
+             x = 1:3, y = -1, width = .9, height = .9) +
+    geom_tile(aes(x = 1, y = -1, fill = extraversion), width = .8, height = .8) + 
+    geom_tile(aes(x = 2, y = -1, fill = openness), width = .8, height = .8) + 
+    geom_tile(aes(x = 3, y = -1), width = .8, height = .8) + 
+    geom_text(aes(x = 1, y = -1, label = extraversion), size = 5) +
+    geom_text(aes(x = 2, y = -1, label = openness), size = 5) +
+    geom_text(aes(x = 3, y = -1, label = neuroticism), size = 5) +
+    # colors
+    scale_fill_gradientn(limits = c(1,7), guide = "none",
+                         colours = hcl.colors(7, palette = "Blue-Red")) + 
+    # general
+    coord_equal() +
+    facet_wrap(~person) +
+    labs(x = "", y = "Neuroticism") +
+    theme_void() +
+    theme(panel.grid.major.y = element_line(color = "#E5E5E5"),
+          axis.text.y = element_text(),
+          axis.title = element_text(angle = 90, hjust = .67, size = 15,
+                                    margin = margin(r = 15)),
+          strip.text = element_text(size = 20))
+```
+
+
+
+We can now represent each person's personality as a list of three numbers, or a _three dimensional vector_. We can graph these vectors in three dimensional space:
+
+```{r}
+#| echo: false
+#| fig-width: 6
+#| fig-height: 1
+
+personality |> 
+  ggplot(aes(3, neuroticism, fill = neuroticism)) +
+    # number tiles
+    annotate("tile", color = "black",
+             x = 1:3, y = -1, width = .9, height = .9) +
+    geom_tile(aes(x = 1, y = -1, fill = extraversion), width = .8, height = .8) + 
+    geom_tile(aes(x = 2, y = -1, fill = openness), width = .8, height = .8) + 
+    geom_tile(aes(x = 3, y = -1), width = .8, height = .8) + 
+    geom_text(aes(x = 1, y = -1, label = extraversion), size = 5) +
+    geom_text(aes(x = 2, y = -1, label = openness), size = 5) +
+    geom_text(aes(x = 3, y = -1, label = neuroticism), size = 5) +
+    # colors
+    scale_fill_gradientn(limits = c(1,7), guide = "none",
+                         colours = hcl.colors(7, palette = "Blue-Red")) + 
+    # general
+    coord_equal() +
+    facet_wrap(~person) +
+    labs(x = "", y = "") +
+    theme_void() +
+    theme(axis.title = element_text(angle = 90, hjust = .67, size = 15,
+                                    margin = margin(r = 15)),
+          strip.text = element_text(size = 20))
+```
+
+
+
+
+```{r}
+#| echo: false
+#| warning: false
+
+library(plotly)
+
+personality |> 
+  plot_ly(x = ~extraversion, 
+          y = ~openness, 
+          z = ~neuroticism,
+          split = ~person) |> 
+  add_markers() |> 
+  add_text(text = ~person) |> 
+  add_paths(
+    data = personality |> 
+      bind_rows(mutate(personality, 
+                       extraversion = 0, 
+                       openness = 0,
+                       neuroticism = 0)) |> 
+      group2NA("person")) |> 
+  layout(xaxis = list(zerolinecolor = 'black',
+                      zerolinewidth = 10),
+         showlegend = FALSE)
+```
+
+Now imagine that we encounter a third person, Elizabeth. We would like to know whether Elizabeth is more similar to Daniel or to Amos.
+
+```{r}
+#| echo: false
+#| warning: false
+
+personality <- personality |> 
+  add_row(person = "Elizabeth",
+            extraversion = 8,
+            openness = 4,
+            neuroticism = 6)
+
+personality |> 
+  rename(Dim1 = extraversion, Dim2 = openness, Dim3 = neuroticism) |> 
+  plot_ly(x = ~Dim1, 
+          y = ~Dim2, 
+          z = ~Dim3,
+          split = ~person) |> 
+  add_markers() |> 
+  add_text(text = ~person) |> 
+  add_paths(
+    data = personality |> 
+      rename(Dim1 = extraversion, Dim2 = openness, Dim3 = neuroticism) |> 
+      bind_rows(mutate(personality, 
+                       Dim1 = 0, 
+                       Dim2 = 0,
+                       Dim3 = 0)) |> 
+      group2NA("person")) |> 
+  layout(xaxis = list(zerolinecolor = 'black',
+                      zerolinewidth = 10),
+         showlegend = FALSE)
+```
+
+After graphing all three people in three-dimensional vector space, it becomes obvious that Elizabeth is more similar to Daniel than she is to Amos. Thinking of people (or any sort of observations) as vectors is powerful because it allows us to apply geometric reasoning to data. The beauty of this approach is that we can measure these things without knowing anything about what the dimensions represent. This will be important later.
+
+Thus far we have discussed three-dimensional vector space. But what if we want to measure personality with the full Big-Five traits---openness, conscientiousness, extraversion, agreeableness, and neuroticism? Five dimensions would make it impossible to graph the data in an intuitive way as we have done above, but in a mathematical sense, it doesn't matter. We can measure distance---and many other geometric concepts---just as easily in five-dimensional vector space as in three dimensions.
+
+## Distance and Similarity
+
+### Euclidean Distance {#sec-euclidean-distance}
+
+### Cosine Similarity {#sec-cosine-similarity}
+

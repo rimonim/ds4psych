@@ -1,5 +1,0 @@
-# Working with Embeddings {#sec-embeddings}
-
-@kjell_etal_2021
-
-@kjell_etal_2022

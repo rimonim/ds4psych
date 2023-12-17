@@ -1,5 +1,12 @@
 # Web APIs {#sec-apis}
 
+```{r setup}
+#| echo: false
+#| include: false
+
+source("_common.R")
+```
+
 In @sec-corpora, we listed numerous placed to find datasets online. The sorts of datasets discussed there are generally formatted as a .csv file---or something like it---which you can download directly to your computer and import into R using `read_csv()`. Lot's of online data, however, are not pre-packaged in this way. When datasets are very large or complex, or are being updated regularly, the hosts of the data will instead provide a **web API**.
 
 You can think of web APIs as little programming languages that are written inside a URL (URLs are the things you write in the top of your web browser to tell it which web page you want to access). When you access your custom-written URL, the host will perform whatever computations are necessary to get you your data, and send it to you in the same way that it would send you a website.
@@ -40,20 +47,20 @@ Reddit content exists on three levels:
 
 ### The Reddit Algorithm
 
-See @proferes_etal_2021
+Reddit data are not representative samples of the global population. They are not even representative samples of Reddit users. This is partly due to the dynamics of the Reddit ranking algorithm, which gives precedent to viral content. The details of the algorithm are [no longer public](https://medium.com/hacking-and-gonzo/how-reddit-ranking-algorithms-work-ef111e33d0d9), but it is largely based on "upvotes" and "downvotes" from the community, and probably also incorporates the time since posting. The ranking system for comments is almost certainly different from the ranking system for posts. Reddit also has a "Karma" system, by which users who post popular content get subsequent content boosted. This creates an incentive system which is [sometimes exploited by the advertising industry](https://www.reddit.com/r/ModSupport/comments/162p502/why_is_reddit_doing_nothing_to_handle_the_obvious/). The bottom line: **Reddit posts are disproportionately viral**. To partially counteract this when gathering Reddit data, set the API to sort by recency (`sort = "new"`) rather than the default, "best" [@sec-reddit-threads].
 
 ### Demographics on Reddit
 
-e.g. "(25M)", "[25M]"
+Although Reddit accounts are almost always anonymous, users sometimes publicize aspects of their identity in a normative format. The most common of these is the convention to record age and sex (or gender) in parentheses or square brackets. For example, a 25-year-old man might refer to himself as "me (25M)" or a 30-year-old woman might refer to herself as "myself [30F]". By extracting such patterns, information about the age and gender of users can be extracted. This information should be used with caution for three reasons: First, extracting demographic information of users can lead to ethical issues [see @sec-ethics]. Second, self-reporting of demographic information happens disproportionately in certain subreddits, which themselves can be demographically skewed. Third, many users have more than one account. Especially for sensitive topics of the sort where demographic information is relevant, users will often generate _throwaway accounts_ to disconnect their sensitive activity from their every-day use. Because of this, the average activity of users who identify themselves as "30F" is unlikely to be representative of the average overall activity of 30-year-old women.
 
-### Threads
+### Threads {#sec-reddit-threads}
 
 A post with all of its associated comments is called a _thread_. 
 
 @xiao_mensah_2022
 
 ```{r}
-
+# sort = "new"
 ```
 
 ### Communities
@@ -63,6 +70,10 @@ A post with all of its associated comments is called a _thread_.
 ```{r}
 
 ```
+
+- r/depression, r/ SuicideWatch, r/bipolarreddit, and r/opiates,
+- r/changemyview, r/IAmA, and r/ExplainLikeImFive
+- r/politics
 
 ::: {.callout-tip icon="false"}
 ## Advantages of Reddit Data
