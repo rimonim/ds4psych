@@ -45,7 +45,6 @@ book:
         - word-counting.qmd
         - word-counting-improvements.qmd
         - vectorspace-intro.qmd
-        - topic-modeling.qmd
         - decontextualized-embeddings.qmd
         - contextualized-embeddings.qmd
         - navigating-vectorspace.qmd

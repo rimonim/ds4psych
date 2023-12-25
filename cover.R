@@ -75,6 +75,12 @@ pls_V <- train(
 )
 plot(pls_V)
 
+emobank |> 
+  mutate(comp1 = predict(pls_V, ncomp = 1),
+         V_scaled = scale(V)) |> 
+  arrange(desc(comp1)) |> View()
+
+
 pls_A <- train(
   A ~ ., data = select(emobank_distilroberta, A, Dim1:Dim768), method = "pls",
   scale = TRUE,

@@ -1,7 +1,35 @@
 # Web Scraping {#sec-scraping}
 
+![](images/scraping1.png)
 
-https://r4ds.hadley.nz/webscraping
+```{r}
+library(rvest)
+
+html <- read_html("https://rimonim.github.io/blog.html")
+```
+
+![](images/scraping2.png)
+
+```{r}
+post_titles <- html |> 
+  html_elements("h3.no-anchor.listing-title") |> 
+  html_text2()
+
+head(post_titles)
+```
+
+```{r}
+posts <- tibble(
+  date = html |> 
+    html_elements("div.listing-date") |> 
+    html_text2(),
+  title = post_titles
+)
+
+head(posts)
+```
+
+See [the relevant chapter in R for Data Science](https://r4ds.hadley.nz/webscraping) for a more in-depth tutorial on webs scraping.
 
 use the [polite](https://dmi3kno.github.io/polite/) package by Dmytro Perepolkin 
 

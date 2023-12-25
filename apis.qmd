@@ -49,45 +49,95 @@ Reddit content exists on three levels:
 
 Reddit data are not representative samples of the global population. They are not even representative samples of Reddit users. This is partly due to the dynamics of the Reddit ranking algorithm, which gives precedent to viral content. The details of the algorithm are [no longer public](https://medium.com/hacking-and-gonzo/how-reddit-ranking-algorithms-work-ef111e33d0d9), but it is largely based on "upvotes" and "downvotes" from the community, and probably also incorporates the time since posting. The ranking system for comments is almost certainly different from the ranking system for posts. Reddit also has a "Karma" system, by which users who post popular content get subsequent content boosted. This creates an incentive system which is [sometimes exploited by the advertising industry](https://www.reddit.com/r/ModSupport/comments/162p502/why_is_reddit_doing_nothing_to_handle_the_obvious/). The bottom line: **Reddit posts are disproportionately viral**. To partially counteract this when gathering Reddit data, set the API to sort by recency (`sort = "new"`) rather than the default, "best" [@sec-reddit-threads].
 
-### Demographics on Reddit
-
-Although Reddit accounts are almost always anonymous, users sometimes publicize aspects of their identity in a normative format. The most common of these is the convention to record age and sex (or gender) in parentheses or square brackets. For example, a 25-year-old man might refer to himself as "me (25M)" or a 30-year-old woman might refer to herself as "myself [30F]". By extracting such patterns, information about the age and gender of users can be extracted. This information should be used with caution for three reasons: First, extracting demographic information of users can lead to ethical issues [see @sec-ethics]. Second, self-reporting of demographic information happens disproportionately in certain subreddits, which themselves can be demographically skewed. Third, many users have more than one account. Especially for sensitive topics of the sort where demographic information is relevant, users will often generate _throwaway accounts_ to disconnect their sensitive activity from their every-day use. Because of this, the average activity of users who identify themselves as "30F" is unlikely to be representative of the average overall activity of 30-year-old women.
-
-### Threads {#sec-reddit-threads}
-
-A post with all of its associated comments is called a _thread_. 
-
-@xiao_mensah_2022
-
-```{r}
-# sort = "new"
-```
-
 ### Communities
 
-@ashokkumar_pennebaker_2022 used both experimental data and naturalistic data retrieved from the Reddit API (r/The_Donald and r/hillaryclinton)
-
 ```{r}
+APIAdvocacy_posts <- 
+  Authenticate("reddit") |>
+  Collect(
+    endpoint = "listing", 
+    subreddits = "RedditAPIAdvocacy",
+    sort = "new",  # newest posts first
+    period = "all", # all time
+    max = 20, # 20 most recent posts
+    verbose = TRUE
+    )
 
+head(APIAdvocacy_posts)
 ```
+
+**An example of using Reddit communities in research:** In a series of experiments, @ashokkumar_pennebaker_2022 had participants write small free-form responses and fill out questionnaires on group identity strength. Using dictionary-based word-counts [@sec-word-counting], they then identified dictionaries that were associated with questionnaire-based measure, and used these to construct a composite measure of "unquestioning affiliation". Among college students, they showed that unquestioning affiliation in writing could predict whether students would drop out from college one year later. Finally, they applied their method to naturalistic data retrieved from the Reddit API, from the political communities r/The_Donald and r/hillaryclinton, and showed that users' unquestioning affiliation predicted the duration that they would stay in the community before leaving.
 
 - r/depression, r/ SuicideWatch, r/bipolarreddit, and r/opiates,
 - r/changemyview, r/IAmA, and r/ExplainLikeImFive
 - r/politics
 
+### Threads {#sec-reddit-threads}
+
+A post with all of its associated comments is called a _thread_. For example, Hadley Wickham, the founder of [the tidyverse](https://www.tidyverse.org), ran a thread on the r/dataisbeautiful subreddit in 2015, in which he answered commenters' questions. To retrieve that thread, first find its URL. Do this by finding the threat on Reddit and copying the link from your web browser. Then call `Authenticate("reddit")` and `Collect()`, like so:
+
+```{r}
+# List of thread urls (in this case only one)
+threads <- c("https://www.reddit.com/r/dataisbeautiful/comments/3mp9r7/im_hadley_wickham_chief_scientist_at_rstudio_and/")
+
+# Retrieve the data
+## Since the Reddit API is open, we don't need
+## to give any passwords to Authenticate()
+hadley_threads <- 
+  Authenticate("reddit") |>
+  Collect(
+    threadUrls = threads, 
+    sort = "new", # newest comments first
+    verbose = TRUE # give updates while running
+    )
+
+# Peak at Hadley's responses
+hadley_threads |>
+  filter(user == "hadley") |> 
+  head()
+```
+
+The resulting dataframe has many columns. The most useful are the following:
+
+- `comment` is the text of the comment itself.
+- `user` is user who posted the comment.
+- `structure` is the tree structure leading to the comment. For example, "137_6_2" is the 2nd comment on the 6th comment on the 137th comment on the original post.
+- `comm_date` it the date and time of the comment, in UTC. Since this is in character format, it needs to be converted to a datetime with `lubridate::as_datetime()`.
+
+By processing the `structure` values, we can conceptualize the thread as a tree, with the original post (OP) as the root and comments as branches:
+
+```{r}
+library(ggraph)
+
+hadley_threads |> 
+  mutate(
+    level = str_count(structure, "_") + 1L,
+    parent = str_remove(structure, "_[[:digit:]]+$"),
+    parent = if_else(level == 1, "0", parent)
+    ) |> 
+  select(parent, structure) |> 
+  tidygraph::as_tbl_graph() |> 
+  ggraph(layout = 'tree', circular = FALSE) +
+    geom_edge_diagonal(alpha = .2) +
+    geom_node_point(shape = 21, fill = "orangered") +
+    theme_blank()
+```
+
+**An example of using Reddit threads in research:** @xiao_mensah_2022 collected threads from r/changemyview, a community in which the OP makes a claim, commenters make arguments against that claim, and the OP responds with "delta points" to indicate how much their view has been changed. @xiao_mensah_2022 analyzed the frequency of delta points at each level of the thread tree, and found that the OP's view tended to change most after the 2nd, 4th, 6th, 8th, and 10th levels of comments---in other words, every other level. They then analyzed the semantic similarity between comments using cosine similarity [@sec-cosine-similarity] between simple word counts. The results suggested that every-other-level comments tend to elaborate and refine the comments immediately before them, so that the latter are perceived to be more persuasive.
+
 ::: {.callout-tip icon="false"}
 ## Advantages of Reddit Data
 
--   **Diverse Communities:**
--   **Long-form Responses:**
--   **Anonymity:** Users can remain relatively anonymous, which might encourage more honest and open sharing of experiences.
+-   **Explicit Communities:** Reddit communities are clearly defined and explicit about their purposes. Reddit includes communities devoted to fictional storytelling, factual storytelling, personal reflection, technical advice, political discussion, joke telling, and much more. This makes it to gather a domain-specific sample.
+-   **Long-form Text Responses:** While some social media platforms have word limits for posts or comments, Reddit has many communities devoted to long-form text. Longer documents can make characterization of their content more accurate.
+-   **Anonymity:** Reddit users can remain relatively anonymous, which might encourage more honest and open sharing of experiences.
 :::
 
 ::: {.callout-important icon="false"}
 ## Disadvantages of Reddit Data
 
 -   **Selection Bias:** Certain subreddits may attract specific demographics, leading to potential selection bias in the data.
--   **Limited Generalizability:** Findings from Reddit may not generalize to the broader population due to the specific demographics and interests of its user base.
+-   **Anonymity:** In some cases, anonymity may make user behavior less representative. For example, many users have multiple accounts, which they use for different activities on the platform, making users seem disproportionately narrow in their interests. 
 :::
 
 ## Twitter
@@ -105,6 +155,7 @@ A post with all of its associated comments is called a _thread_.
 -   **Character Limit:** The character limit on tweets may limit the depth of responses and the ability to convey complex psychological experiences.
 -   **Sampling Bias:** Twitter users may not be representative of the general population, leading to potential sampling bias.
 -   **Limited Context:** Tweets may lack context, making it challenging to fully understand the meaning behind short messages.
+-   **No more free API:** While lots of historical Twitter data are available on the internet [see @sec-corpora], [the API has been prohibitively expensive since 2023](https://www.wired.com/story/twitter-data-api-prices-out-nearly-everyone/).
 :::
 
 ## Mastadon
@@ -169,5 +220,6 @@ https://en.wikipedia.org/wiki/Comparison_of_microblogging_and_similar_services h
 -   Facebook
 -   Semantic Scholar
 -   [CORE](https://core.ac.uk/services/dataset)
+-   StackOverflow
 
 ------------------------------------------------------------------------

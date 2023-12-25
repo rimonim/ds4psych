@@ -7,6 +7,8 @@
 source("_common.R")
 ```
 
+@gunther_etal_2019
+
 ## Parallelograms
 
 Introduced with word2vec by @mikolov_etal_2013
@@ -23,3 +25,6 @@ Potential workaround: reverse all of the statements in the questionnaire (as for
 ## Dimension Projection
 
 ## Machine Learning Methods
+
+
+@chersoni_etal_2021 used partial least squares regression to map distributional embeddings to human-rated semantic features derived from research in cognitive psychology.

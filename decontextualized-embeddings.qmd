@@ -7,6 +7,24 @@
 source("_common.R")
 ```
 
+## The Distributional Hypothesis
+
+Hence "Distributional Semantic Models" (DSMs)
+
+- Two words are similar in meaning not because of their mutual co-occurrence score, but rather if they have similar global distributional patterns over all contexts. Due to this, synonyms, which tend to very rarely co-occur directly, will have very similar mean- ings in DSMs [@gunther_etal_2019].
+
+
+## LSA
+
+DFM -> Weighting (tf-idf, PPMI) -> Dimensionality reduction
+
+@deerwester_etal_1990
+
+## LDA
+
+
+## Word2vec
+
 
 ## GloVe
 
