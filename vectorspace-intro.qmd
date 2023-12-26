@@ -11,7 +11,7 @@ Thus far we have covered various forms of counting. But more advanced methods in
 
 This chapter is a basic introduction to the concept of representing documents as vectors. We also introduce two basic vector-based measurement techniques: euclidean distance and cosine similarity. A more advanced and in-depth guide to navigating vector space will be covered in @sec-navigating-vectorspace.
 
----c
+---
 
 A fictional example^[This section is adapted from @alammar_2019]: Daniel and Amos filled out a psychology questionnaire. The questionnaire measured three aspects of their personalities: extraversion, openness to experience, and neuroticism. 
 

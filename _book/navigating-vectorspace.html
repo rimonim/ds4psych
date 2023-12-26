@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Almog Simchon and Louis Teitelbaum">
-<title>Data Science for Psychology - 20&nbsp; Navigating Vector Space</title>
+<title>Data Science for Psychology - 19&nbsp; Navigating Vector Space</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -85,7 +85,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./navigating-vectorspace.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Navigating Vector Space</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./navigating-vectorspace.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Navigating Vector Space</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -249,26 +249,20 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./topic-modeling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Topic Modelling</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./decontextualized-embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./contextualized-embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./navigating-vectorspace.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Navigating Vector Space</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Navigating Vector Space</span></span></a>
   </div>
 </li>
       </ul>
@@ -276,7 +270,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resources.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
   </div>
 </li>
     </ul>
@@ -287,15 +281,15 @@ div.csl-indent {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#parallelograms" id="toc-parallelograms" class="nav-link active" data-scroll-target="#parallelograms"><span class="header-section-number">20.1</span> Parallelograms</a></li>
-  <li><a href="#advanced-similarity-measures" id="toc-advanced-similarity-measures" class="nav-link" data-scroll-target="#advanced-similarity-measures"><span class="header-section-number">20.2</span> Advanced Similarity Measures</a></li>
-  <li><a href="#dimension-projection" id="toc-dimension-projection" class="nav-link" data-scroll-target="#dimension-projection"><span class="header-section-number">20.3</span> Dimension Projection</a></li>
-  <li><a href="#machine-learning-methods" id="toc-machine-learning-methods" class="nav-link" data-scroll-target="#machine-learning-methods"><span class="header-section-number">20.4</span> Machine Learning Methods</a></li>
+<li><a href="#parallelograms" id="toc-parallelograms" class="nav-link active" data-scroll-target="#parallelograms"><span class="header-section-number">19.1</span> Parallelograms</a></li>
+  <li><a href="#advanced-similarity-measures" id="toc-advanced-similarity-measures" class="nav-link" data-scroll-target="#advanced-similarity-measures"><span class="header-section-number">19.2</span> Advanced Similarity Measures</a></li>
+  <li><a href="#dimension-projection" id="toc-dimension-projection" class="nav-link" data-scroll-target="#dimension-projection"><span class="header-section-number">19.3</span> Dimension Projection</a></li>
+  <li><a href="#machine-learning-methods" id="toc-machine-learning-methods" class="nav-link" data-scroll-target="#machine-learning-methods"><span class="header-section-number">19.4</span> Machine Learning Methods</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rimonim/ds4psych/blob/main/navigating-vectorspace.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-navigating-vectorspace" class="quarto-section-identifier"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Navigating Vector Space</span></span></h1>
+<h1 class="title"><span id="sec-navigating-vectorspace" class="quarto-section-identifier"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Navigating Vector Space</span></span></h1>
 </div>
 
 
@@ -308,22 +302,30 @@ div.csl-indent {
   </div>
   
 
-</header><section id="parallelograms" class="level2" data-number="20.1"><h2 data-number="20.1" class="anchored" data-anchor-id="parallelograms">
-<span class="header-section-number">20.1</span> Parallelograms</h2>
+</header><p><span class="citation" data-cites="gunther_etal_2019">Günther et al. (<a href="#ref-gunther_etal_2019" role="doc-biblioref">2019</a>)</span></p>
+<section id="parallelograms" class="level2" data-number="19.1"><h2 data-number="19.1" class="anchored" data-anchor-id="parallelograms">
+<span class="header-section-number">19.1</span> Parallelograms</h2>
 <p>Introduced with word2vec by <span class="citation" data-cites="mikolov_etal_2013">Mikolov et al. (<a href="#ref-mikolov_etal_2013" role="doc-biblioref">2013</a>)</span></p>
 <p>Glove <span class="citation" data-cites="pennington_etal_2014">(<a href="#ref-pennington_etal_2014" role="doc-biblioref">Pennington et al., 2014</a>)</span> is designed with this property in mind. Transformer models are not.</p>
 <p>In CCR, for example, there’s a difference between agreeing with statements in a questionnaire and actually writing like a questionnaire. How do I know that I’m measuring how anxious/depressed the comments are and not how questionnaire-y they are? Potential workaround: reverse all of the statements in the questionnaire (as for reverse-coded items), add them to the original questionnaire, and get the average embedding of the construct-neutral questionnaire. Then subtract this embedding from the original questionnaire average embedding.</p>
-</section><section id="advanced-similarity-measures" class="level2" data-number="20.2"><h2 data-number="20.2" class="anchored" data-anchor-id="advanced-similarity-measures">
-<span class="header-section-number">20.2</span> Advanced Similarity Measures</h2>
+</section><section id="advanced-similarity-measures" class="level2" data-number="19.2"><h2 data-number="19.2" class="anchored" data-anchor-id="advanced-similarity-measures">
+<span class="header-section-number">19.2</span> Advanced Similarity Measures</h2>
 <ul>
 <li>Jensen–Shannon distance</li>
-</ul></section><section id="dimension-projection" class="level2" data-number="20.3"><h2 data-number="20.3" class="anchored" data-anchor-id="dimension-projection">
-<span class="header-section-number">20.3</span> Dimension Projection</h2>
-</section><section id="machine-learning-methods" class="level2" data-number="20.4"><h2 data-number="20.4" class="anchored" data-anchor-id="machine-learning-methods">
-<span class="header-section-number">20.4</span> Machine Learning Methods</h2>
+</ul></section><section id="dimension-projection" class="level2" data-number="19.3"><h2 data-number="19.3" class="anchored" data-anchor-id="dimension-projection">
+<span class="header-section-number">19.3</span> Dimension Projection</h2>
+</section><section id="machine-learning-methods" class="level2" data-number="19.4"><h2 data-number="19.4" class="anchored" data-anchor-id="machine-learning-methods">
+<span class="header-section-number">19.4</span> Machine Learning Methods</h2>
+<p><span class="citation" data-cites="chersoni_etal_2021">Chersoni et al. (<a href="#ref-chersoni_etal_2021" role="doc-biblioref">2021</a>)</span> used partial least squares regression to map distributional embeddings to human-rated semantic features derived from research in cognitive psychology.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="ref-chersoni_etal_2021" class="csl-entry" role="listitem">
+Chersoni, E., Santus, E., Huang, C.-R., &amp; Lenci, A. (2021). Decoding word embeddings with brain-based semantic features. <em>Computational Linguistics</em>, <em>47</em>(3), 663–698. <a href="https://doi.org/10.1162/coli_a_00412">https://doi.org/10.1162/coli_a_00412</a>
+</div>
+<div id="ref-gunther_etal_2019" class="csl-entry" role="listitem">
+Günther, F., Rinaldi, L., &amp; Marelli, M. (2019). Vector-space models of semantic representation from a cognitive perspective: A discussion of common misconceptions. <em>Perspectives on Psychological Science</em>, <em>14</em>(6), 1006–1033. <a href="https://doi.org/10.1177/1745691619861372">https://doi.org/10.1177/1745691619861372</a>
+</div>
 <div id="ref-mikolov_etal_2013" class="csl-entry" role="listitem">
 Mikolov, T., Yih, W., &amp; Zweig, G. (2013). Linguistic regularities in continuous space word representations. In L. Vanderwende, H. Daumé III, &amp; K. Kirchhoff (Eds.), <em>Proceedings of the 2013 conference of the north <span>A</span>merican chapter of the association for computational linguistics: Human language technologies</em> (pp. 746–751). Association for Computational Linguistics. <a href="https://aclanthology.org/N13-1090">https://aclanthology.org/N13-1090</a>
 </div>
@@ -565,12 +567,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./contextualized-embeddings.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./resources.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Additional Resources</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Additional Resources</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

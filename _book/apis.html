@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Almog Simchon and Louis Teitelbaum">
 <title>Data Science for Psychology - 9&nbsp; Web APIs</title>
@@ -283,26 +283,20 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./topic-modeling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Topic Modelling</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./decontextualized-embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./contextualized-embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./navigating-vectorspace.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Navigating Vector Space</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Navigating Vector Space</span></span></a>
   </div>
 </li>
       </ul>
@@ -310,7 +304,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resources.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
   </div>
 </li>
     </ul>
@@ -331,9 +325,8 @@ div.csl-indent {
 <a href="#reddit" id="toc-reddit" class="nav-link" data-scroll-target="#reddit"><span class="header-section-number">9.2</span> Reddit</a>
   <ul class="collapse">
 <li><a href="#the-reddit-algorithm" id="toc-the-reddit-algorithm" class="nav-link" data-scroll-target="#the-reddit-algorithm"><span class="header-section-number">9.2.1</span> The Reddit Algorithm</a></li>
-  <li><a href="#demographics-on-reddit" id="toc-demographics-on-reddit" class="nav-link" data-scroll-target="#demographics-on-reddit"><span class="header-section-number">9.2.2</span> Demographics on Reddit</a></li>
+  <li><a href="#communities" id="toc-communities" class="nav-link" data-scroll-target="#communities"><span class="header-section-number">9.2.2</span> Communities</a></li>
   <li><a href="#sec-reddit-threads" id="toc-sec-reddit-threads" class="nav-link" data-scroll-target="#sec-reddit-threads"><span class="header-section-number">9.2.3</span> Threads</a></li>
-  <li><a href="#communities" id="toc-communities" class="nav-link" data-scroll-target="#communities"><span class="header-section-number">9.2.4</span> Communities</a></li>
   </ul>
 </li>
   <li><a href="#twitter" id="toc-twitter" class="nav-link" data-scroll-target="#twitter"><span class="header-section-number">9.3</span> Twitter</a></li>
@@ -401,24 +394,155 @@ div.csl-indent {
 <section id="the-reddit-algorithm" class="level3" data-number="9.2.1"><h3 data-number="9.2.1" class="anchored" data-anchor-id="the-reddit-algorithm">
 <span class="header-section-number">9.2.1</span> The Reddit Algorithm</h3>
 <p>Reddit data are not representative samples of the global population. They are not even representative samples of Reddit users. This is partly due to the dynamics of the Reddit ranking algorithm, which gives precedent to viral content. The details of the algorithm are <a href="https://medium.com/hacking-and-gonzo/how-reddit-ranking-algorithms-work-ef111e33d0d9">no longer public</a>, but it is largely based on “upvotes” and “downvotes” from the community, and probably also incorporates the time since posting. The ranking system for comments is almost certainly different from the ranking system for posts. Reddit also has a “Karma” system, by which users who post popular content get subsequent content boosted. This creates an incentive system which is <a href="https://www.reddit.com/r/ModSupport/comments/162p502/why_is_reddit_doing_nothing_to_handle_the_obvious/">sometimes exploited by the advertising industry</a>. The bottom line: <strong>Reddit posts are disproportionately viral</strong>. To partially counteract this when gathering Reddit data, set the API to sort by recency (<code>sort = "new"</code>) rather than the default, “best” <a href="#sec-reddit-threads"><span>Section&nbsp;9.2.3</span></a>.</p>
-</section><section id="demographics-on-reddit" class="level3" data-number="9.2.2"><h3 data-number="9.2.2" class="anchored" data-anchor-id="demographics-on-reddit">
-<span class="header-section-number">9.2.2</span> Demographics on Reddit</h3>
-<p>Although Reddit accounts are almost always anonymous, users sometimes publicize aspects of their identity in a normative format. The most common of these is the convention to record age and sex (or gender) in parentheses or square brackets. For example, a 25-year-old man might refer to himself as “me (25M)” or a 30-year-old woman might refer to herself as “myself [30F]”. By extracting such patterns, information about the age and gender of users can be extracted. This information should be used with caution for three reasons: First, extracting demographic information of users can lead to ethical issues <a href="ethics.html">see&nbsp;<span>2</span></a>. Second, self-reporting of demographic information happens disproportionately in certain subreddits, which themselves can be demographically skewed. Third, many users have more than one account. Especially for sensitive topics of the sort where demographic information is relevant, users will often generate <em>throwaway accounts</em> to disconnect their sensitive activity from their every-day use. Because of this, the average activity of users who identify themselves as “30F” is unlikely to be representative of the average overall activity of 30-year-old women.</p>
-</section><section id="sec-reddit-threads" class="level3" data-number="9.2.3"><h3 data-number="9.2.3" class="anchored" data-anchor-id="sec-reddit-threads">
-<span class="header-section-number">9.2.3</span> Threads</h3>
-<p>A post with all of its associated comments is called a <em>thread</em>.</p>
-<p><span class="citation" data-cites="xiao_mensah_2022">Xiao &amp; Mensah (<a href="#ref-xiao_mensah_2022" role="doc-biblioref">2022</a>)</span></p>
+</section><section id="communities" class="level3" data-number="9.2.2"><h3 data-number="9.2.2" class="anchored" data-anchor-id="communities">
+<span class="header-section-number">9.2.2</span> Communities</h3>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># sort = "new"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">APIAdvocacy_posts</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/vosonSML/man/Authenticate.html">Authenticate</a></span><span class="op">(</span><span class="st">"reddit"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/vosonSML/man/Collect.html">Collect</a></span><span class="op">(</span></span>
+<span>    endpoint <span class="op">=</span> <span class="st">"listing"</span>, </span>
+<span>    subreddits <span class="op">=</span> <span class="st">"RedditAPIAdvocacy"</span>,</span>
+<span>    sort <span class="op">=</span> <span class="st">"new"</span>,  <span class="co"># newest posts first</span></span>
+<span>    period <span class="op">=</span> <span class="st">"all"</span>, <span class="co"># all time</span></span>
+<span>    max <span class="op">=</span> <span class="fl">20</span>, <span class="co"># 20 most recent posts</span></span>
+<span>    verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>    <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; Collecting thread listing for subreddits...</code></pre>
 </div>
-</section><section id="communities" class="level3" data-number="9.2.4"><h3 data-number="9.2.4" class="anchored" data-anchor-id="communities">
-<span class="header-section-number">9.2.4</span> Communities</h3>
-<p><span class="citation" data-cites="ashokkumar_pennebaker_2022">Ashokkumar &amp; Pennebaker (<a href="#ref-ashokkumar_pennebaker_2022" role="doc-biblioref">2022</a>)</span> used both experimental data and naturalistic data retrieved from the Reddit API (r/The_Donald and r/hillaryclinton)</p>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; Waiting between 6 and 8 seconds per request.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; Request subreddit listing: RedditAPIAdvocacy (max items: 20).
+#&gt; subreddit_id | subreddit         | count
+#&gt; ----------------------------------------
+#&gt; t5_8dyuxh    | RedditAPIAdvocacy | 4    
+#&gt; Collected metadata for 4 threads in listings.
+#&gt; Done.</code></pre>
+</div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">APIAdvocacy_posts</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; # A tibble: 4 × 111
+#&gt;   approved_at_utc subreddit      selftext author_fullname saved mod_reason_title
+#&gt;   &lt;lgl&gt;           &lt;chr&gt;          &lt;chr&gt;    &lt;chr&gt;           &lt;lgl&gt; &lt;lgl&gt;           
+#&gt; 1 NA              RedditAPIAdvo… ""       t2_8uyouiqz     FALSE NA              
+#&gt; 2 NA              RedditAPIAdvo… ""       t2_177u1k       FALSE NA              
+#&gt; 3 NA              RedditAPIAdvo… ""       t2_g0y5d        FALSE NA              
+#&gt; 4 NA              RedditAPIAdvo… "Last w… t2_177u1k       FALSE NA              
+#&gt; # ℹ 105 more variables: gilded &lt;int&gt;, clicked &lt;lgl&gt;, title &lt;chr&gt;,
+#&gt; #   link_flair_richtext &lt;list&gt;, subreddit_name_prefixed &lt;chr&gt;, hidden &lt;lgl&gt;,
+#&gt; #   pwls &lt;lgl&gt;, link_flair_css_class &lt;lgl&gt;, downs &lt;int&gt;,
+#&gt; #   thumbnail_height &lt;lgl&gt;, top_awarded_type &lt;lgl&gt;, hide_score &lt;lgl&gt;,
+#&gt; #   name &lt;chr&gt;, quarantine &lt;lgl&gt;, link_flair_text_color &lt;chr&gt;,
+#&gt; #   upvote_ratio &lt;dbl&gt;, author_flair_background_color &lt;lgl&gt;,
+#&gt; #   subreddit_type &lt;chr&gt;, ups &lt;int&gt;, total_awards_received &lt;int&gt;, …</code></pre>
+</div>
+</div>
+<p><strong>An example of using Reddit communities in research:</strong> In a series of experiments, <span class="citation" data-cites="ashokkumar_pennebaker_2022">Ashokkumar &amp; Pennebaker (<a href="#ref-ashokkumar_pennebaker_2022" role="doc-biblioref">2022</a>)</span> had participants write small free-form responses and fill out questionnaires on group identity strength. Using dictionary-based word-counts <a href="word-counting.html"><span>Chapter&nbsp;14</span></a>, they then identified dictionaries that were associated with questionnaire-based measure, and used these to construct a composite measure of “unquestioning affiliation”. Among college students, they showed that unquestioning affiliation in writing could predict whether students would drop out from college one year later. Finally, they applied their method to naturalistic data retrieved from the Reddit API, from the political communities r/The_Donald and r/hillaryclinton, and showed that users’ unquestioning affiliation predicted the duration that they would stay in the community before leaving.</p>
 <ul>
 <li>r/depression, r/ SuicideWatch, r/bipolarreddit, and r/opiates,</li>
 <li>r/changemyview, r/IAmA, and r/ExplainLikeImFive</li>
 <li>r/politics</li>
+</ul></section><section id="sec-reddit-threads" class="level3" data-number="9.2.3"><h3 data-number="9.2.3" class="anchored" data-anchor-id="sec-reddit-threads">
+<span class="header-section-number">9.2.3</span> Threads</h3>
+<p>A post with all of its associated comments is called a <em>thread</em>. For example, Hadley Wickham, the founder of <a href="https://www.tidyverse.org">the tidyverse</a>, ran a thread on the r/dataisbeautiful subreddit in 2015, in which he answered commenters’ questions. To retrieve that thread, first find its URL. Do this by finding the threat on Reddit and copying the link from your web browser. Then call <code>Authenticate("reddit")</code> and <code><a href="https://rdrr.io/pkg/vosonSML/man/Collect.html">Collect()</a></code>, like so:</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># List of thread urls (in this case only one)</span></span>
+<span><span class="va">threads</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"https://www.reddit.com/r/dataisbeautiful/comments/3mp9r7/im_hadley_wickham_chief_scientist_at_rstudio_and/"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Retrieve the data</span></span>
+<span><span class="co">## Since the Reddit API is open, we don't need</span></span>
+<span><span class="co">## to give any passwords to Authenticate()</span></span>
+<span><span class="va">hadley_threads</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/vosonSML/man/Authenticate.html">Authenticate</a></span><span class="op">(</span><span class="st">"reddit"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/vosonSML/man/Collect.html">Collect</a></span><span class="op">(</span></span>
+<span>    threadUrls <span class="op">=</span> <span class="va">threads</span>, </span>
+<span>    sort <span class="op">=</span> <span class="st">"new"</span>, <span class="co"># newest comments first</span></span>
+<span>    verbose <span class="op">=</span> <span class="cn">TRUE</span> <span class="co"># give updates while running</span></span>
+<span>    <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; Collecting comment threads for reddit urls...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; Waiting between 6 and 8 seconds per thread request.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; Request thread: r/dataisbeautiful (3mp9r7) - sort: new</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; Continue thread: r/dataisbeautiful (3mp9r7) - cvhne5f</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; HTML decoding comments.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; thread_id | title                                         | subreddit       | count
+#&gt; -----------------------------------------------------------------------------------
+#&gt; 3mp9r7    | I'm Hadley Wickham, Chief Scientist at RSt... | dataisbeautiful | 457</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; Collected 457 total comments.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; Done.</code></pre>
+</div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Peak at Hadley's responses</span></span>
+<span><span class="va">hadley_threads</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">user</span> <span class="op">==</span> <span class="st">"hadley"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; # A tibble: 6 × 22
+#&gt;      id structure post_date      post_date_unix comm_id comm_date comm_date_unix
+#&gt;   &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;                   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;              &lt;dbl&gt;
+#&gt; 1     7 4_1       2015-09-28 14…     1443449609 cvogqff 2015-10-…     1444009235
+#&gt; 2    10 6_1       2015-09-28 14…     1443449609 cvim0tg 2015-09-…     1443564368
+#&gt; 3    12 7_1       2015-09-28 14…     1443449609 cvi1r13 2015-09-…     1443534229
+#&gt; 4    16 10_1      2015-09-28 14…     1443449609 cvi12xj 2015-09-…     1443532877
+#&gt; 5    22 12_1      2015-09-28 14…     1443449609 cvi15fy 2015-09-…     1443533018
+#&gt; 6    24 13_1      2015-09-28 14…     1443449609 cvi19ly 2015-09-…     1443533254
+#&gt; # ℹ 15 more variables: num_comments &lt;int&gt;, subreddit &lt;chr&gt;, upvote_prop &lt;dbl&gt;,
+#&gt; #   post_score &lt;int&gt;, author &lt;chr&gt;, user &lt;chr&gt;, comment_score &lt;int&gt;,
+#&gt; #   controversiality &lt;int&gt;, comment &lt;chr&gt;, title &lt;chr&gt;, post_text &lt;chr&gt;,
+#&gt; #   link &lt;chr&gt;, domain &lt;chr&gt;, url &lt;chr&gt;, thread_id &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>The resulting dataframe has many columns. The most useful are the following:</p>
+<ul>
+<li>
+<code>comment</code> is the text of the comment itself.</li>
+<li>
+<code>user</code> is user who posted the comment.</li>
+<li>
+<code>structure</code> is the tree structure leading to the comment. For example, “137_6_2” is the 2nd comment on the 6th comment on the 137th comment on the original post.</li>
+<li>
+<code>comm_date</code> it the date and time of the comment, in UTC. Since this is in character format, it needs to be converted to a datetime with <code><a href="https://lubridate.tidyverse.org/reference/as_date.html">lubridate::as_datetime()</a></code>.</li>
 </ul>
+<p>By processing the <code>structure</code> values, we can conceptualize the thread as a tree, with the original post (OP) as the root and comments as branches:</p>
+<div class="cell">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggraph.data-imaginist.com">ggraph</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">hadley_threads</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    level <span class="op">=</span> <span class="fu">str_count</span><span class="op">(</span><span class="va">structure</span>, <span class="st">"_"</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1L</span>,</span>
+<span>    parent <span class="op">=</span> <span class="fu">str_remove</span><span class="op">(</span><span class="va">structure</span>, <span class="st">"_[[:digit:]]+$"</span><span class="op">)</span>,</span>
+<span>    parent <span class="op">=</span> <span class="fu">if_else</span><span class="op">(</span><span class="va">level</span> <span class="op">==</span> <span class="fl">1</span>, <span class="st">"0"</span>, <span class="va">parent</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="va">parent</span>, <span class="va">structure</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">tidygraph</span><span class="fu">::</span><span class="fu"><a href="https://tidygraph.data-imaginist.com/reference/tbl_graph.html">as_tbl_graph</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/ggraph.html">ggraph</a></span><span class="op">(</span>layout <span class="op">=</span> <span class="st">'tree'</span>, circular <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_edge_diagonal.html">geom_edge_diagonal</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">.2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_node_point.html">geom_node_point</a></span><span class="op">(</span>shape <span class="op">=</span> <span class="fl">21</span>, fill <span class="op">=</span> <span class="st">"orangered"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; Warning: Using the `size` aesthetic in this geom was deprecated in ggplot2 3.4.0.
+#&gt; ℹ Please use `linewidth` in the `default_aes` field and elsewhere instead.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="apis_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p><strong>An example of using Reddit threads in research:</strong> <span class="citation" data-cites="xiao_mensah_2022">Xiao &amp; Mensah (<a href="#ref-xiao_mensah_2022" role="doc-biblioref">2022</a>)</span> collected threads from r/changemyview, a community in which the OP makes a claim, commenters make arguments against that claim, and the OP responds with “delta points” to indicate how much their view has been changed. <span class="citation" data-cites="xiao_mensah_2022">Xiao &amp; Mensah (<a href="#ref-xiao_mensah_2022" role="doc-biblioref">2022</a>)</span> analyzed the frequency of delta points at each level of the thread tree, and found that the OP’s view tended to change most after the 2nd, 4th, 6th, 8th, and 10th levels of comments—in other words, every other level. They then analyzed the semantic similarity between comments using cosine similarity <a href="vectorspace-intro.html#sec-cosine-similarity"><span>Section&nbsp;16.1.2</span></a> between simple word counts. The results suggested that every-other-level comments tend to elaborate and refine the comments immediately before them, so that the latter are perceived to be more persuasive.</p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -430,10 +554,12 @@ Advantages of Reddit Data
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><strong>Diverse Communities:</strong></li>
-<li><strong>Long-form Responses:</strong></li>
 <li>
-<strong>Anonymity:</strong> Users can remain relatively anonymous, which might encourage more honest and open sharing of experiences.</li>
+<strong>Explicit Communities:</strong> Reddit communities are clearly defined and explicit about their purposes. Reddit includes communities devoted to fictional storytelling, factual storytelling, personal reflection, technical advice, political discussion, joke telling, and much more. This makes it to gather a domain-specific sample.</li>
+<li>
+<strong>Long-form Text Responses:</strong> While some social media platforms have word limits for posts or comments, Reddit has many communities devoted to long-form text. Longer documents can make characterization of their content more accurate.</li>
+<li>
+<strong>Anonymity:</strong> Reddit users can remain relatively anonymous, which might encourage more honest and open sharing of experiences.</li>
 </ul>
 </div>
 </div>
@@ -451,7 +577,7 @@ Disadvantages of Reddit Data
 <li>
 <strong>Selection Bias:</strong> Certain subreddits may attract specific demographics, leading to potential selection bias in the data.</li>
 <li>
-<strong>Limited Generalizability:</strong> Findings from Reddit may not generalize to the broader population due to the specific demographics and interests of its user base.</li>
+<strong>Anonymity:</strong> In some cases, anonymity may make user behavior less representative. For example, many users have multiple accounts, which they use for different activities on the platform, making users seem disproportionately narrow in their interests.</li>
 </ul>
 </div>
 </div>
@@ -491,6 +617,8 @@ Disadvantages of Twitter Data
 <strong>Sampling Bias:</strong> Twitter users may not be representative of the general population, leading to potential sampling bias.</li>
 <li>
 <strong>Limited Context:</strong> Tweets may lack context, making it challenging to fully understand the meaning behind short messages.</li>
+<li>
+<strong>No more free API:</strong> While lots of historical Twitter data are available on the internet <a href="corpora.html">see&nbsp;<span>8</span></a>, <a href="https://www.wired.com/story/twitter-data-api-prices-out-nearly-everyone/">the API has been prohibitively expensive since 2023</a>.</li>
 </ul>
 </div>
 </div>
@@ -585,6 +713,7 @@ Disadvantages of YouTube Data
 <li>Facebook</li>
 <li>Semantic Scholar</li>
 <li><a href="https://core.ac.uk/services/dataset">CORE</a></li>
+<li>StackOverflow</li>
 </ul>
 <hr>
 

@@ -120,7 +120,7 @@ hadley_threads |>
   ggraph(layout = 'tree', circular = FALSE) +
     geom_edge_diagonal(alpha = .2) +
     geom_node_point(shape = 21, fill = "orangered") +
-    theme_blank()
+    theme_void()
 ```
 
 **An example of using Reddit threads in research:** @xiao_mensah_2022 collected threads from r/changemyview, a community in which the OP makes a claim, commenters make arguments against that claim, and the OP responds with "delta points" to indicate how much their view has been changed. @xiao_mensah_2022 analyzed the frequency of delta points at each level of the thread tree, and found that the OP's view tended to change most after the 2nd, 4th, 6th, 8th, and 10th levels of comments---in other words, every other level. They then analyzed the semantic similarity between comments using cosine similarity [@sec-cosine-similarity] between simple word counts. The results suggested that every-other-level comments tend to elaborate and refine the comments immediately before them, so that the latter are perceived to be more persuasive.
