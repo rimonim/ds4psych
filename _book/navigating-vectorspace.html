@@ -46,7 +46,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./resources.html" rel="next">
+<link href="./audio-video-image.html" rel="next">
 <link href="./contextualized-embeddings.html" rel="prev">
 <link href="./images/favicon.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
@@ -267,6 +267,10 @@ div.csl-indent {
 </li>
       </ul>
 </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Audio, Video, and Image Data</span></span>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resources.html" class="sidebar-item-text sidebar-link">
@@ -281,10 +285,10 @@ div.csl-indent {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#parallelograms" id="toc-parallelograms" class="nav-link active" data-scroll-target="#parallelograms"><span class="header-section-number">19.1</span> Parallelograms</a></li>
-  <li><a href="#advanced-similarity-measures" id="toc-advanced-similarity-measures" class="nav-link" data-scroll-target="#advanced-similarity-measures"><span class="header-section-number">19.2</span> Advanced Similarity Measures</a></li>
-  <li><a href="#dimension-projection" id="toc-dimension-projection" class="nav-link" data-scroll-target="#dimension-projection"><span class="header-section-number">19.3</span> Dimension Projection</a></li>
-  <li><a href="#machine-learning-methods" id="toc-machine-learning-methods" class="nav-link" data-scroll-target="#machine-learning-methods"><span class="header-section-number">19.4</span> Machine Learning Methods</a></li>
+<li><a href="#sec-parallelograms" id="toc-sec-parallelograms" class="nav-link active" data-scroll-target="#sec-parallelograms"><span class="header-section-number">19.1</span> Parallelograms</a></li>
+  <li><a href="#sec-advanced-similarity" id="toc-sec-advanced-similarity" class="nav-link" data-scroll-target="#sec-advanced-similarity"><span class="header-section-number">19.2</span> Advanced Similarity Measures</a></li>
+  <li><a href="#sec-dimension-projection" id="toc-sec-dimension-projection" class="nav-link" data-scroll-target="#sec-dimension-projection"><span class="header-section-number">19.3</span> Dimension Projection</a></li>
+  <li><a href="#sec-machine-learning-methods" id="toc-sec-machine-learning-methods" class="nav-link" data-scroll-target="#sec-machine-learning-methods"><span class="header-section-number">19.4</span> Machine Learning Methods</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rimonim/ds4psych/blob/main/navigating-vectorspace.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
@@ -303,18 +307,18 @@ div.csl-indent {
   
 
 </header><p><span class="citation" data-cites="gunther_etal_2019">Günther et al. (<a href="#ref-gunther_etal_2019" role="doc-biblioref">2019</a>)</span></p>
-<section id="parallelograms" class="level2" data-number="19.1"><h2 data-number="19.1" class="anchored" data-anchor-id="parallelograms">
+<section id="sec-parallelograms" class="level2" data-number="19.1"><h2 data-number="19.1" class="anchored" data-anchor-id="sec-parallelograms">
 <span class="header-section-number">19.1</span> Parallelograms</h2>
 <p>Introduced with word2vec by <span class="citation" data-cites="mikolov_etal_2013">Mikolov et al. (<a href="#ref-mikolov_etal_2013" role="doc-biblioref">2013</a>)</span></p>
 <p>Glove <span class="citation" data-cites="pennington_etal_2014">(<a href="#ref-pennington_etal_2014" role="doc-biblioref">Pennington et al., 2014</a>)</span> is designed with this property in mind. Transformer models are not.</p>
 <p>In CCR, for example, there’s a difference between agreeing with statements in a questionnaire and actually writing like a questionnaire. How do I know that I’m measuring how anxious/depressed the comments are and not how questionnaire-y they are? Potential workaround: reverse all of the statements in the questionnaire (as for reverse-coded items), add them to the original questionnaire, and get the average embedding of the construct-neutral questionnaire. Then subtract this embedding from the original questionnaire average embedding.</p>
-</section><section id="advanced-similarity-measures" class="level2" data-number="19.2"><h2 data-number="19.2" class="anchored" data-anchor-id="advanced-similarity-measures">
+</section><section id="sec-advanced-similarity" class="level2" data-number="19.2"><h2 data-number="19.2" class="anchored" data-anchor-id="sec-advanced-similarity">
 <span class="header-section-number">19.2</span> Advanced Similarity Measures</h2>
 <ul>
 <li>Jensen–Shannon distance</li>
-</ul></section><section id="dimension-projection" class="level2" data-number="19.3"><h2 data-number="19.3" class="anchored" data-anchor-id="dimension-projection">
+</ul></section><section id="sec-dimension-projection" class="level2" data-number="19.3"><h2 data-number="19.3" class="anchored" data-anchor-id="sec-dimension-projection">
 <span class="header-section-number">19.3</span> Dimension Projection</h2>
-</section><section id="machine-learning-methods" class="level2" data-number="19.4"><h2 data-number="19.4" class="anchored" data-anchor-id="machine-learning-methods">
+</section><section id="sec-machine-learning-methods" class="level2" data-number="19.4"><h2 data-number="19.4" class="anchored" data-anchor-id="sec-machine-learning-methods">
 <span class="header-section-number">19.4</span> Machine Learning Methods</h2>
 <p><span class="citation" data-cites="chersoni_etal_2021">Chersoni et al. (<a href="#ref-chersoni_etal_2021" role="doc-biblioref">2021</a>)</span> used partial least squares regression to map distributional embeddings to human-rated semantic features derived from research in cognitive psychology.</p>
 
@@ -571,8 +575,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./resources.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Additional Resources</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./audio-video-image.html" class="pagination-link">
+        <span class="nav-page-text">Audio, Video, and Image Data</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

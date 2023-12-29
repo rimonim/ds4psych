@@ -301,6 +301,10 @@ div.csl-indent {
 </li>
       </ul>
 </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Audio, Video, and Image Data</span></span>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resources.html" class="sidebar-item-text sidebar-link">
@@ -329,7 +333,13 @@ div.csl-indent {
   <li><a href="#sec-reddit-threads" id="toc-sec-reddit-threads" class="nav-link" data-scroll-target="#sec-reddit-threads"><span class="header-section-number">9.2.3</span> Threads</a></li>
   </ul>
 </li>
-  <li><a href="#twitter" id="toc-twitter" class="nav-link" data-scroll-target="#twitter"><span class="header-section-number">9.3</span> Twitter</a></li>
+  <li>
+<a href="#twitter-x" id="toc-twitter-x" class="nav-link" data-scroll-target="#twitter-x"><span class="header-section-number">9.3</span> Twitter / X</a>
+  <ul class="collapse">
+<li><a href="#followers-mentions-and-retweets" id="toc-followers-mentions-and-retweets" class="nav-link" data-scroll-target="#followers-mentions-and-retweets"><span class="header-section-number">9.3.1</span> Followers, Mentions, and Retweets</a></li>
+  <li><a href="#geolocation-on-twitter" id="toc-geolocation-on-twitter" class="nav-link" data-scroll-target="#geolocation-on-twitter"><span class="header-section-number">9.3.2</span> Geolocation on Twitter</a></li>
+  </ul>
+</li>
   <li><a href="#mastadon" id="toc-mastadon" class="nav-link" data-scroll-target="#mastadon"><span class="header-section-number">9.4</span> Mastadon</a></li>
   <li><a href="#youtube" id="toc-youtube" class="nav-link" data-scroll-target="#youtube"><span class="header-section-number">9.5</span> YouTube</a></li>
   <li><a href="#sec-other-apis" id="toc-sec-other-apis" class="nav-link" data-scroll-target="#sec-other-apis"><span class="header-section-number">9.6</span> Other Web APIs</a></li>
@@ -557,7 +567,7 @@ Advantages of Reddit Data
 <li>
 <strong>Explicit Communities:</strong> Reddit communities are clearly defined and explicit about their purposes. Reddit includes communities devoted to fictional storytelling, factual storytelling, personal reflection, technical advice, political discussion, joke telling, and much more. This makes it to gather a domain-specific sample.</li>
 <li>
-<strong>Long-form Text Responses:</strong> While some social media platforms have word limits for posts or comments, Reddit has many communities devoted to long-form text. Longer documents can make characterization of their content more accurate.</li>
+<strong>Long-form Text Responses:</strong> While some social media platforms have character limits for posts or comments, Reddit has many communities devoted to long-form text. Longer documents can make characterization of their content more accurate.</li>
 <li>
 <strong>Anonymity:</strong> Reddit users can remain relatively anonymous, which might encourage more honest and open sharing of experiences.</li>
 </ul>
@@ -581,8 +591,15 @@ Disadvantages of Reddit Data
 </ul>
 </div>
 </div>
-</section></section><section id="twitter" class="level2" data-number="9.3"><h2 data-number="9.3" class="anchored" data-anchor-id="twitter">
-<span class="header-section-number">9.3</span> Twitter</h2>
+</section></section><section id="twitter-x" class="level2" data-number="9.3"><h2 data-number="9.3" class="anchored" data-anchor-id="twitter-x">
+<span class="header-section-number">9.3</span> Twitter / X</h2>
+<p>Twitter has been called the “model organism” of big data research <span class="citation" data-cites="tufekci_2014">(<a href="#ref-tufekci_2014" role="doc-biblioref">Tufekci, 2014</a>)</span>. This is because, until 2023, Twitter was the largest source of free, open text data. In contrast to Facebook, almost all Twitter activity is public. Twitter’s standardized character limit (originally 140, now 280), along with its simple network structure make structuring and the data easy.</p>
+<section id="followers-mentions-and-retweets" class="level3" data-number="9.3.1"><h3 data-number="9.3.1" class="anchored" data-anchor-id="followers-mentions-and-retweets">
+<span class="header-section-number">9.3.1</span> Followers, Mentions, and Retweets</h3>
+<p>Whereas Reddit users subscribe to communities, Twitter users subscribe to other users. This is called “following”. They can also “retweet” other users’ posts to their own feed, or explicitly mention other users in posts using the “@” symbol. This focus on connections between individuals means that each user’s communal associations can be characterized in a rich, nuanced way. For example, <span class="citation" data-cites="mosleh_etal_2021">Mosleh et al. (<a href="#ref-mosleh_etal_2021" role="doc-biblioref">2021</a>)</span> collected Twitter IDs of survey participants</p>
+</section><section id="geolocation-on-twitter" class="level3" data-number="9.3.2"><h3 data-number="9.3.2" class="anchored" data-anchor-id="geolocation-on-twitter">
+<span class="header-section-number">9.3.2</span> Geolocation on Twitter</h3>
+<p>Twitter allows users to specify a geographical location along their post. While these user provided locations can sometimes be difficult to interpret, they allow analyses by geographic location. For example, <span class="citation" data-cites="takhteyev_etal_2012">Takhteyev et al. (<a href="#ref-takhteyev_etal_2012" role="doc-biblioref">2012</a>)</span> sampled users from their posts on Twitter’s public feed, and users followed by them. They then analyzed the distribution of these ties over geographical distance, national boundaries, and language differences. They found that Twitter users are most strongly tied to people in their own city, and that between regions, the number of airline flights was the best predictor of ties.</p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -595,8 +612,9 @@ Advantages of Twitter Data
 <div class="callout-body-container callout-body">
 <ul>
 <li>
-<strong>Hashtag Tracking:</strong> Researchers can track specific hashtags related to psychological phenomena.</li>
-<li><strong>Character Limit:</strong></li>
+<strong>Character Limit:</strong> Twitter’s character limit means that Tweets vary less in their length. This can decrease variance in measurements.</li>
+<li>
+<strong>Pure Network Structure:</strong> As opposed to Reddit’s distinct communities and hierarchical comment trees, Twitter has a network-like social structure in which users are linked to other individual users or posts. This structure can reveal underlying communities and the strength of the connections between them.</li>
 </ul>
 </div>
 </div>
@@ -612,9 +630,7 @@ Disadvantages of Twitter Data
 <div class="callout-body-container callout-body">
 <ul>
 <li>
-<strong>Character Limit:</strong> The character limit on tweets may limit the depth of responses and the ability to convey complex psychological experiences.</li>
-<li>
-<strong>Sampling Bias:</strong> Twitter users may not be representative of the general population, leading to potential sampling bias.</li>
+<strong>Character Limit:</strong> The character limit on tweets may limit the depth of responses and the ability to convey complex psychological experiences. The smaller sample of words in each document can also make measurement less reliable.</li>
 <li>
 <strong>Limited Context:</strong> Tweets may lack context, making it challenging to fully understand the meaning behind short messages.</li>
 <li>
@@ -622,7 +638,7 @@ Disadvantages of Twitter Data
 </ul>
 </div>
 </div>
-</section><section id="mastadon" class="level2" data-number="9.4"><h2 data-number="9.4" class="anchored" data-anchor-id="mastadon">
+</section></section><section id="mastadon" class="level2" data-number="9.4"><h2 data-number="9.4" class="anchored" data-anchor-id="mastadon">
 <span class="header-section-number">9.4</span> Mastadon</h2>
 <p>Many servers have a theme based on a specific interest. It is also common for servers to be based around a particular locality, region, ethnicity, or country.</p>
 <p>Twitter and Mastodon use hashtags to categorize and organize content. subreddits on Reddit, instances on Mastodon</p>
@@ -674,6 +690,8 @@ Disadvantages of Mastadon Data
 </div>
 </section><section id="youtube" class="level2" data-number="9.5"><h2 data-number="9.5" class="anchored" data-anchor-id="youtube">
 <span class="header-section-number">9.5</span> YouTube</h2>
+<p>How to get a Youtube API key: https://www.youtube.com/watch?v=of0nzBJrT20</p>
+<p>Though there are <a href="https://github.com/jdepoix/youtube-transcript-api">some workarounds available</a>, Google does not allow access to full transcriptions for standard API key bearers.</p>
 <p><span class="citation" data-cites="rosenbusch_etal_2019">Rosenbusch et al. (<a href="#ref-rosenbusch_etal_2019" role="doc-biblioref">2019</a>)</span></p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -722,8 +740,17 @@ Disadvantages of YouTube Data
 <div id="ref-ashokkumar_pennebaker_2022" class="csl-entry" role="listitem">
 Ashokkumar, A., &amp; Pennebaker, J. W. (2022). Tracking group identity through natural language within groups. <em>PNAS Nexus</em>, <em>1</em>(2), pgac022. <a href="https://doi.org/10.1093/pnasnexus/pgac022">https://doi.org/10.1093/pnasnexus/pgac022</a>
 </div>
+<div id="ref-mosleh_etal_2021" class="csl-entry" role="listitem">
+Mosleh, M., Pennycook, G., &amp; Arechar, A. (2021). Cognitive reflection correlates with behavior on twitter. <em>Nature Communications</em>, <em>12</em>. <a href="https://doi.org/10.1038/s41467-020-20043-0">https://doi.org/10.1038/s41467-020-20043-0</a>
+</div>
 <div id="ref-rosenbusch_etal_2019" class="csl-entry" role="listitem">
 Rosenbusch, H., Evans, A. M., &amp; Zeelenberg, M. (2019). Multilevel emotion transfer on YouTube: Disentangling the effects of emotional contagion and homophily on video audiences. <em>Social Psychological and Personality Science</em>, <em>10</em>(8), 1028–1035. <a href="https://doi.org/10.1177/1948550618820309">https://doi.org/10.1177/1948550618820309</a>
+</div>
+<div id="ref-takhteyev_etal_2012" class="csl-entry" role="listitem">
+Takhteyev, Y., Gruzd, A., &amp; Wellman, B. (2012). Geography of twitter networks. <em>Social Networks</em>, <em>34</em>(1), 73–81. https://doi.org/<a href="https://doi.org/10.1016/j.socnet.2011.05.006">https://doi.org/10.1016/j.socnet.2011.05.006</a>
+</div>
+<div id="ref-tufekci_2014" class="csl-entry" role="listitem">
+Tufekci, Z. (2014). Big questions for social media big data: Representativeness, validity and other methodological pitfalls. <em>Proceedings of the 8th International Conference on Weblogs and Social Media, ICWSM 2014</em>, <em>8</em>. <a href="https://doi.org/10.1609/icwsm.v8i1.14517">https://doi.org/10.1609/icwsm.v8i1.14517</a>
 </div>
 <div id="ref-xiao_mensah_2022" class="csl-entry" role="listitem">
 Xiao, L., &amp; Mensah, H. (2022). How does the thread level of a comment affect its perceived persuasiveness? A reddit study. In K. Arai (Ed.), <em>Intelligent computing</em> (pp. 800–813). Springer International Publishing.

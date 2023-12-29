@@ -281,6 +281,10 @@ div.csl-indent {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Audio, Video, and Image Data</span></span>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resources.html" class="sidebar-item-text sidebar-link">
@@ -293,7 +297,20 @@ div.csl-indent {
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-minds-messenger" id="toc-the-minds-messenger" class="nav-link active" data-scroll-target="#the-minds-messenger"><span class="header-section-number">1.1</span> “The Mind’s Messenger”</a></li>
+  <li><a href="#problems-with-language-data-and-why-data-science-solves-them" id="toc-problems-with-language-data-and-why-data-science-solves-them" class="nav-link" data-scroll-target="#problems-with-language-data-and-why-data-science-solves-them"><span class="header-section-number">1.2</span> Problems With Language Data, and Why Data Science Solves Them</a>
+  <ul class="collapse">
+  <li><a href="#language-is-hard-to-record" id="toc-language-is-hard-to-record" class="nav-link" data-scroll-target="#language-is-hard-to-record"><span class="header-section-number">1.2.1</span> Language is Hard to Record</a></li>
+  <li><a href="#language-is-hard-to-quantify" id="toc-language-is-hard-to-quantify" class="nav-link" data-scroll-target="#language-is-hard-to-quantify"><span class="header-section-number">1.2.2</span> Language is Hard to Quantify</a></li>
+  <li><a href="#language-is-hard-to-control" id="toc-language-is-hard-to-control" class="nav-link" data-scroll-target="#language-is-hard-to-control"><span class="header-section-number">1.2.3</span> Language is Hard to Control</a></li>
+  </ul></li>
+  <li><a href="#what-this-textbook-is-useful-for" id="toc-what-this-textbook-is-useful-for" class="nav-link" data-scroll-target="#what-this-textbook-is-useful-for"><span class="header-section-number">1.3</span> What This Textbook is Useful For</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rimonim/ds4psych/blob/main/intro.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -315,28 +332,105 @@ div.csl-indent {
 
 </header>
 
-<p>“Language is the most common and reliable way for people to translate their internal thoughts and emotions into a form that others can understand. Words and language, then, are the very stuff of psychology and communication.” <span class="citation" data-cites="tausczik_pennebaker_2010">(<a href="#ref-tausczik_pennebaker_2010" role="doc-biblioref">Tausczik &amp; Pennebaker, 2010</a>)</span></p>
+<section id="the-minds-messenger" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="the-minds-messenger"><span class="header-section-number">1.1</span> “The Mind’s Messenger”</h2>
+<p>Psychology is often referred to as a “behavioral science”. Humans engage in many behaviors: eating, sleeping, pressing buttons, coming in five minutes early to work… All sorts of behaviors can reveal secrets of the mind, but one type of behavior in particular has always struck people as greater than all others in its ability to express the richness of thought: language. The 11th century philosopher Bahaye ibn Paquda wrote that “speech and the orderly arrangement of words” are the ways in which a human “gives expression to what is in his mind and soul and understands the conditions of others. The tongue is the heart’s pen and the mind’s messenger. Without speech, there would be no social relations between one person and another.”<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Somewhat more recently, <span class="citation" data-cites="tausczik_pennebaker_2010">Tausczik &amp; Pennebaker (<a href="#ref-tausczik_pennebaker_2010" role="doc-biblioref">2010</a>)</span> expressed the same sentiment:</p>
+<blockquote class="blockquote">
+<p>“Language is the most common and reliable way for people to translate their internal thoughts and emotions into a form that others can understand. Words and language, then, are the very stuff of psychology and communication.”</p>
+</blockquote>
+<p>What exactly is the relationship between psychology and language? The 14th century philosopher William of Ockham proposed that thought itself has essentially linguistic structure, with subjects, objects, and verbs. According to Ockham then, spoken or written language is a sort of rough reflection of inner language. Theories like that of Ockham, in which language is a straightforward representation of inner psychological life, were common over the history of philosophy. Nowadays, studies of neurological patients have made it clear that linguistic abilities are not necessary for complex thought <span class="citation" data-cites="fedorenko_varley_2016">(<a href="#ref-fedorenko_varley_2016" role="doc-biblioref">Fedorenko &amp; Varley, 2016</a>)</span>. Likewise, now-classic research has made it clear that people cannot be trusted to accurately report their own thought processes <span class="citation" data-cites="nisbett_wilson_1977">(<a href="#ref-nisbett_wilson_1977" role="doc-biblioref">Nisbett &amp; Wilson, 1977</a>)</span>. Nevertheless, language is without doubt a centrally important mode of human behavior. Humans are constantly talking to each other or listening to each other talk. Even if this talk cannot be construed as reliable reporting about internal states, it must reflect those states in some way, in the same way that any other behavior must do so.</p>
+</section>
+<section id="problems-with-language-data-and-why-data-science-solves-them" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="problems-with-language-data-and-why-data-science-solves-them"><span class="header-section-number">1.2</span> Problems With Language Data, and Why Data Science Solves Them</h2>
+<p>Psychologists have long insisted that talk therapy can heal, and that questionnaires can accurately measure psychological phenomena. These are language-based techniques, which rely heavily on the assumption that language processing is linked to more fundamental internal states. Even so, psychological research has generally avoided studying <em>natural language</em>, i.e.&nbsp;the sort of language that people produce in their day-to-day lives. There are three good reasons for this. Let’s go through each one and explain how data science solves the problem.</p>
+<section id="language-is-hard-to-record" class="level3" data-number="1.2.1">
+<h3 data-number="1.2.1" class="anchored" data-anchor-id="language-is-hard-to-record"><span class="header-section-number">1.2.1</span> Language is Hard to Record</h3>
+<p>Before the invention of audio recording technology, using language in scientific research was nearly impossible. Early efforts by linguists to record language samples from representative populations were heroic; starting in 1896, Edmond Edmont spent four years traveling around France on a bicycle conducting specially designed interviews to collect data for the <em>Atlas linguistique de la France</em>. He collected data from 700 participants in total <span class="citation" data-cites="crystal_1997">(<a href="#ref-crystal_1997" role="doc-biblioref">Crystal, 1997</a>)</span>. Since then, microphones have made it easier to record speech, but even simple quantitative measurements like word counts have still required painstaking hours of listening to recordings and marking each occurrence of the word.</p>
+<p>The advent of transformer neural networks has made working with audio data much easier than it once was, but the largest boon to our language recording abilities has come through a different medium: text.</p>
+<p>Only a few decades ago, public access to text was limited to highly edited long-form productions like books, magazines, and newspapers. Psychologists tend to be more interested in accessing people’s thoughts and feelings as they happen, so these texts held little interest for them. Some psychologists studied diaries or personal letters <span class="citation" data-cites="allport_1942">Creegan (<a href="#ref-creegan_1944" role="doc-biblioref">1944</a>)</span>, but personal documents like these are hard to collect at scale. This all changed with the advent of the Internet. More than ever before, people communicate through text—not just in long-distance correspondence, but for day-to-day socializing with friends and family. Moreover, much of this textual communication is synchronous and shares many of the same features as face-to-face spoken conversation <span class="citation" data-cites="placinski_zywiczynski_2023">(<a href="#ref-placinski_zywiczynski_2023" role="doc-biblioref">Placiński &amp; Żywiczyński, 2023</a>)</span>. Most importantly, much of this textual communication is freely available to the public, through social media platforms like Twitter, Reddit, and YouTube. Data science techniques allow researchers to access these texts and transform them into manageable datasets with APIs <a href="apis.html"><span>Chapter&nbsp;9</span></a> and web scraping <a href="scraping.html"><span>Chapter&nbsp;10</span></a>.</p>
+</section>
+<section id="language-is-hard-to-quantify" class="level3" data-number="1.2.2">
+<h3 data-number="1.2.2" class="anchored" data-anchor-id="language-is-hard-to-quantify"><span class="header-section-number">1.2.2</span> Language is Hard to Quantify</h3>
+<p>Even when interesting texts were available to psychologists of the past, they were rarely able to make use of them in quantitative analysis. Language is complex, with near-infinite ways to describe the same thing. There are no clear rules for measuring the extent to which a text reflects depression, anxiety, mania, introspection, or any other psychological construct. The few researchers who tried to extract quantitative psychological dimensions of text were nearly as heroic as Edmond Edmont on his four year journey around France. For example, <span class="citation" data-cites="peterson_seligman_1984">Peterson &amp; Seligman (<a href="#ref-peterson_seligman_1984" role="doc-biblioref">1984</a>)</span> administered a questionnaire that prompted participants to write short explanations of various hypothetical scenarios. They then carefully read each response, noted each time a phrase like “because of” or “as a result of” was mentioned, and marked the accompanying explanation. These explanations were then typed by hand and shown one at a time to four trained judges who rated them on various 7-point scales. Finally, the agreement between the judges was assessed and their ratings were aggregated into the final variable used in their analysis of risk factors for. Today, this sort of analysis could be performed for free in a matter of seconds using dictionary-based word counts <a href="word-counting.html"><span>Chapter&nbsp;14</span></a>, neural embeddings <a href="contextualized-embeddings.html"><span>Chapter&nbsp;18</span></a>, or other methods covered in this book.</p>
+</section>
+<section id="language-is-hard-to-control" class="level3" data-number="1.2.3">
+<h3 data-number="1.2.3" class="anchored" data-anchor-id="language-is-hard-to-control"><span class="header-section-number">1.2.3</span> Language is Hard to Control</h3>
+<p>Language is a social phenomenon. People do not write or speak in a vacuum, they participate in conversations or group discussions, considering their audience as they form their words. For the researcher, this means that language is full of uncontrolled, confounding variables: Is the speaker responding to another speaker? Who is the other speaker? How many participants are there in the conversation? Researchers in the field of psycholinguistics have tried to solve these problems by isolating speakers in a laboratory setting, contriving situations in which participants process and produce speech without the uncontrolled variability of conversational partners <span class="citation" data-cites="oconnell_kowal_2003">(<a href="#ref-oconnell_kowal_2003" role="doc-biblioref">O’Connell &amp; Kowal, 2003</a>)</span>. Nevertheless, the inherently social nature of language behavior has made it difficult to analyze in even remotely naturalistic settings.</p>
+<p>Today, the highly structured nature of interaction on social media has made the social context of utterances easily measurable. For example, comments on Reddit are always associated with a well-defined community, are responding to a known original post, and are directly responding to previous comments in a tree-like structure <a href="apis.html#sec-reddit-threads"><span>Section&nbsp;9.2.3</span></a>. This structure can be leveraged to provide robust statistical control by using it in tandem with new methods for quantifying the relationships between utterances. A few decades ago the question “How similar are Daniel’s utterances to Amos’s utterances?” would have seemed hopelessly ill-defined. Similar in what way? Today, answering this question is made simple with vector-based semantic embeddings (<a href="vectorspace-intro.html">Chapters&nbsp;<span>16</span></a>—<a href="contextualized-embeddings.html"><span>18</span></a>). Methods like these are now being used to make sense of nuanced features of language use in dialogue <span class="citation" data-cites="duran_etal_2019">(see <a href="#ref-duran_etal_2019" role="doc-biblioref">Duran et al., 2019</a> for an example in psycholinguistics)</span>.</p>
+<p>This book will not cover all of the relevant statistical methods for analyzing data with linked pairs and groups of participants <span class="citation" data-cites="kenny_etal_2006">(e.g. <a href="#ref-kenny_etal_2006" role="doc-biblioref">Kenny et al., 2006</a>)</span>, but the measurement methods we present here can be used to extend such methods to large datasets of naturalistic interaction.</p>
+</section>
+</section>
+<section id="what-this-textbook-is-useful-for" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="what-this-textbook-is-useful-for"><span class="header-section-number">1.3</span> What This Textbook is Useful For</h2>
+<p>The tools of presented in this book are useful for many fields of psychology, cognitive science, and neuroscience. Most are related to language, but not all. The following are a few examples of ways to apply these tools in practice:</p>
 <ul>
-<li>enhance experimental control by matching stimuli according to semantic similarity <span class="citation" data-cites="gagne_etal_2005">(e.g. <a href="#ref-gagne_etal_2005" role="doc-biblioref">Gagné et al., 2005</a>)</span></li>
-<li>examine text generated from experimental manipulations <span class="citation" data-cites="garcia_sikstrom_2013">(e.g. <a href="#ref-garcia_sikstrom_2013" role="doc-biblioref">Garcia &amp; Sikström, 2013</a>)</span></li>
-<li>find correlations with neural organizations in the brain <span class="citation" data-cites="millet_etal_2022">(e.g. <a href="#ref-millet_etal_2022" role="doc-biblioref">Millet et al., 2022</a>)</span></li>
+<li>Enhance experimental control by matching word stimuli according to semantic similarity <span class="citation" data-cites="gagne_etal_2005">(e.g. <a href="#ref-gagne_etal_2005" role="doc-biblioref">Gagné et al., 2005</a>)</span>. See <a href="decontextualized-embeddings.html"><span>Chapter&nbsp;17</span></a>.</li>
+<li>Find similarities between large language models and neural processing in the brain <span class="citation" data-cites="millet_etal_2022">(e.g. <a href="#ref-millet_etal_2022" role="doc-biblioref">Millet et al., 2022</a>)</span>. See <a href="contextualized-embeddings.html"><span>Chapter&nbsp;18</span></a>.</li>
+<li>Measure the degree to which a therapist and patient are building mutual understanding over the course of a session <span class="citation" data-cites="duran_etal_2019">(cf. <a href="#ref-duran_etal_2019" role="doc-biblioref">Duran et al., 2019</a>)</span>. See <a href="vectorspace-intro.html"><span>Chapter&nbsp;16</span></a>.</li>
+<li>Analyze emotional responses to current events on social media <span class="citation" data-cites="simchon_etal_2020">(e.g. <a href="#ref-simchon_etal_2020" role="doc-biblioref">Simchon et al., 2020</a>)</span>. See <a href="apis.html"><span>Chapter&nbsp;9</span></a> and <a href="navigating-vectorspace.html#sec-machine-learning-methods"><span>Section&nbsp;19.4</span></a>.</li>
+<li>Find links between group members’ language and their probability of leaving the group <span class="citation" data-cites="ashokkumar_pennebaker_2022">(<a href="#ref-ashokkumar_pennebaker_2022" role="doc-biblioref">Ashokkumar &amp; Pennebaker, 2022</a>)</span>. See <a href="corpora.html"><span>Chapter&nbsp;8</span></a> and <a href="word-counting.html"><span>Chapter&nbsp;14</span></a>.</li>
+<li>Validate personality assessments with individuals’ behavior on social media <span class="citation" data-cites="schwartz_etal_2013">(<a href="#ref-schwartz_etal_2013" role="doc-biblioref">Schwartz et al., 2013</a>)</span>.</li>
 </ul>
+<hr>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="ref-allport_1942" class="csl-entry" role="listitem">
+Allport, G. W. (1942). The use of personal documents in psychological science. <em>Social Science Research Council Bulletin</em>, <em>49</em>, xix + 210–xix + 210.
+</div>
+<div id="ref-ashokkumar_pennebaker_2022" class="csl-entry" role="listitem">
+Ashokkumar, A., &amp; Pennebaker, J. W. (2022). Tracking group identity through natural language within groups. <em>PNAS Nexus</em>, <em>1</em>(2), pgac022. <a href="https://doi.org/10.1093/pnasnexus/pgac022">https://doi.org/10.1093/pnasnexus/pgac022</a>
+</div>
+<div id="ref-creegan_1944" class="csl-entry" role="listitem">
+Creegan, R. F. (1944). The phenomenological analysis of personal documents. <em>The Journal of Abnormal and Social Psychology</em>, <em>39</em>(2), 244–266. <a href="https://doi.org/10.1037/h0062816">https://doi.org/10.1037/h0062816</a>
+</div>
+<div id="ref-crystal_1997" class="csl-entry" role="listitem">
+Crystal, D. (1997). <em>The cambridge encyclopedia of language</em> (Second edition.). Cambridge University Press.
+</div>
+<div id="ref-duran_etal_2019" class="csl-entry" role="listitem">
+Duran, N. D., Paxton, A., &amp; Fusaroli, R. (2019). ALIGN: Analyzing linguistic interactions with generalizable techNiques-a python library. <em>Psychological Methods</em>, <em>24</em>(4), 419–438.
+</div>
+<div id="ref-fedorenko_varley_2016" class="csl-entry" role="listitem">
+Fedorenko, E., &amp; Varley, R. (2016). Language and thought are not the same thing: Evidence from neuroimaging and neurological patients. <em>Annals of the New York Academy of Sciences</em>, <em>1369</em>. <a href="https://doi.org/10.1111/nyas.13046">https://doi.org/10.1111/nyas.13046</a>
+</div>
 <div id="ref-gagne_etal_2005" class="csl-entry" role="listitem">
 Gagné, C., Spalding, T., &amp; Ji, H. (2005). Re-examining evidence for the use of independent relational representations during conceptual combination. <em>Journal of Memory and Language</em>, <em>53</em>, 445–455. <a href="https://doi.org/10.1016/j.jml.2005.03.006">https://doi.org/10.1016/j.jml.2005.03.006</a>
 </div>
-<div id="ref-garcia_sikstrom_2013" class="csl-entry" role="listitem">
-Garcia, D., &amp; Sikström, S. (2013). <span class="nocase">Quantifying the Semantic Representations of Adolescents’ Memories of Positive and Negative Life Events</span>. <em>Journal of Happiness Studies</em>, <em>14</em>(4), 1309–1323. <a href="https://doi.org/10.1007/s10902-012-9385-8">https://doi.org/10.1007/s10902-012-9385-8</a>
+<div id="ref-kenny_etal_2006" class="csl-entry" role="listitem">
+Kenny, D. A., Kashy, D. A., &amp; Cook, W. L. (2006). <em>Dyadic data analysis.</em> (pp. xix, 458–xix, 458). Guilford Press.
 </div>
 <div id="ref-millet_etal_2022" class="csl-entry" role="listitem">
 Millet, J., Caucheteux, C., Orhan, P., Boubenec, Y., Gramfort, A., Dunbar, E., Pallier, C., &amp; King, J.-R. (2022). Toward a realistic model of speech processing in the brain with self-supervised learning. In S. Koyejo, S. Mohamed, A. Agarwal, D. Belgrave, K. Cho, &amp; A. Oh (Eds.), <em>Advances in neural information processing systems</em> (Vol. 35, pp. 33428–33443). Curran Associates, Inc. <a href="https://proceedings.neurips.cc/paper_files/paper/2022/file/d81ecfc8fb18e833a3fa0a35d92532b8-Paper-Conference.pdf">https://proceedings.neurips.cc/paper_files/paper/2022/file/d81ecfc8fb18e833a3fa0a35d92532b8-Paper-Conference.pdf</a>
+</div>
+<div id="ref-nisbett_wilson_1977" class="csl-entry" role="listitem">
+Nisbett, R., &amp; Wilson, T. (1977). Telling more than we can know: Verbal reports on mental processes. <em>Psychological Review</em>, <em>84</em>, 231–259. <a href="https://doi.org/10.1037/0033-295X.84.3.231">https://doi.org/10.1037/0033-295X.84.3.231</a>
+</div>
+<div id="ref-oconnell_kowal_2003" class="csl-entry" role="listitem">
+O’Connell, D., &amp; Kowal, S. (2003). Psycholinguistics: A half century of monologism. <em>The American Journal of Psychology</em>, <em>116</em>, 191–212. <a href="https://doi.org/10.2307/1423577">https://doi.org/10.2307/1423577</a>
+</div>
+<div id="ref-peterson_seligman_1984" class="csl-entry" role="listitem">
+Peterson, C., &amp; Seligman, M. E. (1984). Causal explanations as a risk factor for depression: Theory and evidence. <em>Psychological Review</em>, <em>91</em>(3), 347–374.
+</div>
+<div id="ref-placinski_zywiczynski_2023" class="csl-entry" role="listitem">
+Placiński, M., &amp; Żywiczyński, P. (2023). Modality effect in interactive alignment: Differences between spoken and text-based conversation. <em>Lingua</em>, <em>293</em>, 103592. https://doi.org/<a href="https://doi.org/10.1016/j.lingua.2023.103592">https://doi.org/10.1016/j.lingua.2023.103592</a>
+</div>
+<div id="ref-schwartz_etal_2013" class="csl-entry" role="listitem">
+Schwartz, H. A., Eichstaedt, J. C., Kern, M. L., Dziurzynski, L., Ramones, S. M., Agrawal, M., Shah, A., Kosinski, M., Stillwell, D., Seligman, M. E. P., &amp; Ungar, L. H. (2013). Personality, gender, and age in the language of social media: The open-vocabulary approach. <em>PLOS ONE</em>, <em>8</em>(9), 1–16. <a href="https://doi.org/10.1371/journal.pone.0073791">https://doi.org/10.1371/journal.pone.0073791</a>
+</div>
+<div id="ref-simchon_etal_2020" class="csl-entry" role="listitem">
+Simchon, A., Guntuku, S. C., Simhon, R., Ungar, L. H., Hassin, R. R., &amp; Gilead, M. (2020). Political depression? A big-data, multimethod investigation of americans’ emotional response to the trump presidency. <em>Journal of Experimental Psychology. General</em>. <a href="https://doi.org/10.1037/xge0000767">https://doi.org/10.1037/xge0000767</a>
 </div>
 <div id="ref-tausczik_pennebaker_2010" class="csl-entry" role="listitem">
 Tausczik, Y. R., &amp; Pennebaker, J. W. (2010). The psychological meaning of words: LIWC and computerized text analysis methods. <em>Journal of Language and Social Psychology</em>, <em>29</em>(1), 24–54. <a href="https://doi.org/10.1177/0261927X09351676">https://doi.org/10.1177/0261927X09351676</a>
 </div>
 </div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Duties of the Heart, Second Treatise on Examination (Chapter 5), trans. Rabbi Moses Hyamson, New York, 1925<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -590,7 +684,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-left">Data Science for Psychology was written by Almog Simchon and Louis Teitelbaum.</div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rimonim/ds4psych/blob/main/intro.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action">Report an issue</a></p></div></div></div>
+    </div>
     <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
   </div>
 </footer>

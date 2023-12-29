@@ -20,6 +20,8 @@ DFM -> Weighting (tf-idf, PPMI) -> Dimensionality reduction
 
 @deerwester_etal_1990
 
+@garcia_sikstrom_2013
+
 ## LDA
 
 

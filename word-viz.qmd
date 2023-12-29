@@ -87,6 +87,7 @@ Since we are comparing frequency in one group to frequency in another, we can pu
 #| warning: false
 library(ggrepel)
 
+set.seed(2023)
 distressed_texts_binary |> 
   ggplot(aes(nondistressed_count, distressed_count, 
              label = word,
@@ -125,6 +126,7 @@ To allow viewers to explore these patterns in greater detail, we can make the pl
 library(ggiraph, verbose = FALSE)
 library(ggrepel)
 
+set.seed(2023)
 p <- distressed_texts_binary |> 
   ggplot(aes(nondistressed_count, distressed_count, 
              label = word,
@@ -172,6 +174,7 @@ A disadvantage of simple F/F plots: **When people see a scatterplot, they think,
 library(ggiraph, verbose = FALSE)
 library(ggrepel)
 
+set.seed(2023)
 p1 <- distressed_texts_binary |> 
   mutate(common = (nondistressed_count + distressed_count)/2) |> 
   ggplot(aes(distressed_freq_ratio, common, 

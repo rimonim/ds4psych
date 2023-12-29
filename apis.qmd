@@ -129,7 +129,7 @@ hadley_threads |>
 ## Advantages of Reddit Data
 
 -   **Explicit Communities:** Reddit communities are clearly defined and explicit about their purposes. Reddit includes communities devoted to fictional storytelling, factual storytelling, personal reflection, technical advice, political discussion, joke telling, and much more. This makes it to gather a domain-specific sample.
--   **Long-form Text Responses:** While some social media platforms have word limits for posts or comments, Reddit has many communities devoted to long-form text. Longer documents can make characterization of their content more accurate.
+-   **Long-form Text Responses:** While some social media platforms have character limits for posts or comments, Reddit has many communities devoted to long-form text. Longer documents can make characterization of their content more accurate.
 -   **Anonymity:** Reddit users can remain relatively anonymous, which might encourage more honest and open sharing of experiences.
 :::
 
@@ -140,20 +140,29 @@ hadley_threads |>
 -   **Anonymity:** In some cases, anonymity may make user behavior less representative. For example, many users have multiple accounts, which they use for different activities on the platform, making users seem disproportionately narrow in their interests. 
 :::
 
-## Twitter
+## Twitter / X
+
+Twitter has been called the "model organism" of big data research [@tufekci_2014]. This is because, until 2023, Twitter was the largest source of free, open text data. In contrast to Facebook, almost all Twitter activity is public. Twitter's standardized character limit (originally 140, now 280), along with its simple network structure make structuring and the data easy. 
+
+### Followers, Mentions, and Retweets
+
+Whereas Reddit users subscribe to communities, Twitter users subscribe to other users. This is called "following". They can also "retweet" other users' posts to their own feed, or explicitly mention other users in posts using the "@" symbol. This focus on connections between individuals means that each user's communal associations can be characterized in a rich, nuanced way. For example, @mosleh_etal_2021 collected Twitter IDs of survey participants
+
+### Geolocation on Twitter
+
+Twitter allows users to specify a geographical location along their post. While these user provided locations can sometimes be difficult to interpret, they allow analyses by geographic location. For example, @takhteyev_etal_2012 sampled users from their posts on Twitter's public feed, and users followed by them. They then analyzed the distribution of these ties over geographical distance, national boundaries, and language differences. They found that Twitter users are most strongly tied to people in their own city, and that between regions, the number of airline flights was the best predictor of ties. 
 
 ::: {.callout-tip icon="false"}
 ## Advantages of Twitter Data
 
--   **Hashtag Tracking:** Researchers can track specific hashtags related to psychological phenomena.
--   **Character Limit:**
+-   **Character Limit:** Twitter's character limit means that Tweets vary less in their length. This can decrease variance in measurements.
+-   **Pure Network Structure:** As opposed to Reddit's distinct communities and hierarchical comment trees, Twitter has a network-like social structure in which users are linked to other individual users or posts. This structure can reveal underlying communities and the strength of the connections between them.
 :::
 
 ::: {.callout-important icon="false"}
 ## Disadvantages of Twitter Data
 
--   **Character Limit:** The character limit on tweets may limit the depth of responses and the ability to convey complex psychological experiences.
--   **Sampling Bias:** Twitter users may not be representative of the general population, leading to potential sampling bias.
+-   **Character Limit:** The character limit on tweets may limit the depth of responses and the ability to convey complex psychological experiences. The smaller sample of words in each document can also make measurement less reliable.
 -   **Limited Context:** Tweets may lack context, making it challenging to fully understand the meaning behind short messages.
 -   **No more free API:** While lots of historical Twitter data are available on the internet [see @sec-corpora], [the API has been prohibitively expensive since 2023](https://www.wired.com/story/twitter-data-api-prices-out-nearly-everyone/).
 :::
@@ -193,6 +202,10 @@ Mastodon uses community-based moderation, in which each server can limit or filt
 :::
 
 ## YouTube
+
+How to get a Youtube API key: https://www.youtube.com/watch?v=of0nzBJrT20
+
+Though there are [some workarounds available](https://github.com/jdepoix/youtube-transcript-api), Google does not allow access to full transcriptions for standard API key bearers.
 
 ```{r}
 

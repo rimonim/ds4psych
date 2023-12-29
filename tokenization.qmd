@@ -1,2 +1,25 @@
 # Tokenization {#sec-tokenization}
 
+```{r setup}
+#| echo: false
+#| include: false
+
+source("_common.R")
+```
+
+## Preprocessing
+
+Using the `stringr` package, which is included in the tidyverse.
+
+```{r}
+#| eval: false
+
+tweets$text <- str_replace(tweets$text, "RT ", "")            # remove "RT "
+tweets$text <- str_replace(tweets$text, "�", "")            # remove "�"
+tweets$text <- str_replace_all(tweets$text, "<.*?>", "")      # remove html tags 
+tweets$text <- str_replace_all(tweets$text, 'http://[^"\\s]+|https://[^"\\s]+', " ")  # links
+tweets$text <- str_replace_all(tweets$text, '@\\w+:|@\\w+', " ")      # remove handles
+tweets$text <- str_trim(tweets$text)                          # strip surrounding whitespace
+tweets$text <- str_to_lower(tweets$text)                      # transform to lower case 
+```
+

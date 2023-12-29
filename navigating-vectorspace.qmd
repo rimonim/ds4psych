@@ -9,7 +9,7 @@ source("_common.R")
 
 @gunther_etal_2019
 
-## Parallelograms
+## Parallelograms {#sec-parallelograms}
 
 Introduced with word2vec by @mikolov_etal_2013
 
@@ -18,13 +18,13 @@ Glove [@pennington_etal_2014] is designed with this property in mind. Transforme
 In CCR, for example, there’s a difference between agreeing with statements in a questionnaire and actually writing like a questionnaire. How do I know that I’m measuring how anxious/depressed the comments are and not how questionnaire-y they are?
 Potential workaround: reverse all of the statements in the questionnaire (as for reverse-coded items), add them to the original questionnaire, and get the average embedding of the construct-neutral questionnaire. Then subtract this embedding from the original questionnaire average embedding.
 
-## Advanced Similarity Measures
+## Advanced Similarity Measures {#sec-advanced-similarity}
 
 - Jensen–Shannon distance
 
-## Dimension Projection
+## Dimension Projection {#sec-dimension-projection}
 
-## Machine Learning Methods
+## Machine Learning Methods {#sec-machine-learning-methods}
 
 
 @chersoni_etal_2021 used partial least squares regression to map distributional embeddings to human-rated semantic features derived from research in cognitive psychology.

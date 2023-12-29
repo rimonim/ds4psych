@@ -48,6 +48,7 @@ book:
         - decontextualized-embeddings.qmd
         - contextualized-embeddings.qmd
         - navigating-vectorspace.qmd
+    - part: audio-video-image.qmd
     - resources.qmd
 
 bibliography: references.bib
