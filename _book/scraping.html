@@ -328,27 +328,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="a-simple-example" class="level2" data-number="10.2"><h2 data-number="10.2" class="anchored" data-anchor-id="a-simple-example">
 <span class="header-section-number">10.2</span> A Simple Example</h2>
 <p>To give you a taste for what web scraping is like, we will give a simple example of scraping a single page.</p>
-<p>The page in this case will be <a href="https://rimonim.github.io/blog.html">the blog reel of one the authors, Louis</a>.</p>
+<p>The page in this case will be <a href="https://rimonim.github.io/blog.html">the blog reel of one the authors of this book, Louis</a>.</p>
 <p><img src="images/scraping1.png" class="img-fluid"></p>
 <p>We will scrape the name and date of each blog post using the <a href="https://rvest.tidyverse.org">rvest</a> package. First, we retrieve the raw html code of the webpage.</p>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rvest.tidyverse.org/">rvest</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>#&gt; 
-#&gt; Attaching package: 'rvest'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>#&gt; The following object is masked from 'package:readr':
-#&gt; 
-#&gt;     guess_encoding</code></pre>
-</div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">html</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://xml2.r-lib.org/reference/read_xml.html">read_html</a></span><span class="op">(</span><span class="st">"https://rimonim.github.io/blog.html"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rvest.tidyverse.org/">rvest</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">html</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://xml2.r-lib.org/reference/read_xml.html">read_html</a></span><span class="op">(</span><span class="st">"https://rimonim.github.io/blog.html"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Then, we have to identify the name of the particular objects we are looking for. In most cases, this can be done by right clicking and pressing “Inspect Element” in the web browser.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <p><img src="images/scraping2.png" class="img-fluid"></p>
 <p>Now that we know that blog titles are called “h3.no-anchor.listing-title”, we can extract those objects from the raw html using <code><a href="https://rvest.tidyverse.org/reference/html_element.html">html_elements()</a></code> and convert them to regular text using <code><a href="https://rvest.tidyverse.org/reference/html_text.html">html_text2()</a></code>.</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">post_titles</span> <span class="op">&lt;-</span> <span class="va">html</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">post_titles</span> <span class="op">&lt;-</span> <span class="va">html</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rvest.tidyverse.org/reference/html_element.html">html_elements</a></span><span class="op">(</span><span class="st">"h3.no-anchor.listing-title"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rvest.tidyverse.org/reference/html_text.html">html_text2</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -364,7 +356,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>To build a dataset with multiple variables, we repeat this process for each variable.</p>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">posts</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">posts</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span></span>
 <span>  date <span class="op">=</span> <span class="va">html</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="https://rvest.tidyverse.org/reference/html_element.html">html_elements</a></span><span class="op">(</span><span class="st">"div.listing-date"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="https://rvest.tidyverse.org/reference/html_text.html">html_text2</a></span><span class="op">(</span><span class="op">)</span>,</span>

@@ -8,3 +8,6 @@ data/emobank_distilroberta.rds
 data/ra_posts_distilroberta.rds
 
 /.quarto/
+data/city_users/city_user_comments.csv
+data/city_users/city_user_threads.csv
+data/city_users/city_users.csv

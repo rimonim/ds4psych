@@ -401,60 +401,161 @@ tibble(num = factor(1:7),
           axis.text.y = element_text())
 ```
 
-To emphasize the point about weekdays, consider the following two versions of the same graph (data taken from 1000 [top Reddit communities](https://github.com/umbrae/reddit-top-2.5-million/tree/master)):
+To emphasize the point about weekdays, consider the following two versions of the same graph (data taken from Reddit users associated with subreddits for 9 US cities):
 
 ```{r}
 #| include: false
 #| eval: false
 
-# retrieve file list from github (https://github.com/umbrae/reddit-top-2.5-million/tree/master)
-req <- httr::GET("https://api.github.com/repos/umbrae/reddit-top-2.5-million/git/trees/master?recursive=1")
-filelist <- unlist(lapply(httr::content(req)$tree, "[", "path"), use.names = F)
-filelist <- grep("data/", filelist, value = TRUE, fixed = TRUE)
-filelist <- paste0("https://raw.githubusercontent.com/umbrae/reddit-top-2.5-million/master/", filelist)
+library(RedditExtractoR)
 
-# choose 1000 repos at random, and retrieve the raw files from github, 
-# selecting only timestamp and text columns
-# WARNING: Takes a while! Choose a smaller number of repos for less wait time.
-reddit_posts <- bind_rows(
-  lapply(filelist[sample(1:length(filelist), 1000)], 
-         function(d){ 
-           read_csv(d) |> 
-             select(created_utc, selftext) |> 
-             mutate(created_utc = as.numeric(created_utc))
-           })
+# subreddits for some US cities
+# time zones (offset from utc in hours)
+# latitude
+city_subreddits <- tibble(
+  subreddit = c("sanfrancisco", "bayarea", "LosAngeles", "Seattle", "Portland",
+                "Denver", 
+                "houston", "Austin", "chicago", "ChicagoSuburbs",
+                "boston"),
+  tz = c("Etc/GMT-8", "Etc/GMT-8", "Etc/GMT-8", "Etc/GMT-8", "Etc/GMT-8",
+         "Etc/GMT-7", 
+         "Etc/GMT-6", "Etc/GMT-6", "Etc/GMT-6", "Etc/GMT-6",
+         "Etc/GMT-5")
+  )
+
+# Thread activity during the last month of 2023 (ran on Dec 31)
+city_threads <- 
+  lapply(city_subreddits$subreddit, 
+         function(s) {
+             find_thread_urls(subreddit = s, 
+                   sort_by = "new", 
+                   period = "month")
+         }
+  ) |> bind_rows()
+
+# Get thread content
+set.seed(2023)
+city_comments <- get_thread_content(sample(city_threads$url, 250))
+
+# Users by city subreddit
+city_users <- full_join(
+  select(city_comments$threads, url, subreddit), 
+  select(city_comments$comments, url, author)
+  ) |>
+  select(author, subreddit) |> 
+  distinct() |> 
+  rename(hometown = subreddit) |> 
+  filter(!duplicated(author))
+
+# User content (takes ~20 hours)
+city_user_content <- get_user_content(city_users$author)
+
+## Comments
+# remove null values
+city_user_comments <- city_user_content[unlist(map(city_user_content, ~!is.null(nrow(.x$comments))))]
+# make single dataframe
+city_user_comments <- bind_rows(
+  map(
+    city_user_content, 
+    ~select(pluck(.,"comments"),
+            date_utc:comment, up)
+    )
   ) |> 
-  drop_na()
+  rename(author = comment_author) |> 
+  left_join(city_users)
 
-# NRC "joy" lexicon
-joy <- lexicon::nrc_emotions |> 
-  filter(joy == 1) |> 
-  pull(term)
+## Threads
+# remove null values
+city_user_threads <- city_user_content[unlist(map(city_user_content, ~!is.null(nrow(.x$threads))))]
+# make single dataframe
+city_user_threads <- bind_rows(
+  map(
+    city_user_threads, 
+    ~select(pluck(.,"threads"),
+            date_utc:text, ups)
+    )
+  ) |> 
+  rename(up = ups) |> 
+  left_join(city_users)
 
-reddit_joy <- reddit_posts |> 
+## Data for analysis
+# city_user_comments <- read_csv("data/city_users/city_user_comments.csv")
+# city_user_threads <- read_csv("data/city_users/city_user_threads.csv")
+# city_users <- read_csv("data/city_users/city_users.csv")
+city_user_content <- city_user_comments |> 
+  rename(text = comment) |> 
+  select(timestamp, author, text, hometown) |> 
+  bind_rows(
+    city_user_threads |> 
+      select(timestamp, author, text, hometown)
+  ) |> 
+  left_join(rename(city_subreddits, hometown = subreddit)) |> 
+  mutate(timestamp = lubridate::as_datetime(timestamp),
+         weekday = factor(weekdays(timestamp)),
+         hour = lubridate::hour(lubridate::with_tz(timestamp, tz)),
+         minute = lubridate::minute(lubridate::with_tz(timestamp, tz)),
+         time = hour + (minute/60)) |> 
+  # choose max 100 texts from each user
+  drop_na() |> 
+  group_by(author) |> 
+  slice_sample(n = 100)
+
+library(quanteda)
+library(quanteda.dictionaries)
+
+# NRC "sadness" lexicon
+sadness_dict <- dictionary(
+    list(sadness = quanteda.sentiment::data_dictionary_NRC$sadness)
+    )
+
+city_user_corpus <- city_user_content |> 
   # clean data
-  mutate(date = lubridate::as_date(created_utc),
-         weekday = factor(weekdays(date), levels = c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")),
-         month = month(date, label = TRUE),
-         yday = yday(date),
-         clean_text = tm::removeNumbers(selftext),
+  mutate(clean_text = tm::removeNumbers(text),
          clean_text = tm::removePunctuation(clean_text),
          clean_text = tm::stripWhitespace(clean_text)) |>
-  # tokenize
-  unnest_tokens(word, clean_text, to_lower = TRUE) |>
-  # count
-  count(yday, weekday, word, sort = TRUE) |>
-  # relative frequencies
-  group_by(yday, weekday) |> 
-  mutate(freq = n/sum(n)) |> 
-  select(-n) |> 
-  # keep joyful words only
-  filter(word %in% joy) |> 
-  # aggregate (add frequencies of all words in lexicon)
-  summarise(freq = sum(freq))
+  corpus(text_field = "clean_text")
+
+reddit_sadness <- city_user_corpus |> 
+  liwcalike(dictionary = sadness_dict) |> 
+  select(sadness) |> 
+  bind_cols(city_user_content) |> 
+  mutate(hometown = factor(hometown),
+         author = factor(author))
+
+# Rolling averages for plotting
+reddit_sadness_agg <- reddit_sadness |> 
+  # duplicate on both sides for pseudo-circularity
+  bind_rows(
+    reddit_sadness |> filter(time < 12) |> mutate(time = time + 24),
+    reddit_sadness |> filter(time > 12) |> mutate(time = time - 24)
+  ) |> 
+  # convert time of day to fictive datetime (for timetk)
+  mutate(time = lubridate::as_datetime(time*60*60)) |> 
+  # rolling average (3 hour window)
+    # first by individual user
+  group_by(hometown, author, weekday) |> 
+  timetk::summarise_by_time(
+    time,
+    .by = "15minutes",
+    sadness = mean(sadness, na.rm = TRUE)
+  ) |> 
+    # then by hometown and weekday
+  group_by(hometown, weekday) |> 
+  timetk::summarise_by_time(
+    time,
+    .by = "15minutes",
+    sadness = mean(sadness, na.rm = TRUE)
+  ) |> 
+  mutate(weekday = factor(weekday, 
+                          levels = c("Sunday", "Monday", 
+                                     "Tuesday", "Wednesday", 
+                                     "Thursday", "Friday", 
+                                     "Saturday")
+                          )
+         )
 
 # save to avoid long render time
-# save(reddit_joy, file = "data/reddit_joy.RData")
+# save(reddit_sadness_agg, file = "data/reddit_sadness.RData")
 ```
 
 ```{r}
@@ -462,44 +563,50 @@ reddit_joy <- reddit_posts |>
 #| warning: false
 #| fig-height: 10
 
-load("data/reddit_joy.RData")
+load("data/reddit_sadness.RData")
 library(patchwork)
 library(ggborderline)
 
-months = c("Jan", "Feb", "Mar", "Apr", 
-           "May", "Jun", "Jul", "Aug", 
-           "Sep", "Oct", "Nov", "Dec")
-
-goodplot3 <- reddit_joy |> 
-  ggplot(aes(yday, freq, color = weekday, group = weekday)) +
-    stat_smooth(aes(bordercolor = after_scale(colorspace::darken(color))), geom = "borderline", linewidth = 2, span = 1/3, method.args = list(degree=1), se = FALSE) +
+goodplot3 <- reddit_sadness_agg |> 
+  ggplot(aes(time, sadness, color = weekday, group = weekday)) +
+    stat_smooth(aes(bordercolor = after_scale(colorspace::darken(color))), 
+                geom = "borderline", 
+                linewidth = 2, 
+                method = "loess", 
+                se = FALSE) +
     scale_color_discrete(type = hcl.colors(7, "Sunset", rev = TRUE)) +
-    scale_x_continuous(breaks = c(15,46,74,105,135,166,196,227,258,288,319,349),
-                       labels = months) +
+    scale_x_datetime(date_labels = "%R", date_breaks = "4 hours") +
+    scale_y_continuous(labels = scales::label_percent(scale = 1)) +
     labs(title = "Sequential Color Scale",
-         x = "",
-         y = "Proportion of Joyful Words",
+         x = "Time of Day",
+         y = "Sadness-Related Words",
          color = "") +
     theme_minimal() +
     theme(plot.title = element_text(color = "green3", hjust = 1, size = 15),
           panel.grid.major.x = element_line(linewidth = .2),
           panel.grid.minor.x = element_line(linewidth = .8)) +
-    coord_cartesian(expand = FALSE)
+    coord_cartesian(xlim = c(lubridate::as_datetime(0), 
+                             lubridate::as_datetime(24*60*60)))
 
-badplot3 <- reddit_joy |> 
-  ggplot(aes(yday, freq, color = weekday, group = weekday)) +
-    stat_smooth(aes(bordercolor = after_scale(colorspace::darken(color))), geom = "borderline", linewidth = 2, span = 1/3, method.args = list(degree=1), se = FALSE) +
-    scale_x_continuous(breaks = c(15,46,74,105,135,166,196,227,258,288,319,349),
-                       labels = months) +
+badplot3 <- reddit_sadness_agg |> 
+  ggplot(aes(time, sadness, color = weekday, group = weekday)) +
+    stat_smooth(aes(bordercolor = after_scale(colorspace::darken(color))), 
+                geom = "borderline", 
+                linewidth = 2, 
+                method = "loess", 
+                se = FALSE) +
+    scale_x_datetime(date_labels = "%R", date_breaks = "4 hours") +
+    scale_y_continuous(labels = scales::label_percent(scale = 1)) +
     labs(title = "Qualitative Color Scale",
-         x = "",
-         y = "Proportion of Joyful Words",
+         x = "Time of Day",
+         y = "Sadness-Related Words",
          color = "") +
     theme_minimal() +
     theme(plot.title = element_text(color = "red3", hjust = 1, size = 15),
           panel.grid.major.x = element_line(linewidth = .2),
           panel.grid.minor.x = element_line(linewidth = .8)) +
-    coord_cartesian(expand = FALSE)
+    coord_cartesian(xlim = c(lubridate::as_datetime(0), 
+                             lubridate::as_datetime(24*60*60)))
 
 goodplot3 / badplot3
 ```

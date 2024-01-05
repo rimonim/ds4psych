@@ -1,2 +1,13 @@
 # Bag of Words (BOW): Dictionary-Based Word Counts {#sec-word-counting}
 
+::: {.callout-tip icon="false"}
+## Advantages of Word Counts
+
+-   **Efficient Processing:** 
+:::
+
+::: {.callout-important icon="false"}
+## Disadvantages of Word Counts
+
+-   **No Context:** 
+:::

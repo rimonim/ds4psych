@@ -27,6 +27,7 @@ DFM -> Weighting (tf-idf, PPMI) -> Dimensionality reduction
 
 ## Word2vec
 
+@chatterjee_etal_2023
 
 ## GloVe
 

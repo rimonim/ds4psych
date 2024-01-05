@@ -21,13 +21,14 @@ To read more about web scraping etiquette and easy ways to implement it, see [th
 
 To give you a taste for what web scraping is like, we will give a simple example of scraping a single page.
 
-The page in this case will be [the blog reel of one the authors, Louis](https://rimonim.github.io/blog.html).
+The page in this case will be [the blog reel of one the authors of this book, Louis](https://rimonim.github.io/blog.html).
 
 ![](images/scraping1.png)
 
 We will scrape the name and date of each blog post using the [rvest](https://rvest.tidyverse.org) package. First, we retrieve the raw html code of the webpage. 
 
 ```{r}
+#| output: false
 library(rvest)
 
 html <- read_html("https://rimonim.github.io/blog.html")
