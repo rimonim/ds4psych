@@ -7,7 +7,7 @@
 source("_common.R")
 ```
 
-In @sec-corpora, we listed numerous placed to find datasets online. The sorts of datasets discussed there are generally formatted as a .csv file---or something like it---which you can download directly to your computer and import into R using `read_csv()`. Lot's of online data, however, are not pre-packaged in this way. When datasets are very large or complex, or are being updated regularly, the hosts of the data will instead provide a **web API**.
+In @sec-corpora, we listed numerous placed to find datasets online. The sorts of datasets discussed there are generally formatted as a .csv file <!--# i would also mention json -->---or something like it---which you can download directly to your computer and import into R using `read_csv()`. Lot's of online data, however, are not pre-packaged in this way. When datasets are very large or complex, or are being updated regularly, the hosts of the data will instead provide a **web API**.
 
 You can think of web APIs as little programming languages that are written inside a URL (URLs are the things you write in the top of your web browser to tell it which web page you want to access). When you access your custom-written URL, the host will perform whatever computations are necessary to get you your data, and send it to you in the same way that it would send you a website.
 
@@ -41,9 +41,9 @@ Reddit [generated over 3 billion posts and comments in 2022](https://www.statist
 
 Reddit content exists on three levels:
 
-- **Communities**, called "subreddits" are spaces for users to post about a specific topic. Individual subreddits are referred to as "r/SUBREDDIT". For example, [r/dataisbeautiful](https://www.reddit.com/r/dataisbeautiful/) is for data visualizations, [r/NaturalLanguage](https://www.reddit.com/r/NaturalLanguage/) is for posts about natural language processing, and [r/SampleSize](https://www.reddit.com/r/SampleSize/) is a place to gather volunteer participants for surveys and polls. Communities are policed by _moderators_, users who can remove posts or ban other users from the community. 
-- **Posts** are posted by users to a particular subreddit. Each post has a **title**, which is always text, and **content**, which can contain text, images, and videos.
-- **Comments** are responses to posts, responses to responses to posts, responses to responses to responses to posts, etc. These are always text.
+-   **Communities**, called "subreddits" are spaces for users to post about a specific topic. Individual subreddits are referred to as "r/SUBREDDIT". For example, [r/dataisbeautiful](https://www.reddit.com/r/dataisbeautiful/) is for data visualizations, [r/NaturalLanguage](https://www.reddit.com/r/NaturalLanguage/) is for posts about natural language processing, and [r/SampleSize](https://www.reddit.com/r/SampleSize/) is a place to gather volunteer participants for surveys and polls. Communities are policed by *moderators*, users who can remove posts or ban other users from the community.
+-   **Posts** are posted by users to a particular subreddit. Each post has a **title**, which is always text, and **content**, which can contain text, images, and videos.
+-   **Comments** are responses to posts, responses to responses to posts, responses to responses to responses to posts, etc. These are always text.
 
 ### The Reddit Algorithm
 
@@ -68,13 +68,13 @@ head(APIAdvocacy_posts)
 
 **An example of using Reddit communities in research:** In a series of experiments, @ashokkumar_pennebaker_2022 had participants write small free-form responses and fill out questionnaires on group identity strength. Using dictionary-based word-counts [@sec-word-counting], they then identified dictionaries that were associated with questionnaire-based measure, and used these to construct a composite measure of "unquestioning affiliation". Among college students, they showed that unquestioning affiliation in writing could predict whether students would drop out from college one year later. Finally, they applied their method to naturalistic data retrieved from the Reddit API, from the political communities r/The_Donald and r/hillaryclinton, and showed that users' unquestioning affiliation predicted the duration that they would stay in the community before leaving.
 
-- r/depression, r/ SuicideWatch, r/bipolarreddit, and r/opiates,
-- r/changemyview, r/IAmA, and r/ExplainLikeImFive
-- r/politics
+-   r/depression, r/ SuicideWatch, r/bipolarreddit, and r/opiates,
+-   r/changemyview, r/IAmA, and r/ExplainLikeImFive
+-   r/politics
 
 ### Threads {#sec-reddit-threads}
 
-A post with all of its associated comments is called a _thread_. For example, Hadley Wickham, the founder of [the tidyverse](https://www.tidyverse.org), ran a thread on the r/dataisbeautiful subreddit in 2015, in which he answered commenters' questions. To retrieve that thread, first find its URL. Do this by finding the threat on Reddit and copying the link from your web browser. Then call `Authenticate("reddit")` and `Collect()`, like so:
+A post with all of its associated comments is called a *thread*. For example, Hadley Wickham, the founder of [the tidyverse](https://www.tidyverse.org), ran a thread on the r/dataisbeautiful subreddit in 2015, in which he answered commenters' questions. To retrieve that thread, first find its URL. Do this by finding the threat on Reddit and copying the link from your web browser. Then call `Authenticate("reddit")` and `Collect()`, like so:
 
 ```{r}
 #| warning: false
@@ -101,10 +101,10 @@ hadley_threads |>
 
 The resulting dataframe has many columns. The most useful are the following:
 
-- `comment` is the text of the comment itself.
-- `user` is user who posted the comment.
-- `structure` is the tree structure leading to the comment. For example, "137_6_2" is the 2nd comment on the 6th comment on the 137th comment on the original post.
-- `comm_date` is the date and time of the comment, in UTC. Since this is in character format, it needs to be converted to a datetime with `lubridate::as_datetime()`.
+-   `comment` is the text of the comment itself.
+-   `user` is user who posted the comment.
+-   `structure` is the tree structure leading to the comment. For example, "137_6_2" is the 2nd comment on the 6th comment on the 137th comment on the original post.
+-   `comm_date` is the date and time of the comment, in UTC. Since this is in character format, it needs to be converted to a datetime with `lubridate::as_datetime()`.
 
 By processing the `structure` values, we can conceptualize the thread as a tree, with the original post (OP) as the root and comments as branches:
 
@@ -144,24 +144,24 @@ For most applications, vosonSML is a sufficient Reddit API wrapper. For slightly
 ## Disadvantages of Reddit Data
 
 -   **Selection Bias:** Certain subreddits may attract specific demographics, leading to potential selection bias in the data.
--   **Anonymity:** In some cases, anonymity may make user behavior less representative. For example, many users have multiple accounts, which they use for different activities on the platform, making users seem disproportionately narrow in their interests. 
+-   **Anonymity:** In some cases, anonymity may make user behavior less representative. For example, many users have multiple accounts, which they use for different activities on the platform, making users seem disproportionately narrow in their interests.
 :::
 
 ## Twitter / X
 
-Twitter has been called the "model organism" of big data research [@tufekci_2014]. This is because, until 2023, Twitter was the largest source of free, open text data. In contrast to Facebook, almost all Twitter activity is public. Twitter's standardized character limit (originally 140, now 280), along with its simple network structure make structuring and the data easy. 
+Twitter has been called the "model organism" of big data research [@tufekci_2014]. This is because, until 2023, Twitter was the largest source of free, open text data <!--# social media -- yes; text data -- probably CommonCrawl -->. In contrast to Facebook, almost all Twitter activity is public. Twitter's standardized character limit (originally 140, now 280), along with its simple network structure make structuring and the data easy.
 
 ### Followers, Mentions, and Retweets
 
-Whereas Reddit users subscribe to communities, Twitter users subscribe to other users. This is called "following". They can also "retweet" other users' posts to their own feed, or explicitly mention other users in posts using the "@" symbol. This focus on connections between individuals means that each user's communal associations can be characterized in a rich, nuanced way. 
+Whereas Reddit users subscribe to communities, Twitter users subscribe to other users. This is called "following". They can also "retweet" other users' posts to their own feed, or explicitly mention other users in posts using the "\@" symbol. This focus on connections between individuals means that each user's communal associations can be characterized in a rich, nuanced way.
 
 **An example of using Twitter networks in research:** @mosleh_etal_2021 collected Twitter IDs of participants who filled out a set of questions with intuitively compelling but incorrect answers, testing analytic thinking. They then analyzed the Twitter accounts that each participant followed, and found a large cluster of accounts followed preferentially by people with less analytic thinking. This group most prominently featured Twitter accounts of retail brands.
 
 ### Geolocation on Twitter
 
-Twitter allows users to specify a geographical location along their post. While these user provided locations can sometimes be difficult to interpret, they allow analyses by geographic location. 
+Twitter allows users to specify a geographical location along their post. While these user provided locations can sometimes be difficult to interpret, they allow analyses by geographic location.
 
-**An example of using Twitter geolocation in research:** @takhteyev_etal_2012 sampled users from their posts on Twitter's public feed, and users followed by them. They then analyzed the distribution of these ties over geographical distance, national boundaries, and language differences. They found that Twitter users are most strongly tied to people in their own city, and that between regions, the number of airline flights was the best predictor of ties. 
+**An example of using Twitter geolocation in research:** @takhteyev_etal_2012 sampled users from their posts on Twitter's public feed, and users followed by them. They then analyzed the distribution of these ties over geographical distance, national boundaries, and language differences. They found that Twitter users are most strongly tied to people in their own city, and that between regions, the number of airline flights was the best predictor of ties.
 
 ::: {.callout-tip icon="false"}
 ## Advantages of Twitter Data
@@ -180,15 +180,15 @@ Twitter allows users to specify a geographical location along their post. While 
 
 ## Mastodon
 
-In some ways, you can think of Mastodon as open source Twitter. Indeed, a large portion of the Mastodon user base started using it as a replacement for Twitter after [controversial events in 2022](https://en.wikipedia.org/wiki/Mastodon_(social_network)#2022_Twitter-related_spikes_in_adoption). Like Twitter users, Mastodon users post short posts to their feed, in which they can mention other users with "@" or use hashtags with "#". Like Twitter users, Mastodon users can follow other users and be followed by them.
+In some ways, you can think of Mastodon as open source Twitter. Indeed, a large portion of the Mastodon user base started using it as a replacement for Twitter after [controversial events in 2022](https://en.wikipedia.org/wiki/Mastodon_(social_network)#2022_Twitter-related_spikes_in_adoption). Like Twitter users, Mastodon users post short posts to their feed, in which they can mention other users with "\@" or use hashtags with "\#". Like Twitter users, Mastodon users can follow other users and be followed by them.
 
-Despite their similarities, social networks on Mastodon and Twitter are not the same. The biggest difference is that each Mastodon user is associated with a _server_ (also known as an _instance_). Mastodon servers can have hundreds of thousands of users, or just a few. Each server runs the Mastodon source code independently and hosts all of its users' content. Many servers have a theme based on a specific interest. It is also common for servers to be based around a particular locality, region, ethnicity, or country. For example, [tech.lgbt](https://tech.lgbt) is for LGBTQIA+ technologists, [SFBA.social](https://sfba.social) is for the San Francisco Bay Area in California, and [fediscience.org](https://fediscience.org) is for active scientists. 
+Despite their similarities, social networks on Mastodon and Twitter are not the same. The biggest difference is that each Mastodon user is associated with a *server* (also known as an *instance*). Mastodon servers can have hundreds of thousands of users, or just a few. Each server runs the Mastodon source code independently and hosts all of its users' content. Many servers have a theme based on a specific interest. It is also common for servers to be based around a particular locality, region, ethnicity, or country. For example, [tech.lgbt](https://tech.lgbt) is for LGBTQIA+ technologists, [SFBA.social](https://sfba.social) is for the San Francisco Bay Area in California, and [fediscience.org](https://fediscience.org) is for active scientists.
 
-Because of their topic-specific organization, Mastodon servers can function a bit like Reddit communities. Like Reddit communities, Mastodon servers can set their own rules for content. They can even change the default 500-character limit. The key difference is that on Reddit, _posts_ are associated with a community, whereas on Mastodon, _users_ are associated with a community. In other words, community affiliation on Mastodon is less related to the content of its posts and more related to the identity of its users. This feature can be useful when collecting user activity. For example, if we wanted to study the overall behavior of members of the LGBTQIA+ community, we could collect the activity of users affiliated with the [tech.lgbt](https://tech.lgbt) and other community-specific servers.
+Because of their topic-specific organization, Mastodon servers can function a bit like Reddit communities. Like Reddit communities, Mastodon servers can set their own rules for content. They can even change the default 500-character limit. The key difference is that on Reddit, *posts* are associated with a community, whereas on Mastodon, *users* are associated with a community. In other words, community affiliation on Mastodon is less related to the content of its posts and more related to the identity of its users. This feature can be useful when collecting user activity. For example, if we wanted to study the overall behavior of members of the LGBTQIA+ community, we could collect the activity of users affiliated with the [tech.lgbt](https://tech.lgbt) and other community-specific servers.
 
 ### Servers
 
-Mastodon server feeds are organized chronologically (unlike Reddit or Twitter, which have complex ordering algorithms). To retrieve the most recent posts on a particular server using vosonSML, we call `Authenticate("mastodon")` followed by `Collect()` with the "search" endpoint. The name of the server is identified with "instance". 
+Mastodon server feeds are organized chronologically (unlike Reddit or Twitter, which have complex ordering algorithms). To retrieve the most recent posts on a particular server using vosonSML, we call `Authenticate("mastodon")` followed by `Collect()` with the "search" endpoint. The name of the server is identified with "instance".
 
 ```{r}
 #| eval: false
@@ -207,12 +207,12 @@ The global feed (i.e. across all servers) can be accessed by setting `local = FA
 
 In all cases, the call results in a list of two dataframes, "posts" and "users". In the "posts" dataframe we have columns such as:
 
-- `content.text` is the text of the post itself.
-- `account` is a column of one-row dataframes containing information about the user who posted each post. You can convert this into a simple account ID column with `mutate(account_id = sapply(account, function(c) pull(c,id)))`.
-- `id` is a unique ID for the post.
-- `in_reply_to_id` is the ID of the post that this post is directly responding to. This can be used to build tree structures, as we did in @sec-reddit-threads, but see @sec-mastodon-threads for an alternative way to do this.
-- `in_reply_to_account_id` is the account ID of the poster to whom this post is directly responding. This can be used to build networks of users as opposed to threads.
-- `created_at` is the date and time of the post in UTC, already in datetime format.
+-   `content.text` is the text of the post itself.
+-   `account` is a column of one-row dataframes containing information about the user who posted each post. You can convert this into a simple account ID column with `mutate(account_id = sapply(account, function(c) pull(c,id)))`.
+-   `id` is a unique ID for the post.
+-   `in_reply_to_id` is the ID of the post that this post is directly responding to. This can be used to build tree structures, as we did in @sec-reddit-threads, but see @sec-mastodon-threads for an alternative way to do this.
+-   `in_reply_to_account_id` is the account ID of the poster to whom this post is directly responding. This can be used to build networks of users as opposed to threads.
+-   `created_at` is the date and time of the post in UTC, already in datetime format.
 
 The "users" dataframe has the same information as the `account` column of "posts", but formatted as a single dataframe with as one row per user.
 
@@ -256,15 +256,15 @@ For most applications, vosonSML is a sufficient Mastodon API wrapper. For slight
 
 ## YouTube
 
-YouTube is structurally similar to Twitter in that neither users nor posts are explicitly associated with a community. Users subscribe directly to other users' channels. Each user can upload posts to their own channel. As on Reddit, these posts generally have a title, a description, and a space for comments. 
+YouTube is structurally similar to Twitter in that neither users nor posts are explicitly associated with a community. Users subscribe directly to other users' channels. Each user can upload posts to their own channel. As on Reddit, these posts generally have a title, a description, and a space for comments.
 
 YouTube is different from other social media platforms in a few ways. Most obviously, posts consist primarily of videos. This means that analyzing the content of a post's description will not give an accurate representation of the post's content. Analyzing the content of the video directly is generally impossible, since YouTube does not allow videos to be downloaded through their API. One possible workaround uses YouTube's automatically generated video transcriptions---though YouTube does not allow access to full transcriptions for standard API key bearers, there are [some workarounds available](https://github.com/jdepoix/youtube-transcript-api). Nevertheless, we will limit ourselves here to text data. This primarily consists of comments on videos.
 
 ### Video Comments
 
-Another important difference between YouTube and other social media platforms is in the structure of the comments. Whereas Reddit comments (or Twitter/Mastodon threads) can respond one to another, generating a deep tree-like structure, YouTube comments have only two levels of depth. In other words, comments either respond directly to a video (top-level) or they respond to a top-level comment (level two). This feature can sometimes make conversations hard to track, since level two comments may be responding to another level two comment, even if they are not explicitly marked as such. On the other hand, this feature may constrain YouTube comments to respond more directly to the video. 
+Another important difference between YouTube and other social media platforms is in the structure of the comments. Whereas Reddit comments (or Twitter/Mastodon threads) can respond one to another, generating a deep tree-like structure, YouTube comments have only two levels of depth. In other words, comments either respond directly to a video (top-level) or they respond to a top-level comment (level two). This feature can sometimes make conversations hard to track, since level two comments may be responding to another level two comment, even if they are not explicitly marked as such. On the other hand, this feature may constrain YouTube comments to respond more directly to the video.
 
-The interpretation of YouTube comments as direct responses to the original video is enhanced by the rich video format of the stimulus, which likely draws users in more than a text-only post would [cf. @yadav_etal_2011]. For this reason, YouTube can be a good platform for studying responses to shared stimuli in a social context. 
+The interpretation of YouTube comments as direct responses to the original video is enhanced by the rich video format of the stimulus, which likely draws users in more than a text-only post would [cf. @yadav_etal_2011]. For this reason, YouTube can be a good platform for studying responses to shared stimuli in a social context.
 
 To access the the YouTube API, you will need an API key. You can get an API key in a matter of seconds by [registering your project with Google cloud](https://www.youtube.com/watch?v=of0nzBJrT20). Once you have the key, you can access the API through vosonSML by calling `youtube_auth <- Authenticate("youtube", apiKey = "xxxxxxxxxxxxxx")`, followed by `Collect()`. In the code below, we'll collect the comments on [3Blue1Brown's excellent explanation of deep learning algorithms](https://youtu.be/aircAruvnKk?si=XKJeVfrB2GGrBx3H).
 
@@ -332,9 +332,9 @@ In this chapter, we have covered four social media platforms and---with the exce
 -   [Semantic Scholar](https://www.semanticscholar.org) is a website for navigating academic literature. It offers [a public API](https://www.semanticscholar.org/product/api) for accessing abstracts, references, citations, and other information about academic publications. The API also allows access to their contextualized semantic embeddings of publications [see @sec-contextualized-embeddings]. Obtaining an API key requires a simple registration.
 -   Like Semantic Scholar, [CORE](https://core.ac.uk/services/dataset) offers access to full text articles and metadata for open access research papers. Obtaining access requires a simple registration.
 -   Facebook advertises a [research-oriented API](https://fort.fb.com/researcher-apis), which requires registration.
--   Mastodon is not the only open source, decentralized social media platform with an API. [There are many](https://the-federation.info), though most are small. 
+-   Mastodon is not the only open source, decentralized social media platform with an API. [There are many](https://the-federation.info), though most are small.
 
-To access one of these APIs through R, we recommend using the [httr2](https://httr2.r-lib.org) package. Most APIs send data in JSON format. A JSON file is like a list in R, but formatted slightly differently. The httr2 package also has functions for converting JSON to R objects. In the example below, we write a function to retrieve all questions with a particular tag from a particular site on StackExchange, and format them as a tibble.
+To access one of these APIs through R, we recommend using the [httr2](https://httr2.r-lib.org) package. Most APIs send data in JSON format <!--# oh, here it is. I would still mention earlier though and refer here -->. A JSON file is like a list in R, but formatted slightly differently. The httr2 package also has functions for converting JSON to R objects. In the example below, we write a function to retrieve all questions with a particular tag from a particular site on StackExchange, and format them as a tibble.
 
 ```{r}
 #| eval: false
@@ -421,7 +421,6 @@ teen_posts <- get_tagged_posts(
   pagesize = 10
   )
 ```
-
 
 For further details on accessing APIs with httr2 (including how to deal with rate limits), see [the vignette](https://httr2.r-lib.org/articles/wrapping-apis.html).
 

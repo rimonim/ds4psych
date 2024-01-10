@@ -25,7 +25,7 @@ Second, they chose not to show the data points themselves, but to represent the 
 
 Third, they chose to use bendy LOESS regression lines, even though the main analysis of the paper was conducted with linear regression. This was a great choice because it makes the story more convincing. The fact that even LOESS lines show near-linear trends is impressive. Even though there are no data points to be seen, those steady lines give the impression that the underlying data are reliable. Also, the the LOESS lines give the viewer the opportunity to notice nuances in the story without distracting from the big picture (it is fascinating that "we" reaches it's all-time low around the time most people move out of their parents' house, and not before).
 
-Lastly, let's take a look at the y axis: What is "Standardized Frequency"? We have an intuitive idea that higher means using the word more and lower means using it less. But this intuitive simplicity did not come easily---it had to be carefully constructed by the authors of the paper. Actually, "Standardized Frequency" is calculated using this formula:
+Lastly, let's take a look at the y axis: What is "Standardized Frequency"? We have an intuitive idea that higher means using the word more and lower means using it less. But this intuitive simplicity did not come easily---it had to be carefully constructed by the authors of the paper. Actually, "Standardized Frequency" is calculated using this formula: <!--# hmmm for here and also the upper figure -- I'm not sure it's okay to take a figure from a paper without explicit attribute. <went and read the plos' copyright statement> ok looks legit. But perhaps there should be a caption with explicit citation eveytime we use something like that -->
 
 [![](images/schwartz_etal_2013_equation.png){fig-alt="Complicated Equation"}](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0073791#s6)
 
@@ -33,7 +33,7 @@ Don't understand any of this? That's OK. We'll cover methods of standardizing wo
 
 ## Engineer Your Aesthetics
 
-We have just seen in Schwartz et al.'s beautiful data visualization (@sec-simplify-the-story) that choosing to map the "frequency" variable to the y position aesthetic was not enough. In order to make the story clear, they carefully engineered the scale on which they measured frequency. In their case, this required some complicated standardization tailored to the particular statistics underlying their data. Often though, the solution is much more straightforward.
+We have just seen in Schwartz et al.'s beautiful data visualization (@sec-simplify-the-story) that choosing to map the "frequency" <!--# consider using backticks for variables -->variable to the y position aesthetic was not enough. In order to make the story clear, they carefully engineered the scale on which they measured frequency. In their case, this required some complicated standardization tailored to the particular statistics underlying their data. Often though, the solution is much more straightforward.
 
 The remainder of this chapter outlines some common ways to engineer aesthetics that can help make a story clear and intuitive.
 
@@ -668,7 +668,9 @@ tibble(num = factor(1:5),
 
 ### Accent colors {#sec-accent-colors}
 
-Because color has many dimensions, it can sometimes be used to represent two scales at the same time. One common tactic is to use luminosity or saturation to emphasize certain values and de-emphasize others. Below, we have redrawn the frequency ratio plot from earlier in this chapter (@sec-nonlinear-axes) to tell a story about two words in particular. By using accent colors to emphasize the two words of interest, we remove distractors while maintaining the broader context of the story.^[In the example here, we used `ggnewscale` to control the accented an non-accented color scales separately. If you'd like a simpler method for accenting values without using layered geoms, we recommend the `gghighlight` package.]
+Because color has many dimensions, it can sometimes be used to represent two scales at the same time. One common tactic is to use luminosity or saturation to emphasize certain values and de-emphasize others. Below, we have redrawn the frequency ratio plot from earlier in this chapter (@sec-nonlinear-axes) to tell a story about two words in particular. By using accent colors to emphasize the two words of interest, we remove distractors while maintaining the broader context of the story.[^telling-a-story-1]
+
+[^telling-a-story-1]: In the example here, we used `ggnewscale` to control the accented an non-accented color scales separately. If you'd like a simpler method for accenting values without using layered geoms, we recommend the `gghighlight` package.
 
 ```{r}
 #| fig-width: 6
@@ -781,4 +783,3 @@ Which aspect ratio is the right one? A good aspect ratio is one that communicate
 As always, press the "View Source" button below to see the hidden code blocks in this chapter.
 
 ------------------------------------------------------------------------
-
