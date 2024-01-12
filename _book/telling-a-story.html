@@ -157,7 +157,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction: Why Does Psychology Need Data Science?</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction: Why Does Psychology Need Data Science? <!--# the title suggests this bit will exapnd on why psych need ds, but it's mostly about why language is of interest to computional behavioral science. I suggest keeping all of this in a differnt section where we explicitly say the emphasis (of this book) is on language. However, we should probably start a bit more broad about psych and ds--></span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -353,7 +353,7 @@ div.csl-indent {
 <p><span class="citation" data-cites="schwartz_etal_2013">Schwartz et al. (<a href="#ref-schwartz_etal_2013" role="doc-biblioref">2013</a>)</span> collected 15.4 million Facebook status updates from participants who had filled out a variety of questionnaires on the <em>My Personality</em> application (discussed in <a href="ethics.html"><span>Chapter&nbsp;2</span></a>). They analyzed the frequencies of millions of words, phrases, and topics as they correlate with gender, age, and personality traits of the author. The resulting paper focused on methodology, but <span class="citation" data-cites="schwartz_etal_2013">Schwartz et al. (<a href="#ref-schwartz_etal_2013" role="doc-biblioref">2013</a>)</span> nevertheless understood the importance of telling a good story. Here is their figure 5B:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0073791"><img src="images/schwartz_etal_2013_fig5C.png" class="img-fluid figure-img" alt="The older people are, the more they say 'we' and the less they say 'I'"></a></p>
-</figure>
+<figcaption class="figure-caption">Figure from <span class="citation" data-cites="schwartz_etal_2013">Schwartz et al. (<a href="#ref-schwartz_etal_2013" role="doc-biblioref">2013</a>)</span></figcaption></figure>
 </div>
 <p>This is a beautiful data visualization. The story it tells is so clear and simple that it doesn’t need a caption: Older people use “I” less and “we” more. The unstated implication is either that people get less individualistic with age, or that the young people of today are self-centered. Both are excellent stories.</p>
 <p>How did Schwartz et al.&nbsp;achieve such a clear story? Let’s take a closer look at some of their choices:</p>
@@ -363,12 +363,12 @@ div.csl-indent {
 <p>Lastly, let’s take a look at the y axis: What is “Standardized Frequency”? We have an intuitive idea that higher means using the word more and lower means using it less. But this intuitive simplicity did not come easily—it had to be carefully constructed by the authors of the paper. Actually, “Standardized Frequency” is calculated using this formula:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0073791#s6"><img src="images/schwartz_etal_2013_equation.png" class="img-fluid figure-img" alt="Complicated Equation"></a></p>
-</figure>
+<figcaption class="figure-caption">Figure from <span class="citation" data-cites="schwartz_etal_2013">Schwartz et al. (<a href="#ref-schwartz_etal_2013" role="doc-biblioref">2013</a>)</span></figcaption></figure>
 </div>
 <p>Don’t understand any of this? That’s OK. We’ll cover methods of standardizing word frequencies in <a href="word-counting-improvements.html"><span>Chapter&nbsp;15</span></a>. For now, the point is this: <strong>Sometimes you have to do something complicated to make something simple</strong>. If Schwartz et al.&nbsp;had not performed them, “I” would likely be much higher frequency than “we” at all ages, and the story, which requires the viewer to focus on the slopes of the lines, would be much harder to appreciate.</p>
 </section><section id="engineer-your-aesthetics" class="level2" data-number="4.2"><h2 data-number="4.2" class="anchored" data-anchor-id="engineer-your-aesthetics">
 <span class="header-section-number">4.2</span> Engineer Your Aesthetics</h2>
-<p>We have just seen in Schwartz et al.’s beautiful data visualization (<a href="#sec-simplify-the-story"><span>Section&nbsp;4.1</span></a>) that choosing to map the “frequency” variable to the y position aesthetic was not enough. In order to make the story clear, they carefully engineered the scale on which they measured frequency. In their case, this required some complicated standardization tailored to the particular statistics underlying their data. Often though, the solution is much more straightforward.</p>
+<p>We have just seen in Schwartz et al.’s beautiful data visualization (<a href="#sec-simplify-the-story"><span>Section&nbsp;4.1</span></a>) that choosing to map the “frequency” <!--# consider using backticks for variables -->variable to the y position aesthetic was not enough. In order to make the story clear, they carefully engineered the scale on which they measured frequency. In their case, this required some complicated standardization tailored to the particular statistics underlying their data. Often though, the solution is much more straightforward.</p>
 <p>The remainder of this chapter outlines some common ways to engineer aesthetics that can help make a story clear and intuitive.</p>
 <section id="sec-nonlinear-axes" class="level3" data-number="4.2.1"><h3 data-number="4.2.1" class="anchored" data-anchor-id="sec-nonlinear-axes">
 <span class="header-section-number">4.2.1</span> Nonlinear Axes</h3>

@@ -1,10 +1,12 @@
-# Introduction: Why Does Psychology Need Data Science?
+# Introduction: Why Does Psychology Need Natural Language?
 
 ## "The Mind's Messenger"
 
-Psychology is often referred to as a "behavioral science". Humans engage in many behaviors: eating, sleeping, pressing buttons, coming in five minutes early to work... All sorts of behaviors can reveal secrets of the mind, but one type of behavior in particular has always struck people as greater than all others in its ability to express the richness of thought: language. The 11th century philosopher Bahaye ibn Paquda wrote: 
+Psychology is often referred to as a "behavioral science". Humans engage in many behaviors: eating, sleeping, pressing buttons, coming in five minutes early to work... All sorts of behaviors can reveal secrets of the mind, but one type of behavior in particular has always struck people as greater than all others in its ability to express the richness of thought: language. The 11th century philosopher Bahaye ibn Paquda wrote:
 
-> Speech and the orderly arrangement of words [are the ways in which a human] gives expression to what is in his mind and soul and understands the conditions of others. The tongue is the heart's pen and the mind's messenger. Without speech, there would be no social relations between one person and another.^[Duties of the Heart, Second Treatise on Examination (Chapter 5), trans. Rabbi Moses Hyamson, New York, 1925] 
+> Speech and the orderly arrangement of words \[are the ways in which a human\] gives expression to what is in his mind and soul and understands the conditions of others. The tongue is the heart's pen and the mind's messenger. Without speech, there would be no social relations between one person and another.[^intro-1]
+
+[^intro-1]: Duties of the Heart, Second Treatise on Examination (Chapter 5), trans. Rabbi Moses Hyamson, New York, 1925
 
 Somewhat more recently, @tausczik_pennebaker_2010 expressed the same sentiment:
 
@@ -14,11 +16,11 @@ What exactly is the relationship between psychology and language? The 14th centu
 
 ## Problems With Language Data, and Why Data Science Solves Them
 
-Psychologists have long insisted that talk therapy can heal, and that questionnaires can accurately measure psychological phenomena. These are language-based techniques, which rely on the assumption that language processing is linked to more fundamental internal states. Even so, psychological research has generally been unable to study _naturalistic language_, i.e. the sort of language that people produce in their day-to-day lives. There are three good reasons for this. Let's go through each one and explain how data science solves the problem.
+Psychologists have long insisted that talk therapy can heal, and that questionnaires can accurately measure psychological phenomena. These are language-based techniques, which rely on the assumption that language processing is linked to more fundamental internal states. Even so, psychological research has generally been unable to study *naturalistic language*, i.e. the sort of language that people produce in their day-to-day lives. There are three good reasons for this. Let's go through each one and explain how data science solves the problem.
 
 ### Language is Hard to Record
 
-Before the invention of audio recording technology, using language in scientific research was nearly impossible. Early efforts by linguists to record language samples from representative populations were heroic; starting in 1896, Edmond Edmont spent four years traveling around France on a bicycle conducting specially designed interviews to collect data for the _Atlas linguistique de la France_. He collected data from 700 participants in total [@crystal_1997]. Since then, microphones have made it easier to record speech, but even simple quantitative measurements like word counts have still required painstaking hours of listening to recordings and marking each occurrence of the word. 
+Before the invention of audio recording technology, using language in scientific research was nearly impossible. Early efforts by linguists to record language samples from representative populations were heroic; starting in 1896, Edmond Edmont spent four years traveling around France on a bicycle conducting specially designed interviews to collect data for the *Atlas linguistique de la France*. He collected data from 700 participants in total [@crystal_1997]. Since then, microphones have made it easier to record speech, but even simple quantitative measurements like word counts have still required painstaking hours of listening to recordings and marking each occurrence of the word.
 
 The advent of transformer neural networks has made working with audio data much easier than it once was, but the largest boon to our language recording abilities has come through a different medium: text.
 
@@ -34,7 +36,7 @@ Language is a social phenomenon. People do not write or speak in a vacuum, they 
 
 Today, the highly structured nature of interaction on social media has made the social context of utterances easily measurable. For example, comments on Reddit are always associated with a well-defined community, are responding to a known original post, and are directly responding to previous comments in a tree-like structure [@sec-reddit-threads]. This structure can be leveraged to provide robust statistical control by using it in tandem with new methods for quantifying the relationships between utterances. A few decades ago the question "How similar are Daniel's utterances to Amos's utterances?" would have seemed hopelessly ill-defined. Similar in what way? Today, answering this question is made simple with vector-based semantic embeddings ([Chapters -@sec-vectorspace-intro]---[-@sec-contextualized-embeddings]). Methods like these are now being used to make sense of nuanced features of language use in dialogue [see @duran_etal_2019 for an example in psycholinguistics].
 
-This book will not cover all of the relevant statistical methods for analyzing data with linked pairs and groups of participants [e.g. @kenny_etal_2006], but the measurement methods we present here can be used to extend such methods to large datasets of naturalistic interaction. 
+This book will not cover all of the relevant statistical methods for analyzing data with linked pairs and groups of participants [e.g. @kenny_etal_2006], but the measurement methods we present here can be used to extend such methods to large datasets of naturalistic interaction.
 
 ## What This Textbook is Useful For
 
@@ -47,4 +49,4 @@ The tools of presented in this book are useful for many fields of psychology, co
 -   Find links between group members' language and their probability of leaving the group [@ashokkumar_pennebaker_2022]. See @sec-corpora and @sec-word-counting.
 -   Validate personality assessments with individuals' behavior on social media [@schwartz_etal_2013].
 
----
+------------------------------------------------------------------------
