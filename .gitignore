@@ -11,3 +11,7 @@ data/ra_posts_distilroberta.rds
 data/city_users/city_user_comments.csv
 data/city_users/city_user_threads.csv
 data/city_users/city_users.csv
+data/hippocorpus-u20220112/.DS_Store
+data/hippocorpus-u20220112/hcV3-stories.csv
+data/hippocorpus-u20220112/LinktoStudyTemplates.txt
+data/hippocorpus-u20220112/V3README.txt

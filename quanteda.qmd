@@ -1,1 +1,23 @@
 # Introduction to Quanteda {#sec-quanteda}
+
+The R community is increasingly dominated by [the principles of tidy data](https://r4ds.hadley.nz/data-tidy), and by packages in [the tidyverse](https://www.tidyverse.org). Tools for tidy text analysis are also increasingly available, spearheaded by the [tidytext](https://cran.r-project.org/web/packages/tidytext/vignettes/tidytext.html) package and its corresponding textbook, [Text Mining With R](https://www.tidytextmining.com). We highly recommend these tools for their elegant approach and their compatibility with other tools. Nevertheless, this book will focus on a non-tidy toolbox: **quanteda**. Quanteda is worth departing from the tidyverse because of its scope and its efficiency---quanteda functions are faster to write, faster to run, and applicable to a wider variety of uses than anything available in the tidyverse. Beyond the base quanteda package, quanteda offers a plethora of specialized extensions, for example:
+
+-   **quanteda.textstats**: Metrics for similarity, readability, lexical diversity, and more
+-   **quanteda.dictionaries**: Dictionaries for word counting applications
+-   **quanteda.sentiment**: Tools advanced dictionary-based sentiment analysis [see @#sec-word-counting-improvements]
+
+Quanteda is also well documented. See the [quanteda tutorials webpage](https://tutorials.quanteda.io) for details on file formats and methods not covered in this book. 
+
+In this chapter, we introduce you to two fundamental building blocks of text processing with quanteda: corpora and dictionaries.
+
+## Corpora {#sec-quanteda-corpora}
+
+```{r}
+
+```
+
+## Dictionaries {#sec-quanteda-dictionaries}
+
+```{r}
+
+```

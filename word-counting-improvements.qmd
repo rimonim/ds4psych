@@ -1,2 +1,1 @@
 # Improvements on Word Counts {#sec-word-counting-improvements}
-

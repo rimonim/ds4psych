@@ -23,3 +23,10 @@ tweets$text <- str_trim(tweets$text)                          # strip surroundin
 tweets$text <- str_to_lower(tweets$text)                      # transform to lower case 
 ```
 
+## Tokens
+
+## Document-Feature Matrices (DFMs) {#sec-quanteda-dfms}
+
+```{r}
+
+```

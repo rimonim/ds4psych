@@ -5,3 +5,13 @@
 
 source("_common.R")
 ```
+
+## Frequency Ratios {#sec-freq-ratios}
+
+@sec-word-viz
+
+## Keyness {#sec-keyness}
+
+https://quanteda.io/articles/pkgdown/examples/plotting.html
+
+## Lexical Dispersion
