@@ -1,6 +1,6 @@
 # Welcome {.unnumbered}
 
-This is the website for **Data Science for Psychology**.
+This is the website for **Data Science for Psychology: Natural Language**.
 
 This book will teach you state-of-the-art methods for analyzing psychological properties of text, and will cover the fundamentals of data visualization, data collection, and scientific methodology necessary to produce meaningful work in the field.
 

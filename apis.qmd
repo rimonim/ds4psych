@@ -7,7 +7,7 @@
 source("_common.R")
 ```
 
-In @sec-corpora, we listed numerous placed to find datasets online. The sorts of datasets discussed there are generally formatted as a .csv file <!--# i would also mention json -->---or something like it---which you can download directly to your computer and import into R using `read_csv()`. Lot's of online data, however, are not pre-packaged in this way. When datasets are very large or complex, or are being updated regularly, the hosts of the data will instead provide a **web API**.
+In @sec-corpora, we listed numerous placed to find datasets online. The sorts of datasets discussed there are generally formatted as a .csv file---or something like it---which you can download directly to your computer and import into R using `read_csv()`. Lot's of online data, however, are not pre-packaged in this way. When datasets are very large or complex, or are being updated regularly, the hosts of the data will instead provide a **web API**.
 
 You can think of web APIs as little programming languages that are written inside a URL (URLs are the things you write in the top of your web browser to tell it which web page you want to access). When you access your custom-written URL, the host will perform whatever computations are necessary to get you your data, and send it to you in the same way that it would send you a website.
 
@@ -149,7 +149,7 @@ For most applications, vosonSML is a sufficient Reddit API wrapper. For slightly
 
 ## Twitter / X
 
-Twitter has been called the "model organism" of big data research [@tufekci_2014]. This is because, until 2023, Twitter was the largest source of free, open text data <!--# social media -- yes; text data -- probably CommonCrawl -->. In contrast to Facebook, almost all Twitter activity is public. Twitter's standardized character limit (originally 140, now 280), along with its simple network structure make structuring and the data easy.
+Twitter has been called the "model organism" of big data research [@tufekci_2014]. This is because, until 2023, Twitter was the largest source of free, open social text data. In contrast to Facebook, almost all Twitter activity is public. Twitter's standardized character limit (originally 140, now 280), along with its simple network structure make structuring and the data easy.
 
 ### Followers, Mentions, and Retweets
 
@@ -334,7 +334,7 @@ In this chapter, we have covered four social media platforms and---with the exce
 -   Facebook advertises a [research-oriented API](https://fort.fb.com/researcher-apis), which requires registration.
 -   Mastodon is not the only open source, decentralized social media platform with an API. [There are many](https://the-federation.info), though most are small.
 
-To access one of these APIs through R, we recommend using the [httr2](https://httr2.r-lib.org) package. Most APIs send data in JSON format <!--# oh, here it is. I would still mention earlier though and refer here -->. A JSON file is like a list in R, but formatted slightly differently. The httr2 package also has functions for converting JSON to R objects. In the example below, we write a function to retrieve all questions with a particular tag from a particular site on StackExchange, and format them as a tibble.
+To access one of these APIs through R, we recommend using the [httr2](https://httr2.r-lib.org) package. Most APIs send data in JSON format. As we mentioned in @sec-corpora, a JSON file is like a list in R, but formatted slightly differently. The httr2 package also has functions for converting JSON to R objects. In the example below, we write a function to retrieve all questions with a particular tag from a particular site on StackExchange, and format them as a tibble.
 
 ```{r}
 #| eval: false

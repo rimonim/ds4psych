@@ -13,7 +13,7 @@ The hardest part of data visualization is identifying a story in the first place
 
 @schwartz_etal_2013 collected 15.4 million Facebook status updates from participants who had filled out a variety of questionnaires on the *My Personality* application (discussed in @sec-ethics). They analyzed the frequencies of millions of words, phrases, and topics as they correlate with gender, age, and personality traits of the author. The resulting paper focused on methodology, but @schwartz_etal_2013 nevertheless understood the importance of telling a good story. Here is their figure 5B:
 
-[![](images/schwartz_etal_2013_fig5C.png){fig-alt="The older people are, the more they say 'we' and the less they say 'I'"}](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0073791)
+[![Figure from @schwartz_etal_2013](images/schwartz_etal_2013_fig5C.png){fig-alt="The older people are, the more they say 'we' and the less they say 'I'"}](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0073791)
 
 This is a beautiful data visualization. The story it tells is so clear and simple that it doesn't need a caption: Older people use "I" less and "we" more. The unstated implication is either that people get less individualistic with age, or that the young people of today are self-centered. Both are excellent stories.
 
@@ -25,15 +25,15 @@ Second, they chose not to show the data points themselves, but to represent the 
 
 Third, they chose to use bendy LOESS regression lines, even though the main analysis of the paper was conducted with linear regression. This was a great choice because it makes the story more convincing. The fact that even LOESS lines show near-linear trends is impressive. Even though there are no data points to be seen, those steady lines give the impression that the underlying data are reliable. Also, the the LOESS lines give the viewer the opportunity to notice nuances in the story without distracting from the big picture (it is fascinating that "we" reaches it's all-time low around the time most people move out of their parents' house, and not before).
 
-Lastly, let's take a look at the y axis: What is "Standardized Frequency"? We have an intuitive idea that higher means using the word more and lower means using it less. But this intuitive simplicity did not come easily---it had to be carefully constructed by the authors of the paper. Actually, "Standardized Frequency" is calculated using this formula: <!--# hmmm for here and also the upper figure -- I'm not sure it's okay to take a figure from a paper without explicit attribute. <went and read the plos' copyright statement> ok looks legit. But perhaps there should be a caption with explicit citation eveytime we use something like that -->
+Lastly, let's take a look at the y axis: What is "Standardized Frequency"? We have an intuitive idea that higher means using the word more and lower means using it less. But this intuitive simplicity did not come easily---it had to be carefully constructed by the authors of the paper. Actually, "Standardized Frequency" is calculated using this formula:
 
-[![](images/schwartz_etal_2013_equation.png){fig-alt="Complicated Equation"}](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0073791#s6)
+[![Figure from @schwartz_etal_2013](images/schwartz_etal_2013_equation.png){fig-alt="Complicated Equation"}](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0073791#s6)
 
 Don't understand any of this? That's OK. We'll cover methods of standardizing word frequencies in @sec-word-counting-improvements. For now, the point is this: **Sometimes you have to do something complicated to make something simple**. If Schwartz et al. had not performed them, "I" would likely be much higher frequency than "we" at all ages, and the story, which requires the viewer to focus on the slopes of the lines, would be much harder to appreciate.
 
 ## Engineer Your Aesthetics
 
-We have just seen in Schwartz et al.'s beautiful data visualization (@sec-simplify-the-story) that choosing to map the "frequency" <!--# consider using backticks for variables -->variable to the y position aesthetic was not enough. In order to make the story clear, they carefully engineered the scale on which they measured frequency. In their case, this required some complicated standardization tailored to the particular statistics underlying their data. Often though, the solution is much more straightforward.
+We have just seen in Schwartz et al.'s beautiful data visualization (@sec-simplify-the-story) that choosing to map the `frequency` variable to the y position aesthetic was not enough. In order to make the story clear, they carefully engineered the scale on which they measured frequency. In their case, this required some complicated standardization tailored to the particular statistics underlying their data. Often though, the solution is much more straightforward.
 
 The remainder of this chapter outlines some common ways to engineer aesthetics that can help make a story clear and intuitive.
 

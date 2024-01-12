@@ -3,7 +3,7 @@ project:
   output-dir: _book
 
 book:
-  title: "Data Science for Psychology"
+  title: "Data Science for Psychology: Natural Language"
   reader-mode: true
   cover-image: images/cover.png
   favicon: images/favicon.png

@@ -157,7 +157,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction: Why Does Psychology Need Data Science?</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction: Why Does Psychology Need Data Science? <!--# the title suggests this bit will exapnd on why psych need ds, but it's mostly about why language is of interest to computional behavioral science. I suggest keeping all of this in a differnt section where we explicitly say the emphasis (of this book) is on language. However, we should probably start a bit more broad about psych and ds--></span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -373,7 +373,7 @@ div.csl-indent {
   </div>
   
 
-</header><p>In <a href="corpora.html"><span>Chapter&nbsp;8</span></a>, we listed numerous placed to find datasets online. The sorts of datasets discussed there are generally formatted as a .csv file—or something like it—which you can download directly to your computer and import into R using <code>read_csv()</code>. Lot’s of online data, however, are not pre-packaged in this way. When datasets are very large or complex, or are being updated regularly, the hosts of the data will instead provide a <strong>web API</strong>.</p>
+</header><p>In <a href="corpora.html"><span>Chapter&nbsp;8</span></a>, we listed numerous placed to find datasets online. The sorts of datasets discussed there are generally formatted as a .csv file <!--# i would also mention json -->—or something like it—which you can download directly to your computer and import into R using <code>read_csv()</code>. Lot’s of online data, however, are not pre-packaged in this way. When datasets are very large or complex, or are being updated regularly, the hosts of the data will instead provide a <strong>web API</strong>.</p>
 <p>You can think of web APIs as little programming languages that are written inside a URL (URLs are the things you write in the top of your web browser to tell it which web page you want to access). When you access your custom-written URL, the host will perform whatever computations are necessary to get you your data, and send it to you in the same way that it would send you a website.</p>
 <p>Web APIs are sometimes difficult to use because each one works differently. Learning to use a new API can be like learning a new programming language. For this reason, web APIs sometimes have associated <strong>wrappers</strong>, packages that allow you to communicate with the API in a more familiar format.</p>
 <p>In the first part of this chapter, we introduce the <a href="https://github.com/vosonlab/vosonSML"><code>vosonSML</code> package</a>, an R-friendly wrapper that provides easy access to the Reddit, Twitter, Mastaoon, and YouTube APIs. At the end of the chapter, we will discuss web APIs that do not have a convenient wrapper in R.</p>
@@ -577,7 +577,7 @@ Disadvantages of Reddit Data
 </div>
 </section></section><section id="twitter-x" class="level2" data-number="9.3"><h2 data-number="9.3" class="anchored" data-anchor-id="twitter-x">
 <span class="header-section-number">9.3</span> Twitter / X</h2>
-<p>Twitter has been called the “model organism” of big data research <span class="citation" data-cites="tufekci_2014">(<a href="#ref-tufekci_2014" role="doc-biblioref">Tufekci, 2014</a>)</span>. This is because, until 2023, Twitter was the largest source of free, open text data. In contrast to Facebook, almost all Twitter activity is public. Twitter’s standardized character limit (originally 140, now 280), along with its simple network structure make structuring and the data easy.</p>
+<p>Twitter has been called the “model organism” of big data research <span class="citation" data-cites="tufekci_2014">(<a href="#ref-tufekci_2014" role="doc-biblioref">Tufekci, 2014</a>)</span>. This is because, until 2023, Twitter was the largest source of free, open text data <!--# social media -- yes; text data -- probably CommonCrawl -->. In contrast to Facebook, almost all Twitter activity is public. Twitter’s standardized character limit (originally 140, now 280), along with its simple network structure make structuring and the data easy.</p>
 <section id="followers-mentions-and-retweets" class="level3" data-number="9.3.1"><h3 data-number="9.3.1" class="anchored" data-anchor-id="followers-mentions-and-retweets">
 <span class="header-section-number">9.3.1</span> Followers, Mentions, and Retweets</h3>
 <p>Whereas Reddit users subscribe to communities, Twitter users subscribe to other users. This is called “following”. They can also “retweet” other users’ posts to their own feed, or explicitly mention other users in posts using the “@” symbol. This focus on connections between individuals means that each user’s communal associations can be characterized in a rich, nuanced way.</p>
@@ -820,7 +820,7 @@ Disadvantages of YouTube Data
 <li>Facebook advertises a <a href="https://fort.fb.com/researcher-apis">research-oriented API</a>, which requires registration.</li>
 <li>Mastodon is not the only open source, decentralized social media platform with an API. <a href="https://the-federation.info">There are many</a>, though most are small.</li>
 </ul>
-<p>To access one of these APIs through R, we recommend using the <a href="https://httr2.r-lib.org">httr2</a> package. Most APIs send data in JSON format. A JSON file is like a list in R, but formatted slightly differently. The httr2 package also has functions for converting JSON to R objects. In the example below, we write a function to retrieve all questions with a particular tag from a particular site on StackExchange, and format them as a tibble.</p>
+<p>To access one of these APIs through R, we recommend using the <a href="https://httr2.r-lib.org">httr2</a> package. Most APIs send data in JSON format <!--# oh, here it is. I would still mention earlier though and refer here -->. A JSON file is like a list in R, but formatted slightly differently. The httr2 package also has functions for converting JSON to R objects. In the example below, we write a function to retrieve all questions with a particular tag from a particular site on StackExchange, and format them as a tibble.</p>
 <div class="cell">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://httr2.r-lib.org">httr2</a></span><span class="op">)</span></span>
 <span></span>
