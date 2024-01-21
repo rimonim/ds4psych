@@ -8,7 +8,7 @@
 
 <meta name="author" content="Almog Simchon and Louis Teitelbaum">
 
-<title>Data Science for Psychology - Quantifying Psychological Properties of Text</title>
+<title>Data Science for Psychology: Natural Language - Quantifying Psychological Properties of Text</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,7 +21,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -91,7 +110,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Data Science for Psychology</a> 
+      <a href="./">Data Science for Psychology: Natural Language</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/rimonim/ds4psych" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
@@ -118,7 +137,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction: Why Does Psychology Need Data Science?</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction: Why Does Psychology Need Natural Language?</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -300,8 +319,22 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<p>The average native English speaker has a functionally useful vocabulary size of over 20,000 words <span class="citation" data-cites="hellman_2011">(<a href="#ref-hellman_2011" role="doc-biblioref">Hellman, 2011</a>)</span>. 20,000 words means 20,000 variables for psychologists to analyze. But that’s not all—words can be arranged in infinite orders, drastically changing their meanings in context. How do we capture all of this complexity in simple measurements that we can use for analysis?</p>
+<p>In this unit, we introduce methods for quantifying psychological properties of text. We begin with fundamental skills for language processing in R, and move gradually to more advanced methods. In the final sections, we cover recent developments in the use of large language models for psychological research.</p>
+<p>Throughout the section, we will provide example analyses using the <a href="https://www.microsoft.com/en-us/download/details.aspx?id=105291">Hippocorpus dataset</a>, which contains the data from <span class="citation" data-cites="sap_etal_2020">Sap et al. (<a href="#ref-sap_etal_2020" role="doc-biblioref">2020</a>)</span> and <span class="citation" data-cites="sap_etal_2022">Sap et al. (<a href="#ref-sap_etal_2022" role="doc-biblioref">2022</a>)</span>. The dataset consists primarily of texts written by online participants, who were instructed to write either true stories that happened to them recently or fictional stories about the same topic. The dataset also includes a variety of psychological and demographic characteristics of the participants, including gender and openness to experience. The data itself is not included in the book’s files, but you can easily download it from <a href="https://www.microsoft.com/en-us/download/details.aspx?id=105291">the website</a> and follow along.</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="ref-hellman_2011" class="csl-entry" role="listitem">
+Hellman, A. B. (2011). Vocabulary size and depth of word knowledge in adult-onset second language acquisition. <em>International Journal of Applied Linguistics</em>, <em>21</em>(2), 162–182.
+</div>
+<div id="ref-sap_etal_2020" class="csl-entry" role="listitem">
+Sap, M., Horvitz, E., Choi, Y., Smith, N. A., &amp; Pennebaker, J. (2020). Recollection versus imagination: Exploring human memory and cognition via neural language models. In D. Jurafsky, J. Chai, N. Schluter, &amp; J. Tetreault (Eds.), <em>Proceedings of the 58th annual meeting of the association for computational linguistics</em> (pp. 1970–1978). Association for Computational Linguistics. <a href="https://doi.org/10.18653/v1/2020.acl-main.178">https://doi.org/10.18653/v1/2020.acl-main.178</a>
+</div>
+<div id="ref-sap_etal_2022" class="csl-entry" role="listitem">
+Sap, M., Jafarpour, A., Choi, Y., Smith, N. A., Pennebaker, J. W., &amp; Horvitz, E. (2022). Quantifying the narrative flow of imagined versus autobiographical stories. <em>Proceedings of the National Academy of Sciences</em>, <em>119</em>(45), e2211715119. <a href="https://doi.org/10.1073/pnas.2211715119">https://doi.org/10.1073/pnas.2211715119</a>
+</div>
+</div>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -1,23 +1,42 @@
 # Introduction to Quanteda {#sec-quanteda}
 
-The R community is increasingly dominated by [the principles of tidy data](https://r4ds.hadley.nz/data-tidy), and by packages in [the tidyverse](https://www.tidyverse.org). Tools for tidy text analysis are also increasingly available, spearheaded by the [tidytext](https://cran.r-project.org/web/packages/tidytext/vignettes/tidytext.html) package and its corresponding textbook, [Text Mining With R](https://www.tidytextmining.com). We highly recommend these tools for their elegant approach and their compatibility with other tools. Nevertheless, this book will focus on a non-tidy toolbox: **quanteda**. Quanteda is worth departing from the tidyverse because of its scope and its efficiency---quanteda functions are faster to write, faster to run, and applicable to a wider variety of uses than anything available in the tidyverse. Beyond the base quanteda package, quanteda offers a plethora of specialized extensions, for example:
+```{r setup}
+#| echo: false
+#| include: false
+
+source("_common.R")
+```
+
+For all analyses involving separating text into smaller units (e.g. words), this book will use the **quanteda** family of packages. While it lacks some of the conceptual elegance of [the tidyverse](https://www.tidyverse.org), **quanteda** is indispensable because of its scope and its efficiency---**quanteda** functions are faster to write, faster to run, and applicable to a wider variety of uses than any other text analysis framework in R. Beyond the base **quanteda** package, **quanteda** offers a plethora of specialized extensions, for example:
 
 -   **quanteda.textstats**: Metrics for similarity, readability, lexical diversity, and more
 -   **quanteda.dictionaries**: Dictionaries for word counting applications
 -   **quanteda.sentiment**: Tools advanced dictionary-based sentiment analysis [see @#sec-word-counting-improvements]
 
-Quanteda is also well documented. See the [quanteda tutorials webpage](https://tutorials.quanteda.io) for details on file formats and methods not covered in this book. 
-
-In this chapter, we introduce you to two fundamental building blocks of text processing with quanteda: corpora and dictionaries.
-
-## Corpora {#sec-quanteda-corpora}
+**Quanteda** is also well documented. See the [quanteda tutorials webpage](https://tutorials.quanteda.io) for details on file formats and methods not covered in this book. 
 
 ```{r}
-
+#| output: false
+library(quanteda)
 ```
 
-## Dictionaries {#sec-quanteda-dictionaries}
+The home-base of any **quanteda** analysis is the _corpus_. A corpus is a static container holding a library of text documents and associated properties of those documents, called _docvars_. Later, when we apply complex transformations to our texts (such as splitting them into words), we will need to first store them as a corpus.
+
+You can create corpora from a variety of data formats, but we will begin with a dataframe containing our text variable, `story`.
 
 ```{r}
+hippocorpus_df <- read_csv("data/hippocorpus-u20220112/hcV3-stories.csv") |> 
+  select(AssignmentId, story, memType, summary, WorkerId, 
+         annotatorGender, openness, timeSinceEvent)
 
+head(hippocorpus_df)
+```
+
+To turn this into a corpus with the `corpus()` constructor, specifying the text variable and a unique identifier by name. All other variables will automatically become _docvars_.
+
+```{r}
+hippocorpus_corp <- corpus(hippocorpus_df, 
+                           docid_field = "AssignmentId", 
+                           text_field = "story")
+hippocorpus_corp
 ```

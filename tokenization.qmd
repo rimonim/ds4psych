@@ -4,29 +4,87 @@
 #| echo: false
 #| include: false
 
+library(quanteda)
 source("_common.R")
-```
 
-## Preprocessing
-
-Using the `stringr` package, which is included in the tidyverse.
-
-```{r}
-#| eval: false
-
-tweets$text <- str_replace(tweets$text, "RT ", "")            # remove "RT "
-tweets$text <- str_replace(tweets$text, "�", "")            # remove "�"
-tweets$text <- str_replace_all(tweets$text, "<.*?>", "")      # remove html tags 
-tweets$text <- str_replace_all(tweets$text, 'http://[^"\\s]+|https://[^"\\s]+', " ")  # links
-tweets$text <- str_replace_all(tweets$text, '@\\w+:|@\\w+', " ")      # remove handles
-tweets$text <- str_trim(tweets$text)                          # strip surrounding whitespace
-tweets$text <- str_to_lower(tweets$text)                      # transform to lower case 
+hippocorpus_df <- read_csv("data/hippocorpus-u20220112/hcV3-stories.csv") |> 
+  select(AssignmentId, story, memType, summary, WorkerId, 
+         annotatorGender, openness, timeSinceEvent)
+hippocorpus_corp <- corpus(hippocorpus_df, 
+                           docid_field = "AssignmentId", 
+                           text_field = "story")
 ```
 
 ## Tokens
 
-## Document-Feature Matrices (DFMs) {#sec-quanteda-dfms}
+The first step in the process of turning texts into numbers is almost always **tokenization**. Tokenization means splitting a long text into smaller pieces, called **tokens**. Once we have these smaller pieces, we will be able to count them in texts and turn these counts into numeric representations of our texts. There are four main types of tokens: words, n-grams, skipgrams, and shingles.
+
+### Words
+
+Words are the obvious choice for tokens. The number of possible English sentences is infinite, but the number of possible English words is much smaller---only about 20,000 [@hellman_2011]. Words are especially useful for English, since English words usually do not change their form depending on their place in a sentence, and they are nearly always separated by a space. Separating an English text into words is therefore as simple as splitting it at every space character. This is essentially the default behavior of the **quanteda** `tokens()` function, which takes a character vector or corpus and returns a "tokens" object:
 
 ```{r}
-
+tokens <- tokens("20,000 is not so many words")
+tokens
 ```
+
+We can likewise perform word-based tokenization for the entire corpus that we created in @sec-quanteda.
+
+```{r}
+hippocorpus_tokens <- tokens(hippocorpus_corp)
+head(hippocorpus_tokens, 3)
+```
+
+### N-grams
+
+Words are great, but they do not stand alone. The sentence "20,000 is not so many words" contains the word "many". So we can conclude that the sentence is referring to a lot of something, right? Not so fast! Word-based tokenization misses the fact the more representative unit: "not so many". Because order creates meaning in language, it is often worthwhile to break texts into groups of a few words at a time, called n-grams. Groups of two words are called two-grams (or bigrams), groups of three words like "not so many" are called three-grams (or trigrams), and so on.
+
+To get all of the two-grams and three-grams from our example text, we feed the "tokens" object we created already into the `tokens_ngrams()` function, and specify that we want groups of twos and threes with `n = c(2L, 3L)`.
+
+```{r}
+ngrams <- tokens_ngrams(tokens, n = c(2L, 3L))
+ngrams
+```
+
+### Skipgrams
+
+Sometimes the most important combinations of words do not appear right next to each other. For example, it might be more useful to count occurrences of "not many" than it is to count occurrences of "not so many". We can do this by using skipgrams---n-grams of non-adjacent words. In quanteda, we can do this again with the `tokens_ngrams()`, now adding the argument `skip = c(0L, 1L)` to specify that we want both immediately adjacent words (`0L`), and ones skipping one word in between (`1L`).
+
+```{r}
+skipgrams <- tokens_ngrams(tokens, n = c(2L, 3L), skip = c(0L, 1L))
+skipgrams
+```
+
+### Shingles
+
+Sometimes even individual words are too coarse. For example, the fact that our sentence contains "20,000" might be too specific to be informative, but it might be useful to know that the sentence contains ",000", which more generally signifies big, round numbers. To get tokens like this, we need to start back at the beginning, this time separating our text into individual characters.
+
+```{r}
+char_tokens <- tokens("20,000 is not so many words", 
+                      what = "character")
+char_tokens
+```
+
+Now we can create groupings of letters, called "shingles" in the same way that we made n-grams, with the `tokens_ngrams()` function.
+
+```{r}
+shingles <- tokens_ngrams(char_tokens, n = c(4L))
+shingles
+```
+
+## Document-Feature Matrices (DFMs) {#sec-quanteda-dfms}
+
+Once we have a suitable tokens object, we can count how many times each token appears in each text. This will provide a basis for comparing those texts later on. 
+
+The way to represent the counts of each token (AKA "feature") in each document is with a document-feature matrix (DFM). This is a table where each row is a document (i.e. a text in our corpus) and each column is a feature (usually a token). The cells can then contain counts of how many times a particular feature appears in a particular document.
+
+Creating DFMs in **quanteda** is done with the `dfm()` function. By default, `dfm()` will also convert all text to lower case. 
+
+```{r}
+hippocorpus_dfm <- dfm(hippocorpus_tokens)
+head(hippocorpus_dfm, 3)
+```
+
+Congratulations! You have turned texts into numbers! Now how do we use these numbers to measure psychological constructs?
+
+---

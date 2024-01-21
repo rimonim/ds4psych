@@ -1,5 +1,7 @@
 # Bag of Words (BOW): Dictionary-Based Word Counts {#sec-word-counting}
 
+## Dictionaries {#sec-quanteda-dictionaries}
+
 ::: {.callout-tip icon="false"}
 ## Advantages of Word Counts
 

@@ -1,2 +1,7 @@
 # Quantifying Psychological Properties of Text {#sec-quantification .unnumbered}
 
+The average native English speaker has a functionally useful vocabulary size of over 20,000 words [@hellman_2011]. 20,000 words means 20,000 variables for psychologists to analyze. But that's not all---words can be arranged in infinite orders, drastically changing their meanings in context. How do we capture all of this complexity in simple measurements that we can use for analysis? 
+
+In this unit, we introduce methods for quantifying psychological properties of text. We begin with fundamental skills for language processing in R, and move gradually to more advanced methods. In the final sections, we cover recent developments in the use of large language models for psychological research.
+
+Throughout the section, we will provide example analyses using the [Hippocorpus dataset](https://www.microsoft.com/en-us/download/details.aspx?id=105291), which contains the data from @sap_etal_2020 and @sap_etal_2022. The dataset consists primarily of texts written by online participants, who were instructed to write either true stories that happened to them recently or fictional stories about the same topic. The dataset also includes a variety of psychological and demographic characteristics of the participants, including gender and openness to experience. The data itself is not included in the book's files, but you can easily download it from [the website](https://www.microsoft.com/en-us/download/details.aspx?id=105291) and follow along.
