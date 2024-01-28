@@ -228,26 +228,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./look-at-your-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Look at Your Data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./quanteda.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Introduction to Quanteda</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Introduction to Quanteda</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./tokenization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Tokenization</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./eda.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Recommendations for EDA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Tokenization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./word-counting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Bag of Words (BOW): Dictionary-Based Word Counts</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Dictionary-Based Word Counts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -258,26 +258,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./dla.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./vectorspace-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Thinking in Vector Space</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Thinking in Vector Space</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./decontextualized-embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./contextualized-embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./navigating-vectorspace.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Navigating Vector Space</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Navigating Vector Space</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./linguistic-complexity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Measures of Linguistic Complexity</span></span></a>
   </div>
 </li>
       </ul>
@@ -289,7 +301,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resources.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
   </div>
 </li>
     </ul>
@@ -323,14 +335,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="be-polite" class="level2" data-number="10.1"><h2 data-number="10.1" class="anchored" data-anchor-id="be-polite">
 <span class="header-section-number">10.1</span> Be Polite</h2>
 <p>Often, scraping requires the code to visit many web pages. For example, say we wanted a list of poems by English poets, along with the birth dates of their authors. We might have the computer scrape the <a href="https://www.poetryfoundation.org/poets/browse#page=1&amp;sort_by=recently_added&amp;region=175">list of English poets from the Poetry Foundation</a>, which requires clicking through 17 pages of search results, and retrieve the author’s birth date and the URL for each author’s full list of poems. We could then have the computer visit each of those URLs and retrieve the URL for each individual poem by each author. Finally, the computer would visit each poem URL and retrieve the text of the poem. In all, this process might require visiting hundreds or even thousands of web pages.</p>
-<p>For the same reasons that APIs generally have rate limits <a href="apis.html"><span>Chapter&nbsp;9</span></a>, web scraping algorithms should be polite—not, for example, requesting thousands of pages in the space of a few seconds. If you are not polite, you are likely to get banned as a bot.</p>
-<p>To read more about web scraping etiquette and easy ways to implement it, see <a href="https://r4ds.hadley.nz/webscraping">the relevant chapter in R for Data Science</a>, and the homepage of the <a href="https://dmi3kno.github.io/polite/">polite</a> package.</p>
+<p>For the same reasons that APIs generally have rate limits (<a href="apis.html"><span>Chapter&nbsp;9</span></a>), web scraping algorithms should be polite—not, for example, requesting thousands of pages in the space of a few seconds. If you are not polite, you are likely to get banned as a bot.</p>
+<p>To read more about web scraping etiquette and easy ways to implement it, see <a href="https://r4ds.hadley.nz/webscraping">the relevant chapter in R for Data Science</a>, and the homepage of the <a href="https://dmi3kno.github.io/polite/"><code>polite</code></a> package.</p>
 </section><section id="a-simple-example" class="level2" data-number="10.2"><h2 data-number="10.2" class="anchored" data-anchor-id="a-simple-example">
 <span class="header-section-number">10.2</span> A Simple Example</h2>
 <p>To give you a taste for what web scraping is like, we will give a simple example of scraping a single page.</p>
 <p>The page in this case will be <a href="https://rimonim.github.io/blog.html">the blog reel of one the authors of this book, Louis</a>.</p>
 <p><img src="images/scraping1.png" class="img-fluid"></p>
-<p>We will scrape the name and date of each blog post using the <a href="https://rvest.tidyverse.org">rvest</a> package. First, we retrieve the raw html code of the webpage.</p>
+<p>We will scrape the name and date of each blog post using the <a href="https://rvest.tidyverse.org"><code>rvest</code></a> package. First, we retrieve the raw html code of the webpage.</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rvest.tidyverse.org/">rvest</a></span><span class="op">)</span></span>
 <span></span>

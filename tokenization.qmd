@@ -4,15 +4,14 @@
 #| echo: false
 #| include: false
 
-library(quanteda)
 source("_common.R")
+library(quanteda)
 
-hippocorpus_df <- read_csv("data/hippocorpus-u20220112/hcV3-stories.csv") |> 
+hippocorpus_corp <- read_csv("data/hippocorpus-u20220112/hcV3-stories.csv") |> 
   select(AssignmentId, story, memType, summary, WorkerId, 
-         annotatorGender, openness, timeSinceEvent)
-hippocorpus_corp <- corpus(hippocorpus_df, 
-                           docid_field = "AssignmentId", 
-                           text_field = "story")
+         annotatorGender, openness, timeSinceEvent) |> 
+  corpus(docid_field = "AssignmentId", 
+         text_field = "story")
 ```
 
 ## Tokens
@@ -21,17 +20,18 @@ The first step in the process of turning texts into numbers is almost always **t
 
 ### Words
 
-Words are the obvious choice for tokens. The number of possible English sentences is infinite, but the number of possible English words is much smaller---only about 20,000 [@hellman_2011]. Words are especially useful for English, since English words usually do not change their form depending on their place in a sentence, and they are nearly always separated by a space. Separating an English text into words is therefore as simple as splitting it at every space character. This is essentially the default behavior of the **quanteda** `tokens()` function, which takes a character vector or corpus and returns a "tokens" object:
+Words are the obvious choice for tokens. The number of possible English sentences is infinite, but the number of possible English words is much smaller---only about 20,000 [@hellman_2011]. Words are especially useful for English, since English words usually do not change their form depending on their place in a sentence, and they are nearly always separated by a space. Separating an English text into words is therefore as simple as splitting it at every space character. This is essentially the default behavior of the Quanteda `tokens()` function, which takes a character vector or corpus and returns a "tokens" object:
 
 ```{r}
 tokens <- tokens("20,000 is not so many words")
 tokens
 ```
 
-We can likewise perform word-based tokenization for the entire corpus that we created in @sec-quanteda.
+We can likewise perform word-based tokenization for the entire corpus that we created in @sec-quanteda. To remove punctuation before doing so, we can add `remove_punct = TRUE`.
 
 ```{r}
-hippocorpus_tokens <- tokens(hippocorpus_corp)
+hippocorpus_tokens <- tokens(hippocorpus_corp,
+                             remove_punct = TRUE)
 head(hippocorpus_tokens, 3)
 ```
 
@@ -48,7 +48,7 @@ ngrams
 
 ### Skipgrams
 
-Sometimes the most important combinations of words do not appear right next to each other. For example, it might be more useful to count occurrences of "not many" than it is to count occurrences of "not so many". We can do this by using skipgrams---n-grams of non-adjacent words. In quanteda, we can do this again with the `tokens_ngrams()`, now adding the argument `skip = c(0L, 1L)` to specify that we want both immediately adjacent words (`0L`), and ones skipping one word in between (`1L`).
+Sometimes the most important combinations of words do not appear right next to each other. For example, it might be more useful to count occurrences of "not many" than it is to count occurrences of "not so many". We can do this by using skipgrams---n-grams of non-adjacent words. In Quanteda, we can do this again with the `tokens_ngrams()`, now adding the argument `skip = c(0L, 1L)` to specify that we want both immediately adjacent words (`0L`), and ones skipping one word in between (`1L`).
 
 ```{r}
 skipgrams <- tokens_ngrams(tokens, n = c(2L, 3L), skip = c(0L, 1L))
@@ -72,13 +72,17 @@ shingles <- tokens_ngrams(char_tokens, n = c(4L))
 shingles
 ```
 
+## Custom Preprocessing
+
+We have seen above that the `tokens()` function includes some basic preprocessing capabilities, for example `remove_punct` to remove punctuation. It also offers `remove_numbers`, `remove_symbols` (e.g. ▵, ⏱, ↤, $, ÷, ∬), and `remove_url` to remove URLs. Nevertheless, certain texts require more specific preprocessing steps. This can be achieved with the `stringr` package from the tidyverse, by modifying the raw text before turning it into a corpus object. For example, when working with texts from social media we might want to remove "RT" (a conventional indicator that the text was written by another person) with `text = str_replace(text, "RT ", "")` or user handles (used to refer to specific users) with `text = str_replace(text, '@\\w+:|@\\w+', " ")`, since neither of these are tokens that are relevant to the psychological quality of the text. In certain cases, we might be interested in counting user handles without regard to the specific user. In these cases, we might use `text = str_replace(text, '@\\w+:|@\\w+', "USER_TAG ")` so that all user tags get tokenized as "USER_TAG".
+
 ## Document-Feature Matrices (DFMs) {#sec-quanteda-dfms}
 
-Once we have a suitable tokens object, we can count how many times each token appears in each text. This will provide a basis for comparing those texts later on. 
+Once we have a suitable tokens object, we can count how many times each token appears in each text. This will provide a basis for comparing those texts later on. Thinking about a text this way---as a collection of tokens with different frequencies---is often referred to as the **bag of words approach**. When using the bag of words approach, we ignore the order of the words. We imagine that each topic has its characteristic bag of words, and speaking or writing is just a matter of pulling them out of the bag one at a time at random. This assumption is obviously wrong, but it makes it possible to analyze text with straightforward quantitative methods. Often, this is a worthwhile trade off to make. As we advance to more and more complex methods in the coming chapters, we will find that many methods were designed to solve problems created by the overly simplistic bag of words approach.
 
-The way to represent the counts of each token (AKA "feature") in each document is with a document-feature matrix (DFM). This is a table where each row is a document (i.e. a text in our corpus) and each column is a feature (usually a token). The cells can then contain counts of how many times a particular feature appears in a particular document.
+For now though, let's start with the basics. The way to represent the counts of each token (AKA "feature") in each document is with a **document-feature matrix (DFM)**. This is a table where each row is a document (i.e. a text in our corpus) and each column is a feature (usually a token). The cells can then contain counts of how many times a particular feature appears in a particular document.
 
-Creating DFMs in **quanteda** is done with the `dfm()` function. By default, `dfm()` will also convert all text to lower case. 
+Creating DFMs in Quanteda is done with the `dfm()` function. By default, `dfm()` will also convert all text to lower case. 
 
 ```{r}
 hippocorpus_dfm <- dfm(hippocorpus_tokens)

@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Almog Simchon and Louis Teitelbaum">
-<title>Data Science for Psychology: Natural Language - 19&nbsp; Navigating Vector Space</title>
+<title>Data Science for Psychology: Natural Language - 20&nbsp; Navigating Vector Space</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -46,7 +46,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./audio-video-image.html" rel="next">
+<link href="./linguistic-complexity.html" rel="next">
 <link href="./contextualized-embeddings.html" rel="prev">
 <link href="./images/favicon.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
@@ -85,7 +85,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./navigating-vectorspace.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Navigating Vector Space</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./navigating-vectorspace.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Navigating Vector Space</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -213,26 +213,26 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./look-at-your-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Look at Your Data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./quanteda.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Introduction to Quanteda</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Introduction to Quanteda</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./tokenization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Tokenization</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./eda.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Recommendations for EDA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Tokenization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./word-counting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Bag of Words (BOW): Dictionary-Based Word Counts</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Dictionary-Based Word Counts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -243,26 +243,38 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./dla.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./vectorspace-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Thinking in Vector Space</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Thinking in Vector Space</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./decontextualized-embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./contextualized-embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./navigating-vectorspace.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Navigating Vector Space</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Navigating Vector Space</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./linguistic-complexity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Measures of Linguistic Complexity</span></span></a>
   </div>
 </li>
       </ul>
@@ -274,7 +286,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resources.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
   </div>
 </li>
     </ul>
@@ -285,15 +297,15 @@ div.csl-indent {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#sec-parallelograms" id="toc-sec-parallelograms" class="nav-link active" data-scroll-target="#sec-parallelograms"><span class="header-section-number">19.1</span> Parallelograms</a></li>
-  <li><a href="#sec-advanced-similarity" id="toc-sec-advanced-similarity" class="nav-link" data-scroll-target="#sec-advanced-similarity"><span class="header-section-number">19.2</span> Advanced Similarity Measures</a></li>
-  <li><a href="#sec-dimension-projection" id="toc-sec-dimension-projection" class="nav-link" data-scroll-target="#sec-dimension-projection"><span class="header-section-number">19.3</span> Dimension Projection</a></li>
-  <li><a href="#sec-machine-learning-methods" id="toc-sec-machine-learning-methods" class="nav-link" data-scroll-target="#sec-machine-learning-methods"><span class="header-section-number">19.4</span> Machine Learning Methods</a></li>
+<li><a href="#sec-parallelograms" id="toc-sec-parallelograms" class="nav-link active" data-scroll-target="#sec-parallelograms"><span class="header-section-number">20.1</span> Parallelograms</a></li>
+  <li><a href="#sec-advanced-similarity" id="toc-sec-advanced-similarity" class="nav-link" data-scroll-target="#sec-advanced-similarity"><span class="header-section-number">20.2</span> Advanced Similarity Measures</a></li>
+  <li><a href="#sec-dimension-projection" id="toc-sec-dimension-projection" class="nav-link" data-scroll-target="#sec-dimension-projection"><span class="header-section-number">20.3</span> Dimension Projection</a></li>
+  <li><a href="#sec-machine-learning-methods" id="toc-sec-machine-learning-methods" class="nav-link" data-scroll-target="#sec-machine-learning-methods"><span class="header-section-number">20.4</span> Machine Learning Methods</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rimonim/ds4psych/blob/main/navigating-vectorspace.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-navigating-vectorspace" class="quarto-section-identifier"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Navigating Vector Space</span></span></h1>
+<h1 class="title"><span id="sec-navigating-vectorspace" class="quarto-section-identifier"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Navigating Vector Space</span></span></h1>
 </div>
 
 
@@ -307,19 +319,19 @@ div.csl-indent {
   
 
 </header><p><span class="citation" data-cites="gunther_etal_2019">Günther et al. (<a href="#ref-gunther_etal_2019" role="doc-biblioref">2019</a>)</span></p>
-<section id="sec-parallelograms" class="level2" data-number="19.1"><h2 data-number="19.1" class="anchored" data-anchor-id="sec-parallelograms">
-<span class="header-section-number">19.1</span> Parallelograms</h2>
+<section id="sec-parallelograms" class="level2" data-number="20.1"><h2 data-number="20.1" class="anchored" data-anchor-id="sec-parallelograms">
+<span class="header-section-number">20.1</span> Parallelograms</h2>
 <p>Introduced with word2vec by <span class="citation" data-cites="mikolov_etal_2013">Mikolov et al. (<a href="#ref-mikolov_etal_2013" role="doc-biblioref">2013</a>)</span></p>
 <p>Glove <span class="citation" data-cites="pennington_etal_2014">(<a href="#ref-pennington_etal_2014" role="doc-biblioref">Pennington et al., 2014</a>)</span> is designed with this property in mind. Transformer models are not.</p>
 <p>In CCR, for example, there’s a difference between agreeing with statements in a questionnaire and actually writing like a questionnaire. How do I know that I’m measuring how anxious/depressed the comments are and not how questionnaire-y they are? Potential workaround: reverse all of the statements in the questionnaire (as for reverse-coded items), add them to the original questionnaire, and get the average embedding of the construct-neutral questionnaire. Then subtract this embedding from the original questionnaire average embedding.</p>
-</section><section id="sec-advanced-similarity" class="level2" data-number="19.2"><h2 data-number="19.2" class="anchored" data-anchor-id="sec-advanced-similarity">
-<span class="header-section-number">19.2</span> Advanced Similarity Measures</h2>
+</section><section id="sec-advanced-similarity" class="level2" data-number="20.2"><h2 data-number="20.2" class="anchored" data-anchor-id="sec-advanced-similarity">
+<span class="header-section-number">20.2</span> Advanced Similarity Measures</h2>
 <ul>
 <li>Jensen–Shannon distance</li>
-</ul></section><section id="sec-dimension-projection" class="level2" data-number="19.3"><h2 data-number="19.3" class="anchored" data-anchor-id="sec-dimension-projection">
-<span class="header-section-number">19.3</span> Dimension Projection</h2>
-</section><section id="sec-machine-learning-methods" class="level2" data-number="19.4"><h2 data-number="19.4" class="anchored" data-anchor-id="sec-machine-learning-methods">
-<span class="header-section-number">19.4</span> Machine Learning Methods</h2>
+</ul></section><section id="sec-dimension-projection" class="level2" data-number="20.3"><h2 data-number="20.3" class="anchored" data-anchor-id="sec-dimension-projection">
+<span class="header-section-number">20.3</span> Dimension Projection</h2>
+</section><section id="sec-machine-learning-methods" class="level2" data-number="20.4"><h2 data-number="20.4" class="anchored" data-anchor-id="sec-machine-learning-methods">
+<span class="header-section-number">20.4</span> Machine Learning Methods</h2>
 <p><span class="citation" data-cites="chersoni_etal_2021">Chersoni et al. (<a href="#ref-chersoni_etal_2021" role="doc-biblioref">2021</a>)</span> used partial least squares regression to map distributional embeddings to human-rated semantic features derived from research in cognitive psychology.</p>
 
 
@@ -571,12 +583,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./contextualized-embeddings.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./audio-video-image.html" class="pagination-link">
-        <span class="nav-page-text">Audio, Video, and Image Data</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./linguistic-complexity.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Measures of Linguistic Complexity</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -7,19 +7,19 @@
 source("_common.R")
 ```
 
-In @sec-corpora, we listed numerous placed to find datasets online. The sorts of datasets discussed there are generally formatted as a .csv file---or something like it---which you can download directly to your computer and import into R using `read_csv()`. Lot's of online data, however, are not pre-packaged in this way. When datasets are very large or complex, or are being updated regularly, the hosts of the data will instead provide a **web API**.
+In @sec-corpora, we listed numerous placed to find datasets online. The sorts of datasets discussed there are generally formatted as a .csv file---or something like it---which you can download directly to your computer and import into R using `read_csv()`. Lots of online data, however, are not pre-packaged in this way. When datasets are very large or complex, or are being updated regularly, the hosts of the data will instead provide a **web API**.
 
 You can think of web APIs as little programming languages that are written inside a URL (URLs are the things you write in the top of your web browser to tell it which web page you want to access). When you access your custom-written URL, the host will perform whatever computations are necessary to get you your data, and send it to you in the same way that it would send you a website.
 
 Web APIs are sometimes difficult to use because each one works differently. Learning to use a new API can be like learning a new programming language. For this reason, web APIs sometimes have associated **wrappers**, packages that allow you to communicate with the API in a more familiar format.
 
-In the first part of this chapter, we introduce the [`vosonSML` package](https://github.com/vosonlab/vosonSML), an R-friendly wrapper that provides easy access to the Reddit, Twitter, Mastaoon, and YouTube APIs. At the end of the chapter, we will discuss web APIs that do not have a convenient wrapper in R.
+In the first part of this chapter, we introduce the [`vosonSML` package](https://github.com/vosonlab/vosonSML), an R-friendly wrapper that provides easy access to the Reddit, Twitter, Mastadon, and YouTube APIs. At the end of the chapter, we will discuss web APIs that do not have a convenient wrapper in R.
 
 ## API Basic Concepts
 
 -   **Requests:** Each time you visit a URL associated with an API, you are submitting a *request* for data.
 -   **Endpoints:** Every API has at least one *endpoint*, a contact point for particular types of requests.
--   **Rate Limits:** Many APIs set limits on the number of requests you can make per minute (or per second). This is because processing requests costs time and money for the host. If you go beyond the rate limit, the API will return an error like *"429 Too Many Requests"*.
+-   **Rate Limits:** Many APIs set limits on the number of requests you can make per minute (or per second). This is because processing requests costs time and money for the host. If you go beyond the rate limit, the API will return an error like *"429 Too Many Requests."*
 -   **Authentication:** Some APIs are not open to the public, instead requiring users to apply for access or pay for a subscription. When accessing these APIs, you need an *API key* or an *access token*. This is your password for the API.
 
 ### vosonSML
@@ -28,12 +28,12 @@ In the first part of this chapter, we introduce the [`vosonSML` package](https:/
 library(vosonSML)
 ```
 
-For accessing social media APIs with vosonSML, you only need two functions:
+For accessing social media APIs with `vosonSML`, you only need two functions:
 
 -   `Authenticate()` creates a credential object that contains any keys or access tokens needed to access a particular API. This credential object can be reused as long as your credentials don't change.
 -   `Collect()` initiates a series of API requests and stores the results as a dataframe or list of dataframes.
 
-vosonSML also provides tools for working with network data (i.e. the ways in which users or posts are connected to one another), but these will not be covered in this textbook.
+`vosonSML` also provides tools for working with network data (i.e. the ways in which users or posts are connected to one another), but these will not be covered in this textbook.
 
 ## Reddit
 
@@ -47,9 +47,11 @@ Reddit content exists on three levels:
 
 ### The Reddit Algorithm
 
-Reddit data are not representative samples of the global population. They are not even representative samples of Reddit users. This is partly due to the dynamics of the Reddit ranking algorithm, which gives precedent to viral content. The details of the algorithm are [no longer public](https://medium.com/hacking-and-gonzo/how-reddit-ranking-algorithms-work-ef111e33d0d9), but it is largely based on "upvotes" and "downvotes" from the community, and probably also incorporates the time since posting. The ranking system for comments is almost certainly different from the ranking system for posts. Reddit also has a "Karma" system, by which users who post popular content get subsequent content boosted. This creates an incentive system which is [sometimes exploited by the advertising industry](https://www.reddit.com/r/ModSupport/comments/162p502/why_is_reddit_doing_nothing_to_handle_the_obvious/). The bottom line: **Reddit posts are disproportionately viral**. To partially counteract this when gathering Reddit data, set the API to sort by recency (`sort = "new"`) rather than the default, "best" [@sec-reddit-threads].
+Reddit data are not representative samples of the global population. They are not even representative samples of Reddit users. This is partly due to the dynamics of the Reddit ranking algorithm, which gives precedent to viral content. The details of the algorithm are [no longer public](https://medium.com/hacking-and-gonzo/how-reddit-ranking-algorithms-work-ef111e33d0d9), but it is largely based on "upvotes" and "downvotes" from the community, and probably also incorporates the time since posting. The ranking system for comments is almost certainly different from the ranking system for posts. Reddit also has a "Karma" system, by which users who post popular content get subsequent content boosted. This creates an incentive system which is [sometimes exploited by the advertising industry](https://www.reddit.com/r/ModSupport/comments/162p502/why_is_reddit_doing_nothing_to_handle_the_obvious/). The bottom line: **Reddit posts are disproportionately viral**. To partially counteract this when gathering Reddit data, set the API to sort by recency (`sort = "new"`) rather than the default, "best" ([@sec-reddit-threads]).
 
 ### Communities
+
+To gather retrieve the posts from a Reddit community, call `Authenticate("reddit")` followed by `Collect()` with `endpoint = "listing"`. To specify the particular community (or communities) in which you are interested, use the `subreddits` parameter. For example, the following code retrieves the 20 most recent posts from r/RedditAPIAdvocacy, a subreddit devoted to fighting restriction of the Reddit API.
 
 ```{r}
 APIAdvocacy_posts <- 
@@ -57,24 +59,22 @@ APIAdvocacy_posts <-
   Collect(
     endpoint = "listing", 
     subreddits = "RedditAPIAdvocacy",
-    sort = "new",  # newest posts first
+    sort = "new",   # newest posts first
     period = "all", # all time
-    max = 20, # 20 most recent posts
+    max = 20,       # 20 most recent posts
     verbose = TRUE
     )
 
 head(APIAdvocacy_posts)
 ```
 
-**An example of using Reddit communities in research:** In a series of experiments, @ashokkumar_pennebaker_2022 had participants write small free-form responses and fill out questionnaires on group identity strength. Using dictionary-based word-counts [@sec-word-counting], they then identified dictionaries that were associated with questionnaire-based measure, and used these to construct a composite measure of "unquestioning affiliation". Among college students, they showed that unquestioning affiliation in writing could predict whether students would drop out from college one year later. Finally, they applied their method to naturalistic data retrieved from the Reddit API, from the political communities r/The_Donald and r/hillaryclinton, and showed that users' unquestioning affiliation predicted the duration that they would stay in the community before leaving.
+In psychology research, the most interesting subreddits are often those devoted to psychological disorders, for example r/depression, r/socialanxiety, r/SuicideWatch, r/bipolarreddit, and r/opiates. Subreddits devoted to intellectual discussion, such as r/changemyview, r/IAmA, and r/ExplainLikeImFive, are also interesting subjects for research. Lastly, much research is devoted to the behavior of Redditors in political communities. The following is one elegant example:
 
--   r/depression, r/ SuicideWatch, r/bipolarreddit, and r/opiates,
--   r/changemyview, r/IAmA, and r/ExplainLikeImFive
--   r/politics
+**An example of using Reddit communities in research:** In a series of experiments, @ashokkumar_pennebaker_2022 used the Reddit API and other sources to develop a dictionary-based measure of group identity strength. A dictionary is a list of words associated with a given psychological or other construct, for example associating "sleepy" and "down" with depression (see [@sec-word-counting]). Ashokkumar and Pennebaker had participants write small free-form responses and fill out questionnaires on group identity strength. They then identified existing dictionaries that were associated with the questionnaire-based measures, and used these to construct a composite measure of group identity strength. When applied to text, they called this measure "unquestioning affiliation." Among college students, they showed that unquestioning affiliation in writing could predict whether students would drop out of college one year later. Finally, they applied their method to naturalistic data retrieved from the Reddit API, from the political communities r/The_Donald and r/hillaryclinton, and showed that users' unquestioning affiliation predicted the duration that they would stay in the community before leaving.
 
 ### Threads {#sec-reddit-threads}
 
-A post with all of its associated comments is called a *thread*. For example, Hadley Wickham, the founder of [the tidyverse](https://www.tidyverse.org), ran a thread on the r/dataisbeautiful subreddit in 2015, in which he answered commenters' questions. To retrieve that thread, first find its URL. Do this by finding the threat on Reddit and copying the link from your web browser. Then call `Authenticate("reddit")` and `Collect()`, like so:
+A post with all of its associated comments is called a **thread**. For example, Hadley Wickham, the founder of [the tidyverse](https://www.tidyverse.org), ran a thread on the r/dataisbeautiful subreddit in 2015, in which he answered commenters' questions. To retrieve that thread, first find its URL. Do this by finding the threat on Reddit and copying the link from your web browser. Then call `Authenticate("reddit")` and `Collect()`, like so:
 
 ```{r}
 #| warning: false
@@ -126,11 +126,11 @@ hadley_threads |>
     theme_void()
 ```
 
-**An example of using Reddit threads in research:** @xiao_mensah_2022 collected threads from r/changemyview, a community in which the OP makes a claim, commenters make arguments against that claim, and the OP responds with "delta points" to indicate how much their view has been changed. @xiao_mensah_2022 analyzed the frequency of delta points at each level of the thread tree, and found that the OP's view tended to change most after the 2nd, 4th, 6th, 8th, and 10th levels of comments---in other words, every other level. They then analyzed the semantic similarity between comments using cosine similarity [@sec-cosine-similarity] between simple word counts. The results suggested that every-other-level comments tend to elaborate and refine the comments immediately before them, so that the latter are perceived to be more persuasive.
+**An example of using Reddit threads in research:** @xiao_mensah_2022 collected threads from r/changemyview, a community in which the OP makes a claim, commenters make arguments against that claim, and the OP responds with "delta points" to indicate how much their view has been changed. @xiao_mensah_2022 analyzed the frequency of delta points at each level of the thread tree, and found that the OP's view tended to change most after the 2nd, 4th, 6th, 8th, and 10th levels of comments---in other words, every other level. They then analyzed the semantic similarity between comments using cosine similarity ([@sec-cosine-similarity]) between simple word counts. The results suggested that every-other-level comments tend to elaborate and refine the comments immediately before them, so that the latter are perceived to be more persuasive.
 
 ### Other Reddit Features
 
-For most applications, vosonSML is a sufficient Reddit API wrapper. For slightly more advanced functionality like searching subreddits with a keyword or retrieving a user's comment history, we recommend [Reddit Extractor](https://github.com/ivan-rivera/RedditExtractor).
+For most applications, `vosonSML` is a sufficient Reddit API wrapper. For slightly more advanced functionality like searching subreddits with a keyword or retrieving a user's comment history, we recommend [Reddit Extractor](https://github.com/ivan-rivera/RedditExtractor).
 
 ::: {.callout-tip icon="false"}
 ## Advantages of Reddit Data
@@ -188,7 +188,7 @@ Because of their topic-specific organization, Mastodon servers can function a bi
 
 ### Servers
 
-Mastodon server feeds are organized chronologically (unlike Reddit or Twitter, which have complex ordering algorithms). To retrieve the most recent posts on a particular server using vosonSML, we call `Authenticate("mastodon")` followed by `Collect()` with the "search" endpoint. The name of the server is identified with "instance".
+Mastodon server feeds are organized chronologically (unlike Reddit or Twitter, which have complex ordering algorithms). To retrieve the most recent posts on a particular server using `vosonSML`, we call `Authenticate("mastodon")` followed by `Collect()` with the "search" endpoint. The name of the server is identified with "instance".
 
 ```{r}
 #| eval: false
@@ -237,7 +237,7 @@ almog_thread$posts |>
 
 ### Other Mastodon Features
 
-For most applications, vosonSML is a sufficient Mastodon API wrapper. For slightly more advanced functionality like searching accounts or retrieving a user's follows and followers, we recommend [rtoot](https://gesistsa.github.io/rtoot/).
+For most applications, `vosonSML` is a sufficient Mastodon API wrapper. For slightly more advanced functionality like searching accounts or retrieving a user's follows and followers, we recommend [rtoot](https://gesistsa.github.io/rtoot/).
 
 ::: {.callout-tip icon="false"}
 ## Advantages of Mastodon Data
@@ -266,7 +266,7 @@ Another important difference between YouTube and other social media platforms is
 
 The interpretation of YouTube comments as direct responses to the original video is enhanced by the rich video format of the stimulus, which likely draws users in more than a text-only post would [cf. @yadav_etal_2011]. For this reason, YouTube can be a good platform for studying responses to shared stimuli in a social context.
 
-To access the the YouTube API, you will need an API key. You can get an API key in a matter of seconds by [registering your project with Google cloud](https://www.youtube.com/watch?v=of0nzBJrT20). Once you have the key, you can access the API through vosonSML by calling `youtube_auth <- Authenticate("youtube", apiKey = "xxxxxxxxxxxxxx")`, followed by `Collect()`. In the code below, we'll collect the comments on [3Blue1Brown's excellent explanation of deep learning algorithms](https://youtu.be/aircAruvnKk?si=XKJeVfrB2GGrBx3H).
+To access the the YouTube API, you will need an API key. You can get an API key in a matter of seconds by [registering your project with Google cloud](https://www.youtube.com/watch?v=of0nzBJrT20). Once you have the key, you can access the API through `vosonSML` by calling `youtube_auth <- Authenticate("youtube", apiKey = "xxxxxxxxxxxxxx")`, followed by `Collect()`. In the code below, we'll collect the comments on [3Blue1Brown's excellent explanation of deep learning algorithms](https://youtu.be/aircAruvnKk?si=XKJeVfrB2GGrBx3H).
 
 ```{r}
 #| output: false
@@ -325,7 +325,7 @@ deep_learning_comments |>
 
 ## Other Web APIs {#sec-other-apis}
 
-In this chapter, we have covered four social media platforms and---with the exception of Twitter---how to access their APIs using vosonSML. Nevertheless, this has been far from an exhaustive list of social media platforms that provide APIs. [Many other sources of data exist](https://en.wikipedia.org/wiki/Comparison_of_microblogging_and_similar_services), each with their own advantages and disadvantages. Many of these do not have custom R wrappers for their APIs, but reading a little API documentation shouldn't deter you from finding your ideal dataset. The following are some of our favorite sources of psychologically interesting data accessible with public APIs.
+In this chapter, we have covered four social media platforms and---with the exception of Twitter---how to access their APIs using `vosonSML`. Nevertheless, this has been far from an exhaustive list of social media platforms that provide APIs. [Many other sources of data exist](https://en.wikipedia.org/wiki/Comparison_of_microblogging_and_similar_services), each with their own advantages and disadvantages. Many of these do not have custom R wrappers for their APIs, but reading a little API documentation shouldn't deter you from finding your ideal dataset. The following are some of our favorite sources of psychologically interesting data accessible with public APIs.
 
 -   [StackExchange](https://stackexchange.com) is a network of question-and-answer sites like StackOverflow (for programmers), MathOverflow (for mathematicians), Arqade (for videogamers), Cross Validated (for statistics and machine learining), Science Fiction & Fantasy (for fans) and [many more](https://stackexchange.com/sites?view=list#users). StackExchange provides [a public API](https://api.stackexchange.com/docs) for retrieving questions, answers, and comments from their sites.
 -   [Wikipedia](https://www.wikipedia.org) provides [a public API](https://www.mediawiki.org/wiki/API:Main_page#Uses_for_the_MediaWiki_Action_API) for retrieving content, including [individial user data](https://www.mediawiki.org/wiki/API:Users).
@@ -334,7 +334,7 @@ In this chapter, we have covered four social media platforms and---with the exce
 -   Facebook advertises a [research-oriented API](https://fort.fb.com/researcher-apis), which requires registration.
 -   Mastodon is not the only open source, decentralized social media platform with an API. [There are many](https://the-federation.info), though most are small.
 
-To access one of these APIs through R, we recommend using the [httr2](https://httr2.r-lib.org) package. Most APIs send data in JSON format. As we mentioned in @sec-corpora, a JSON file is like a list in R, but formatted slightly differently. The httr2 package also has functions for converting JSON to R objects. In the example below, we write a function to retrieve all questions with a particular tag from a particular site on StackExchange, and format them as a tibble.
+To access one of these APIs through R, we recommend using the [`httr2`](https://httr2.r-lib.org) package. Most APIs send data in JSON format. As we mentioned in @sec-corpora, a JSON file is like a list in R, but formatted slightly differently. The `httr2` package also has functions for converting JSON to R objects. In the example below, we write a function to retrieve all questions with a particular tag from a particular site on StackExchange, and format them as a tibble.
 
 ```{r}
 #| eval: false

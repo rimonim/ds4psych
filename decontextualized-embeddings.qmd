@@ -22,6 +22,8 @@ DFM -> Weighting (tf-idf, PPMI) -> Dimensionality reduction
 
 @garcia_sikstrom_2013
 
+https://quanteda.io/articles/pkgdown/examples/lsa.html
+
 ## LDA
 
 
@@ -34,3 +36,7 @@ DFM -> Weighting (tf-idf, PPMI) -> Dimensionality reduction
 @pennington_etal_2014
 
 GloVe is built on the same metric that we used in @sec-word-viz and @sec-eda - relative frequency ratios. Rather than comparing two word frequencies in two groups of texts, it instead compares co-occurrence with one word to co-occurrence with another. 
+
+### Training a Custom GloVe Model
+
+https://quanteda.io/articles/pkgdown/replication/text2vec.html

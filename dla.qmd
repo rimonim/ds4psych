@@ -1,0 +1,170 @@
+# Differential Language Analysis {#sec-dla}
+
+```{r setup}
+#| echo: false
+#| include: false
+
+source("_common.R")
+library(quanteda)
+
+hippocorpus_corp <- read_csv("data/hippocorpus-u20220112/hcV3-stories.csv") |> 
+  select(AssignmentId, story, memType, summary, WorkerId, 
+         annotatorGender, openness, timeSinceEvent) |> 
+  corpus(docid_field = "AssignmentId", 
+         text_field = "story")
+
+hippocorpus_dfm <- hippocorpus_corp |> 
+  tokens(remove_punct = TRUE) |> 
+  dfm()
+```
+
+Most analyses in psychological research deal with correlations between one construct and another. Sometimes both of these constructs will be measured directly from the text, but usually at least one will not. In the _Hippocorpus_ data, for example, we have `memType`, indicating whether the participant was told to tell a story that happened to them recently ("recalled"), a story that they had already told a few months earlier ("retold") or an entirely fictional story ("imagined"). We also have `openness`, a questionnaire-based measurement of the participant's openness to experience. 
+
+After getting a general sense of the data by looking at it, it is often worthwhile to investigate correlations between the text and the other relevant variables. This is most commonly done by comparing groups. 
+
+## Frequency Ratios {#sec-freq-ratios}
+
+The most intuitive way to compare texts from two groups is one we already explored in depth in @sec-word-viz: frequency ratios. To get frequency ratios from a Quanteda DFM, we use the `textstat_frequency()` function from the [`quanteda.textstats`](https://github.com/quanteda/quanteda.textstats) package, with the `groups` parameter set to the categorical variable of interest. Let's compare true stories from fictional ones in the _Hippocorpus_ data.
+
+```{r}
+library(quanteda.textstats)
+
+imagined_vs_recalled <- hippocorpus_dfm |> 
+  textstat_frequency(groups = memType)
+
+head(imagined_vs_recalled)
+```
+
+The resulting dataframe has one row per feature per category. `frequency` is the number of times the feature appears in the group, `rank` is the ordering from highest to lowest frequency within each group, and `docfreq` is the number of documents in the group in which the feature appears at least once. To compare imagined stories to recalled ones, we can calculate frequency ratios. 
+
+```{r}
+imagined_vs_recalled <- imagined_vs_recalled |> 
+  filter(group %in% c("imagined", "recalled")) |> 
+  pivot_wider(id_cols = "feature", 
+              names_from = "group", 
+              values_from = "frequency",
+              names_prefix = "count_") |> 
+  mutate(imagined_freq_ratio = count_imagined/count_recalled)
+
+head(imagined_vs_recalled)
+```
+
+We can now plot a rotated F/F plot, as in @sec-word-viz.
+
+```{r}
+#| warning: false
+library(ggiraph, verbose = FALSE)
+library(ggrepel)
+
+set.seed(2023)
+p <- imagined_vs_recalled |> 
+  mutate(
+    # calculate total frequency
+    common = count_imagined + count_recalled,
+    # remove single quotes (for html)
+    feature = str_replace_all(feature, "'", "`")) |> 
+  ggplot(aes(imagined_freq_ratio, common, 
+             label = feature,
+             color = imagined_freq_ratio,
+             tooltip = feature, 
+             data_id = feature
+             )) +
+    geom_point_interactive() +
+    geom_text_repel_interactive(size = 2) +
+    scale_y_continuous(
+      trans = "log2", breaks = ~.x,
+      minor_breaks = ~2^(seq(0,log2(.x[2]))),
+      labels = c("Rare", "Common")
+      ) +   
+    scale_x_continuous(
+      trans = "log10", limits = c(1/10,10),
+      breaks = c(1/10, 1, 10),
+      labels = c("10x More Common\nin Recalled Stories",
+                 "Equal Proportion",
+                 "10x More Common\nin Imagined Stories")
+      ) +
+    scale_color_gradientn(
+      colors = c("#023903", 
+                 "#318232",
+                 "#E2E2E2", 
+                 "#9B59A7",
+                 "#492050"), 
+      trans = "log2", # log scale for ratios
+      guide = "none"
+      ) +
+    labs(
+      title = "Words in Imagined and Recalled Stories",
+      x = "",
+      y = "Total Frequency",
+      color = ""
+    ) +
+    # fixed coordinates since x and y use the same units
+    coord_fixed(ratio = 1/8) + 
+    theme_minimal()
+
+girafe_options(
+  girafe(ggobj = p),
+  opts_tooltip(css = "font-family:sans-serif;font-size:1em;color:Black;")
+  )
+```
+
+This view allows us to explore individual words that are characteristic of one or the other group. It also shows the overall shape of the distribution---the slight skew to the left indicates that recalled stories tend to be slightly longer than true ones.
+
+## Keyness {#sec-keyness}
+
+Working with frequency ratios has an intuitive appeal; "10 times more common in group A than group B" is a statement that anyone can understand. Even so, **frequency ratios are statistically misleading**, since they do not account for random sampling error. For example, a word that appears 1000 times in group A and 100 times in group B is much more convincingly representative of group A than a word that appears 10 times in group A and 1 time in group B, even though the frequency ratio is identical. Furthermore, simple frequency ratios do not account for base rates---as we saw in the the F/F plot in @sec-freq-ratios, ratios can be skewed to one side simply because texts in one group are longer than those in another. These problems can be solved by using more statistically motivated methods for group comparisons, sometimes referred to as _keyness_ statistics.
+
+Quanteda's default keyness statistic is none other than the chi-squared value, which compares the observed frequencies to the expected ones if there were no difference between the groups. We can compute this statistic directly from the DFM using the `textstat_keyness()` function, with the "target" parameter set to one of the two groups of documents, in this case imagined ones, or `docvars(imagined_vs_recalled_dfm, "memType") == "imagined"`. The function keeps the chi-squared statistic positive or flips it to negative based on whether the frequency in the target group is higher or lower than the expected value.
+
+```{r}
+# Filtered DFM
+imagined_vs_recalled_dfm <- hippocorpus_dfm |> 
+  # only keep features that appear in at least 30 documents
+  dfm_trim(min_docfreq = 30) |>
+  # only keep imagined and recalled stories (not retold)
+  dfm_subset(memType %in% c("imagined", "recalled"))
+
+# Calculate Keyness
+imagined_keyness <- imagined_vs_recalled_dfm |> 
+  textstat_keyness(docvars(imagined_vs_recalled_dfm, "memType") == "imagined")
+
+head(imagined_keyness)
+```
+
+We can use Quanteda to generate a simple plot of the most extreme values of our keyness statistic, using the `textplot_keyness()` function, from the [`quanteda.textplots`](https://quanteda.io/articles/pkgdown/examples/plotting.html) package. 
+
+```{r}
+imagined_keyness |> 
+  quanteda.textplots::textplot_keyness() +
+    labs(title = "Words in Imagined (target) and Recalled (reference) Stories")
+```
+
+We can also represent the keyness values as a word cloud, as we did for frequency ratios in @sec-word-viz.
+
+```{r}
+#| warning: false
+#| fig-height: 8
+library(ggwordcloud)
+set.seed(2)
+
+imagined_keyness |> 
+  # only words with significant difference to p < .01
+  filter(p < .01) |> 
+  # arrange in descending order
+  arrange(desc(abs(chi2))) |> 
+  # plot
+  ggplot(aes(label = feature, 
+             size = chi2, 
+             color = chi2 > 0,
+             angle_group = chi2 > 0)) +
+    geom_text_wordcloud_area(show.legend = TRUE) + 
+    scale_size_area(max_size = 20, guide = "none") +
+    scale_color_discrete(
+      name = "",
+      breaks = c(FALSE, TRUE),
+      labels = c("More in Recalled", 
+                 "More in Imagined")
+      ) +
+    labs(caption = "Only words with a significant difference between the groups (p < .01) were included.") +
+    theme_void() # blank background
+```

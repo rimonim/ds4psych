@@ -52,7 +52,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
@@ -61,7 +80,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./vectorspace-intro.html" rel="next">
+<link href="./dla.html" rel="next">
 <link href="./word-counting.html" rel="prev">
 <link href="./images/favicon.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
@@ -228,26 +247,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./look-at-your-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Look at Your Data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./quanteda.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Introduction to Quanteda</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Introduction to Quanteda</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./tokenization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Tokenization</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./eda.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Recommendations for EDA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Tokenization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./word-counting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Bag of Words (BOW): Dictionary-Based Word Counts</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Dictionary-Based Word Counts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -258,26 +277,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./dla.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./vectorspace-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Thinking in Vector Space</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Thinking in Vector Space</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./decontextualized-embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./contextualized-embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./navigating-vectorspace.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Navigating Vector Space</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Navigating Vector Space</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./linguistic-complexity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Measures of Linguistic Complexity</span></span></a>
   </div>
 </li>
       </ul>
@@ -289,7 +320,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resources.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
   </div>
 </li>
     </ul>
@@ -300,7 +331,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#preprocessing" id="toc-preprocessing" class="nav-link active" data-scroll-target="#preprocessing"><span class="header-section-number">15.1</span> Preprocessing</a></li>
+<li><a href="#polarity" id="toc-polarity" class="nav-link active" data-scroll-target="#polarity"><span class="header-section-number">15.1</span> Polarity</a></li>
+  <li><a href="#norms" id="toc-norms" class="nav-link" data-scroll-target="#norms"><span class="header-section-number">15.2</span> Norms</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rimonim/ds4psych/blob/main/word-counting-improvements.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
@@ -318,20 +350,372 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><section id="preprocessing" class="level2" data-number="15.1"><h2 data-number="15.1" class="anchored" data-anchor-id="preprocessing">
-<span class="header-section-number">15.1</span> Preprocessing</h2>
-<p>Using the <code>stringr</code> package, which is included in the tidyverse.</p>
+</header><section id="polarity" class="level2" data-number="15.1"><h2 data-number="15.1" class="anchored" data-anchor-id="polarity">
+<span class="header-section-number">15.1</span> Polarity</h2>
+<p>See https://github.com/trinker/sentimentr</p>
+<p><span class="citation" data-cites="plutchik_1962">Plutchik (<a href="#ref-plutchik_1962" role="doc-biblioref">1962</a>)</span> argues that the opposite of surprise is anticipation</p>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tweets</span><span class="op">$</span><span class="va">text</span> <span class="op">&lt;-</span> <span class="fu">str_replace</span><span class="op">(</span><span class="va">tweets</span><span class="op">$</span><span class="va">text</span>, <span class="st">"RT "</span>, <span class="st">""</span><span class="op">)</span>            <span class="co"># remove "RT "</span></span>
-<span><span class="va">tweets</span><span class="op">$</span><span class="va">text</span> <span class="op">&lt;-</span> <span class="fu">str_replace</span><span class="op">(</span><span class="va">tweets</span><span class="op">$</span><span class="va">text</span>, <span class="st">"�"</span>, <span class="st">""</span><span class="op">)</span>            <span class="co"># remove "�"</span></span>
-<span><span class="va">tweets</span><span class="op">$</span><span class="va">text</span> <span class="op">&lt;-</span> <span class="fu">str_replace_all</span><span class="op">(</span><span class="va">tweets</span><span class="op">$</span><span class="va">text</span>, <span class="st">"&lt;.*?&gt;"</span>, <span class="st">""</span><span class="op">)</span>      <span class="co"># remove html tags </span></span>
-<span><span class="va">tweets</span><span class="op">$</span><span class="va">text</span> <span class="op">&lt;-</span> <span class="fu">str_replace_all</span><span class="op">(</span><span class="va">tweets</span><span class="op">$</span><span class="va">text</span>, <span class="st">'http://[^"\\s]+|https://[^"\\s]+'</span>, <span class="st">" "</span><span class="op">)</span>  <span class="co"># links</span></span>
-<span><span class="va">tweets</span><span class="op">$</span><span class="va">text</span> <span class="op">&lt;-</span> <span class="fu">str_replace_all</span><span class="op">(</span><span class="va">tweets</span><span class="op">$</span><span class="va">text</span>, <span class="st">'@\\w+:|@\\w+'</span>, <span class="st">" "</span><span class="op">)</span>      <span class="co"># remove handles</span></span>
-<span><span class="va">tweets</span><span class="op">$</span><span class="va">text</span> <span class="op">&lt;-</span> <span class="fu">str_trim</span><span class="op">(</span><span class="va">tweets</span><span class="op">$</span><span class="va">text</span><span class="op">)</span>                          <span class="co"># strip surrounding whitespace</span></span>
-<span><span class="va">tweets</span><span class="op">$</span><span class="va">text</span> <span class="op">&lt;-</span> <span class="fu">str_to_lower</span><span class="op">(</span><span class="va">tweets</span><span class="op">$</span><span class="va">text</span><span class="op">)</span>                      <span class="co"># transform to lower case </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">quanteda.sentiment</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/quanteda.sentiment/man/data_dictionary_NRC.html">data_dictionary_NRC</a></span><span class="op">$</span><span class="va">anticipation</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] "abundance"      "accelerate"     "accolade"       "accompaniment" 
+  [5] "achievement"    "acquiring"      "addresses"      "adore"         
+  [9] "adrift"         "advance"        "advent"         "adventure"     
+ [13] "advocacy"       "airport"        "alertness"      "alerts"        
+ [17] "alive"          "allure"         "aloha"          "ambition"      
+ [21] "amour"          "analyst"        "angel"          "angling"       
+ [25] "announcement"   "anticipation"   "anticipatory"   "antidote"      
+ [29] "anxiety"        "anxious"        "appeal"         "applicant"     
+ [33] "apprehensive"   "approaching"    "arbitration"    "archaeology"   
+ [37] "ardent"         "arouse"         "arrival"        "arrive"        
+ [41] "art"            "aspiration"     "aspire"         "aspiring"      
+ [45] "astrologer"     "astronomer"     "atone"          "attainable"    
+ [49] "attempt"        "attendance"     "auction"        "audience"      
+ [53] "auspicious"     "await"          "award"          "ballot"        
+ [57] "balm"           "banger"         "banquet"        "basketball"    
+ [61] "beaming"        "begun"          "betrothed"      "beware"        
+ [65] "biennial"       "birth"          "birthday"       "bless"         
+ [69] "blessing"       "blessings"      "blindfold"      "bloom"         
+ [73] "board"          "boisterous"     "bonus"          "boomerang"     
+ [77] "bountiful"      "bounty"         "bridal"         "bride"         
+ [81] "bridegroom"     "brilliant"      "broadside"      "brotherly"     
+ [85] "bruise"         "buddy"          "bugle"          "buzz"          
+ [89] "bye"            "calculation"    "calls"          "candid"        
+ [93] "cap"            "captivate"      "career"         "cash"          
+ [97] "cataract"       "caution"        "cautious"       "celebrated"    
+[101] "celebrating"    "celebration"    "celebrity"      "celestial"     
+[105] "cement"         "champion"       "changeable"     "chant"         
+[109] "charitable"     "chastity"       "cheer"          "cheerfulness"  
+[113] "cheery"         "cherish"        "chicane"        "child"         
+[117] "chocolate"      "chuckle"        "church"         "clamor"        
+[121] "clap"           "climax"         "clock"          "closure"       
+[125] "clown"          "clue"           "comfort"        "coming"        
+[129] "commemorate"    "commemoration"  "commemorative"  "commonplace"   
+[133] "compensate"     "competition"    "complement"     "completing"    
+[137] "completion"     "compliment"     "concealed"      "concealment"   
+[141] "condemnation"   "confession"     "conjecture"     "conjure"       
+[145] "consecration"   "consequent"     "conservation"   "conspirator"   
+[149] "contagion"      "contingent"     "continuation"   "continue"      
+[153] "convergence"    "convince"       "correspondence" "council"       
+[157] "countdown"      "court"          "courtship"      "cove"          
+[161] "cradle"         "cramp"          "craps"          "crave"         
+[165] "craving"        "cream"          "creeping"       "crescendo"     
+[169] "crowning"       "cue"            "cultivate"      "curiosity"     
+[173] "daily"          "dare"           "dawn"           "deal"          
+[177] "death"          "debenture"      "defense"        "delight"       
+[181] "delighted"      "delightful"     "deliverance"    "delivery"      
+[185] "denying"        "depart"         "depend"         "depraved"      
+[189] "deserve"        "destination"    "destined"       "detainee"      
+[193] "determinate"    "develop"        "devil"          "devout"        
+[197] "diagnosis"      "dictatorship"   "dietary"        "digress"       
+[201] "diplomacy"      "discreet"       "discretion"     "dismay"        
+[205] "disposed"       "distracting"    "divination"     "doomsday"      
+[209] "dove"           "draft"          "dread"          "dreadful"      
+[213] "duel"           "dutiful"        "eager"          "eagerness"     
+[217] "ecstasy"        "ecstatic"       "edification"    "edition"       
+[221] "efficient"      "ejaculation"    "elegance"       "elevation"     
+[225] "elite"          "emancipation"   "embrace"        "enchant"       
+[229] "enchanting"     "endanger"       "endeavor"       "engaged"       
+[233] "engulf"         "enjoy"          "enjoying"       "enroll"        
+[237] "entertaining"   "entertainment"  "enthusiasm"     "enthusiast"    
+[241] "epidemic"       "erotic"         "errand"         "escape"        
+[245] "eventual"       "eventuality"    "exalt"          "excavation"    
+[249] "exceed"         "excel"          "excitation"     "excite"        
+[253] "excited"        "excitement"     "exciting"       "exhaustion"    
+[257] "exigent"        "expect"         "expectancy"     "expectant"     
+[261] "expectation"    "expected"       "expecting"      "expedition"    
+[265] "experiment"     "explore"        "explosive"      "expose"        
+[269] "extricate"      "failing"        "fain"           "faith"         
+[273] "familiarity"    "fancy"          "fanfare"        "farm"          
+[277] "fate"           "favorable"      "feat"           "feeling"       
+[281] "ferment"        "fermentation"   "festival"       "fete"          
+[285] "fiesta"         "finally"        "firstborn"      "fitting"       
+[289] "flinch"         "flirt"          "football"       "forearm"       
+[293] "foreboding"     "forecast"       "foresee"        "foreseen"      
+[297] "foresight"      "forewarned"     "forming"        "fortune"       
+[301] "frantic"        "friendly"       "frisky"         "fulfillment"   
+[305] "fun"            "gain"           "gambler"        "gambling"      
+[309] "generosity"     "germ"           "germination"    "gift"          
+[313] "glad"           "glide"          "glimmer"        "glorify"       
+[317] "glory"          "glow"           "god"            "good"          
+[321] "goodness"       "gradual"        "graduation"     "grandchildren" 
+[325] "grant"          "grasping"       "gravitate"      "grim"          
+[329] "grin"           "grow"           "guillotine"     "habitual"      
+[333] "hankering"      "hap"            "happen"         "happiness"     
+[337] "happy"          "harbinger"      "harvest"        "haste"         
+[341] "headlight"      "healing"        "heavenly"       "heft"          
+[345] "hero"           "heroism"        "heyday"         "highest"       
+[349] "hire"           "holiday"        "holiness"       "homeless"      
+[353] "honeymoon"      "hope"           "hopeful"        "horizon"       
+[357] "horoscope"      "humanitarian"   "hungry"         "hunter"        
+[361] "hunting"        "hurried"        "hurry"          "hymn"          
+[365] "hype"           "hypothesis"     "illuminate"     "immature"      
+[369] "immaturity"     "immediately"    "immerse"        "imminent"      
+[373] "immortality"    "impatient"      "impending"      "importance"    
+[377] "improve"        "improvise"      "inaugural"      "inauguration"  
+[381] "incite"         "income"         "independence"   "infant"        
+[385] "infanticide"    "infinity"       "inheritance"    "inoculation"   
+[389] "inquiry"        "inspiration"    "inspire"        "install"       
+[393] "instructions"   "instructor"     "intended"       "interim"       
+[397] "interminable"   "intermission"   "intimate"       "intimately"    
+[401] "intrigue"       "intuitively"    "investigation"  "invitation"    
+[405] "invite"         "inviting"       "invocation"     "invoke"        
+[409] "jackpot"        "jeopardy"       "journey"        "judicial"      
+[413] "judiciary"      "kindred"        "kiss"           "labor"         
+[417] "labyrinth"      "lagging"        "latent"         "laughter"      
+[421] "launch"         "leisure"        "lessen"         "lesson"        
+[425] "letter"         "lettered"       "liberate"       "liberation"    
+[429] "liberty"        "linger"         "litigate"       "localize"      
+[433] "long"           "longing"        "loom"           "lottery"       
+[437] "lovely"         "lover"          "luck"           "lull"          
+[441] "luscious"       "lust"           "magical"        "magnificence"  
+[445] "magnificent"    "mail"           "majestic"       "marriage"      
+[449] "marry"          "matchmaker"     "maternal"       "matrimony"     
+[453] "medal"          "mediate"        "mediator"       "medical"       
+[457] "meditate"       "merge"          "midwife"        "mill"          
+[461] "miracle"        "mobile"         "momentum"       "monetary"      
+[465] "money"          "morals"         "morn"           "morrow"        
+[469] "mortification"  "mother"         "motion"         "mountain"      
+[473] "musical"        "mutable"        "mysterious"     "mystery"       
+[477] "nascent"        "navigable"      "navigator"      "neighbor"      
+[481] "neighborhood"   "nervous"        "network"        "neutral"       
+[485] "nobility"       "noncompliance"  "notification"   "nurture"       
+[489] "oasis"          "objective"      "obliging"       "offset"        
+[493] "olfactory"      "omen"           "ominous"        "ongoing"       
+[497] "onset"          "opera"          "opponent"       "opportunity"   
+[501] "optimism"       "oracle"         "ordination"     "organ"         
+[505] "organization"   "orgasm"         "outdo"          "overdue"       
+[509] "overthrow"      "overture"       "owing"          "paddle"        
+[513] "parade"         "paragon"        "paralysis"      "pare"          
+[517] "parole"         "passenger"      "passion"        "passionate"    
+[521] "patience"       "patient"        "pay"            "peace"         
+[525] "peaceful"       "perfect"        "perfection"     "peril"         
+[529] "perilous"       "perpetuate"     "perpetuity"     "picket"        
+[533] "picnic"         "plan"           "planning"       "playground"    
+[537] "plea"           "pleasant"       "plight"         "plump"         
+[541] "poke"           "possess"        "possibility"    "powerful"      
+[545] "practise"       "praiseworthy"   "pray"           "precarious"    
+[549] "precious"       "precursor"      "predict"        "prediction"    
+[553] "predilection"   "predispose"     "preliminary"    "preparation"   
+[557] "preparatory"    "prepare"        "prepared"       "preparedness"  
+[561] "prerequisite"   "prescient"      "present"        "preservative"  
+[565] "pretty"         "prevail"        "prevention"     "priesthood"    
+[569] "princely"       "probability"    "probation"      "proceeding"    
+[573] "production"     "proficiency"    "prognosis"      "prognostic"    
+[577] "progress"       "progression"    "prologue"       "prophecy"      
+[581] "prophet"        "prophetic"      "prophylactic"   "prospectively" 
+[585] "prosper"        "proud"          "providing"      "pry"           
+[589] "public"         "punctual"       "punished"       "punt"          
+[593] "puppy"          "quest"          "quicken"        "quote"         
+[597] "rabid"          "radiance"       "raffle"         "rail"          
+[601] "ram"            "rapture"        "raving"         "readiness"     
+[605] "ready"          "receiving"      "recipient"      "recognizable"  
+[609] "recombination"  "reconciliation" "reconstruct"    "reconstruction"
+[613] "recreation"     "recreational"   "recurrent"      "regatta"       
+[617] "regularity"     "rehabilitation" "rejoice"        "rejoicing"     
+[621] "rekindle"       "remedy"         "renovate"       "renovation"    
+[625] "repay"          "representing"   "rescue"         "respect"       
+[629] "responsive"     "restlessness"   "restorative"    "result"        
+[633] "resultant"      "retirement"     "reunion"        "revenge"       
+[637] "revere"         "revival"        "revive"         "revolution"    
+[641] "reward"         "ribbon"         "ripen"          "rising"        
+[645] "risk"           "risky"          "romance"        "romantic"      
+[649] "roulette"       "saint"          "saintly"        "salary"        
+[653] "saliva"         "salvation"      "sanctify"       "sanctuary"     
+[657] "savor"          "scare"          "scientist"      "score"         
+[661] "scrutinize"     "secular"        "seductive"      "seek"          
+[665] "sensual"        "sensuality"     "sentence"       "sequel"        
+[669] "serenity"       "serial"         "sex"            "shackle"       
+[673] "shaky"          "share"          "sharpen"        "shining"       
+[677] "ship"           "shiver"         "shopping"       "shortly"       
+[681] "signify"        "simmer"         "simmering"      "simplify"      
+[685] "sing"           "skewed"         "sneaking"       "sonar"         
+[689] "sorcery"        "soundness"      "spa"            "sparkle"       
+[693] "spear"          "spectacular"    "speculative"    "spirits"       
+[697] "splendor"       "star"           "starry"         "start"         
+[701] "stealthy"       "sterling"       "store"          "strategist"    
+[705] "stripped"       "strive"         "submit"         "subscribe"     
+[709] "succeed"        "succeeding"     "success"        "successful"    
+[713] "sun"            "sundial"        "sunny"          "sunset"        
+[717] "superstitious"  "supremacy"      "surprisingly"   "surround"      
+[721] "suspense"       "suspicious"     "sweet"          "sweetheart"    
+[725] "sweets"         "swim"           "symphony"       "synchronize"   
+[729] "tabulate"       "tantalizing"    "tease"          "tempest"       
+[733] "testament"      "theology"       "theory"         "thermocouple"  
+[737] "thirst"         "thought"        "threaten"       "thrill"        
+[741] "thrilling"      "thriving"       "tickle"         "time"          
+[745] "timidity"       "tomorrow"       "top"            "torture"       
+[749] "towering"       "track"          "transcendence"  "transitional"  
+[753] "treadmill"      "treasure"       "treat"          "tree"          
+[757] "tremor"         "trepidation"    "tribunal"       "tributary"     
+[761] "triumph"        "triumphant"     "trophy"         "twinkle"       
+[765] "ultimate"       "ultimately"     "unaccountable"  "unbeaten"      
+[769] "unbridled"      "uncontrollable" "undecided"      "undertaking"   
+[773] "undisclosed"    "undoubted"      "undying"        "uneasiness"    
+[777] "unexpected"     "unexplained"    "unfold"         "unfulfilled"   
+[781] "unification"    "university"     "unknown"        "unpublished"   
+[785] "unresolved"     "unsurpassed"    "untold"         "unverified"    
+[789] "uphill"         "uplift"         "uprising"       "urgency"       
+[793] "urgent"         "utopian"        "vacation"       "venerable"     
+[797] "veracity"       "verge"          "victory"        "vigil"         
+[801] "vigilance"      "vindication"    "virginity"      "vision"        
+[805] "visionary"      "visitor"        "visor"          "volatility"    
+[809] "volunteer"      "voluptuous"     "vote"           "vow"           
+[813] "voyage"         "wait"           "warn"           "warned"        
+[817] "watch"          "weigh"          "weight"         "whim"          
+[821] "white"          "wilderness"     "winner"         "winning"       
+[825] "winnings"       "wireless"       "wishful"        "withstand"     
+[829] "wizard"         "wont"           "worm"           "worry"         
+[833] "worrying"       "worship"        "yearning"       "young"         
+[837] "youth"          "zeal"           "zest"          </code></pre>
 </div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">quanteda.sentiment</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/quanteda.sentiment/man/data_dictionary_NRC.html">data_dictionary_NRC</a></span><span class="op">$</span><span class="va">surprise</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] "abandonment"     "abduction"       "abrupt"          "accident"       
+  [5] "accidental"      "accidentally"    "accolade"        "advance"        
+  [9] "affront"         "aghast"          "alarm"           "alarming"       
+ [13] "alertness"       "alerts"          "allure"          "amaze"          
+ [17] "amazingly"       "ambush"          "angel"           "anomaly"        
+ [21] "apparition"      "applause"        "art"             "aspiration"     
+ [25] "assail"          "assessment"      "astonishingly"   "astonishment"   
+ [29] "attacking"       "avalanche"       "award"           "bang"           
+ [33] "banger"          "betray"          "bewildered"      "bewilderment"   
+ [37] "birthday"        "bizarre"         "blast"           "blessings"      
+ [41] "blindfold"       "blitz"           "bloodshed"       "bomb"           
+ [45] "bonus"           "break"           "brighten"        "buck"           
+ [49] "burlesque"       "cable"           "cadaver"         "camouflage"     
+ [53] "camouflaged"     "candid"          "captivate"       "carnage"        
+ [57] "catastrophe"     "catch"           "celebration"     "celebrity"      
+ [61] "ceremony"        "chance"          "changeable"      "chant"          
+ [65] "cheer"           "cheerful"        "cherish"         "chicane"        
+ [69] "chimera"         "chuckle"         "clamor"          "climax"         
+ [73] "clown"           "coincidence"     "compensate"      "complement"     
+ [77] "compliment"      "concealed"       "confession"      "conjure"        
+ [81] "coup"            "crash"           "cream"           "crescendo"      
+ [85] "crowning"        "curiosity"       "cyclone"         "daemon"         
+ [89] "dawn"            "deal"            "death"           "deceit"         
+ [93] "decoy"           "defy"            "delighted"       "deluge"         
+ [97] "destination"     "detonate"        "devastation"     "differently"    
+[101] "dire"            "disaster"        "dismay"          "dismissal"      
+[105] "disruption"      "dissolution"     "distress"        "disturbance"    
+[109] "divergent"       "diversion"       "divorce"         "dolphin"        
+[113] "dreadfully"      "dynamic"         "eager"           "earthquake"     
+[117] "ecstatic"        "ejaculation"     "electric"        "elusive"        
+[121] "embarrassment"   "embrace"         "emergency"       "enchant"        
+[125] "enliven"         "entertainment"   "enthusiasm"      "enthusiast"     
+[129] "epidemic"        "erotic"          "erratic"         "erupt"          
+[133] "eruption"        "evanescence"     "examination"     "excavation"     
+[137] "excel"           "excitation"      "excite"          "excited"        
+[141] "excitement"      "exciting"        "exclaim"         "exhilaration"   
+[145] "exigent"         "expect"          "experiment"      "explode"        
+[149] "explosion"       "explosive"       "fainting"        "fanfare"        
+[153] "favorable"       "fearfully"       "feat"            "feeling"        
+[157] "festival"        "fete"            "fiesta"          "finally"        
+[161] "flinch"          "flirt"           "fluke"           "foresee"        
+[165] "fortune"         "frantic"         "freakish"        "frenetic"       
+[169] "fright"          "frighten"        "frightened"      "frisky"         
+[173] "gambler"         "gambling"        "gape"            "garish"         
+[177] "gasp"            "gawk"            "generosity"      "gift"           
+[181] "glimmer"         "glorify"         "godsend"         "good"           
+[185] "goodness"        "graduation"      "gratify"         "greatness"      
+[189] "greeting"        "grin"            "guess"           "gulp"           
+[193] "hap"             "hermaphrodite"   "hero"            "heroic"         
+[197] "heroism"         "highest"         "hilarious"       "hoax"           
+[201] "holiness"        "honeymoon"       "hope"            "hopeful"        
+[205] "horde"           "horror"          "howl"            "humanitarian"   
+[209] "hypertrophy"     "hypothesis"      "illegitimate"    "illuminate"     
+[213] "illumination"    "illusion"        "immediacy"       "immerse"        
+[217] "improvisation"   "improvise"       "incendiary"      "incident"       
+[221] "incontinence"    "independence"    "inexplicable"    "infant"         
+[225] "infarct"         "infrequent"      "inheritance"     "insolvency"     
+[229] "inspired"        "insult"          "intense"         "interrupt"      
+[233] "intrigue"        "intruder"        "intrusive"       "invade"         
+[237] "invite"          "inviting"        "jackpot"         "jerk"           
+[241] "jest"            "joker"           "jolt"            "jubilant"       
+[245] "jubilee"         "judgment"        "kidnap"          "kiss"           
+[249] "labor"           "larger"          "latent"          "laugh"          
+[253] "laughter"        "lawsuit"         "leave"           "leery"          
+[257] "leisure"         "liberate"        "liberation"      "liberty"        
+[261] "lightning"       "lose"            "lovely"          "loyal"          
+[265] "luck"            "lucky"           "lunge"           "magical"        
+[269] "magician"        "magnificent"     "majestic"        "manslaughter"   
+[273] "marry"           "marvel"          "medal"           "memorable"      
+[277] "merriment"       "mimicry"         "miracle"         "miraculous"     
+[281] "misbehavior"     "mishap"          "modify"          "money"          
+[285] "monstrosity"     "morals"          "mouth"           "murder"         
+[289] "murderous"       "musical"         "mutiny"          "mysterious"     
+[293] "mystery"         "mystic"          "nab"             "nefarious"      
+[297] "newcomer"        "nullify"         "obit"            "obliging"       
+[301] "occasional"      "oddity"          "opera"           "optimism"       
+[305] "ordeal"          "organization"    "originality"     "outburst"       
+[309] "outcry"          "outrageous"      "overdue"         "overestimate"   
+[313] "palpable"        "pang"            "parade"          "paralyzed"      
+[317] "peaceful"        "perchance"       "perfection"      "peri"           
+[321] "perjury"         "picnic"          "pitfall"         "placard"        
+[325] "playful"         "playground"      "pleasant"        "plunder"        
+[329] "polarity"        "pop"             "postponement"    "practiced"      
+[333] "praiseworthy"    "prank"           "pray"            "precious"       
+[337] "premature"       "present"         "preservative"    "presto"         
+[341] "prick"           "princely"        "procession"      "proficiency"    
+[345] "prowl"           "puma"            "punch"           "purity"         
+[349] "quickness"       "quicksilver"     "quote"           "raffle"         
+[353] "raid"            "randomly"        "rapid"           "rapt"           
+[357] "rarity"          "rave"            "raving"          "reappear"       
+[361] "receiving"       "recklessness"    "reflex"          "rejoice"        
+[365] "rejoicing"       "rekindle"        "remarkable"      "rescue"         
+[369] "resignation"     "revenge"         "reversal"        "revolt"         
+[373] "revolution"      "reward"          "rhythmical"      "riddle"         
+[377] "riotous"         "romance"         "rupture"         "sabotage"       
+[381] "saint"           "saintly"         "sally"           "sanctify"       
+[385] "scare"           "score"           "scorpion"        "scream"         
+[389] "screech"         "scrimmage"       "secrecy"         "senseless"      
+[393] "sensual"         "shatter"         "shell"           "shock"          
+[397] "shockingly"      "shopping"        "shot"            "shout"          
+[401] "shriek"          "shrill"          "simplify"        "singularly"     
+[405] "sisterhood"      "slam"            "slap"            "slaughter"      
+[409] "slaughtering"    "slayer"          "slip"            "slush"          
+[413] "smile"           "snag"            "sneak"           "sneeze"         
+[417] "somatic"         "sorcery"         "spa"             "sparkle"        
+[421] "spectacular"     "spirits"         "splash"          "splendid"       
+[425] "splendor"        "stab"            "stagger"         "startle"        
+[429] "startling"       "steady"          "stealth"         "stealthily"     
+[433] "stealthy"        "strangle"        "stunned"         "subito"         
+[437] "subversive"      "succeed"         "sudden"          "suddenly"       
+[441] "sun"             "sunny"           "supremacy"       "surge"          
+[445] "surprise"        "surprised"       "surprising"      "surprisingly"   
+[449] "suspense"        "sweet"           "swerve"          "synchronize"    
+[453] "syncope"         "tackle"          "tantalizing"     "teach"          
+[457] "tempest"         "terrorist"       "thief"           "thirst"         
+[461] "thrill"          "thrilling"       "thwart"          "tickle"         
+[465] "topple"          "transcendence"   "treachery"       "treason"        
+[469] "treat"           "tree"            "trepidation"     "trick"          
+[473] "trickery"        "trip"            "trophy"          "trump"          
+[477] "tumult"          "unanticipated"   "unbeaten"        "unbridled"      
+[481] "uncanny"         "uncertain"       "uncontrollable"  "uncover"        
+[485] "underestimate"   "undiscovered"    "unexpected"      "unexpectedly"   
+[489] "unforeseen"      "unfulfilled"     "unguarded"       "unimaginable"   
+[493] "unintended"      "unintentional"   "unintentionally" "unique"         
+[497] "unprecedented"   "unpredictable"   "unstable"        "unsuspecting"   
+[501] "urgency"         "urgent"          "vanish"          "vanished"       
+[505] "variable"        "veer"            "veracity"        "victimized"     
+[509] "violation"       "violent"         "visor"           "volatility"     
+[513] "volcano"         "vote"            "warn"            "warned"         
+[517] "weight"          "whim"            "wild"            "wildfire"       
+[521] "winner"          "winning"         "wireless"        "wizard"         
+[525] "wonderful"       "wonderfully"     "worm"            "wreck"          
+[529] "yell"            "yelp"            "young"           "youth"          
+[533] "zany"            "zeal"           </code></pre>
+</div>
+</div>
+</section><section id="norms" class="level2" data-number="15.2"><h2 data-number="15.2" class="anchored" data-anchor-id="norms">
+<span class="header-section-number">15.2</span> Norms</h2>
+<p>Called “Valence” in <code>quanteda.sentiment</code></p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="ref-plutchik_1962" class="csl-entry" role="listitem">
+Plutchik, R. (1962). <em>The emotions</em>. Random House.
+</div>
+</div>
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -566,12 +950,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./word-counting.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Bag of Words (BOW): Dictionary-Based Word Counts</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Dictionary-Based Word Counts</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./vectorspace-intro.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Thinking in Vector Space</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./dla.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

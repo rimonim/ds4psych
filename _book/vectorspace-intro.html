@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Almog Simchon and Louis Teitelbaum">
-<title>Data Science for Psychology: Natural Language - 16&nbsp; Thinking in Vector Space</title>
+<title>Data Science for Psychology: Natural Language - 17&nbsp; Thinking in Vector Space</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -47,7 +47,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./decontextualized-embeddings.html" rel="next">
-<link href="./word-counting-improvements.html" rel="prev">
+<link href="./dla.html" rel="prev">
 <link href="./images/favicon.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -78,7 +78,7 @@ div.csl-indent {
   }
 }</script><script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script><script src="site_libs/plotly-binding-4.10.3/plotly.js"></script><script src="site_libs/typedarray-0.1/typedarray.min.js"></script><script src="site_libs/jquery-3.5.1/jquery.min.js"></script><link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
 <script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script><link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
-<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 </head>
 <body class="nav-sidebar floating">
 
@@ -87,7 +87,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./vectorspace-intro.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Thinking in Vector Space</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./vectorspace-intro.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Thinking in Vector Space</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -215,26 +215,26 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./look-at-your-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Look at Your Data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./quanteda.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Introduction to Quanteda</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Introduction to Quanteda</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./tokenization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Tokenization</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./eda.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Recommendations for EDA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Tokenization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./word-counting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Bag of Words (BOW): Dictionary-Based Word Counts</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Dictionary-Based Word Counts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -245,26 +245,38 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./dla.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./vectorspace-intro.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Thinking in Vector Space</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Thinking in Vector Space</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./decontextualized-embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./contextualized-embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./navigating-vectorspace.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Navigating Vector Space</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Navigating Vector Space</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./linguistic-complexity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Measures of Linguistic Complexity</span></span></a>
   </div>
 </li>
       </ul>
@@ -276,7 +288,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resources.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
   </div>
 </li>
     </ul>
@@ -288,17 +300,17 @@ div.csl-indent {
    
   <ul>
 <li>
-<a href="#distance-and-similarity" id="toc-distance-and-similarity" class="nav-link active" data-scroll-target="#distance-and-similarity"><span class="header-section-number">16.1</span> Distance and Similarity</a>
+<a href="#distance-and-similarity" id="toc-distance-and-similarity" class="nav-link active" data-scroll-target="#distance-and-similarity"><span class="header-section-number">17.1</span> Distance and Similarity</a>
   <ul class="collapse">
-<li><a href="#sec-euclidean-distance" id="toc-sec-euclidean-distance" class="nav-link" data-scroll-target="#sec-euclidean-distance"><span class="header-section-number">16.1.1</span> Euclidean Distance</a></li>
-  <li><a href="#sec-cosine-similarity" id="toc-sec-cosine-similarity" class="nav-link" data-scroll-target="#sec-cosine-similarity"><span class="header-section-number">16.1.2</span> Cosine Similarity</a></li>
+<li><a href="#sec-euclidean-distance" id="toc-sec-euclidean-distance" class="nav-link" data-scroll-target="#sec-euclidean-distance"><span class="header-section-number">17.1.1</span> Euclidean Distance</a></li>
+  <li><a href="#sec-cosine-similarity" id="toc-sec-cosine-similarity" class="nav-link" data-scroll-target="#sec-cosine-similarity"><span class="header-section-number">17.1.2</span> Cosine Similarity</a></li>
   </ul>
 </li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rimonim/ds4psych/blob/main/vectorspace-intro.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-vectorspace-intro" class="quarto-section-identifier"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Thinking in Vector Space</span></span></h1>
+<h1 class="title"><span id="sec-vectorspace-intro" class="quarto-section-identifier"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Thinking in Vector Space</span></span></h1>
 </div>
 
 
@@ -312,7 +324,7 @@ div.csl-indent {
   
 
 </header><p>Thus far we have covered various forms of counting. But more advanced methods in NLP often rely on <em>comparing</em> instead. To understand these methods, we must get comfortable with the idea of vector space.</p>
-<p>This chapter is a basic introduction to the concept of representing documents as vectors. We also introduce two basic vector-based measurement techniques: euclidean distance and cosine similarity. A more advanced and in-depth guide to navigating vector space will be covered in <a href="navigating-vectorspace.html"><span>Chapter&nbsp;19</span></a>.</p>
+<p>This chapter is a basic introduction to the concept of representing documents as vectors. We also introduce two basic vector-based measurement techniques: euclidean distance and cosine similarity. A more advanced and in-depth guide to navigating vector space will be covered in <a href="navigating-vectorspace.html"><span>Chapter&nbsp;20</span></a>.</p>
 <hr>
 <p>A fictional example<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>: Daniel and Amos filled out a psychology questionnaire. The questionnaire measured three aspects of their personalities: extraversion, openness to experience, and neuroticism.</p>
 <p>On the extraversion scale, Amos scored a 2 and Daniel scored a 4:</p>
@@ -342,24 +354,30 @@ div.csl-indent {
 <div class="cell">
 <div class="cell-output-display">
 <div class="plotly html-widget html-fill-item" id="htmlwidget-74cfae68c7f2192b61f0" style="width:100%;height:406px;"></div>
-<script type="application/json" data-for="htmlwidget-74cfae68c7f2192b61f0">{"x":{"visdat":{"a0b0436bf49c":["function () ","plotlyVisDat"],"a0b064885058":["function () ","data"]},"cur_data":"a0b064885058","attrs":{"a0b0436bf49c":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","inherit":true},"a0b0436bf49c.1":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"text":{},"type":"scatter3d","mode":"text","inherit":true},"a0b064885058":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"lines","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"zerolinecolor":"black","zerolinewidth":10},"showlegend":false,"scene":{"xaxis":{"title":"extraversion"},"yaxis":{"title":"openness"},"zaxis":{"title":"neuroticism"}},"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[2],"y":[7],"z":[3],"type":"scatter3d","mode":"markers","name":"Amos","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[4],"y":[6],"z":[5],"type":"scatter3d","mode":"markers","name":"Daniel","marker":{"color":"rgba(255,127,14,1)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null},{"x":[2],"y":[7],"z":[3],"text":"Amos","type":"scatter3d","mode":"text","name":"Amos","marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"frame":null},{"x":[4],"y":[6],"z":[5],"text":"Daniel","type":"scatter3d","mode":"text","name":"Daniel","marker":{"color":"rgba(214,39,40,1)","line":{"color":"rgba(214,39,40,1)"}},"error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"line":{"color":"rgba(214,39,40,1)"},"frame":null},{"x":[2,0],"y":[7,0],"z":[3,0],"type":"scatter3d","mode":"lines","name":"Amos","marker":{"color":"rgba(148,103,189,1)","line":{"color":"rgba(148,103,189,1)"}},"error_y":{"color":"rgba(148,103,189,1)"},"error_x":{"color":"rgba(148,103,189,1)"},"line":{"color":"rgba(148,103,189,1)"},"frame":null},{"x":[4,0],"y":[6,0],"z":[5,0],"type":"scatter3d","mode":"lines","name":"Daniel","marker":{"color":"rgba(140,86,75,1)","line":{"color":"rgba(140,86,75,1)"}},"error_y":{"color":"rgba(140,86,75,1)"},"error_x":{"color":"rgba(140,86,75,1)"},"line":{"color":"rgba(140,86,75,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-74cfae68c7f2192b61f0">{"x":{"visdat":{"7a9357cf9f8c":["function () ","plotlyVisDat"],"7a937ff3cd5d":["function () ","data"]},"cur_data":"7a937ff3cd5d","attrs":{"7a9357cf9f8c":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","inherit":true},"7a9357cf9f8c.1":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"text":{},"type":"scatter3d","mode":"text","inherit":true},"7a937ff3cd5d":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"lines","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"zerolinecolor":"black","zerolinewidth":10},"showlegend":false,"scene":{"xaxis":{"title":"extraversion"},"yaxis":{"title":"openness"},"zaxis":{"title":"neuroticism"}},"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[2],"y":[7],"z":[3],"type":"scatter3d","mode":"markers","name":"Amos","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[4],"y":[6],"z":[5],"type":"scatter3d","mode":"markers","name":"Daniel","marker":{"color":"rgba(255,127,14,1)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null},{"x":[2],"y":[7],"z":[3],"text":"Amos","type":"scatter3d","mode":"text","name":"Amos","marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"frame":null},{"x":[4],"y":[6],"z":[5],"text":"Daniel","type":"scatter3d","mode":"text","name":"Daniel","marker":{"color":"rgba(214,39,40,1)","line":{"color":"rgba(214,39,40,1)"}},"error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"line":{"color":"rgba(214,39,40,1)"},"frame":null},{"x":[2,0],"y":[7,0],"z":[3,0],"type":"scatter3d","mode":"lines","name":"Amos","marker":{"color":"rgba(148,103,189,1)","line":{"color":"rgba(148,103,189,1)"}},"error_y":{"color":"rgba(148,103,189,1)"},"error_x":{"color":"rgba(148,103,189,1)"},"line":{"color":"rgba(148,103,189,1)"},"frame":null},{"x":[4,0],"y":[6,0],"z":[5,0],"type":"scatter3d","mode":"lines","name":"Daniel","marker":{"color":"rgba(140,86,75,1)","line":{"color":"rgba(140,86,75,1)"}},"error_y":{"color":"rgba(140,86,75,1)"},"error_x":{"color":"rgba(140,86,75,1)"},"line":{"color":"rgba(140,86,75,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>Now imagine that we encounter a third person, Elizabeth. We would like to know whether Elizabeth is more similar to Daniel or to Amos.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div class="plotly html-widget html-fill-item" id="htmlwidget-c01c30d07c8447bee182" style="width:100%;height:406px;"></div>
-<script type="application/json" data-for="htmlwidget-c01c30d07c8447bee182">{"x":{"visdat":{"a0b03d50df14":["function () ","plotlyVisDat"],"a0b0865b97f":["function () ","data"]},"cur_data":"a0b0865b97f","attrs":{"a0b03d50df14":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","inherit":true},"a0b03d50df14.1":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"text":{},"type":"scatter3d","mode":"text","inherit":true},"a0b0865b97f":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"lines","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"zerolinecolor":"black","zerolinewidth":10},"showlegend":false,"scene":{"xaxis":{"title":"Dim1"},"yaxis":{"title":"Dim2"},"zaxis":{"title":"Dim3"}},"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[2],"y":[7],"z":[3],"type":"scatter3d","mode":"markers","name":"Amos","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[4],"y":[6],"z":[5],"type":"scatter3d","mode":"markers","name":"Daniel","marker":{"color":"rgba(255,127,14,1)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null},{"x":[8],"y":[4],"z":[6],"type":"scatter3d","mode":"markers","name":"Elizabeth","marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"frame":null},{"x":[2],"y":[7],"z":[3],"text":"Amos","type":"scatter3d","mode":"text","name":"Amos","marker":{"color":"rgba(214,39,40,1)","line":{"color":"rgba(214,39,40,1)"}},"error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"line":{"color":"rgba(214,39,40,1)"},"frame":null},{"x":[4],"y":[6],"z":[5],"text":"Daniel","type":"scatter3d","mode":"text","name":"Daniel","marker":{"color":"rgba(148,103,189,1)","line":{"color":"rgba(148,103,189,1)"}},"error_y":{"color":"rgba(148,103,189,1)"},"error_x":{"color":"rgba(148,103,189,1)"},"line":{"color":"rgba(148,103,189,1)"},"frame":null},{"x":[8],"y":[4],"z":[6],"text":"Elizabeth","type":"scatter3d","mode":"text","name":"Elizabeth","marker":{"color":"rgba(140,86,75,1)","line":{"color":"rgba(140,86,75,1)"}},"error_y":{"color":"rgba(140,86,75,1)"},"error_x":{"color":"rgba(140,86,75,1)"},"line":{"color":"rgba(140,86,75,1)"},"frame":null},{"x":[2,0],"y":[7,0],"z":[3,0],"type":"scatter3d","mode":"lines","name":"Amos","marker":{"color":"rgba(227,119,194,1)","line":{"color":"rgba(227,119,194,1)"}},"error_y":{"color":"rgba(227,119,194,1)"},"error_x":{"color":"rgba(227,119,194,1)"},"line":{"color":"rgba(227,119,194,1)"},"frame":null},{"x":[4,0],"y":[6,0],"z":[5,0],"type":"scatter3d","mode":"lines","name":"Daniel","marker":{"color":"rgba(127,127,127,1)","line":{"color":"rgba(127,127,127,1)"}},"error_y":{"color":"rgba(127,127,127,1)"},"error_x":{"color":"rgba(127,127,127,1)"},"line":{"color":"rgba(127,127,127,1)"},"frame":null},{"x":[8,0],"y":[4,0],"z":[6,0],"type":"scatter3d","mode":"lines","name":"Elizabeth","marker":{"color":"rgba(188,189,34,1)","line":{"color":"rgba(188,189,34,1)"}},"error_y":{"color":"rgba(188,189,34,1)"},"error_x":{"color":"rgba(188,189,34,1)"},"line":{"color":"rgba(188,189,34,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-c01c30d07c8447bee182">{"x":{"visdat":{"7a933d9e06bf":["function () ","plotlyVisDat"],"7a9351cd0533":["function () ","data"]},"cur_data":"7a9351cd0533","attrs":{"7a933d9e06bf":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","inherit":true},"7a933d9e06bf.1":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"text":{},"type":"scatter3d","mode":"text","inherit":true},"7a9351cd0533":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"lines","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"zerolinecolor":"black","zerolinewidth":10},"showlegend":false,"scene":{"xaxis":{"title":"Dim1"},"yaxis":{"title":"Dim2"},"zaxis":{"title":"Dim3"}},"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[2],"y":[7],"z":[3],"type":"scatter3d","mode":"markers","name":"Amos","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[4],"y":[6],"z":[5],"type":"scatter3d","mode":"markers","name":"Daniel","marker":{"color":"rgba(255,127,14,1)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null},{"x":[8],"y":[4],"z":[6],"type":"scatter3d","mode":"markers","name":"Elizabeth","marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"frame":null},{"x":[2],"y":[7],"z":[3],"text":"Amos","type":"scatter3d","mode":"text","name":"Amos","marker":{"color":"rgba(214,39,40,1)","line":{"color":"rgba(214,39,40,1)"}},"error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"line":{"color":"rgba(214,39,40,1)"},"frame":null},{"x":[4],"y":[6],"z":[5],"text":"Daniel","type":"scatter3d","mode":"text","name":"Daniel","marker":{"color":"rgba(148,103,189,1)","line":{"color":"rgba(148,103,189,1)"}},"error_y":{"color":"rgba(148,103,189,1)"},"error_x":{"color":"rgba(148,103,189,1)"},"line":{"color":"rgba(148,103,189,1)"},"frame":null},{"x":[8],"y":[4],"z":[6],"text":"Elizabeth","type":"scatter3d","mode":"text","name":"Elizabeth","marker":{"color":"rgba(140,86,75,1)","line":{"color":"rgba(140,86,75,1)"}},"error_y":{"color":"rgba(140,86,75,1)"},"error_x":{"color":"rgba(140,86,75,1)"},"line":{"color":"rgba(140,86,75,1)"},"frame":null},{"x":[2,0],"y":[7,0],"z":[3,0],"type":"scatter3d","mode":"lines","name":"Amos","marker":{"color":"rgba(227,119,194,1)","line":{"color":"rgba(227,119,194,1)"}},"error_y":{"color":"rgba(227,119,194,1)"},"error_x":{"color":"rgba(227,119,194,1)"},"line":{"color":"rgba(227,119,194,1)"},"frame":null},{"x":[4,0],"y":[6,0],"z":[5,0],"type":"scatter3d","mode":"lines","name":"Daniel","marker":{"color":"rgba(127,127,127,1)","line":{"color":"rgba(127,127,127,1)"}},"error_y":{"color":"rgba(127,127,127,1)"},"error_x":{"color":"rgba(127,127,127,1)"},"line":{"color":"rgba(127,127,127,1)"},"frame":null},{"x":[8,0],"y":[4,0],"z":[6,0],"type":"scatter3d","mode":"lines","name":"Elizabeth","marker":{"color":"rgba(188,189,34,1)","line":{"color":"rgba(188,189,34,1)"}},"error_y":{"color":"rgba(188,189,34,1)"},"error_x":{"color":"rgba(188,189,34,1)"},"line":{"color":"rgba(188,189,34,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>After graphing all three people in three-dimensional vector space, it becomes obvious that Elizabeth is more similar to Daniel than she is to Amos. Thinking of people (or any sort of observations) as vectors is powerful because it allows us to apply geometric reasoning to data. The beauty of this approach is that we can measure these things without knowing anything about what the dimensions represent. This will be important later.</p>
 <p>Thus far we have discussed three-dimensional vector space. But what if we want to measure personality with the full Big-Five traits—openness, conscientiousness, extraversion, agreeableness, and neuroticism? Five dimensions would make it impossible to graph the data in an intuitive way as we have done above, but in a mathematical sense, it doesn’t matter. We can measure distance—and many other geometric concepts—just as easily in five-dimensional vector space as in three dimensions.</p>
-<section id="distance-and-similarity" class="level2" data-number="16.1"><h2 data-number="16.1" class="anchored" data-anchor-id="distance-and-similarity">
-<span class="header-section-number">16.1</span> Distance and Similarity</h2>
-<section id="sec-euclidean-distance" class="level3" data-number="16.1.1"><h3 data-number="16.1.1" class="anchored" data-anchor-id="sec-euclidean-distance">
-<span class="header-section-number">16.1.1</span> Euclidean Distance</h3>
-</section><section id="sec-cosine-similarity" class="level3" data-number="16.1.2"><h3 data-number="16.1.2" class="anchored" data-anchor-id="sec-cosine-similarity">
-<span class="header-section-number">16.1.2</span> Cosine Similarity</h3>
+<section id="distance-and-similarity" class="level2" data-number="17.1"><h2 data-number="17.1" class="anchored" data-anchor-id="distance-and-similarity">
+<span class="header-section-number">17.1</span> Distance and Similarity</h2>
+<section id="sec-euclidean-distance" class="level3" data-number="17.1.1"><h3 data-number="17.1.1" class="anchored" data-anchor-id="sec-euclidean-distance">
+<span class="header-section-number">17.1.1</span> Euclidean Distance</h3>
+<p><span class="math display">\[
+d\left( A,B\right)   = \sqrt {\sum _{i=1}^{n}  \left( A_{i}-B_{i}\right)^2 }
+\]</span></p>
+</section><section id="sec-cosine-similarity" class="level3" data-number="17.1.2"><h3 data-number="17.1.2" class="anchored" data-anchor-id="sec-cosine-similarity">
+<span class="header-section-number">17.1.2</span> Cosine Similarity</h3>
+<p><span class="math display">\[
+Cosine(A,B) = \frac{A \cdot B}{|A||B|} = \frac{\sum _{i=1}^{n}  A_{i}B_{i}}{\sqrt {\sum _{i=1}^{n} A_{i}^2} \cdot \sqrt {\sum _{i=1}^{n} B_{i}^2}}
+\]</span></p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
@@ -603,13 +621,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./word-counting-improvements.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Improvements on Word Counts</span></span>
+      <a href="./dla.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./decontextualized-embeddings.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

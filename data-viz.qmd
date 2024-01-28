@@ -15,7 +15,7 @@ Here are three common purposes for data visualization:
 2.  Looking for aspects of your data that common statistics might miss (like outliers or nonlinear relationships)
 3.  Communicating something to people who don't have a deep understanding of your data
 
-The first two purposes are an important aspects of *exploratory data analysis* (EDA). They will be discussed in @sec-eda. The third one - **communication** - is the topic of this unit.
+The first two purposes are an important aspects of *exploratory data analysis* (EDA). They will be discussed in @sec-dla. The third one - **communication** - is the topic of this unit.
 
 Communication is hard. It is especially hard for scientists, who often need to balance the needs of multiple target audiences. While insiders in a particular field may want detailed, objective analysis of results and the uncertainty surrounding them, **everyone else wants a story**.
 

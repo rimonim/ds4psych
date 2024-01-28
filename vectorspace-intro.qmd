@@ -233,5 +233,12 @@ Thus far we have discussed three-dimensional vector space. But what if we want t
 
 ### Euclidean Distance {#sec-euclidean-distance}
 
+$$
+d\left( A,B\right)   = \sqrt {\sum _{i=1}^{n}  \left( A_{i}-B_{i}\right)^2 }
+$$
+
 ### Cosine Similarity {#sec-cosine-similarity}
 
+$$
+Cosine(A,B) = \frac{A \cdot B}{|A||B|} = \frac{\sum _{i=1}^{n}  A_{i}B_{i}}{\sqrt {\sum _{i=1}^{n} A_{i}^2} \cdot \sqrt {\sum _{i=1}^{n} B_{i}^2}}
+$$

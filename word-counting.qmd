@@ -1,15 +1,116 @@
-# Bag of Words (BOW): Dictionary-Based Word Counts {#sec-word-counting}
+---
+engine: knitr
+---
+# Dictionary-Based Word Counts {#sec-word-counting}
+
+```{r setup}
+#| echo: false
+#| include: false
+
+source("_common.R")
+library(quanteda)
+
+hippocorpus_corp <- read_csv("data/hippocorpus-u20220112/hcV3-stories.csv") |> 
+  select(AssignmentId, story, memType, summary, WorkerId, 
+         annotatorGender, openness, timeSinceEvent) |> 
+  corpus(docid_field = "AssignmentId", 
+         text_field = "story")
+
+hippocorpus_dfm <- hippocorpus_corp |> 
+  tokens(remove_punct = TRUE) |> 
+  dfm()
+```
+
+In @sec-tokenization, we transformed our corpus into a DFM with counts of each word in each document. But not all words are created equal; some words are much more psychologically interesting than others. The simplest way to count relevant words while ignoring others is by using a _dictionary_.
 
 ## Dictionaries {#sec-quanteda-dictionaries}
 
-::: {.callout-tip icon="false"}
-## Advantages of Word Counts
+Recall that in the _Hippocorpus_ data, the `memType` variable indicates whether the participant was told to tell a story that happened to them recently ("recalled"), a story that they had already told a few months earlier ("retold"), or an entirely fictional story ("imagined").
 
--   **Efficient Processing:** 
+@sap_etal_2022 hypothesized that true autobiographical stories would include more surprising events than imagined stories. To test this hypothesis, we could use a dictionary of surprise-related words. We could try making one up:
+
+```{r}
+surprise_dict <- dictionary(
+    list(
+      surprise = c("surprise", "wow", "suddenly", "bang")
+    )
+  )
+surprise_dict
+```
+
+Making up a sentiment dictionary is not easy. Luckily, other researchers have done the work for us: The NRC Word-Emotion Association Lexicon [@mohammad_turney_2010; @mohammad_turney_2013], included in the `quanteda.sentiment` package, has a list of 534 surprise words.
+
+```{r}
+surprise_dict <- quanteda.sentiment::data_dictionary_NRC["surprise"]
+surprise_dict
+```
+
+@mohammad_turney_2013 generated this dictionary by asking thousands of online participants to rate how much various words are associated with the emotion surprise. The final dictionary includes all the words that were consistently reported to be at least moderately associated with surprise.
+
+To count how many times surprise words appear in each of our texts, we use the `dfm_lookup()` function. 
+
+```{r}
+hippocorpus_surprise <- hippocorpus_dfm |> 
+  dfm_lookup(surprise_dict)
+hippocorpus_surprise
+```
+
+## Modeling Word Counts {#sec-modeling-word-counts}
+
+Recall that we wanted to test whether true autobiographical stories include more surprise than imagined stories. Now that we have counted the number of surprise words in each document, how do we test our hypothesis?
+
+A good first step is to reattach the word counts to our original corpus. As we do this, we convert both to dataframes.
+
+```{r}
+#| output: false
+hippocorpus_surprise_df <- hippocorpus_surprise |> 
+  convert("data.frame") |> # convert to dataframe
+  right_join(
+    hippocorpus_corp |> 
+      convert("data.frame") # convert to dataframe
+    )
+```
+
+Generally we want to control for the total number of words in each text, since longer texts have more opportunities to use surprise words. To count the total number of tokens in each text, we can use the `ntoken()` function on our DFM and add the result directly to the new dataframe.
+
+```{r}
+hippocorpus_surprise_df <- hippocorpus_surprise_df |> 
+  mutate(wc = ntoken(hippocorpus_dfm))
+```
+
+We are now ready for modeling! When your dependent variable is a count of words, we recommend using negative binomial regression, available in R with the `MASS` package. For extra sensitivity to the variable rates at which word frequencies grow with text length [see @baayen_2001], we will allow `wc` to have its own parameter in the regression.
+
+```{r}
+surprise_mod <- MASS::glm.nb(surprise ~ memType + wc,
+                             data = hippocorpus_surprise_df)
+summary(surprise_mod)
+```
+
+Looking at the p-values for the coefficients, we see that there was no significant difference between recalled and imagined stories (p = `r round(summary(surprise_mod)$coefficients["memTyperecalled","Pr(>|z|)"],3)`). There was, however, a marginal difference between _retold_ and imagined stories, such that retold stories used fewer surprise words (p = `r round(summary(surprise_mod)$coefficients["memTyperetold","Pr(>|z|)"],3)`).
+
+When interpreting these results, it is important to think about what exactly we are measuring. The surprise dictionary we are using was generated be asking participants how much each word was "associated with the emotion surprise" [@mohammad_turney_2013]. A word can be "associated with" surprise because it reflects surprise (e.g. "suddenly"), but it can also be "associated with" surprise because it reflects the exact opposite of surprise. Indeed, if we **look through the dictionary**, we find words like "leisure" and "lovely".
+
+```{r}
+set.seed(8)
+sample(surprise_dict$surprise, 20)
+```
+
+This means that we are not, in fact, measuring how surprising each story is. At best, we are measuring how much each story deals with surprise (or lack thereof) one way or another. This observation is just one example of a larger problem with dictionary-based word counts in general, especially when the dictionary is generated by asking participants about one construct at a time: the words in a dictionary do not uniquely reflect the construct of interest---they also reflect other conceptually related concepts. Opposites, of course, are always closely conceptually related to each other. In the next chapter, we will explore ways to improve dictionary-based counts so that they can overcome this and other problems. 
+
+---
+
+::: {.callout-tip icon="false"}
+## Advantages of Dictionary-Based Word Counts
+
+-   **Efficient Processing:** Counting is a simple operation for computers. For very large datasets, more this can make a big difference.
+-   **Easy to Interpret:** Dictionaries for sentiment analysis are usually not more than a few hundred words long. This means that they are easy to read through and understand intuitively. The intuitive appeal is also good for explaining your research to others---"we counted the number of anger-related words" is a method that any non-expert can understand.
 :::
 
 ::: {.callout-important icon="false"}
-## Disadvantages of Word Counts
+## Disadvantages of Dictionary-Based Word Counts
 
--   **No Context:** 
+-   **No Context:** Dictionary-based word counts treat texts as bags of words. This means they entirely ignore word order (aside from the order of any n-grams that might be included in the dictionary). 
+-   **May Reflect Various Constructs:** Dictionaries are often generated by asking participants to identify associations with words. These associations do not necessarily reflect the construct in which the researcher is interested.
+-   **Unnuanced:** Words are either in a dictionary or they are not. Raw counts carry no nuance about the varying degrees to which different words may reflect the construct of interest.
+-   **Limited Dictionaries Available:** Dictionaries are expensive and labor intensive to produce. Researchers are generally reliant on dictionaries already produced by other teams, which may not reflect the construct of interest precisely.
 :::

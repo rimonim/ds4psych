@@ -227,26 +227,26 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./look-at-your-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Look at Your Data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./quanteda.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Introduction to Quanteda</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Introduction to Quanteda</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./tokenization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Tokenization</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./eda.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Recommendations for EDA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Tokenization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./word-counting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Bag of Words (BOW): Dictionary-Based Word Counts</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Dictionary-Based Word Counts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -257,26 +257,38 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./dla.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./vectorspace-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Thinking in Vector Space</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Thinking in Vector Space</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./decontextualized-embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./contextualized-embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./navigating-vectorspace.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Navigating Vector Space</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Navigating Vector Space</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./linguistic-complexity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Measures of Linguistic Complexity</span></span></a>
   </div>
 </li>
       </ul>
@@ -288,7 +300,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resources.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
   </div>
 </li>
     </ul>
@@ -351,29 +363,29 @@ div.csl-indent {
 <h3 data-number="1.2.1" class="anchored" data-anchor-id="language-is-hard-to-record"><span class="header-section-number">1.2.1</span> Language is Hard to Record</h3>
 <p>Before the invention of audio recording technology, using language in scientific research was nearly impossible. Early efforts by linguists to record language samples from representative populations were heroic; starting in 1896, Edmond Edmont spent four years traveling around France on a bicycle conducting specially designed interviews to collect data for the <em>Atlas linguistique de la France</em>. He collected data from 700 participants in total <span class="citation" data-cites="crystal_1997">(<a href="#ref-crystal_1997" role="doc-biblioref">Crystal, 1997</a>)</span>. Since then, microphones have made it easier to record speech, but even simple quantitative measurements like word counts have still required painstaking hours of listening to recordings and marking each occurrence of the word.</p>
 <p>The advent of transformer neural networks has made working with audio data much easier than it once was, but the largest boon to our language recording abilities has come through a different medium: text.</p>
-<p>Only a few decades ago, public access to text was limited to highly edited long-form productions like books, magazines, and newspapers. Psychologists tend to be more interested in accessing people’s thoughts and feelings as they happen, so these texts held little interest for them. Some psychologists studied diaries or personal letters <span class="citation" data-cites="allport_1942">Creegan (<a href="#ref-creegan_1944" role="doc-biblioref">1944</a>)</span>, but personal documents like these are hard to collect at scale. This all changed with the advent of the Internet. More than ever before, people communicate through text—not just in long-distance correspondence, but for day-to-day socializing with friends and family. Moreover, much of this textual communication is synchronous and shares many of the same features as face-to-face spoken conversation <span class="citation" data-cites="placinski_zywiczynski_2023">(<a href="#ref-placinski_zywiczynski_2023" role="doc-biblioref">Placiński &amp; Żywiczyński, 2023</a>)</span>. Most importantly, much of this textual communication is freely available to the public, through social media platforms like Twitter, Reddit, and YouTube. Data science techniques allow researchers to access these texts and transform them into manageable datasets with APIs <a href="apis.html"><span>Chapter&nbsp;9</span></a> and web scraping <a href="scraping.html"><span>Chapter&nbsp;10</span></a>.</p>
+<p>Only a few decades ago, public access to text was limited to highly edited long-form productions like books, magazines, and newspapers. Psychologists tend to be more interested in accessing people’s thoughts and feelings as they happen, so these texts held little interest for them. Some psychologists studied diaries or personal letters <span class="citation" data-cites="allport_1942 creegan_1944">(e.g. <a href="#ref-allport_1942" role="doc-biblioref">Allport, 1942</a>; <a href="#ref-creegan_1944" role="doc-biblioref">Creegan, 1944</a>)</span>, but personal documents like these are hard to collect at scale. This all changed with the advent of the Internet. Now more than ever before, people communicate through text—not just in long-distance correspondence, but for day-to-day socializing with friends and family. Moreover, much of this textual communication is synchronous and shares many of the same features as face-to-face spoken conversation <span class="citation" data-cites="placinski_zywiczynski_2023">(<a href="#ref-placinski_zywiczynski_2023" role="doc-biblioref">Placiński &amp; Żywiczyński, 2023</a>)</span>. Most importantly, much of this textual communication is freely available to researchers, through social media platforms like Twitter, Reddit, and YouTube. Data science techniques allow researchers to access these texts and transform them into manageable datasets with APIs (<a href="apis.html"><span>Chapter&nbsp;9</span></a>) and web scraping (<a href="scraping.html"><span>Chapter&nbsp;10</span></a>).</p>
 </section>
 <section id="language-is-hard-to-quantify" class="level3" data-number="1.2.2">
 <h3 data-number="1.2.2" class="anchored" data-anchor-id="language-is-hard-to-quantify"><span class="header-section-number">1.2.2</span> Language is Hard to Quantify</h3>
-<p>Even when interesting texts were available to psychologists of the past, they were rarely able to make use of them in quantitative analysis. Language is complex, with near-infinite ways to describe the same thing. There are no clear rules for measuring the extent to which a text reflects depression, anxiety, mania, introspection, or any other psychological construct. The few researchers who tried to extract quantitative psychological dimensions of text were nearly as heroic as Edmond Edmont on his four year journey around France. For example, <span class="citation" data-cites="peterson_seligman_1984">Peterson &amp; Seligman (<a href="#ref-peterson_seligman_1984" role="doc-biblioref">1984</a>)</span> administered a questionnaire that prompted participants to write short explanations of various hypothetical scenarios. They then carefully read each response, noted each time a phrase like “because of” or “as a result of” was mentioned, and marked the accompanying explanation. These explanations were then typed by hand and shown one at a time to four trained judges who rated them on various 7-point scales. Finally, the agreement between the judges was assessed and their ratings were aggregated into the final variable used in their analysis of risk factors for. Today, this sort of analysis could be performed for free in a matter of seconds using dictionary-based word counts <a href="word-counting.html"><span>Chapter&nbsp;14</span></a>, neural embeddings <a href="contextualized-embeddings.html"><span>Chapter&nbsp;18</span></a>, or other methods covered in this book.</p>
+<p>Even when interesting texts were available to psychologists of the past, they were rarely able to make use of them in quantitative analysis. Language is complex, with near-infinite ways to describe the same thing. There are no clear rules for measuring the extent to which a text reflects depression, anxiety, mania, introspection, or any other psychological construct. The few researchers who tried to extract quantitative psychological dimensions of text were nearly as heroic as Edmond Edmont on his four year journey around France. For example, <span class="citation" data-cites="peterson_seligman_1984">Peterson &amp; Seligman (<a href="#ref-peterson_seligman_1984" role="doc-biblioref">1984</a>)</span> administered a questionnaire that prompted participants to write short explanations of various hypothetical scenarios. They then carefully read each response, noted each time a phrase like “because of” or “as a result of” was mentioned, and marked the accompanying explanation. These explanations were then typed by hand and shown one at a time to four trained judges who rated them on various 7-point scales. Finally, the agreement between the judges was assessed and their ratings were aggregated into the final variable used in their analysis of risk factors for depression. Today, this sort of analysis could be performed in a matter of seconds using dictionary-based word counts (<a href="word-counting.html"><span>Chapter&nbsp;14</span></a>), neural embeddings (<a href="contextualized-embeddings.html"><span>Chapter&nbsp;19</span></a>), or other methods covered in this book.</p>
 </section>
 <section id="language-is-hard-to-control" class="level3" data-number="1.2.3">
 <h3 data-number="1.2.3" class="anchored" data-anchor-id="language-is-hard-to-control"><span class="header-section-number">1.2.3</span> Language is Hard to Control</h3>
-<p>Language is a social phenomenon. People do not write or speak in a vacuum, they participate in conversations or group discussions, considering their audience as they form their words. For the researcher, this means that language is full of uncontrolled, confounding variables: Is the speaker responding to another speaker? Who is the other speaker? How many participants are there in the conversation? Researchers in the field of psycholinguistics have tried to solve these problems by isolating speakers in a laboratory setting, contriving situations in which participants process and produce speech without the uncontrolled variability of conversational partners <span class="citation" data-cites="oconnell_kowal_2003">(<a href="#ref-oconnell_kowal_2003" role="doc-biblioref">O’Connell &amp; Kowal, 2003</a>)</span>. Nevertheless, the inherently social nature of language behavior has made it difficult to analyze in even remotely naturalistic settings.</p>
-<p>Today, the highly structured nature of interaction on social media has made the social context of utterances easily measurable. For example, comments on Reddit are always associated with a well-defined community, are responding to a known original post, and are directly responding to previous comments in a tree-like structure <a href="apis.html#sec-reddit-threads"><span>Section&nbsp;9.2.3</span></a>. This structure can be leveraged to provide robust statistical control by using it in tandem with new methods for quantifying the relationships between utterances. A few decades ago the question “How similar are Daniel’s utterances to Amos’s utterances?” would have seemed hopelessly ill-defined. Similar in what way? Today, answering this question is made simple with vector-based semantic embeddings (<a href="vectorspace-intro.html">Chapters&nbsp;<span>16</span></a>—<a href="contextualized-embeddings.html"><span>18</span></a>). Methods like these are now being used to make sense of nuanced features of language use in dialogue <span class="citation" data-cites="duran_etal_2019">(see <a href="#ref-duran_etal_2019" role="doc-biblioref">Duran et al., 2019</a> for an example in psycholinguistics)</span>.</p>
-<p>This book will not cover all of the relevant statistical methods for analyzing data with linked pairs and groups of participants <span class="citation" data-cites="kenny_etal_2006">(e.g. <a href="#ref-kenny_etal_2006" role="doc-biblioref">Kenny et al., 2006</a>)</span>, but the measurement methods we present here can be used to extend such methods to large datasets of naturalistic interaction.</p>
+<p>Language is a social phenomenon. People do not write or speak in a vacuum, they participate in conversations or group discussions, considering their audiences as they form their words. For the researcher, this means that language is full of uncontrolled, confounding variables: Is the speaker responding to another speaker? Who is the other speaker? How many participants are there in the conversation? Researchers in the field of psycholinguistics have tried to solve these problems by isolating speakers in a laboratory setting, contriving situations in which participants process and produce speech without the uncontrolled variability of conversational partners <span class="citation" data-cites="oconnell_kowal_2003">(<a href="#ref-oconnell_kowal_2003" role="doc-biblioref">O’Connell &amp; Kowal, 2003</a>)</span>. Nevertheless, the inherently social nature of language has made it difficult to analyze language behavior in even remotely naturalistic settings.</p>
+<p>Today, the highly structured nature of interaction on social media has made the social context of utterances easily measurable. For example, comments on Reddit are always associated with a well-defined community, are responding to a known original post, and are directly responding to previous comments in a tree-like structure (<a href="apis.html#sec-reddit-threads"><span>Section&nbsp;9.2.3</span></a>). Researchers can leverage this structure to provide robust statistical control by using it in tandem with new methods for quantifying the relationships between utterances. A few decades ago the question “How similar are Daniel’s utterances to Amos’s utterances?” would have seemed hopelessly ill-defined. Similar in what way? Today, answering this question is simple with vector-based semantic embeddings (<a href="vectorspace-intro.html">Chapters&nbsp;<span>17</span></a>—<a href="contextualized-embeddings.html"><span>19</span></a>). Methods like these can now make sense of nuanced features of language use in dialogue <span class="citation" data-cites="duran_etal_2019">(see <a href="#ref-duran_etal_2019" role="doc-biblioref">Duran et al., 2019</a> for an example in psycholinguistics)</span>.</p>
+<p>This book focuses primarily on how to extract psychological dimensions from text. The statistical analysis of these dimensions will not be covered in depth here. Even so, the methods presented in the book can be used in tandem with modern methods of statistical analysis <span class="citation" data-cites="kenny_etal_2006">(e.g. <a href="#ref-kenny_etal_2006" role="doc-biblioref">Kenny et al., 2006</a>)</span> to draw inferences from complex social interactions between pairs or even larger groups of people.</p>
 </section>
 </section>
 <section id="what-this-textbook-is-useful-for" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="what-this-textbook-is-useful-for"><span class="header-section-number">1.3</span> What This Textbook is Useful For</h2>
-<p>The tools of presented in this book are useful for many fields of psychology, cognitive science, and neuroscience. Most are related to language, but not all. The following are a few examples of ways to apply these tools in practice:</p>
+<p>The tools presented in this book are useful for many fields of psychology, cognitive science, and neuroscience. Most of these fields are related to language, but not all. The following are a few examples of ways to apply these tools in practice:</p>
 <ul>
-<li>Enhance experimental control by matching word stimuli according to semantic similarity <span class="citation" data-cites="gagne_etal_2005">(e.g. <a href="#ref-gagne_etal_2005" role="doc-biblioref">Gagné et al., 2005</a>)</span>. See <a href="decontextualized-embeddings.html"><span>Chapter&nbsp;17</span></a>.</li>
-<li>Find similarities between large language models and neural processing in the brain <span class="citation" data-cites="millet_etal_2022">(e.g. <a href="#ref-millet_etal_2022" role="doc-biblioref">Millet et al., 2022</a>)</span>. See <a href="contextualized-embeddings.html"><span>Chapter&nbsp;18</span></a>.</li>
-<li>Measure the degree to which a therapist and patient are building mutual understanding over the course of a session <span class="citation" data-cites="duran_etal_2019">(cf. <a href="#ref-duran_etal_2019" role="doc-biblioref">Duran et al., 2019</a>)</span>. See <a href="vectorspace-intro.html"><span>Chapter&nbsp;16</span></a>.</li>
-<li>Analyze emotional responses to current events on social media <span class="citation" data-cites="simchon_etal_2020">(e.g. <a href="#ref-simchon_etal_2020" role="doc-biblioref">Simchon et al., 2020</a>)</span>. See <a href="apis.html"><span>Chapter&nbsp;9</span></a> and <a href="navigating-vectorspace.html#sec-machine-learning-methods"><span>Section&nbsp;19.4</span></a>.</li>
+<li>Enhance experimental control by matching word stimuli according to semantic similarity <span class="citation" data-cites="gagne_etal_2005">(e.g. <a href="#ref-gagne_etal_2005" role="doc-biblioref">Gagné et al., 2005</a>)</span>. See <a href="decontextualized-embeddings.html"><span>Chapter&nbsp;18</span></a>.</li>
+<li>Find similarities between large language models and neural processing in the brain <span class="citation" data-cites="millet_etal_2022">(e.g. <a href="#ref-millet_etal_2022" role="doc-biblioref">Millet et al., 2022</a>)</span>. See <a href="contextualized-embeddings.html"><span>Chapter&nbsp;19</span></a>.</li>
+<li>Measure the degree to which a therapist and patient build mutual understanding over the course of a session <span class="citation" data-cites="duran_etal_2019">(cf. <a href="#ref-duran_etal_2019" role="doc-biblioref">Duran et al., 2019</a>)</span>. See <a href="vectorspace-intro.html"><span>Chapter&nbsp;17</span></a>.</li>
+<li>Analyze emotional responses to current events on social media <span class="citation" data-cites="simchon_etal_2020">(e.g. <a href="#ref-simchon_etal_2020" role="doc-biblioref">Simchon et al., 2020</a>)</span>. See <a href="apis.html"><span>Chapter&nbsp;9</span></a> and <a href="navigating-vectorspace.html#sec-machine-learning-methods"><span>Section&nbsp;20.4</span></a>.</li>
 <li>Find links between group members’ language and their probability of leaving the group <span class="citation" data-cites="ashokkumar_pennebaker_2022">(<a href="#ref-ashokkumar_pennebaker_2022" role="doc-biblioref">Ashokkumar &amp; Pennebaker, 2022</a>)</span>. See <a href="corpora.html"><span>Chapter&nbsp;8</span></a> and <a href="word-counting.html"><span>Chapter&nbsp;14</span></a>.</li>
-<li>Validate personality assessments with individuals’ behavior on social media <span class="citation" data-cites="schwartz_etal_2013">(<a href="#ref-schwartz_etal_2013" role="doc-biblioref">Schwartz et al., 2013</a>)</span>.</li>
+<li>Validate personality assessments with individuals’ behavior on social media <span class="citation" data-cites="schwartz_etal_2013">(<a href="#ref-schwartz_etal_2013" role="doc-biblioref">Schwartz et al., 2013</a>)</span>. See <a href="dla.html"><span>Chapter&nbsp;16</span></a>.</li>
 </ul>
 <hr>
 

@@ -1,12 +1,12 @@
 # Corpus Data {#sec-corpora}
 
-The amount of data available for free on the internet is astounding. Before you go through the trouble of running your own experiment or scraping data from sites, ask yourself: Has somebody else already done the work before me?
+The amount of data available for free on the Internet is astounding. Before you go through the trouble of running your own experiment or scraping data from sites, ask yourself: Has somebody else already done the work?
 
 This chapter is a brief guide to corpus resources for language data, with links to all of our favorite sources.
 
 ## Archived Experimental Data
 
-Scientists who run large experiments often publish their data online for use in further research. For example, data from @sap_etal_2020 and @sap_etal_2022, summarized in @sec-experiments, are available online as the [Hippocorpus dataset](https://www.microsoft.com/en-us/download/details.aspx?id=105291)---a dataset we will be exploring in depth in @sec-quantification. Another good example is [the Empathic Reactions dataset](https://github.com/wwbp/empathic_reactions) [@buechel_etal_2018], used in @sec-nonlinear-axes and @sec-word-viz, in which participants read news stories, rated their own empathy and distress after reading them, and then described their thoughts about it verbally.
+Scientists who run large experiments often publish their data online for use in further research. For example, data from @sap_etal_2020 and @sap_etal_2022, summarized in @sec-experiments, are available online as the [Hippocorpus dataset](https://www.microsoft.com/en-us/download/details.aspx?id=105291)---a dataset we will be exploring in depth in Unit 2. Another good example is [the Empathic Reactions dataset](https://github.com/wwbp/empathic_reactions) [@buechel_etal_2018], used in @sec-nonlinear-axes and @sec-word-viz, in which participants read news stories, rated their own empathy and distress after reading them, and then described their thoughts about them verbally.
 
 Open experimental data are often linked in published papers, especially since the founding of the [Center for Open Science](https://en.wikipedia.org/wiki/Center_for_Open_Science#Open_Science_Framework) in 2013. Many psychology-related datasets can be browsed freely on [osf.io](https://osf.io), [the Harvard Dataverse](https://dataverse.harvard.edu/), and other locations. 
 
@@ -20,7 +20,7 @@ Open experimental data are often linked in published papers, especially since th
 ::: {.callout-important icon="false"}
 ## Disadvantages of Archived Experimental Data
 
--   **Sometimes Not Documented:** Datasets not used in published papers often have poor documentation.
+-   **Sometimes Not Well-Documented:** Datasets not used in published papers often have poor documentation.
 -   **Small Sample Size:** Experiments often result in relatively small datasets, which can pose problems for certain NLP methods.
 :::
 
@@ -28,17 +28,18 @@ Open experimental data are often linked in published papers, especially since th
 
 The field of linguistics has a long tradition of corpus data. Linguistics corpora provide extensive records of spoken and written speech in a wide range of contexts. These corpora are often very large and professionally curated, making them ideal for the techniques described in this book. On the other hand, they are generally curated with linguistics in mind, not psychology. This means that applying them to psychological questions requires some ingenuity.
 
-One popular semi-experimental linguistics corpus is the [HCRC Map Task Corpus](https://groups.inf.ed.ac.uk/maptask/) [@anderson_etal_1991], in which pairs of participants collaborated in a communication game. In each pair, one partner could see a treasure map with a path through various landmarks, while the other partner had a similar map without a path. The first partner explained to the second how to draw the path. The partners' communication accuracy can be measured as the distance between the drawn path and the original. Full dialogue transcriptions, as well as accuracy scores, are available online. The Map Task Corpus has been reproduced in many languages, [including Hebrew](http://www.openu.ac.il/en/academicstudies/matacop/) and is commonly used in psychology. For example, @dideriksen_etal_2023 used a Danish version of the Map Task Corpus, along with other dialogue corpora, to track the ways that speakers collaborate to achieve mutual understanding in different contexts.
+One popular semi-experimental linguistics corpus is the [HCRC Map Task Corpus](https://groups.inf.ed.ac.uk/maptask/) [@anderson_etal_1991], in which pairs of participants collaborated in a communication game. In each pair, one partner could see a treasure map with a path through various landmarks, while the other partner had a similar map without a path. The first partner explained to the second how to draw the path. The partners' communication accuracy can be measured as the distance between the drawn path and the original. Full dialogue transcriptions, as well as accuracy scores, are available online. The Map Task Corpus has been reproduced in many languages, [including Hebrew](http://www.openu.ac.il/en/academicstudies/matacop/), and is commonly used in psychology. For example, @dideriksen_etal_2023 used a Danish version of the Map Task Corpus, along with other dialogue corpora, to track the ways that speakers collaborate to achieve mutual understanding in different contexts.
 
--   [English-Corpora.org](https://www.english-corpora.org): A list of the most widely used corpora of naturalistic English speech and writing, with download links for each. Also included preprocessed data, such as word frequency counts for nearly 100 genres, from the Corpus of Contemporary American English [@davies_2009], used in @sec-rotated-freq-freq.
+-   [English-Corpora.org](https://www.english-corpora.org): A list of the most widely used corpora of naturalistic English speech and writing, with download links for each. Also includes preprocessed data, such as word frequency counts for nearly 100 genres, from the Corpus of Contemporary American English [@davies_2009], used in @sec-rotated-freq-freq.
 -   [University of British Columbia Language Corpora List](https://guides.library.ubc.ca/c.php?g=306932&p=2051153): Links to written and spoken language data in dozens of languages, including from bilingual and multilingual speakers.
 - [Wikipedia's List of Text Corpora](https://en.wikipedia.org/wiki/List_of_text_corpora)
 - [List of NLP Corpora](https://github.com/jojonki/NLP-Corpora#dialog-task-oriented): Links to useful corpora for NLP tasks like task-oriented dialogue, translation, and sentiment analysis.
+- [Convokit Datasets](https://convokit.cornell.edu/documentation/datasets.html): Links to written and spoken dialogues from debates, news interviews, telephone conversations, video chats, legal trials, and more.
 
 ::: {.callout-tip icon="false"}
 ## Advantages of Linguistics Corpora
 
--   **Professional:** Linguistics corpora are generally well-curated and well-documented. 
+-   **Professional:** Linguistics corpora are generally well curated and well documented. 
 -   **Ecological Validity:** Corpora are often large and naturalistic---including for spoken dialogue, a domain that is otherwise out of reach for NLP. 
 :::
 
@@ -50,17 +51,19 @@ One popular semi-experimental linguistics corpus is the [HCRC Map Task Corpus](h
 
 ## Data Gathered From the Internet
 
-The internet is full of text, and you are not the first one to want to use it for research. Many corpora of online text data are free to download. 
+The Internet is full of text, and you are not the first one to want to use it for research. Many corpora of online text data are free to download. 
 
-Some sets of internet data are professionally curated and well balanced. For example, [the Blog Authorship Corpus](https://u.cs.biu.ac.il/~koppel/BlogCorpus.htm) [@schler_etal_2006] includes 681,288 blog posts annotated with age group (binned into ages 13-17, 23-27, and 33-47) and gender of author, with an equal number of male and female bloggers in each age group. Similarly, the [20 Newsgroups data set](http://qwone.com/~jason/20Newsgroups/) includes 20,000 newsgroup documents, partitioned evenly across 20 different newsgroups.
+Some sets of Internet data are professionally curated and well balanced. For example, [the Blog Authorship Corpus](https://u.cs.biu.ac.il/~koppel/BlogCorpus.htm) [@schler_etal_2006] includes 681,288 blog posts annotated with age group (binned into ages 13-17, 23-27, and 33-47) and gender of author, with an equal number of male and female bloggers in each age group. Similarly, the [20 Newsgroups data set](http://qwone.com/~jason/20Newsgroups/) includes 20,000 newsgroup documents, partitioned evenly across 20 different newsgroups.
 
-Some sets of internet data are available only post-processing. For example, @eichstaedt_etal_2015 published [Twitter n-gram (and LDA topic) frequencies by US county](https://osf.io/rt6w2/files/osfstorage), along with corresponding measures of well-being [featured in @sec-aesthetics].
+Some sets of Internet data are available only post-processing. For example, @eichstaedt_etal_2015 published [Twitter n-gram (and LDA topic) frequencies by US county](https://osf.io/rt6w2/files/osfstorage), along with corresponding measures of well-being (featured in [@sec-aesthetics]).
 
-Some sets of internet data are very lightly curated. For example, the [Reddit Top 2.5 Million dataset](https://github.com/umbrae/reddit-top-2.5-million/tree/master) contains the top 1,000 all-time posts from the top 2,500 subreddits in August 2013, excluding [NSFW](https://en.wikipedia.org/wiki/Not_safe_for_work) subreddits.
+Some sets of Internet data are very lightly curated. For example, the [Reddit Top 2.5 Million dataset](https://github.com/umbrae/reddit-top-2.5-million/tree/master) contains the top 1,000 all-time posts from the top 2,500 subreddits in August 2013, excluding [NSFW](https://en.wikipedia.org/wiki/Not_safe_for_work) subreddits.
 
-Some sets of archived internet data are not curated at all. These are sometimes referred to as _data dumps_. For example, @baumgartner_etal_2020 published [all Reddit Submissions and Comments posted during April 2019](https://zenodo.org/records/3608135). Even more extensive data dumps of Reddit, covering historical data back to Reddit's inception, can be found in records of [Pushshift Reddit](https://the-eye.eu/redarcs/). [Similar archives exist for Twitter](https://archive.org/details/twitterstream). Data dumps are usually in JSON format. A JSON file is like a list in R, but formatted slightly differently. For a tutorial on processing JSON data in R, see [the relevant chaper in R for Data Science](https://r4ds.hadley.nz/rectangling.html#json).
+Some sets of archived Internet data are not curated at all. These are sometimes referred to as _data dumps_. For example, @baumgartner_etal_2020 published [all Reddit Submissions and Comments posted during April 2019](https://zenodo.org/records/3608135). Even more extensive data dumps of Reddit, covering historical data back to Reddit's inception, can be found in records of [Pushshift Reddit](https://the-eye.eu/redarcs/). [Similar archives exist for Twitter](https://archive.org/details/twitterstream). Data dumps are usually in JSON format. A JSON file is like a list in R, but formatted slightly differently. For a tutorial on processing JSON data in R, see [the relevant chaper in _R for Data Science_](https://r4ds.hadley.nz/rectangling.html#json).
 
-Most research topics in psychology do not require up-to-date data. As such, historical archives can be an invaluable resource. For example, @biester_etal_2022 used patterns curated by @cohan_etal_2018 to search Pushshift Reddit for users who publicly shared a depression diagnosis (e.g. "I have been diagnosed with depression"). They then used dictionary-based methods [@sec-word-counting] to measure various emotional qualities in users' post during the weeks leading their declaration of the depression diagnosis, and in the weeks following. They found that anxiety, sadness, and cognitive processing increases in the weeks leading up to the declaration, and decreases afterwards.
+Most research topics in psychology do not require up-to-date data. As such, historical archives can be an invaluable resource. @biester_etal_2022 is a great example:
+
+**An example of social media archives in psychology research:** @biester_etal_2022 used patterns curated by @cohan_etal_2018 to search Pushshift Reddit for users who publicly shared a depression diagnosis (e.g. "I have been diagnosed with depression"). They then used dictionary-based methods ([@sec-word-counting]) to measure various emotional qualities in users' posts during the weeks leading to their declaration of the depression diagnosis, and in the weeks following. They found that anxiety, sadness, and cognitive processing increase in the weeks leading up to the declaration, and decrease afterwards.
 
 ::: {.callout-tip icon="false"}
 ## Advantages of Archival Internet Data

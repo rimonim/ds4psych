@@ -39,15 +39,17 @@ book:
         
     - part: quantification.qmd
       chapters: 
+        - look-at-your-data.qmd
         - quanteda.qmd
         - tokenization.qmd
-        - eda.qmd
         - word-counting.qmd
         - word-counting-improvements.qmd
+        - dla.qmd
         - vectorspace-intro.qmd
         - decontextualized-embeddings.qmd
         - contextualized-embeddings.qmd
         - navigating-vectorspace.qmd
+        - linguistic-complexity.qmd
     - part: audio-video-image.qmd
     - resources.qmd
 

@@ -7,20 +7,20 @@
 source("_common.R")
 ```
 
-For all analyses involving separating text into smaller units (e.g. words), this book will use the **quanteda** family of packages. While it lacks some of the conceptual elegance of [the tidyverse](https://www.tidyverse.org), **quanteda** is indispensable because of its scope and its efficiency---**quanteda** functions are faster to write, faster to run, and applicable to a wider variety of uses than any other text analysis framework in R. Beyond the base **quanteda** package, **quanteda** offers a plethora of specialized extensions, for example:
+For all analyses involving separating text into smaller units (e.g. words), this book will use the **Quanteda** family of packages. While it lacks some of the conceptual elegance of [the tidyverse](https://www.tidyverse.org), Quanteda is indispensable because of its scope and its efficiency---Quanteda functions are faster to write, faster to run, and applicable to a wider variety of uses than any other text analysis framework in R. Beyond the base `quanteda` package, Quanteda offers a plethora of specialized extensions, for example:
 
--   **quanteda.textstats**: Metrics for similarity, readability, lexical diversity, and more
--   **quanteda.dictionaries**: Dictionaries for word counting applications
--   **quanteda.sentiment**: Tools advanced dictionary-based sentiment analysis [see @#sec-word-counting-improvements]
+-   `quanteda.textstats`: Metrics for similarity, readability, lexical diversity, and more
+-   `quanteda.dictionaries`: Dictionaries for word counting applications
+-   `quanteda.sentiment`: Tools advanced dictionary-based sentiment analysis [see @#sec-word-counting-improvements]
 
-**Quanteda** is also well documented. See the [quanteda tutorials webpage](https://tutorials.quanteda.io) for details on file formats and methods not covered in this book. 
+Quanteda is also well documented. See the [quanteda tutorials webpage](https://tutorials.quanteda.io) for details on file formats and methods not covered in this book. 
 
 ```{r}
 #| output: false
 library(quanteda)
 ```
 
-The home-base of any **quanteda** analysis is the _corpus_. A corpus is a static container holding a library of text documents and associated properties of those documents, called _docvars_. Later, when we apply complex transformations to our texts (such as splitting them into words), we will need to first store them as a corpus.
+The home-base of any Quanteda analysis is the _corpus_. A corpus is a static container holding a library of text documents and associated properties of those documents, called _docvars_. Later, when we apply complex transformations to our texts (such as splitting them into words), we will need to first store them as a corpus.
 
 You can create corpora from a variety of data formats, but we will begin with a dataframe containing our text variable, `story`.
 

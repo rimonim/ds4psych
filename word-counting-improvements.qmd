@@ -1,17 +1,16 @@
 # Improvements on Word Counts {#sec-word-counting-improvements}
 
-## Preprocessing
+## Polarity
 
-Using the `stringr` package, which is included in the tidyverse.
+See https://github.com/trinker/sentimentr
+
+@plutchik_1962 argues that the opposite of surprise is anticipation
 
 ```{r}
-#| eval: false
-
-tweets$text <- str_replace(tweets$text, "RT ", "")            # remove "RT "
-tweets$text <- str_replace(tweets$text, "�", "")            # remove "�"
-tweets$text <- str_replace_all(tweets$text, "<.*?>", "")      # remove html tags 
-tweets$text <- str_replace_all(tweets$text, 'http://[^"\\s]+|https://[^"\\s]+', " ")  # links
-tweets$text <- str_replace_all(tweets$text, '@\\w+:|@\\w+', " ")      # remove handles
-tweets$text <- str_trim(tweets$text)                          # strip surrounding whitespace
-tweets$text <- str_to_lower(tweets$text)                      # transform to lower case 
+quanteda.sentiment::data_dictionary_NRC$anticipation
+quanteda.sentiment::data_dictionary_NRC$surprise
 ```
+
+## Norms
+
+Called "Valence" in `quanteda.sentiment`

@@ -11,7 +11,7 @@ Natural language presents a special challenge for data visualization, because it
 
 Normally, showing information about thousands of categories at the same time would be terribly confusing. But words are different, because **everyone is an expert in natural language**. The average native English speaker knows tens of thousands of words, along with nuanced associations between them [@hellman_2011]. This means that, with the right presentation, viewers can quickly take in many words and notice stories on their own.
 
-Because visualizing words can be so foreign to those not familiar with natural language processing, we offer an brief tutorial on two methods: *frequency/frequency plots* and *word clouds*. Though we focus on words here, both of these methods can be applied to other types of tokens (see @sec-tokenization).
+Because visualizing words can be so foreign to those not familiar with natural language processing, we offer an brief tutorial on two methods: *frequency/frequency plots* and *word clouds*. Though we focus on words here, both of these methods can be applied to other types of tokens (see @sec-tokenization). Likewise, we focus here on frequency ratios as an intuitive metric for group comparisons. Nevertheless, these methods can be applied to more advanced metrics for comparing groups, as we will see in @sec-keyness.
 
 In this tutorial, we will visualize data from Buechel et al. [-@buechel_etal_2018, see @sec-nonlinear-axes and @sec-accent-colors], in which participants rated their distress after reading various news stories, and described their thoughts in their own words. The distress ratings were then binned into two groups, allowing us to compare the content of "distressed" texts to that of "non-distressed" texts.
 
@@ -77,11 +77,11 @@ The dataset has been filtered to only include "stop words" (covered in @sec-word
 head(distressed_texts_binary)
 ```
 
-## Frequency/Frequency Plots
+## Frequency/Frequency Plots {#sec-freq-freq}
 
-A scatterplot is the most obvious choice for visualizing the relationship between two variables. For text data, this approach is commonly associated with the *scattertext* Python library [@kessler_2017], but the same effect is easily accomplished in ggplot2.
+A scatterplot is the most obvious choice for visualizing the relationship between two variables. For text data, this approach is commonly associated with the `scattertext` Python library [@kessler_2017], but the same effect is easily accomplished in ggplot2.
 
-Since we are comparing frequency in one group to frequency in another, we can put each frequency variable on an axis. We will call this a *frequency/frequency plot*, or F/F plot. To emphasize words that are more frequent in one group than the other, we represent the ratio between the two frequencies with a diverging color scale.
+Since we are comparing frequency in one group to frequency in another, we can put each frequency variable on an axis. We will call this a *frequency/frequency plot*, or F/F plot. To emphasize words that are more frequent in one group than in the other, we represent the ratio between the two frequencies with a diverging color scale.
 
 ```{r}
 #| warning: false
@@ -167,7 +167,7 @@ girafe_options(
 
 ### Rotated Frequency/Frequency Plots {#sec-rotated-freq-freq}
 
-A disadvantage of simple F/F plots: **When people see a scatterplot, they think, "Aha! A correlation!"** Any two samples of text in the same language will have highly correlated word frequencies. This boring story about the correlation is distracting from the more interesting stories about words that are especially characteristic of one group or another. This distraction can be removed by "rotating" the axes. Mathematically, we achieve this by plotting the average of the two frequencies `(nondistressed_count + distressed_count)/2` on the y axis, and the ratio between the two frequencies on the x axis. The result is a much more intuitive plot. Remember, **sometimes you have to do something complicated to make something simple** [@sec-simplify-the-story].
+A disadvantage of simple F/F plots: **When people see a scatterplot, they think, "Aha! A correlation!"** Any two samples of text in the same language will have highly correlated word frequencies. This boring story about the correlation is distracting from the more interesting stories about words that are especially characteristic of one group or another. This distraction can be removed by "rotating" the axes. Mathematically, we achieve this by plotting the average of the two frequencies `(nondistressed_count + distressed_count)/2` on the y axis, and the ratio between the two frequencies on the x axis. The result is a much more intuitive plot with a clear binary comparison. Remember, **sometimes you have to do something complicated to make something simple** ([@sec-simplify-the-story]).
 
 ```{r}
 #| warning: false
@@ -268,11 +268,11 @@ girafe_options(
   )   
 ```
 
-This is a particularly good visualization, because it tells an interesting story. The story it tells is "Academic English is very different from spoken English". The wide aspect ratio and the tooltip text with "_X more common in _ texts" especially emphasize this point. The F/F plot is an appropriate visualization method because this story pertains to the full distribution of words---look at how many are more than 10 times more common in one or the other!
+This is a particularly good visualization, because it tells an interesting story. The story it tells is: "Academic English is very different from spoken English." The wide aspect ratio and the tooltip text with "_#x more common in spoken/academic texts_" especially emphasize this point. The F/F plot is an appropriate visualization method because this story pertains to the full distribution of words---look at how many are more than 10 times more common in one or the other!
 
 ### Advanced Frequency/Frequency Plots
 
-For more information about frequency/frequency plots and other related plot types incorporating various statistics, see the [scattertext tutorial](https://github.com/JasonKessler/scattertext#tutorial) [@kessler_2017]. While the tutorial is intended for the `scattertext` library in Python, almost all examples can be produced in R with `ggplot2` and `ggiraph`. Search bars and other responsive interactivity can be accomplished with `shiny`.
+For more information about frequency/frequency plots and other related plot types incorporating various statistics, see the [scattertext tutorial](https://github.com/JasonKessler/scattertext#tutorial) [@kessler_2017]. While the tutorial is intended for the `scattertext` library in Python, almost all examples can be produced in R with `ggplot2` and `ggiraph`. Search bars and other types of responsive interactivity can be accomplished with `shiny`.
 
 ------------------------------------------------------------------------
 
@@ -293,7 +293,7 @@ For more information about frequency/frequency plots and other related plot type
 -   **Vague:** By showing many words at the same time, F/F plots make it difficult to focus in on particular stories (unless the story is about the distribution itself).
 :::
 
-## Word Clouds
+## Word Clouds {#sec-word-clouds}
 
 Word clouds are commonly used for purposes like:
 
@@ -304,7 +304,7 @@ Word clouds are commonly used for purposes like:
 
 [Word clouds are not a good tool for summarizing text](https://www.niemanlab.org/2011/10/word-clouds-considered-harmful/). They are a perfectly fine tool for [kitschy placemats](https://www.walmart.com/ip/Modern-Placemats-Set-4-Coffee-Words-Cafe-Typography-Point-Sizes-Digital-Illustration-Washable-Fabric-Place-Mats-Dining-Room-Kitchen-Table-Decor-Caram/138605785), but those are beyond the scope of this textbook. In the world of data science, **there are only two legitimate uses for word clouds: comparing words across two groups of texts, and correlating word frequencies with a construct of interest**. Even these legitimate uses break a fundamental rule of data visualization, since by showing many words at the same time they are telling many stories at the same time, each distracting from the others. Nevertheless, analyses often include so many words (or other units of text) that producing a visualization for each one is unfeasible, and a summary graphic is necessary.
 
-### Word Clouds for Comparing Two Groups
+### Word Clouds for Comparing Two Groups {#sec-comparison-word-clouds}
 
 Word clouds generally have three aesthetics: `label`, `color,` and `size`:
 
@@ -356,7 +356,7 @@ The `angle_group` aesthetic can be used to separate out the words more frequent 
 set.seed(2)
 
 distressed_texts_binary |> 
-  # top 100 highest discrepancy words
+  # top 150 highest discrepancy words
   arrange(desc(freq_ratio_log_magnitude)) |> 
   slice_head(n = 150) |> 
   # plot
@@ -408,7 +408,7 @@ distressed_texts_binary |>
     theme_void() # blank background
 ```
 
-### Word Clouds for Continuous Variables of Interest
+### Word Clouds for Continuous Variables of Interest {#sec-continuous-word-cloud}
 
 Recently, some have advocated using correlation coefficients instead of frequency ratios in word clouds. This approach has three advantages:
 

@@ -13,9 +13,9 @@ In some cases, data are available for free on the internet, but the host does no
 
 Often, scraping requires the code to visit many web pages. For example, say we wanted a list of poems by English poets, along with the birth dates of their authors. We might have the computer scrape the [list of English poets from the Poetry Foundation](https://www.poetryfoundation.org/poets/browse#page=1&sort_by=recently_added&region=175), which requires clicking through 17 pages of search results, and retrieve the author's birth date and the URL for each author's full list of poems. We could then have the computer visit each of those URLs and retrieve the URL for each individual poem by each author. Finally, the computer would visit each poem URL and retrieve the text of the poem. In all, this process might require visiting hundreds or even thousands of web pages.
 
-For the same reasons that APIs generally have rate limits [@sec-apis], web scraping algorithms should be polite---not, for example, requesting thousands of pages in the space of a few seconds. If you are not polite, you are likely to get banned as a bot.
+For the same reasons that APIs generally have rate limits ([@sec-apis]), web scraping algorithms should be polite---not, for example, requesting thousands of pages in the space of a few seconds. If you are not polite, you are likely to get banned as a bot.
 
-To read more about web scraping etiquette and easy ways to implement it, see [the relevant chapter in R for Data Science](https://r4ds.hadley.nz/webscraping), and the homepage of the  [polite](https://dmi3kno.github.io/polite/) package. 
+To read more about web scraping etiquette and easy ways to implement it, see [the relevant chapter in R for Data Science](https://r4ds.hadley.nz/webscraping), and the homepage of the  [`polite`](https://dmi3kno.github.io/polite/) package. 
 
 ## A Simple Example
 
@@ -25,7 +25,7 @@ The page in this case will be [the blog reel of one the authors of this book, Lo
 
 ![](images/scraping1.png)
 
-We will scrape the name and date of each blog post using the [rvest](https://rvest.tidyverse.org) package. First, we retrieve the raw html code of the webpage. 
+We will scrape the name and date of each blog post using the [`rvest`](https://rvest.tidyverse.org) package. First, we retrieve the raw html code of the webpage. 
 
 ```{r}
 #| output: false

@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.450">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
 <meta name="author" content="Almog Simchon and Louis Teitelbaum">
-<title>Data Science for Psychology: Natural Language - 18&nbsp; Bag of Word Embeddings: Decontextualized Models</title>
+
+<title>Data Science for Psychology: Natural Language - 11&nbsp; Look at Your Data</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -18,26 +21,8 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
+
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
@@ -46,8 +31,8 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./contextualized-embeddings.html" rel="next">
-<link href="./vectorspace-intro.html" rel="prev">
+<link href="./quanteda.html" rel="next">
+<link href="./quantification.html" rel="prev">
 <link href="./images/favicon.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -57,7 +42,8 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -77,24 +63,33 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
+
+
 </head>
+
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./decontextualized-embeddings.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./look-at-your-data.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Look at Your Data</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Data Science for Psychology: Natural Language</a> 
         <div class="sidebar-tools-main">
@@ -114,7 +109,7 @@ div.csl-indent {
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-<li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Welcome</span></a>
@@ -140,8 +135,8 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./aesthetics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Why Aesthetic Choices are Important</span></span></a>
@@ -166,7 +161,7 @@ div.csl-indent {
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./data-sources.html" class="sidebar-item-text sidebar-link">
@@ -175,8 +170,8 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./experiments.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Experiments</span></span></a>
@@ -201,7 +196,7 @@ div.csl-indent {
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./quantification.html" class="sidebar-item-text sidebar-link">
@@ -210,10 +205,10 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./look-at-your-data.html" class="sidebar-item-text sidebar-link">
+  <a href="./look-at-your-data.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Look at Your Data</span></span></a>
   </div>
 </li>
@@ -255,7 +250,7 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./decontextualized-embeddings.html" class="sidebar-item-text sidebar-link active">
+  <a href="./decontextualized-embeddings.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></a>
   </div>
 </li>
@@ -278,7 +273,7 @@ div.csl-indent {
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <span class="sidebar-item-text sidebar-link text-start">
  <span class="menu-text">Audio, Video, and Image Data</span></span>
@@ -290,28 +285,19 @@ div.csl-indent {
   </div>
 </li>
     </ul>
-</div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-<li><a href="#the-distributional-hypothesis" id="toc-the-distributional-hypothesis" class="nav-link active" data-scroll-target="#the-distributional-hypothesis"><span class="header-section-number">18.1</span> The Distributional Hypothesis</a></li>
-  <li><a href="#lsa" id="toc-lsa" class="nav-link" data-scroll-target="#lsa"><span class="header-section-number">18.2</span> LSA</a></li>
-  <li><a href="#lda" id="toc-lda" class="nav-link" data-scroll-target="#lda"><span class="header-section-number">18.3</span> LDA</a></li>
-  <li><a href="#word2vec" id="toc-word2vec" class="nav-link" data-scroll-target="#word2vec"><span class="header-section-number">18.4</span> Word2vec</a></li>
-  <li>
-<a href="#glove" id="toc-glove" class="nav-link" data-scroll-target="#glove"><span class="header-section-number">18.5</span> GloVe</a>
-  <ul class="collapse">
-<li><a href="#training-a-custom-glove-model" id="toc-training-a-custom-glove-model" class="nav-link" data-scroll-target="#training-a-custom-glove-model"><span class="header-section-number">18.5.1</span> Training a Custom GloVe Model</a></li>
-  </ul>
-</li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rimonim/ds4psych/blob/main/decontextualized-embeddings.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+        
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-decontextualized-embeddings" class="quarto-section-identifier"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></h1>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-look-at-your-data" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Look at Your Data</span></span></h1>
 </div>
 
 
@@ -324,49 +310,15 @@ div.csl-indent {
   </div>
   
 
-</header><section id="the-distributional-hypothesis" class="level2" data-number="18.1"><h2 data-number="18.1" class="anchored" data-anchor-id="the-distributional-hypothesis">
-<span class="header-section-number">18.1</span> The Distributional Hypothesis</h2>
-<p>Hence “Distributional Semantic Models” (DSMs)</p>
-<ul>
-<li>Two words are similar in meaning not because of their mutual co-occurrence score, but rather if they have similar global distributional patterns over all contexts. Due to this, synonyms, which tend to very rarely co-occur directly, will have very similar mean- ings in DSMs <span class="citation" data-cites="gunther_etal_2019">(<a href="#ref-gunther_etal_2019" role="doc-biblioref">Günther et al., 2019</a>)</span>.</li>
-</ul></section><section id="lsa" class="level2" data-number="18.2"><h2 data-number="18.2" class="anchored" data-anchor-id="lsa">
-<span class="header-section-number">18.2</span> LSA</h2>
-<p>DFM -&gt; Weighting (tf-idf, PPMI) -&gt; Dimensionality reduction</p>
-<p><span class="citation" data-cites="deerwester_etal_1990"><span>“Indexing by Latent Semantic Analysis”</span> (<a href="#ref-deerwester_etal_1990" role="doc-biblioref">1990</a>)</span></p>
-<p><span class="citation" data-cites="garcia_sikstrom_2013">Garcia &amp; Sikström (<a href="#ref-garcia_sikstrom_2013" role="doc-biblioref">2013</a>)</span></p>
-<p>https://quanteda.io/articles/pkgdown/examples/lsa.html</p>
-</section><section id="lda" class="level2" data-number="18.3"><h2 data-number="18.3" class="anchored" data-anchor-id="lda">
-<span class="header-section-number">18.3</span> LDA</h2>
-</section><section id="word2vec" class="level2" data-number="18.4"><h2 data-number="18.4" class="anchored" data-anchor-id="word2vec">
-<span class="header-section-number">18.4</span> Word2vec</h2>
-<p><span class="citation" data-cites="chatterjee_etal_2023">Chatterjee et al. (<a href="#ref-chatterjee_etal_2023" role="doc-biblioref">2023</a>)</span></p>
-</section><section id="glove" class="level2" data-number="18.5"><h2 data-number="18.5" class="anchored" data-anchor-id="glove">
-<span class="header-section-number">18.5</span> GloVe</h2>
-<p><span class="citation" data-cites="pennington_etal_2014">Pennington et al. (<a href="#ref-pennington_etal_2014" role="doc-biblioref">2014</a>)</span></p>
-<p>GloVe is built on the same metric that we used in <a href="word-viz.html"><span>Chapter&nbsp;5</span></a> and <span class="quarto-unresolved-ref">?sec-eda</span> - relative frequency ratios. Rather than comparing two word frequencies in two groups of texts, it instead compares co-occurrence with one word to co-occurrence with another.</p>
-<section id="training-a-custom-glove-model" class="level3" data-number="18.5.1"><h3 data-number="18.5.1" class="anchored" data-anchor-id="training-a-custom-glove-model">
-<span class="header-section-number">18.5.1</span> Training a Custom GloVe Model</h3>
-<p>https://quanteda.io/articles/pkgdown/replication/text2vec.html</p>
+</header>
+
+<p>Before using any theory-driven methods, it is always worthwhile to get a sense of your data more generally. This is as true for text data as it is for any other format. The process of exploring your data without a particular theory or construct in mind is called Exploratory Data Analysis (EDA).</p>
+<p>Many guides to EDA for text data suggest plotting histograms of text length, calculating standard metrics of valence, and worst of all, generating word clouds of global word frequency. We love computational methods and we will explore many of them in the coming chapters, but there is no denying it—<strong>the quickest, most foolproof way to explore your data is by looking at it</strong>. Just open the raw data and spend a minute or two reading through it. This is especially true for language data, since you have been training your whole life to develop an efficient, nuanced understanding of natural language. If your data are short stories, pick two or three at random and read them. If your data are Reddit comments, pick a dozen at random and read them. It is very likely that you will notice interesting patterns, or identify quirks in the data that should be filtered out before further analysis.</p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
-<div id="ref-chatterjee_etal_2023" class="csl-entry" role="listitem">
-Chatterjee, P., Mishra, H., &amp; Mishra, A. (2023). Does the first letter of one’s name affect life decisions? A natural language processing examination of nominative determinism. <em>Journal of Personality and Social Psychology</em>, <em>125</em>. <a href="https://doi.org/10.1037/pspa0000347">https://doi.org/10.1037/pspa0000347</a>
-</div>
-<div id="ref-garcia_sikstrom_2013" class="csl-entry" role="listitem">
-Garcia, D., &amp; Sikström, S. (2013). <span class="nocase">Quantifying the Semantic Representations of Adolescents’ Memories of Positive and Negative Life Events</span>. <em>Journal of Happiness Studies</em>, <em>14</em>(4), 1309–1323. <a href="https://doi.org/10.1007/s10902-012-9385-8">https://doi.org/10.1007/s10902-012-9385-8</a>
-</div>
-<div id="ref-gunther_etal_2019" class="csl-entry" role="listitem">
-Günther, F., Rinaldi, L., &amp; Marelli, M. (2019). Vector-space models of semantic representation from a cognitive perspective: A discussion of common misconceptions. <em>Perspectives on Psychological Science</em>, <em>14</em>(6), 1006–1033. <a href="https://doi.org/10.1177/1745691619861372">https://doi.org/10.1177/1745691619861372</a>
-</div>
-<div id="ref-deerwester_etal_1990" class="csl-entry" role="listitem">
-Indexing by latent semantic analysis. (1990). <em>Journal of the Association for Information Science and Technology</em>, <em>41</em>(6), 391–407. <a href="https://doi.org/10.1002/(SICI)1097-4571(199009)41:6<391::AID-ASI1>3.0.CO;2-9">https://doi.org/10.1002/(SICI)1097-4571(199009)41:6&lt;391::AID-ASI1&gt;3.0.CO;2-9</a>
-</div>
-<div id="ref-pennington_etal_2014" class="csl-entry" role="listitem">
-Pennington, J., Socher, R., &amp; Manning, C. D. (2014). GloVe: Global vectors for word representation. <em>Empirical Methods in Natural Language Processing (EMNLP)</em>, 1532–1543. <a href="http://www.aclweb.org/anthology/D14-1162">http://www.aclweb.org/anthology/D14-1162</a>
-</div>
-</div>
-</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -598,26 +550,30 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./vectorspace-intro.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Thinking in Vector Space</span></span>
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./quantification.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Quantifying Psychological Properties of Text</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./contextualized-embeddings.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./quanteda.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Introduction to Quanteda</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer">
+<footer class="footer">
+  <div class="nav-footer">
     <div class="nav-footer-left">Data Science for Psychology was written by Almog Simchon and Louis Teitelbaum.</div>   
     <div class="nav-footer-center">
       &nbsp;
-    </div>
+    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rimonim/ds4psych/blob/main/look-at-your-data.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action">Report an issue</a></p></div></div></div>
     <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
   </div>
 </footer>
+
 
 
 </body></html>
