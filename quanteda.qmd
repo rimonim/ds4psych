@@ -7,13 +7,13 @@
 source("_common.R")
 ```
 
-For all analyses involving separating text into smaller units (e.g. words), this book will use the **Quanteda** family of packages. While it lacks some of the conceptual elegance of [the tidyverse](https://www.tidyverse.org), Quanteda is indispensable because of its scope and its efficiency---Quanteda functions are faster to write, faster to run, and applicable to a wider variety of uses than any other text analysis framework in R. Beyond the base `quanteda` package, Quanteda offers a plethora of specialized extensions, for example:
+For all analyses involving separating text into smaller units (e.g. words), this book will use the **Quanteda** family of packages. While it lacks some of the conceptual elegance of [the tidyverse](https://www.tidyverse.org), Quanteda is indispensable because of its scope and efficiency---Quanteda functions are faster to write, faster to run, and applicable to a wider variety of uses than any other text analysis framework in R. Beyond the base `quanteda` package, Quanteda offers a plethora of specialized extensions, for example:
 
 -   `quanteda.textstats`: Metrics for similarity, readability, lexical diversity, and more
 -   `quanteda.dictionaries`: Dictionaries for word counting applications
--   `quanteda.sentiment`: Tools advanced dictionary-based sentiment analysis [see @#sec-word-counting-improvements]
+-   `quanteda.sentiment`: Tools for advanced dictionary-based sentiment analysis (see @sec-word-counting-improvements)
 
-Quanteda is also well documented. See the [quanteda tutorials webpage](https://tutorials.quanteda.io) for details on file formats and methods not covered in this book. 
+Quanteda is also well documented. See the [Quanteda tutorials webpage](https://tutorials.quanteda.io) for details on file formats and methods not covered in this book. 
 
 ```{r}
 #| output: false
@@ -32,7 +32,7 @@ hippocorpus_df <- read_csv("data/hippocorpus-u20220112/hcV3-stories.csv") |>
 head(hippocorpus_df)
 ```
 
-To turn this into a corpus with the `corpus()` constructor, specifying the text variable and a unique identifier by name. All other variables will automatically become _docvars_.
+To turn this into a corpus with the `corpus()` constructor, specify the text variable and a unique identifier by name. All other variables will automatically become _docvars_.
 
 ```{r}
 hippocorpus_corp <- corpus(hippocorpus_df, 

@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Almog Simchon and Louis Teitelbaum">
-<title>Data Science for Psychology: Natural Language - 18&nbsp; Bag of Word Embeddings: Decontextualized Models</title>
+<title>Data Science for Psychology: Natural Language - 18&nbsp; Bag of Words Embeddings: Decontextualized Models</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -85,7 +85,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./decontextualized-embeddings.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./decontextualized-embeddings.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Words Embeddings: Decontextualized Models</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -237,14 +237,14 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./word-counting-improvements.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Improvements on Word Counts</span></span></a>
+  <a href="./dla.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dla.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span></a>
+  <a href="./word-counting-improvements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Improvements on Word Counts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -256,7 +256,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./decontextualized-embeddings.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Words Embeddings: Decontextualized Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -298,20 +298,25 @@ div.csl-indent {
    
   <ul>
 <li><a href="#the-distributional-hypothesis" id="toc-the-distributional-hypothesis" class="nav-link active" data-scroll-target="#the-distributional-hypothesis"><span class="header-section-number">18.1</span> The Distributional Hypothesis</a></li>
-  <li><a href="#lsa" id="toc-lsa" class="nav-link" data-scroll-target="#lsa"><span class="header-section-number">18.2</span> LSA</a></li>
-  <li><a href="#lda" id="toc-lda" class="nav-link" data-scroll-target="#lda"><span class="header-section-number">18.3</span> LDA</a></li>
-  <li><a href="#word2vec" id="toc-word2vec" class="nav-link" data-scroll-target="#word2vec"><span class="header-section-number">18.4</span> Word2vec</a></li>
   <li>
-<a href="#glove" id="toc-glove" class="nav-link" data-scroll-target="#glove"><span class="header-section-number">18.5</span> GloVe</a>
+<a href="#document-embeddings" id="toc-document-embeddings" class="nav-link" data-scroll-target="#document-embeddings"><span class="header-section-number">18.2</span> Document Embeddings</a>
   <ul class="collapse">
-<li><a href="#training-a-custom-glove-model" id="toc-training-a-custom-glove-model" class="nav-link" data-scroll-target="#training-a-custom-glove-model"><span class="header-section-number">18.5.1</span> Training a Custom GloVe Model</a></li>
+<li><a href="#sec-lsa" id="toc-sec-lsa" class="nav-link" data-scroll-target="#sec-lsa"><span class="header-section-number">18.2.1</span> LSA</a></li>
+  <li><a href="#sec-lda" id="toc-sec-lda" class="nav-link" data-scroll-target="#sec-lda"><span class="header-section-number">18.2.2</span> Topic Modeling</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#sec-word-embeddings" id="toc-sec-word-embeddings" class="nav-link" data-scroll-target="#sec-word-embeddings"><span class="header-section-number">18.3</span> Word Embeddings</a>
+  <ul class="collapse">
+<li><a href="#sec-word2vec" id="toc-sec-word2vec" class="nav-link" data-scroll-target="#sec-word2vec"><span class="header-section-number">18.3.1</span> Word2vec</a></li>
+  <li><a href="#sec-glove" id="toc-sec-glove" class="nav-link" data-scroll-target="#sec-glove"><span class="header-section-number">18.3.2</span> GloVe</a></li>
   </ul>
 </li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rimonim/ds4psych/blob/main/decontextualized-embeddings.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-decontextualized-embeddings" class="quarto-section-identifier"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></h1>
+<h1 class="title"><span id="sec-decontextualized-embeddings" class="quarto-section-identifier"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Words Embeddings: Decontextualized Models</span></span></h1>
 </div>
 
 
@@ -329,23 +334,34 @@ div.csl-indent {
 <p>Hence “Distributional Semantic Models” (DSMs)</p>
 <ul>
 <li>Two words are similar in meaning not because of their mutual co-occurrence score, but rather if they have similar global distributional patterns over all contexts. Due to this, synonyms, which tend to very rarely co-occur directly, will have very similar mean- ings in DSMs <span class="citation" data-cites="gunther_etal_2019">(<a href="#ref-gunther_etal_2019" role="doc-biblioref">Günther et al., 2019</a>)</span>.</li>
-</ul></section><section id="lsa" class="level2" data-number="18.2"><h2 data-number="18.2" class="anchored" data-anchor-id="lsa">
-<span class="header-section-number">18.2</span> LSA</h2>
+</ul></section><section id="document-embeddings" class="level2" data-number="18.2"><h2 data-number="18.2" class="anchored" data-anchor-id="document-embeddings">
+<span class="header-section-number">18.2</span> Document Embeddings</h2>
+<section id="sec-lsa" class="level3" data-number="18.2.1"><h3 data-number="18.2.1" class="anchored" data-anchor-id="sec-lsa">
+<span class="header-section-number">18.2.1</span> LSA</h3>
 <p>DFM -&gt; Weighting (tf-idf, PPMI) -&gt; Dimensionality reduction</p>
+<p><a href="https://sentic.net/downloads/">AffectiveSpace</a></p>
 <p><span class="citation" data-cites="deerwester_etal_1990"><span>“Indexing by Latent Semantic Analysis”</span> (<a href="#ref-deerwester_etal_1990" role="doc-biblioref">1990</a>)</span></p>
 <p><span class="citation" data-cites="garcia_sikstrom_2013">Garcia &amp; Sikström (<a href="#ref-garcia_sikstrom_2013" role="doc-biblioref">2013</a>)</span></p>
 <p>https://quanteda.io/articles/pkgdown/examples/lsa.html</p>
-</section><section id="lda" class="level2" data-number="18.3"><h2 data-number="18.3" class="anchored" data-anchor-id="lda">
-<span class="header-section-number">18.3</span> LDA</h2>
-</section><section id="word2vec" class="level2" data-number="18.4"><h2 data-number="18.4" class="anchored" data-anchor-id="word2vec">
-<span class="header-section-number">18.4</span> Word2vec</h2>
+</section><section id="sec-lda" class="level3" data-number="18.2.2"><h3 data-number="18.2.2" class="anchored" data-anchor-id="sec-lda">
+<span class="header-section-number">18.2.2</span> Topic Modeling</h3>
+<section id="sec-slda" class="level4" data-number="18.2.2.1"><h4 data-number="18.2.2.1" class="anchored" data-anchor-id="sec-slda">
+<span class="header-section-number">18.2.2.1</span> Supervised LDA</h4>
+<p>https://books.psychstat.org/textmining/topic-models.html#supervised-topic-modeling</p>
+</section><section id="sec-seededlda" class="level4" data-number="18.2.2.2"><h4 data-number="18.2.2.2" class="anchored" data-anchor-id="sec-seededlda">
+<span class="header-section-number">18.2.2.2</span> Semi-Supervised LDA</h4>
+<p>https://koheiw.github.io/seededlda/</p>
+</section></section></section><section id="sec-word-embeddings" class="level2" data-number="18.3"><h2 data-number="18.3" class="anchored" data-anchor-id="sec-word-embeddings">
+<span class="header-section-number">18.3</span> Word Embeddings</h2>
+<section id="sec-word2vec" class="level3" data-number="18.3.1"><h3 data-number="18.3.1" class="anchored" data-anchor-id="sec-word2vec">
+<span class="header-section-number">18.3.1</span> Word2vec</h3>
 <p><span class="citation" data-cites="chatterjee_etal_2023">Chatterjee et al. (<a href="#ref-chatterjee_etal_2023" role="doc-biblioref">2023</a>)</span></p>
-</section><section id="glove" class="level2" data-number="18.5"><h2 data-number="18.5" class="anchored" data-anchor-id="glove">
-<span class="header-section-number">18.5</span> GloVe</h2>
+</section><section id="sec-glove" class="level3" data-number="18.3.2"><h3 data-number="18.3.2" class="anchored" data-anchor-id="sec-glove">
+<span class="header-section-number">18.3.2</span> GloVe</h3>
 <p><span class="citation" data-cites="pennington_etal_2014">Pennington et al. (<a href="#ref-pennington_etal_2014" role="doc-biblioref">2014</a>)</span></p>
 <p>GloVe is built on the same metric that we used in <a href="word-viz.html"><span>Chapter&nbsp;5</span></a> and <span class="quarto-unresolved-ref">?sec-eda</span> - relative frequency ratios. Rather than comparing two word frequencies in two groups of texts, it instead compares co-occurrence with one word to co-occurrence with another.</p>
-<section id="training-a-custom-glove-model" class="level3" data-number="18.5.1"><h3 data-number="18.5.1" class="anchored" data-anchor-id="training-a-custom-glove-model">
-<span class="header-section-number">18.5.1</span> Training a Custom GloVe Model</h3>
+<section id="training-a-custom-glove-model" class="level4" data-number="18.3.2.1"><h4 data-number="18.3.2.1" class="anchored" data-anchor-id="training-a-custom-glove-model">
+<span class="header-section-number">18.3.2.1</span> Training a Custom GloVe Model</h4>
 <p>https://quanteda.io/articles/pkgdown/replication/text2vec.html</p>
 
 
@@ -366,7 +382,7 @@ Indexing by latent semantic analysis. (1990). <em>Journal of the Association for
 Pennington, J., Socher, R., &amp; Manning, C. D. (2014). GloVe: Global vectors for word representation. <em>Empirical Methods in Natural Language Processing (EMNLP)</em>, 1532–1543. <a href="http://www.aclweb.org/anthology/D14-1162">http://www.aclweb.org/anthology/D14-1162</a>
 </div>
 </div>
-</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");

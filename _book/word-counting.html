@@ -80,7 +80,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./word-counting-improvements.html" rel="next">
+<link href="./dla.html" rel="next">
 <link href="./tokenization.html" rel="prev">
 <link href="./images/favicon.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
@@ -271,14 +271,14 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./word-counting-improvements.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Improvements on Word Counts</span></span></a>
+  <a href="./dla.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dla.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span></a>
+  <a href="./word-counting-improvements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Improvements on Word Counts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -290,7 +290,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./decontextualized-embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Words Embeddings: Decontextualized Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -332,7 +332,40 @@ div.csl-indent {
    
   <ul>
 <li><a href="#sec-quanteda-dictionaries" id="toc-sec-quanteda-dictionaries" class="nav-link active" data-scroll-target="#sec-quanteda-dictionaries"><span class="header-section-number">14.1</span> Dictionaries</a></li>
-  <li><a href="#sec-modeling-word-counts" id="toc-sec-modeling-word-counts" class="nav-link" data-scroll-target="#sec-modeling-word-counts"><span class="header-section-number">14.2</span> Modeling Word Counts</a></li>
+  <li>
+<a href="#sec-understand-your-dictionary" id="toc-sec-understand-your-dictionary" class="nav-link" data-scroll-target="#sec-understand-your-dictionary"><span class="header-section-number">14.2</span> Understand Your Dictionary</a>
+  <ul class="collapse">
+<li><a href="#how-was-your-dictionary-constructed" id="toc-how-was-your-dictionary-constructed" class="nav-link" data-scroll-target="#how-was-your-dictionary-constructed"><span class="header-section-number">14.2.1</span> How Was Your Dictionary Constructed?</a></li>
+  <li><a href="#how-context-dependent-are-the-words-in-your-dictionary" id="toc-how-context-dependent-are-the-words-in-your-dictionary" class="nav-link" data-scroll-target="#how-context-dependent-are-the-words-in-your-dictionary"><span class="header-section-number">14.2.2</span> How Context-Dependent are the Words in Your Dictionary?</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#raw-word-counts" id="toc-raw-word-counts" class="nav-link" data-scroll-target="#raw-word-counts"><span class="header-section-number">14.3</span> Raw Word Counts</a>
+  <ul class="collapse">
+<li><a href="#sec-modeling-word-counts" id="toc-sec-modeling-word-counts" class="nav-link" data-scroll-target="#sec-modeling-word-counts"><span class="header-section-number">14.3.1</span> Modeling Raw Word Counts</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#sec-polarity" id="toc-sec-polarity" class="nav-link" data-scroll-target="#sec-polarity"><span class="header-section-number">14.4</span> Polarity</a>
+  <ul class="collapse">
+<li><a href="#modeling-polarity" id="toc-modeling-polarity" class="nav-link" data-scroll-target="#modeling-polarity"><span class="header-section-number">14.4.1</span> Modeling Polarity</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#sec-word-scoring" id="toc-sec-word-scoring" class="nav-link" data-scroll-target="#sec-word-scoring"><span class="header-section-number">14.5</span> Lexical Norms</a>
+  <ul class="collapse">
+<li><a href="#modeling-norms" id="toc-modeling-norms" class="nav-link" data-scroll-target="#modeling-norms"><span class="header-section-number">14.5.1</span> Modeling Norms</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#sources-of-dictionaries" id="toc-sources-of-dictionaries" class="nav-link" data-scroll-target="#sources-of-dictionaries"><span class="header-section-number">14.6</span> Sources of Dictionaries</a>
+  <ul class="collapse">
+<li><a href="#crowdsourced-dictionaries" id="toc-crowdsourced-dictionaries" class="nav-link" data-scroll-target="#crowdsourced-dictionaries"><span class="header-section-number">14.6.1</span> Crowdsourced Dictionaries</a></li>
+  <li><a href="#expert-generated-dictionaries" id="toc-expert-generated-dictionaries" class="nav-link" data-scroll-target="#expert-generated-dictionaries"><span class="header-section-number">14.6.2</span> Expert-Generated Dictionaries</a></li>
+  <li><a href="#corpus-based-dictionaries" id="toc-corpus-based-dictionaries" class="nav-link" data-scroll-target="#corpus-based-dictionaries"><span class="header-section-number">14.6.3</span> Corpus-Based Dictionaries</a></li>
+  <li><a href="#other-approaches-to-dictionary-generation" id="toc-other-approaches-to-dictionary-generation" class="nav-link" data-scroll-target="#other-approaches-to-dictionary-generation"><span class="header-section-number">14.6.4</span> Other Approaches to Dictionary Generation</a></li>
+  </ul>
+</li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rimonim/ds4psych/blob/main/word-counting.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
@@ -350,119 +383,343 @@ div.csl-indent {
   </div>
   
 
-</header><p>In <a href="tokenization.html"><span>Chapter&nbsp;13</span></a>, we transformed our corpus into a DFM with counts of each word in each document. But not all words are created equal; some words are much more psychologically interesting than others. The simplest way to count relevant words while ignoring others is by using a <em>dictionary</em>.</p>
+</header><p>In <a href="tokenization.html"><span>Chapter&nbsp;13</span></a>, we transformed our corpus into a DFM with counts of each word in each document. But not all words are created equal; some words are much more psychologically interesting than others. The simplest way to count relevant words while ignoring others is by using a <strong>dictionary</strong>.</p>
+<p>This chapter introduces the basics of dictionary-based methodology. <a href="dla.html"><span>Chapter&nbsp;15</span></a> and <a href="word-counting-improvements.html"><span>Chapter&nbsp;16</span></a> will build on this chapter, exploring more advanced ways to use token counting for measurement.</p>
 <section id="sec-quanteda-dictionaries" class="level2" data-number="14.1"><h2 data-number="14.1" class="anchored" data-anchor-id="sec-quanteda-dictionaries">
 <span class="header-section-number">14.1</span> Dictionaries</h2>
-<p>Recall that in the <em>Hippocorpus</em> data, the <code>memType</code> variable indicates whether the participant was told to tell a story that happened to them recently (“recalled”), a story that they had already told a few months earlier (“retold”), or an entirely fictional story (“imagined”).</p>
-<p><span class="citation" data-cites="sap_etal_2022">Sap et al. (<a href="#ref-sap_etal_2022" role="doc-biblioref">2022</a>)</span> hypothesized that true autobiographical stories would include more surprising events than imagined stories. To test this hypothesis, we could use a dictionary of surprise-related words. We could try making one up:</p>
+<p>A dictionary is a list of words (or other tokens) associated with a given psychological or other construct. For example, a dictionary for depression might include words like “sleepy” and “down.” We can use the dictionary to count construct-related words in each text—texts that use more construct-related words are then assumed to be more construct-related overall.</p>
+<p>Let’s give a more concrete example: Recall that in the <em>Hippocorpus</em> data, the <code>memType</code> variable indicates whether the participant was told to tell a story that happened to them recently (“recalled”), a story that they had already told a few months earlier (“retold”), or an entirely fictional story (“imagined”).</p>
+<p><span class="citation" data-cites="sap_etal_2022">Sap et al. (<a href="#ref-sap_etal_2022" role="doc-biblioref">2022</a>)</span> hypothesized that true autobiographical stories would include more surprising events than imagined stories. To test this hypothesis, we could use a dictionary of surprise-related words. Where could we find such a dictionary? Perhaps we could try making one up?</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">surprise_dict</span> <span class="op">&lt;-</span> <span class="fu">dictionary</span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
 <span>      surprise <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"surprise"</span>, <span class="st">"wow"</span>, <span class="st">"suddenly"</span>, <span class="st">"bang"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="va">surprise_dict</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; Dictionary object with 1 key entry.
-#&gt; - [surprise]:
-#&gt;   - surprise, wow, suddenly, bang</code></pre>
+<span><span class="va">surprise_dict</span></span>
+<span><span class="co">#&gt; Dictionary object with 1 key entry.</span></span>
+<span><span class="co">#&gt; - [surprise]:</span></span>
+<span><span class="co">#&gt;   - surprise, wow, suddenly, bang</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<p>Making up a sentiment dictionary is not easy. Luckily, other researchers have done the work for us: The NRC Word-Emotion Association Lexicon <span class="citation" data-cites="mohammad_turney_2010 mohammad_turney_2013">(<a href="#ref-mohammad_turney_2013" role="doc-biblioref">S. M. Mohammad &amp; Turney, 2013</a>; <a href="#ref-mohammad_turney_2010" role="doc-biblioref">S. Mohammad &amp; Turney, 2010</a>)</span>, included in the <code>quanteda.sentiment</code> package, has a list of 534 surprise words.</p>
+<p>Generating a sentiment dictionary is not easy. Luckily, other researchers have done the work for us: The NRC Word-Emotion Association Lexicon <span class="citation" data-cites="mohammad_turney_2010 mohammad_turney_2013">(<a href="#ref-mohammad_turney_2013" role="doc-biblioref">S. M. Mohammad &amp; Turney, 2013</a>; <a href="#ref-mohammad_turney_2010" role="doc-biblioref">S. Mohammad &amp; Turney, 2010</a>)</span>, included in the <code>quanteda.sentiment</code> package, has a list of 534 surprise words.</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">surprise_dict</span> <span class="op">&lt;-</span> <span class="fu">quanteda.sentiment</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/quanteda.sentiment/man/data_dictionary_NRC.html">data_dictionary_NRC</a></span><span class="op">[</span><span class="st">"surprise"</span><span class="op">]</span></span>
-<span><span class="va">surprise_dict</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; Dictionary object with 1 key entry.
-#&gt; Polarities: pos = "positive"; neg = "negative" 
-#&gt; - [surprise]:
-#&gt;   - abandonment, abduction, abrupt, accident, accidental, accidentally, accolade, advance, affront, aghast, alarm, alarming, alertness, alerts, allure, amaze, amazingly, ambush, angel, anomaly [ ... and 514 more ]</code></pre>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">surprise_dict</span> <span class="op">&lt;-</span> <span class="fu">quanteda.sentiment</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/quanteda.sentiment/man/data_dictionary_NRC.html">data_dictionary_NRC</a></span><span class="op">[</span><span class="st">"surprise"</span><span class="op">]</span></span>
+<span><span class="va">surprise_dict</span></span>
+<span><span class="co">#&gt; Dictionary object with 1 key entry.</span></span>
+<span><span class="co">#&gt; Polarities: pos = "positive"; neg = "negative" </span></span>
+<span><span class="co">#&gt; - [surprise]:</span></span>
+<span><span class="co">#&gt;   - abandonment, abduction, abrupt, accident, accidental, accidentally, accolade, advance, affront, aghast, alarm, alarming, alertness, alerts, allure, amaze, amazingly, ambush, angel, anomaly [ ... and 514 more ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>The NRC Word-Emotion Association Lexicon is a <strong>crowdsourced dictionary</strong>; <span class="citation" data-cites="mohammad_turney_2013">S. M. Mohammad &amp; Turney (<a href="#ref-mohammad_turney_2013" role="doc-biblioref">2013</a>)</span> generated it by presenting individual words to thousands of online participants and asking them to rate how much each word is “associated with the emotion surprise.” The final dictionary includes all the words that were consistently reported to be at least moderately associated with surprise.</p>
+</section><section id="sec-understand-your-dictionary" class="level2" data-number="14.2"><h2 data-number="14.2" class="anchored" data-anchor-id="sec-understand-your-dictionary">
+<span class="header-section-number">14.2</span> Understand Your Dictionary</h2>
+<p>In <a href="look-at-your-data.html"><span>Chapter&nbsp;11</span></a>, we emphasized the importance of reading through your data before conducting any analyses. The same is true for dictionaries: Before using any dictionary-based methods, always look through your dictionary and ask yourself two questions:</p>
+<ul>
+<li>How was my dictionary constructed?</li>
+<li>How context-dependent are the words in my dictionary?</li>
+</ul>
+<p>Let’s expand on each of these questions.</p>
+<section id="how-was-your-dictionary-constructed" class="level3" data-number="14.2.1"><h3 data-number="14.2.1" class="anchored" data-anchor-id="how-was-your-dictionary-constructed">
+<span class="header-section-number">14.2.1</span> How Was Your Dictionary Constructed?</h3>
+<p>The surprise dictionary we are using was generated by asking participants how much each word was “associated with the emotion surprise” <span class="citation" data-cites="mohammad_turney_2013">(<a href="#ref-mohammad_turney_2013" role="doc-biblioref">S. M. Mohammad &amp; Turney, 2013</a>)</span>. A word can be “associated with” surprise because it reflects surprise (e.g.&nbsp;“suddenly”), but it can also be “associated with” surprise because it reflects the exact opposite of surprise. Indeed, if we <strong>look through the dictionary</strong>, we find words like “leisure” and “lovely”.</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">8</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">surprise_dict</span><span class="op">$</span><span class="va">surprise</span>, <span class="fl">20</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] "outburst"    "godsend"     "alarming"    "intense"     "lawsuit"    </span></span>
+<span><span class="co">#&gt;  [6] "leisure"     "scrimmage"   "curiosity"   "reappear"    "placard"    </span></span>
+<span><span class="co">#&gt; [11] "diversion"   "receiving"   "thirst"      "lovely"      "frenetic"   </span></span>
+<span><span class="co">#&gt; [16] "perfection"  "playground"  "fearfully"   "guess"       "unfulfilled"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><span class="citation" data-cites="mohammad_turney_2013">S. M. Mohammad &amp; Turney (<a href="#ref-mohammad_turney_2013" role="doc-biblioref">2013</a>)</span> generated this dictionary by asking thousands of online participants to rate how much various words are associated with the emotion surprise. The final dictionary includes all the words that were consistently reported to be at least moderately associated with surprise.</p>
-<p>To count how many times surprise words appear in each of our texts, we use the <code>dfm_lookup()</code> function.</p>
+<p>This means that we are not, in fact, measuring how surprising each story is. At best, we are measuring how much each story deals with surprise (or lack thereof) one way or another.</p>
+<p>As you look through your dictionary, make sure you are aware of the process used to construct the dictionary. If it was generated by asking participants about individual words, how was the question formulated? How might that question have been interpreted by the participants?</p>
+<p>The NRC surprise dictionary is a particularly egregious example of the downsides of dictionary-based analysis. Other dictionaries, including other constructs available as part of the NRC Word-Emotion Association Lexicon, are not nearly as unfocused. In general, constructs that are closely related to good and bad (e.g.&nbsp;joy, sadness) are characterized well by crowdsourced dictionaries. Emotions like surprise are harder to think of as good or bad, and are consequently more difficult for participants to identify in individual words.</p>
+</section><section id="how-context-dependent-are-the-words-in-your-dictionary" class="level3" data-number="14.2.2"><h3 data-number="14.2.2" class="anchored" data-anchor-id="how-context-dependent-are-the-words-in-your-dictionary">
+<span class="header-section-number">14.2.2</span> How Context-Dependent are the Words in Your Dictionary?</h3>
+<p>The participants generating our dictionary were asked about one word at a time. People presented words out of context often fail to consider how words are actually used in natural discourse. For example, imagine that you are an online participant, and you are asked about your associations with the word “guess”. Seeing “guess” by itself might sound like an imperative, calling to mind a situation in which someone is asking you to guess something about which you are unsure—perhaps a game show. Since this sort of situation generally results in a surprise when the truth is revealed, you report that “guess” is associated with surprise. In fact, though, “guess” is <em>much</em> more frequently used in the phrase “I guess”, which signifies reluctance and has very little to do with surprise. We can check how “guess” is used our corpus by using Quanteda’s <code><a href="https://quanteda.io/reference/kwic.html">kwic()</a></code> function, which gives a dataframe of Key Words In Context (KIWC).</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_tokens</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">kwic</span><span class="op">(</span><span class="st">"guess"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>text <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">pre</span>, <span class="va">keyword</span>, <span class="va">post</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">pull</span><span class="op">(</span><span class="va">text</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "his 30th birthday and I guess that's why he decided to"            </span></span>
+<span><span class="co">#&gt; [2] "healthier after a month I guess it was the stress of"              </span></span>
+<span><span class="co">#&gt; [3] "already made cake So i guess it wasn't that bad"                   </span></span>
+<span><span class="co">#&gt; [4] "wrong Was she serious I guess so When I finished packing"          </span></span>
+<span><span class="co">#&gt; [5] "up our unit And I guess that's it I never saw"                     </span></span>
+<span><span class="co">#&gt; [6] "I'm not sure yet I guess I will see how the"                       </span></span>
+<span><span class="co">#&gt; [7] "FINALLY got admitted D I guess all those crazy contractions worked"</span></span>
+<span><span class="co">#&gt; [8] "we made it safely I guess even the car got tired"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>With the possible exception of #6, none of these examples give the impression of an impending surprise. Nevertheless, “guess” does appear in the NRC surprise dictionary.</p>
+<p>As you look through your dictionary, think about how each word might really be used in context. Are there ways to use the word that do not have to do with your construct?</p>
+</section></section><section id="raw-word-counts" class="level2" data-number="14.3"><h2 data-number="14.3" class="anchored" data-anchor-id="raw-word-counts">
+<span class="header-section-number">14.3</span> Raw Word Counts</h2>
+<p>At this point, you might be pretty skeptical about using the NRC surprise dictionary to measure surprise. Even so, let’s try it out. To count how many times surprise words appear in each of our texts, we use the <code><a href="https://quanteda.io/reference/dfm_lookup.html">dfm_lookup()</a></code> function.</p>
 <div class="cell">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_surprise</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_dfm</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dfm_lookup</span><span class="op">(</span><span class="va">surprise_dict</span><span class="op">)</span></span>
-<span><span class="va">hippocorpus_surprise</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; Document-feature matrix of: 6,854 documents, 1 feature (5.09% sparse) and 6 docvars.
-#&gt;                                 features
-#&gt; docs                             surprise
-#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U        2
-#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2        0
-#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61        4
-#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI        3
-#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ        4
-#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3        6
-#&gt; [ reached max_ndoc ... 6,848 more documents ]</code></pre>
+<span></span>
+<span><span class="va">hippocorpus_surprise</span></span>
+<span><span class="co">#&gt; Document-feature matrix of: 6,854 documents, 1 feature (5.09% sparse) and 6 docvars.</span></span>
+<span><span class="co">#&gt;                                 features</span></span>
+<span><span class="co">#&gt; docs                             surprise</span></span>
+<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U        2</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2        0</span></span>
+<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61        4</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI        3</span></span>
+<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ        4</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3        6</span></span>
+<span><span class="co">#&gt; [ reached max_ndoc ... 6,848 more documents ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-</section><section id="sec-modeling-word-counts" class="level2" data-number="14.2"><h2 data-number="14.2" class="anchored" data-anchor-id="sec-modeling-word-counts">
-<span class="header-section-number">14.2</span> Modeling Word Counts</h2>
+<section id="sec-modeling-word-counts" class="level3" data-number="14.3.1"><h3 data-number="14.3.1" class="anchored" data-anchor-id="sec-modeling-word-counts">
+<span class="header-section-number">14.3.1</span> Modeling Raw Word Counts</h3>
 <p>Recall that we wanted to test whether true autobiographical stories include more surprise than imagined stories. Now that we have counted the number of surprise words in each document, how do we test our hypothesis?</p>
 <p>A good first step is to reattach the word counts to our original corpus. As we do this, we convert both to dataframes.</p>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_surprise_df</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_surprise</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_surprise_df</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_surprise</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">convert</span><span class="op">(</span><span class="st">"data.frame"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="co"># convert to dataframe</span></span>
 <span>  <span class="fu">right_join</span><span class="op">(</span></span>
 <span>    <span class="va">hippocorpus_corp</span> <span class="op">|&gt;</span> </span>
 <span>      <span class="fu">convert</span><span class="op">(</span><span class="st">"data.frame"</span><span class="op">)</span> <span class="co"># convert to dataframe</span></span>
 <span>    <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Generally we want to control for the total number of words in each text, since longer texts have more opportunities to use surprise words. To count the total number of tokens in each text, we can use the <code>ntoken()</code> function on our DFM and add the result directly to the new dataframe.</p>
+<p>It makes sense to control for the total number of words in each text, since longer texts have more opportunities to use surprise words<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. To count the total number of tokens in each text, we can use the <code><a href="https://quanteda.io/reference/ntoken.html">ntoken()</a></code> function on our DFM and add the result directly to the new dataframe.</p>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_surprise_df</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_surprise_df</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_surprise_df</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_surprise_df</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>wc <span class="op">=</span> <span class="fu">ntoken</span><span class="op">(</span><span class="va">hippocorpus_dfm</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We are now ready for modeling! When your dependent variable is a count of words, we recommend using negative binomial regression, available in R with the <code>MASS</code> package. For extra sensitivity to the variable rates at which word frequencies grow with text length <span class="citation" data-cites="baayen_2001">(see <a href="#ref-baayen_2001" role="doc-biblioref">Baayen, 2001</a>)</span>, we will allow <code>wc</code> to have its own parameter in the regression.</p>
+<p>We are now ready for modeling! When your dependent variable is a count of words, we recommend using negative binomial regression, available in R with the <code>MASS</code> package. For extra sensitivity to the variable rates at which word frequencies grow with text length <span class="citation" data-cites="baayen_2001">(see <a href="#ref-baayen_2001" role="doc-biblioref">Baayen, 2001</a>)</span>, we will allow <code>log(wc)</code> to have its own parameter in the regression. We use <code><a href="https://rdrr.io/r/base/Log.html">log()</a></code> to account for the fact that negative binomial regression links the predictors with the outcome variable through a log link. If we left out the log, we would be modeling an exponential relationship between total word count and surprise words (for a more detailed explanation of this dynamic, see the discussion <a href="https://stats.stackexchange.com/questions/307369/how-to-interpret-glm-and-ols-with-offset">here</a>).</p>
 <div class="cell">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">surprise_mod</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/glm.nb.html">glm.nb</a></span><span class="op">(</span><span class="va">surprise</span> <span class="op">~</span> <span class="va">memType</span> <span class="op">+</span> <span class="va">wc</span>,</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">surprise_mod</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/glm.nb.html">glm.nb</a></span><span class="op">(</span><span class="va">surprise</span> <span class="op">~</span> <span class="va">memType</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">wc</span><span class="op">)</span>,</span>
 <span>                             data <span class="op">=</span> <span class="va">hippocorpus_surprise_df</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">surprise_mod</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; 
-#&gt; Call:
-#&gt; MASS::glm.nb(formula = surprise ~ memType + wc, data = hippocorpus_surprise_df, 
-#&gt;     init.theta = 5.991091414, link = log)
-#&gt; 
-#&gt; Coefficients:
-#&gt;                   Estimate Std. Error z value Pr(&gt;|z|)    
-#&gt; (Intercept)      6.806e-01  2.536e-02  26.835   &lt;2e-16 ***
-#&gt; memTyperecalled -1.722e-02  1.772e-02  -0.972   0.3310    
-#&gt; memTyperetold   -4.201e-02  2.200e-02  -1.910   0.0562 .  
-#&gt; wc               2.628e-03  8.583e-05  30.616   &lt;2e-16 ***
-#&gt; ---
-#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-#&gt; 
-#&gt; (Dispersion parameter for Negative Binomial(5.9911) family taken to be 1)
-#&gt; 
-#&gt;     Null deviance: 8305.6  on 6853  degrees of freedom
-#&gt; Residual deviance: 7367.3  on 6850  degrees of freedom
-#&gt; AIC: 31023
-#&gt; 
-#&gt; Number of Fisher Scoring iterations: 1
-#&gt; 
-#&gt; 
-#&gt;               Theta:  5.991 
-#&gt;           Std. Err.:  0.264 
-#&gt; 
-#&gt;  2 x log-likelihood:  -31013.345</code></pre>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">surprise_mod</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; MASS::glm.nb(formula = surprise ~ memType + log(wc), data = hippocorpus_surprise_df, </span></span>
+<span><span class="co">#&gt;     init.theta = 6.082606715, link = log)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt;                 Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span><span class="co">#&gt; (Intercept)     -2.73713    0.13391 -20.440   &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt; memTyperecalled -0.02830    0.01770  -1.598   0.1100    </span></span>
+<span><span class="co">#&gt; memTyperetold   -0.05594    0.02197  -2.546   0.0109 *  </span></span>
+<span><span class="co">#&gt; log(wc)          0.74558    0.02426  30.728   &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt; ---</span></span>
+<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; (Dispersion parameter for Negative Binomial(6.0826) family taken to be 1)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     Null deviance: 8350  on 6853  degrees of freedom</span></span>
+<span><span class="co">#&gt; Residual deviance: 7369  on 6850  degrees of freedom</span></span>
+<span><span class="co">#&gt; AIC: 30987</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Number of Fisher Scoring iterations: 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;               Theta:  6.083 </span></span>
+<span><span class="co">#&gt;           Std. Err.:  0.271 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  2 x log-likelihood:  -30976.548</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<p>Looking at the p-values for the coefficients, we see that there was no significant difference between recalled and imagined stories (p = 0.331). There was, however, a marginal difference between <em>retold</em> and imagined stories, such that retold stories used fewer surprise words (p = 0.056).</p>
-<p>When interpreting these results, it is important to think about what exactly we are measuring. The surprise dictionary we are using was generated be asking participants how much each word was “associated with the emotion surprise” <span class="citation" data-cites="mohammad_turney_2013">(<a href="#ref-mohammad_turney_2013" role="doc-biblioref">S. M. Mohammad &amp; Turney, 2013</a>)</span>. A word can be “associated with” surprise because it reflects surprise (e.g.&nbsp;“suddenly”), but it can also be “associated with” surprise because it reflects the exact opposite of surprise. Indeed, if we <strong>look through the dictionary</strong>, we find words like “leisure” and “lovely”.</p>
+<p>Looking at the p-values for the coefficients, we see that there was no significant difference between recalled and imagined stories (p = 0.11). There was, however, a significant difference between <em>retold</em> and imagined stories, such that retold stories used fewer surprise words (p = 0.011).</p>
+<p><strong>An example of using raw word counts in research:</strong> <span class="citation" data-cites="simchon_etal_2023">Simchon et al. (<a href="#ref-simchon_etal_2023" role="doc-biblioref">2023</a>)</span> collected Twitter activity over a three month period from over 2.7 million users. Using a dictionary, they then counted the number of passive auxiliary verbs (e.g.&nbsp;“they <strong>were</strong> analyzed”; “my homework <strong>will be</strong> completed”) in each user’s activity. They found that users with more followers (indicating higher social status) used much fewer passive auxiliary verbs, controlling for total word count.</p>
+</section></section><section id="sec-polarity" class="level2" data-number="14.4"><h2 data-number="14.4" class="anchored" data-anchor-id="sec-polarity">
+<span class="header-section-number">14.4</span> Polarity</h2>
+<p>How can we improve our measurement of surprise? As we saw above, one problem with the dictionary approach is that a word might be associated with a construct because it reflects the opposite of that construct. One solution to this problem is to measure the ratio between the target dictionary and its opposite. In sentiment analysis, this approach is called <em>polarity</em>. Polarity is most commonly used to analyze the overall valence of a text by comparing positive words (e.g.&nbsp;“happy”, “great”) with negative words (e.g.&nbsp;“disappointed”, “terrible”). In principle though, we can use it to compare any sort of opposites.</p>
+<p>What is the opposite of surprise? <span class="citation" data-cites="plutchik_1962">Plutchik (<a href="#ref-plutchik_1962" role="doc-biblioref">1962</a>)</span> argues that the opposite of surprise is <em>anticipation</em>. Luckily, the NRC Word-Emotion Association Lexicon also includes a dictionary of anticipation-associated words. Using this dictionary, we can measure how much a text is associated with surprise <em>as opposed to</em> anticipation.</p>
+<p>Quanteda’s built-in function for polarity is <code><a href="https://rdrr.io/pkg/quanteda.sentiment/man/textstat_polarity.html">textstat_polarity()</a></code>. To use this function, we first have to set the “positive” and “negative” polarities of the dictionary, and then call <code><a href="https://rdrr.io/pkg/quanteda.sentiment/man/textstat_polarity.html">textstat_polarity()</a></code> on our DFM. By default, this outputs the log ratio of positive to negative counts for each document:</p>
 <div class="cell">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">8</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">surprise_dict</span><span class="op">$</span><span class="va">surprise</span>, <span class="fl">20</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt;  [1] "outburst"    "godsend"     "alarming"    "intense"     "lawsuit"    
-#&gt;  [6] "leisure"     "scrimmage"   "curiosity"   "reappear"    "placard"    
-#&gt; [11] "diversion"   "receiving"   "thirst"      "lovely"      "frenetic"   
-#&gt; [16] "perfection"  "playground"  "fearfully"   "guess"       "unfulfilled"</code></pre>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">quanteda.sentiment</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'quanteda.sentiment'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:quanteda':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     data_dictionary_LSD2015</span></span>
+<span></span>
+<span><span class="co"># subset dictionary</span></span>
+<span><span class="va">surprise_anticipation_dict</span> <span class="op">&lt;-</span> <span class="va">data_dictionary_NRC</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"surprise"</span>, <span class="st">"anticipation"</span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># set surprise and anticipation as polarity</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.sentiment/man/polarity.html">polarity</a></span><span class="op">(</span><span class="va">surprise_anticipation_dict</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>pos <span class="op">=</span> <span class="st">"surprise"</span>, neg <span class="op">=</span> <span class="st">"anticipation"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># get polarity</span></span>
+<span><span class="va">hippocorpus_surprise_polarity</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/quanteda.sentiment/man/textstat_polarity.html">textstat_polarity</a></span><span class="op">(</span><span class="va">hippocorpus_dfm</span>, <span class="va">surprise_anticipation_dict</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">rename</span><span class="op">(</span>surprise_vs_anticipation <span class="op">=</span> <span class="va">sentiment</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>While <code><a href="https://rdrr.io/pkg/quanteda.sentiment/man/textstat_polarity.html">textstat_polarity()</a></code> can sometimes be useful for visualizations or downstream analyses, it is not helpful for modeling polarity as an outcome variable.</p>
+<section id="modeling-polarity" class="level3" data-number="14.4.1"><h3 data-number="14.4.1" class="anchored" data-anchor-id="modeling-polarity">
+<span class="header-section-number">14.4.1</span> Modeling Polarity</h3>
+<p>To test whether true autobiographical stories include more surprise <em>relative</em> to anticipation than imagined stories, we first count the surprise and anticipation words in each document, and rejoin the results to the full dataset.</p>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># count surprise/anticipation words</span></span>
+<span><span class="va">hippocorpus_surprise_anticipation</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_dfm</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/dfm_lookup.html">dfm_lookup</a></span><span class="op">(</span><span class="va">surprise_anticipation_dict</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># convert to dataframe and join to full data</span></span>
+<span><span class="va">hippocorpus_surprise_anticipation_df</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="va">hippocorpus_surprise_anticipation</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/convert.html">convert</a></span><span class="op">(</span><span class="st">"data.frame"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">right_join</span><span class="op">(</span></span>
+<span>    <span class="va">hippocorpus_corp</span> <span class="op">|&gt;</span> </span>
+<span>      <span class="fu"><a href="https://quanteda.io/reference/convert.html">convert</a></span><span class="op">(</span><span class="st">"data.frame"</span><span class="op">)</span> <span class="co"># convert to dataframe</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="co">#&gt; Joining with `by = join_by(doc_id)`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This means that we are not, in fact, measuring how surprising each story is. At best, we are measuring how much each story deals with surprise (or lack thereof) one way or another. This observation is just one example of a larger problem with dictionary-based word counts in general, especially when the dictionary is generated by asking participants about one construct at a time: the words in a dictionary do not uniquely reflect the construct of interest—they also reflect other conceptually related concepts. Opposites, of course, are always closely conceptually related to each other. In the next chapter, we will explore ways to improve dictionary-based counts so that they can overcome this and other problems.</p>
+<p>Since we are still modelling word counts as an output, we again use negative binomial regression. Rather than controlling for the total word count, however, we can control for the total number of surprise words plus the number of anticipation words. Because of the log link function (along with the endlessly useful properties of logarithms) entering this sum as a log offset (<code>offset(log(surprise + anticipation))</code>) is equivalent to modeling the ratio of surprise-related to anticipation-related words.</p>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># remove zeros to prevent divide by zero errors</span></span>
+<span><span class="va">hippocorpus_surprise_anticipation_df</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="va">hippocorpus_surprise_anticipation_df</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">surprise</span> <span class="op">+</span> <span class="va">anticipation</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">surprise_anticipation_mod</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/glm.nb.html">glm.nb</a></span><span class="op">(</span></span>
+<span>  <span class="va">surprise</span> <span class="op">~</span> <span class="va">memType</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/offset.html">offset</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">surprise</span> <span class="op">+</span> <span class="va">anticipation</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">hippocorpus_surprise_anticipation_df</span>,</span>
+<span>  <span class="co"># increase iterations to ensure model converges</span></span>
+<span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.control.html">glm.control</a></span><span class="op">(</span>maxit <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span> </span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">surprise_anticipation_mod</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; MASS::glm.nb(formula = surprise ~ memType + offset(log(surprise + </span></span>
+<span><span class="co">#&gt;     anticipation)), data = hippocorpus_surprise_anticipation_df, </span></span>
+<span><span class="co">#&gt;     control = glm.control(maxit = 10000), init.theta = 3.20666397e+17, </span></span>
+<span><span class="co">#&gt;     link = log)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt;                  Estimate Std. Error  z value Pr(&gt;|z|)    </span></span>
+<span><span class="co">#&gt; (Intercept)     -1.123039   0.009672 -116.114   &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt; memTyperecalled -0.012682   0.013443   -0.943    0.345    </span></span>
+<span><span class="co">#&gt; memTyperetold   -0.020434   0.016929   -1.207    0.227    </span></span>
+<span><span class="co">#&gt; ---</span></span>
+<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; (Dispersion parameter for Negative Binomial(3.206664e+17) family taken to be 1)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     Null deviance: 4884.2  on 6843  degrees of freedom</span></span>
+<span><span class="co">#&gt; Residual deviance: 4882.5  on 6841  degrees of freedom</span></span>
+<span><span class="co">#&gt; AIC: 8</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Number of Fisher Scoring iterations: 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;               Theta:  3.206664e+17 </span></span>
+<span><span class="co">#&gt;           Std. Err.:  6.158994e+14 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  2 x log-likelihood:  0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>There is no significant difference between true and imagined stories in the ratio of surprise to anticipation words.</p>
+</section></section><section id="sec-word-scoring" class="level2" data-number="14.5"><h2 data-number="14.5" class="anchored" data-anchor-id="sec-word-scoring">
+<span class="header-section-number">14.5</span> Lexical Norms</h2>
+<p>So far we have covered raw word counts, which use one list of words to represent a construct, and we have covered polarities, which use two lists of words to represent a construct and its opposite. The third and final dictionary-based method takes a more nuanced approach than either of these: In lexical norms, words are allowed to represent the construct or its opposite to continuously varying degrees, represented by numbers on a scale. In <code>quanteda.sentiment</code>, this scale is called “valence”, though elsewhere it can be called “lexical affinity” or “lexical association”.</p>
+<p>The same group that created the NRC Word-Emotion Association Lexicon also created a parallel dictionary with continuous scores: the <a href="https://saifmohammad.com/WebPages/AccessResource.htm">NRC Hashtag Emotion Lexicon</a> <span class="citation" data-cites="mohammad_kiritchenko_2015">(<a href="#ref-mohammad_kiritchenko_2015" role="doc-biblioref">S. M. Mohammad &amp; Kiritchenko, 2015</a>)</span>. Whereas the NRC Word-Emotion Association Lexicon was crowdsourced, the NRC Hashtag Emotion Lexicon was generated algorithmically from a corpus of Twitter posts which contained hashtags like “#anger” and “#surprise”. The dictionary includes the words that were most predictive of each hashtag, with scores indicating the strength of their statistical connection with the category (higher score indicates more representative). We can access the NRC Hashtag surprise dictionary from Github:</p>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/bwang482/emotionannotate/master/lexicons/NRC-Hashtag-Emotion-Lexicon-v0.2.txt"</span></span>
+<span></span>
+<span><span class="va">hashtag</span> <span class="op">&lt;-</span> <span class="fu">read_tsv</span><span class="op">(</span><span class="va">path</span>, col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"emotion"</span>, <span class="st">"token"</span>, <span class="st">"score"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Rows: 32389 Columns: 3</span></span>
+<span><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Delimiter: "\t"</span></span>
+<span><span class="co">#&gt; chr (2): emotion, token</span></span>
+<span><span class="co">#&gt; dbl (1): score</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span></span>
+<span><span class="va">hashtag</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">emotion</span> <span class="op">==</span> <span class="st">"surprise"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
+<span><span class="co">#&gt;   emotion  token         score</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;         &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 surprise yada           1.49</span></span>
+<span><span class="co">#&gt; 2 surprise #preoccupied   1.49</span></span>
+<span><span class="co">#&gt; 3 surprise jaden          1.49</span></span>
+<span><span class="co">#&gt; 4 surprise #easilyamused  1.49</span></span>
+<span><span class="co">#&gt; 5 surprise #needtofocus   1.49</span></span>
+<span><span class="co">#&gt; 6 surprise #amazement     1.49</span></span>
+<span></span>
+<span><span class="co"># Create dictionary</span></span>
+<span><span class="va">surprise_dict_hashtag</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/dictionary.html">dictionary</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>surprise <span class="op">=</span> <span class="va">hashtag</span><span class="op">$</span><span class="va">token</span><span class="op">[</span><span class="va">hashtag</span><span class="op">$</span><span class="va">emotion</span> <span class="op">==</span> <span class="st">"surprise"</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Set dictionary valence</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.sentiment/man/valence.html">valence</a></span><span class="op">(</span><span class="va">surprise_dict_hashtag</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>  surprise <span class="op">=</span> <span class="va">hashtag</span><span class="op">$</span><span class="va">score</span><span class="op">[</span><span class="va">hashtag</span><span class="op">$</span><span class="va">emotion</span> <span class="op">==</span> <span class="st">"surprise"</span><span class="op">]</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To measure suprise in the Hippocorpus data, we find the suprise score of each token and compute the average score for the tokens of each document. With <code>quanteda.sentiment</code>, we can do this by calling the <code><a href="https://rdrr.io/pkg/quanteda.sentiment/man/textstat_valence.html">textstat_valence()</a></code> function on our DFM. Since a score of zero in the NRC Hashtag Emotion Lexicon represents zero surprise, we will add <code>normalization = "all"</code> to code non-dictionary words as zero by default.</p>
+<div class="cell">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># compute valence</span></span>
+<span><span class="va">hippocorpus_valence</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.sentiment/man/textstat_valence.html">textstat_valence</a></span><span class="op">(</span></span>
+<span>  <span class="va">hippocorpus_dfm</span>, <span class="co"># data</span></span>
+<span>  <span class="va">surprise_dict_hashtag</span>, <span class="co"># dictionary</span></span>
+<span>  normalization <span class="op">=</span> <span class="st">"all"</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># rejoin to original data</span></span>
+<span><span class="va">hippocorpus_valence</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_valence</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">rename</span><span class="op">(</span>surprise <span class="op">=</span> <span class="va">sentiment</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">right_join</span><span class="op">(</span></span>
+<span>    <span class="va">hippocorpus_corp</span> <span class="op">|&gt;</span> </span>
+<span>      <span class="fu"><a href="https://quanteda.io/reference/convert.html">convert</a></span><span class="op">(</span><span class="st">"data.frame"</span><span class="op">)</span> <span class="co"># convert to dataframe</span></span>
+<span>    <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="modeling-norms" class="level3" data-number="14.5.1"><h3 data-number="14.5.1" class="anchored" data-anchor-id="modeling-norms">
+<span class="header-section-number">14.5.1</span> Modeling Norms</h3>
+<p>Norm scores, unlike raw word counts and polarities, can be reasonably modeled using standard linear regression. Furthermore, because the score is an average rather than a sum or count, there is no need to control for total word count. Let’s test one more time whether true autobiographical stories include more surprise-related language than imagined stories:</p>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">surprise_score_mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">surprise</span> <span class="op">~</span> <span class="va">memType</span>, <span class="va">hippocorpus_valence</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">surprise_score_mod</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; lm(formula = surprise ~ memType, data = hippocorpus_valence)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Residuals:</span></span>
+<span><span class="co">#&gt;       Min        1Q    Median        3Q       Max </span></span>
+<span><span class="co">#&gt; -0.085691 -0.015690 -0.000448  0.015114  0.104478 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt;                  Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span><span class="co">#&gt; (Intercept)     0.1401829  0.0004432 316.264  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; memTyperecalled 0.0029707  0.0006255   4.749 2.09e-06 ***</span></span>
+<span><span class="co">#&gt; memTyperetold   0.0021784  0.0007791   2.796  0.00519 ** </span></span>
+<span><span class="co">#&gt; ---</span></span>
+<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Residual standard error: 0.02327 on 6851 degrees of freedom</span></span>
+<span><span class="co">#&gt; Multiple R-squared:  0.003416,   Adjusted R-squared:  0.003125 </span></span>
+<span><span class="co">#&gt; F-statistic: 11.74 on 2 and 6851 DF,  p-value: 8.129e-06</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We found a significant difference between recalled and imagined stories (p = 2^{-6}), such that recalled stories have more surprise-related language! This supports Sap et al.’s hypothesis that true autobiographical stories would include more surprising events than imagined stories. The new model also indicated a significant difference between retold and imagined stories, such that retold stories used <em>more</em> surprise-related language—the opposite direction relative to our original finding with the crowdsourced dictionary (p = 0.005).</p>
+</section></section><section id="sources-of-dictionaries" class="level2" data-number="14.6"><h2 data-number="14.6" class="anchored" data-anchor-id="sources-of-dictionaries">
+<span class="header-section-number">14.6</span> Sources of Dictionaries</h2>
+<p>So far we have seen the NRC Word-Emotion Association Lexicon, which used a crowdsourcing approach to generate the dictionary, and the NRC Hashtag Emotion Lexicon, which used a corpus-based approach, relying on hashtags for labeling. Crowdsourcing and algorithmic corpus-based generation are far from the only ways to generate a dictionary. Here we review various types of dictionaries and where to find them.</p>
+<section id="crowdsourced-dictionaries" class="level3" data-number="14.6.1"><h3 data-number="14.6.1" class="anchored" data-anchor-id="crowdsourced-dictionaries">
+<span class="header-section-number">14.6.1</span> Crowdsourced Dictionaries</h3>
+<p>Besides the surprise dictionary, the NRC Word-Emotion Association Lexicon includes dictionaries for anger, fear, anticipation, trust, sadness, joy, and disgust. The same group has also produced other crowdsourced emotion dictionaries:</p>
+<ul>
+<li>
+<a href="https://saifmohammad.com/WebPages/nrc-vad.html">NRC VAD</a> <span class="citation" data-cites="mohammad_2018">(<a href="#ref-mohammad_2018" role="doc-biblioref">S. M. Mohammad, 2018a</a>)</span> contains 20,007 words with ratings between 0 and 1 for valence, arousal and dominance.</li>
+<li>
+<a href="http://saifmohammad.com/WebPages/AffectIntensity.htm">NRC Affect Intensity</a> <span class="citation" data-cites="mohammad_2018b">(<a href="#ref-mohammad_2018b" role="doc-biblioref">S. M. Mohammad, 2018b</a>)</span> contains 4192 words with ratings between 0 and 1 for anger, fear, sadness and joy.</li>
+</ul></section><section id="expert-generated-dictionaries" class="level3" data-number="14.6.2"><h3 data-number="14.6.2" class="anchored" data-anchor-id="expert-generated-dictionaries">
+<span class="header-section-number">14.6.2</span> Expert-Generated Dictionaries</h3>
+<p>Words are used in many contexts, sometimes with many possible meanings. To take these into account, some groups rely on experts to generate their dictionaries. By far the most prominent collection of expert-generated dictionaries is <a href="https://www.liwc.app">LIWC</a> (pronounced “Luke”), which includes word lists for grammatical patterns, emotional content, cognitive processes, and more. With its rigorous approach, LIWC dominates the field of dictionary-based analysis in psychology. The most recent version of LIWC <span class="citation" data-cites="boyd_etal_2022">(<a href="#ref-boyd_etal_2022" role="doc-biblioref">Boyd et al., 2022</a>)</span> was generated by a team of experts who went through numerous stages of brainstorming, voting, and reliability analysis before arriving at the final word lists.</p>
+</section><section id="corpus-based-dictionaries" class="level3" data-number="14.6.3"><h3 data-number="14.6.3" class="anchored" data-anchor-id="corpus-based-dictionaries">
+<span class="header-section-number">14.6.3</span> Corpus-Based Dictionaries</h3>
+<p>Human raters are much better at judging full texts than individual words. Corpus-based dictionaries take advantage of this by extracting their word lists from corpora of full texts that have been rated by humans. We have already seen the <a href="https://saifmohammad.com/WebPages/AccessResource.htm">NRC Hashtag Emotion Lexicon</a> <span class="citation" data-cites="mohammad_kiritchenko_2015">(<a href="#ref-mohammad_kiritchenko_2015" role="doc-biblioref">S. M. Mohammad &amp; Kiritchenko, 2015</a>)</span>, which used Twitter hashtags to gather a corpus of Tweets labeled with emotions by their original authors. A more classic example of corpus-based dictionary generation is <span class="citation" data-cites="rao_etal_2014">Rao et al. (<a href="#ref-rao_etal_2014" role="doc-biblioref">2014</a>)</span>, who used a corpus of 1,246 news headlines, each rated manually for anger, disgust, fear, joy, sad and surprise on a scale from 0 to 100 <span class="citation" data-cites="strapparava_mihalcea_2007">(<a href="#ref-strapparava_mihalcea_2007" role="doc-biblioref">Strapparava &amp; Mihalcea, 2007</a>)</span>. By correlating these ratings with frequencies of words (see <a href="dla.html"><span>Chapter&nbsp;15</span></a>), they extracted the words that were most representative of high ratings in each category. <span class="citation" data-cites="araque_etal_2018">Araque et al. (<a href="#ref-araque_etal_2018" role="doc-biblioref">2018</a>)</span> used a similar technique to create <a href="https://github.com/marcoguerini/DepecheMood">DepecheMood</a>, which includes ratings for each word on eight emotional dimensions: afraid, amused, angry, annoyed, don’t care, happy, inspired, and sad. This base dictionary was updated with additional resources by <span class="citation" data-cites="badaro_etal_2018">Badaro et al. (<a href="#ref-badaro_etal_2018" role="doc-biblioref">2018</a>)</span> to create EmoWordNet, which can be accessed <a href="https://web.archive.org/web/20210906101337/http://oma-project.com/ArSenL/EmoWordNet1.0.txt">through the Internet Archive</a>.</p>
+<p>Many statistical techniques have been used to extract dictionaries from labeled corpora, some of which will be covered briefly in <a href="dla.html"><span>Chapter&nbsp;15</span></a> and <a href="decontextualized-embeddings.html"><span>Chapter&nbsp;18</span></a> of this book. For a recent review of methods, see <span class="citation" data-cites="bandhakavi_etal_2021">Bandhakavi et al. (<a href="#ref-bandhakavi_etal_2021" role="doc-biblioref">2021</a>)</span>.</p>
+</section><section id="other-approaches-to-dictionary-generation" class="level3" data-number="14.6.4"><h3 data-number="14.6.4" class="anchored" data-anchor-id="other-approaches-to-dictionary-generation">
+<span class="header-section-number">14.6.4</span> Other Approaches to Dictionary Generation</h3>
+<ul>
+<li><p><strong>Thesaurus Mining:</strong> <span class="citation" data-cites="strapparava_valitutti_2004">Strapparava &amp; Valitutti (<a href="#ref-strapparava_valitutti_2004" role="doc-biblioref">2004</a>)</span> started with a short list of strongly affect-related words (e.g.&nbsp;“anger”, “doubt”, “cry”), and used <a href="https://wordnet.princeton.edu">WordNet</a>, a database of conceptual relations between words, to find close synonyms of the original words on the list. The result was <a href="https://wndomains.fbk.eu/wnaffect.html">WordNet Affect</a>. <span class="citation" data-cites="strapparava_mihalcea_2007">Strapparava &amp; Mihalcea (<a href="#ref-strapparava_mihalcea_2007" role="doc-biblioref">2007</a>)</span> used WordNet Affect to generate short lists of words associated with anger, disgust, fear, joy, sadness, and surprise, downloadable from <a href="https://web.eecs.umich.edu/~mihalcea/affectivetext/">here</a>.</p></li>
+<li><p><strong>Decontextualized Embeddings:</strong> In <a href="decontextualized-embeddings.html"><span>Chapter&nbsp;18</span></a>, we will cover a family of methods for measuring the similarities between words based on how much they appear together in text. These methods can be used on their own for measuring psychological constructs, but they can also be used as a tool for building dictionaries. For example, <span class="citation" data-cites="buechel_etal_2020">Buechel et al. (<a href="#ref-buechel_etal_2020" role="doc-biblioref">2020</a>)</span> started with a small seed lexicon and used word embeddings (<a href="decontextualized-embeddings.html#sec-word-embeddings"><span>Section&nbsp;18.3</span></a>) to find other words that are likely to appear in texts of the same topic. The result—including dictionaries for valence, arousal, dominance, joy anger, sadness, fear, and disgust—is <a href="https://zenodo.org/records/3756607">available for download online</a>.</p></li>
+</ul>
 <hr>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -476,7 +733,7 @@ Advantages of Dictionary-Based Word Counts
 <div class="callout-body-container callout-body">
 <ul>
 <li>
-<strong>Efficient Processing:</strong> Counting is a simple operation for computers. For very large datasets, more this can make a big difference.</li>
+<strong>Efficient Processing:</strong> Counting is a simple operation for computers. For very large datasets, this can make a big difference.</li>
 <li>
 <strong>Easy to Interpret:</strong> Dictionaries for sentiment analysis are usually not more than a few hundred words long. This means that they are easy to read through and understand intuitively. The intuitive appeal is also good for explaining your research to others—“we counted the number of anger-related words” is a method that any non-expert can understand.</li>
 </ul>
@@ -498,17 +755,44 @@ Disadvantages of Dictionary-Based Word Counts
 <li>
 <strong>May Reflect Various Constructs:</strong> Dictionaries are often generated by asking participants to identify associations with words. These associations do not necessarily reflect the construct in which the researcher is interested.</li>
 <li>
-<strong>Unnuanced:</strong> Words are either in a dictionary or they are not. Raw counts carry no nuance about the varying degrees to which different words may reflect the construct of interest.</li>
+<strong>Unnuanced:</strong> Words are either in a dictionary or they are not. Raw counts carry no nuance about the varying degrees to which different words may reflect the construct of interest. Norms can fix this problem, but are not generally available for psychological dimensions.</li>
+<li>
+<strong>Unnaturalistic Generation Process:</strong> Dictionaries are generally crowdsourced by asking participants to report their associations with individual words. People presented words out of context often fail to consider how words are actually used in natural discourse.</li>
 <li>
 <strong>Limited Dictionaries Available:</strong> Dictionaries are expensive and labor intensive to produce. Researchers are generally reliant on dictionaries already produced by other teams, which may not reflect the construct of interest precisely.</li>
 </ul>
 </div>
 </div>
+<hr>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="ref-araque_etal_2018" class="csl-entry" role="listitem">
+Araque, O., Gatti, L., Staiano, J., &amp; Guerini, M. (2018). DepecheMood++: A bilingual emotion lexicon built through simple yet powerful techniques. <em>CoRR</em>, <em>abs/1810.03660</em>. <a href="http://arxiv.org/abs/1810.03660">http://arxiv.org/abs/1810.03660</a>
+</div>
 <div id="ref-baayen_2001" class="csl-entry" role="listitem">
 Baayen, R. H. (2001). <em>Word frequency distributions</em>. Springer Netherlands. <a href="https://link.springer.com/book/10.1007/978-94-010-0844-0">https://link.springer.com/book/10.1007/978-94-010-0844-0</a>
+</div>
+<div id="ref-badaro_etal_2018" class="csl-entry" role="listitem">
+Badaro, G., Jundi, H., Hajj, H., &amp; El-Hajj, W. (2018). <span>E</span>mo<span>W</span>ord<span>N</span>et: Automatic expansion of emotion lexicon using <span>E</span>nglish <span>W</span>ord<span>N</span>et. In M. Nissim, J. Berant, &amp; A. Lenci (Eds.), <em>Proceedings of the seventh joint conference on lexical and computational semantics</em> (pp. 86–93). Association for Computational Linguistics. <a href="https://doi.org/10.18653/v1/S18-2009">https://doi.org/10.18653/v1/S18-2009</a>
+</div>
+<div id="ref-bandhakavi_etal_2021" class="csl-entry" role="listitem">
+Bandhakavi, A., Wiratunga, N., Massie, S., &amp; P., D. (2021). Emotion‐aware polarity lexicons for twitter sentiment analysis. <em>Expert Systems</em>, <em>38</em>(7).
+</div>
+<div id="ref-boyd_etal_2022" class="csl-entry" role="listitem">
+Boyd, R., Ashokkumar, A., Seraj, S., &amp; Pennebaker, J. (2022). <em>The development and psychometric properties of LIWC-22</em>. <a href="https://doi.org/10.13140/RG.2.2.23890.43205">https://doi.org/10.13140/RG.2.2.23890.43205</a>
+</div>
+<div id="ref-buechel_etal_2020" class="csl-entry" role="listitem">
+Buechel, S., Rücker, S., &amp; Hahn, U. (2020). Learning and evaluating emotion lexicons for 91 languages. In D. Jurafsky, J. Chai, N. Schluter, &amp; J. Tetreault (Eds.), <em>Proceedings of the 58th annual meeting of the association for computational linguistics</em> (pp. 1202–1217). Association for Computational Linguistics. <a href="https://doi.org/10.18653/v1/2020.acl-main.112">https://doi.org/10.18653/v1/2020.acl-main.112</a>
+</div>
+<div id="ref-mohammad_2018" class="csl-entry" role="listitem">
+Mohammad, S. M. (2018a). Obtaining reliable human ratings of valence, arousal, and dominance for 20,000 english words. <em>Proceedings of the Annual Conference of the Association for Computational Linguistics (ACL)</em>.
+</div>
+<div id="ref-mohammad_2018b" class="csl-entry" role="listitem">
+Mohammad, S. M. (2018b). Word affect intensities. <em>Proceedings of the 11th Edition of the Language Resources and Evaluation Conference (LREC-2018)</em>.
+</div>
+<div id="ref-mohammad_kiritchenko_2015" class="csl-entry" role="listitem">
+Mohammad, S. M., &amp; Kiritchenko, S. (2015). Using hashtags to capture fine emotion categories from tweets. <em>Computational Intelligence</em>, <em>31</em>, 301–326. <a href="https://api.semanticscholar.org/CorpusID:2498838">https://api.semanticscholar.org/CorpusID:2498838</a>
 </div>
 <div id="ref-mohammad_turney_2013" class="csl-entry" role="listitem">
 Mohammad, S. M., &amp; Turney, P. D. (2013). Crowdsourcing a word-emotion association lexicon. <em>Computational Intelligence</em>, <em>29</em>(3), 436–465.
@@ -516,11 +800,29 @@ Mohammad, S. M., &amp; Turney, P. D. (2013). Crowdsourcing a word-emotion associ
 <div id="ref-mohammad_turney_2010" class="csl-entry" role="listitem">
 Mohammad, S., &amp; Turney, P. (2010). Emotions evoked by common words and phrases: Using <span>M</span>echanical <span>T</span>urk to create an emotion lexicon. <em>Proceedings of the <span>NAACL</span> <span>HLT</span> 2010 Workshop on Computational Approaches to Analysis and Generation of Emotion in Text</em>, 26–34. <a href="https://aclanthology.org/W10-0204">https://aclanthology.org/W10-0204</a>
 </div>
+<div id="ref-plutchik_1962" class="csl-entry" role="listitem">
+Plutchik, R. (1962). <em>The emotions</em>. Random House.
+</div>
+<div id="ref-rao_etal_2014" class="csl-entry" role="listitem">
+Rao, Y., Lei, J., Wenyin, L., Li, Q., &amp; Chen, M. (2014). Building emotional dictionary for sentiment analysis of online news. <em>World Wide Web (Bussum)</em>, <em>17</em>(4), 723–742.
+</div>
 <div id="ref-sap_etal_2022" class="csl-entry" role="listitem">
 Sap, M., Jafarpour, A., Choi, Y., Smith, N. A., Pennebaker, J. W., &amp; Horvitz, E. (2022). Quantifying the narrative flow of imagined versus autobiographical stories. <em>Proceedings of the National Academy of Sciences</em>, <em>119</em>(45), e2211715119. <a href="https://doi.org/10.1073/pnas.2211715119">https://doi.org/10.1073/pnas.2211715119</a>
 </div>
+<div id="ref-simchon_etal_2023" class="csl-entry" role="listitem">
+Simchon, A., Hadar, B., &amp; Gilead, M. (2023). A computational text analysis investigation of the relation between personal and linguistic agency. <em>Communications Psychology</em>, 1–9. <a href="https://doi.org/10.1038/s44271-023-00020-1">https://doi.org/10.1038/s44271-023-00020-1</a>
 </div>
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+<div id="ref-strapparava_mihalcea_2007" class="csl-entry" role="listitem">
+Strapparava, C., &amp; Mihalcea, R. (2007). <span>S</span>em<span>E</span>val-2007 task 14: Affective text. In E. Agirre, L. Màrquez, &amp; R. Wicentowski (Eds.), <em>Proceedings of the fourth international workshop on semantic evaluations (<span>S</span>em<span>E</span>val-2007)</em> (pp. 70–74). Association for Computational Linguistics. <a href="https://aclanthology.org/S07-1013">https://aclanthology.org/S07-1013</a>
+</div>
+<div id="ref-strapparava_valitutti_2004" class="csl-entry" role="listitem">
+Strapparava, C., &amp; Valitutti, A. (2004). Wordnet affect: An affective extension of wordnet. <em>Lrec</em>, <em>4</em>, 40.
+</div>
+</div>
+</section></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1"><p>We use total word count here for the sake of the example, but total word count may not always be the appropriate measure of text length. For example, you may want to measure the amount of surprise <em>relative to other emotional content</em>. In this case, it would be more appropriate to control for the total number of emotion-related words, as opposed to the total word count. Similarly, if you were measuring the number of first person singular pronouns, you may want to control for the total number of pronouns rather than the total word count.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -758,8 +1060,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./word-counting-improvements.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Improvements on Word Counts</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./dla.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

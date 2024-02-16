@@ -16,7 +16,7 @@ hippocorpus_corp <- read_csv("data/hippocorpus-u20220112/hcV3-stories.csv") |>
 
 ## Tokens
 
-The first step in the process of turning texts into numbers is almost always **tokenization**. Tokenization means splitting a long text into smaller pieces, called **tokens**. Once we have these smaller pieces, we will be able to count them in texts and turn these counts into numeric representations of our texts. There are four main types of tokens: words, n-grams, skipgrams, and shingles.
+The first step in the process of turning texts into numbers is almost always **tokenization**. Tokenization means splitting a long text into smaller pieces, called **tokens**. Once we have these smaller pieces, we will be able to count how many times each one appears in a text and turn these counts into numeric representations of our texts. There are six main types of tokens: words, stems, lemmas, n-grams, skipgrams, and shingles.
 
 ### Words
 
@@ -35,9 +35,98 @@ hippocorpus_tokens <- tokens(hippocorpus_corp,
 head(hippocorpus_tokens, 3)
 ```
 
+### Simplified Words: Stems and Lemmas
+
+Are "quantify" and "quantified" the same word? What about "quantification"? Treating every new spelling as a separate word can add unnecessary complexity to analysis. It is often useful to have some way cut away the grammatical aspects of words, leaving only their core, canonical form. Stemming and lemmatization are two ways to do this.
+
+In **stemming**, we chop off prefixes and suffixes from either side of each word, leaving only the "stem". For example, "quantify" and "quantified" would both be chopped down to "quantif."
+
+We can stem our Hippocorpus tokens with Quanteda's `tokens_wordstem()` function. This function uses an updated version of the classic algorithm developed by @porter_1980. The algorithm was carefully designed to remove common suffixes (e.g. "-ic", "-ate", "-s") without cutting off too much (e.g. "generic" and "generate" should register as different stems). 
+
+```{r}
+hippocorpus_stems <- hippocorpus_tokens |> 
+  tokens_wordstem()
+
+head(hippocorpus_stems, 3)
+```
+
+Notice that "Concerts" has changed to "Concert", "favorite" has changed to "favorit", and "That's" has changed to "That".
+
+**Lemmatization** takes a slightly different approach. Rather than chopping off prefixes and suffixes, lemmatization uses a lookup table to replace variants of words with the version that you might find in a dictionary. For example, "quantified" would become "quantify". This canonical form is called a lemma.
+
+We can lemmatize our Hippocorpus tokens using the `lexicon` package's `hash_lemmas` lemmatization list and Quanteda's `tokens_replace()` function.
+
+```{r}
+hippocorpus_lemmas <- hippocorpus_tokens |> 
+  tokens_replace(pattern = lexicon::hash_lemmas$token, 
+                 replacement = lexicon::hash_lemmas$lemma)
+
+head(hippocorpus_lemmas, 3)
+```
+
+Notice that "are" has changed to "be" and "started" has changed to "start". Notice also that "That's" has not changed at all. This is because it does not appear in the lookup table we are using.
+
+```{r}
+#| echo: false
+library(patchwork)
+
+# plot inspired by https://nirajbhoi.medium.com/stemming-vs-lemmatization-in-nlp-efc280d4e845
+
+quantif_tokens <- lexicon::hash_lemmas |> 
+  filter(str_detect(lemma, "quantif"))
+
+quantif_tokens <- quantif_tokens |> 
+  mutate(stem = char_wordstem(token)) |> 
+  arrange(lemma)
+
+p_lemma <- quantif_tokens |> 
+  mutate(x = 0,
+         y = 1:n(),
+         xend = 1.9,
+         yend1 = rep.int(c(1, 2, 4), rle(lemma)$lengths),
+         xend = (.8)*(xend - x) + x, 
+         yend2 = (.8)*(yend1 - y) + y) |> 
+  ggplot() +
+    geom_text(aes(x = 0, y = y, label = token), hjust = 0, size = 5) +
+    geom_segment(aes(x = 0.7, y = y, xend = 1, yend = yend2),
+                 arrow = arrow(length=unit(0.35,"cm"), type = "closed"),
+                 color = "forestgreen") +
+    geom_text(aes(x = 1.1, y = yend1, label = lemma), hjust = 0, size = 5,
+                 color = "forestgreen") +
+    labs(title = "Lemmatization") +
+    coord_fixed(1/4, xlim = c(0,1.8), ylim = c(-.2, 6)) +
+    theme_void() +
+    theme(plot.title = element_text(size = 30, hjust = .5, color = "forestgreen"))
+
+p_stem <- quantif_tokens |> 
+  mutate(x = 0,
+         y = 1:n(),
+         xend = 1.9,
+         yend1 = rep.int(c(1, 3.5), rle(stem)$lengths),
+         xend = (.8)*(xend - x) + x, 
+         yend2 = (.8)*(yend1 - y) + y) |> 
+  ggplot() +
+    geom_label(aes(x = 0, y = y, label = "         "), hjust = 0, 
+               size = 5, color = "grey") +
+    geom_text(aes(x = 0, y = y, label = token), hjust = 0, size = 5) +
+    geom_segment(aes(x = 0.7, y = y, xend = 1, yend = yend2),
+                 arrow = arrow(length=unit(0.35,"cm"), type = "closed"),
+                 color = "royalblue") +
+    geom_text(aes(x = 1.1, y = yend1, label = stem), hjust = 0, size = 5,
+                 color = "royalblue") +
+    labs(title = "Stemming") +
+    coord_fixed(1/4, xlim = c(0,1.8), ylim = c(-.2, 6)) +
+    theme_void() +
+    theme(plot.title = element_text(size = 30, hjust = .5, color = "royalblue"))
+
+p_stem + p_lemma
+```
+
+The Porter algorithm's choice to stem "quantifications" to "quantif" rather than "quantifi" is a strange one. No stemming or lemmatization algorithm is perfect. Language is complex, and simple rule-based systems are bound to leave things out or make mistakes. Even so, stemming and lemmatization can be good ways to simplify the job when working with words.
+
 ### N-grams
 
-Words are great, but they do not stand alone. The sentence "20,000 is not so many words" contains the word "many". So we can conclude that the sentence is referring to a lot of something, right? Not so fast! Word-based tokenization misses the fact the more representative unit: "not so many". Because order creates meaning in language, it is often worthwhile to break texts into groups of a few words at a time, called n-grams. Groups of two words are called two-grams (or bigrams), groups of three words like "not so many" are called three-grams (or trigrams), and so on.
+Words, stems, and lemmas are great, but they do not stand alone. The sentence "20,000 is not so many words" contains the word "many." So we can conclude that the sentence is referring to a lot of something, right? Not so fast! Word-based tokenization misses the more representative unit: "not so many." Because order creates meaning in language, it is often worthwhile to break texts into groups of a few words at a time, called n-grams. Groups of two words are called two-grams (or bigrams), groups of three words like "not so many" are called three-grams (or trigrams), and so on.
 
 To get all of the two-grams and three-grams from our example text, we feed the "tokens" object we created already into the `tokens_ngrams()` function, and specify that we want groups of twos and threes with `n = c(2L, 3L)`.
 
@@ -48,7 +137,7 @@ ngrams
 
 ### Skipgrams
 
-Sometimes the most important combinations of words do not appear right next to each other. For example, it might be more useful to count occurrences of "not many" than it is to count occurrences of "not so many". We can do this by using skipgrams---n-grams of non-adjacent words. In Quanteda, we can do this again with the `tokens_ngrams()`, now adding the argument `skip = c(0L, 1L)` to specify that we want both immediately adjacent words (`0L`), and ones skipping one word in between (`1L`).
+Sometimes the most important combinations of words do not appear right next to each other. For example, it might be more useful to count occurrences of "not many" than it is to count occurrences of "not so many". We can do this by using skipgrams---n-grams of non-adjacent words. In Quanteda, we can do this again with the `tokens_ngrams()`, now adding the argument `skip = c(0L, 1L)` to specify that we want both tokens of immediately adjacent words (`0L`), and tokens that skip one word in between (`1L`).
 
 ```{r}
 skipgrams <- tokens_ngrams(tokens, n = c(2L, 3L), skip = c(0L, 1L))
@@ -65,7 +154,7 @@ char_tokens <- tokens("20,000 is not so many words",
 char_tokens
 ```
 
-Now we can create groupings of letters, called "shingles" in the same way that we made n-grams, with the `tokens_ngrams()` function.
+Now we can create groupings of letters, called "shingles," in the same way that we made n-grams, with the `tokens_ngrams()` function.
 
 ```{r}
 shingles <- tokens_ngrams(char_tokens, n = c(4L))
@@ -74,15 +163,15 @@ shingles
 
 ## Custom Preprocessing
 
-We have seen above that the `tokens()` function includes some basic preprocessing capabilities, for example `remove_punct` to remove punctuation. It also offers `remove_numbers`, `remove_symbols` (e.g. ▵, ⏱, ↤, $, ÷, ∬), and `remove_url` to remove URLs. Nevertheless, certain texts require more specific preprocessing steps. This can be achieved with the `stringr` package from the tidyverse, by modifying the raw text before turning it into a corpus object. For example, when working with texts from social media we might want to remove "RT" (a conventional indicator that the text was written by another person) with `text = str_replace(text, "RT ", "")` or user handles (used to refer to specific users) with `text = str_replace(text, '@\\w+:|@\\w+', " ")`, since neither of these are tokens that are relevant to the psychological quality of the text. In certain cases, we might be interested in counting user handles without regard to the specific user. In these cases, we might use `text = str_replace(text, '@\\w+:|@\\w+', "USER_TAG ")` so that all user tags get tokenized as "USER_TAG".
+We have seen above that the `tokens()` function includes some basic preprocessing capabilities, for example `remove_punct` to remove punctuation. It also offers `remove_numbers`, `remove_symbols` (e.g. ▵, ⏱, ↤, $, ÷, ∬), and `remove_url` to remove URLs. Nevertheless, certain texts require more specific preprocessing steps. This can be achieved with the `stringr` package from the tidyverse, by modifying the raw text before turning it into a corpus object. For example, when working with texts from social media we might want to remove "RT" (a conventional indicator that the text was written by another person) with `text = str_replace(text, "RT ", "")` or user handles (used to refer to specific users) with `text = str_replace(text, '@\\w+:|@\\w+', " ")`, since neither of these are tokens are relevant to the psychological quality of the text. In certain cases, we might be interested in counting user handles without regard for the specific user. In these cases, we might use `text = str_replace(text, '@\\w+:|@\\w+', "USER_TAG ")` so that all user tags get tokenized as "USER_TAG."
 
 ## Document-Feature Matrices (DFMs) {#sec-quanteda-dfms}
 
-Once we have a suitable tokens object, we can count how many times each token appears in each text. This will provide a basis for comparing those texts later on. Thinking about a text this way---as a collection of tokens with different frequencies---is often referred to as the **bag of words approach**. When using the bag of words approach, we ignore the order of the words. We imagine that each topic has its characteristic bag of words, and speaking or writing is just a matter of pulling them out of the bag one at a time at random. This assumption is obviously wrong, but it makes it possible to analyze text with straightforward quantitative methods. Often, this is a worthwhile trade off to make. As we advance to more and more complex methods in the coming chapters, we will find that many methods were designed to solve problems created by the overly simplistic bag of words approach.
+Once we have a suitable tokens object, we can count how many times each token appears in each text. This will provide a basis for comparing those texts later on. Thinking about a text this way---as a collection of tokens with different frequencies---is often referred to as the **bag of words approach**. When using the bag of words approach, we ignore the order of the words. We imagine that each topic has its characteristic bag of words, and speaking or writing is just a matter of pulling them out of the bag one at a time at random. This assumption is obviously wrong, but it makes it possible to analyze text with straightforward quantitative methods. Often, this is a worthwhile trade-off to make. As we advance to more and more complex methods in the coming chapters, we will find that many methods were designed to solve problems created by the overly simplistic bag of words approach.
 
-For now though, let's start with the basics. The way to represent the counts of each token (AKA "feature") in each document is with a **document-feature matrix (DFM)**. This is a table where each row is a document (i.e. a text in our corpus) and each column is a feature (usually a token). The cells can then contain counts of how many times a particular feature appears in a particular document.
+For now though, let's start with the basics. The way to represent the number of times each token appears in each document is with a **document-feature matrix (DFM)**. This is a table where each row is a document (i.e. a text in our corpus) and each column is a feature (usually a token). The cells can then contain counts of how many times a particular feature appears in a particular document.
 
-Creating DFMs in Quanteda is done with the `dfm()` function. By default, `dfm()` will also convert all text to lower case. 
+Creating DFMs in Quanteda is done with the `dfm()` function. By default, `dfm()` will also convert all text to lower case. In this default setting, "The" and "the" will register as two instances of the same token.
 
 ```{r}
 hippocorpus_dfm <- dfm(hippocorpus_tokens)

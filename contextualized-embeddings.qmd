@@ -7,9 +7,17 @@
 source("_common.R")
 ```
 
-### Hugging Face and the `text` Package
+## Hugging Face and the `text` Package
 
 @kjell_etal_2021
 
 @kjell_etal_2022
+
+## DDR
+
+## CCR
+
+@atari_etal_2023
+
+## Correlational Methods
 

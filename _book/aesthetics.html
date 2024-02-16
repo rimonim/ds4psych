@@ -271,14 +271,14 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./word-counting-improvements.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Improvements on Word Counts</span></span></a>
+  <a href="./dla.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dla.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span></a>
+  <a href="./word-counting-improvements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Improvements on Word Counts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -290,7 +290,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./decontextualized-embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Words Embeddings: Decontextualized Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -360,18 +360,16 @@ div.csl-indent {
 </div>
 <p>Let’s take a concrete example. <span class="citation" data-cites="eichstaedt_etal_2015">Eichstaedt et al. (<a href="#ref-eichstaedt_etal_2015" role="doc-biblioref">2015</a>)</span> collected Twitters posts from 935 U.S. counties, and counted the number of words related to positive emotions. This emotional measure could then be connected with known demographic measures of each county, such as race and average income.</p>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">twitter_counties</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; # A tibble: 6 × 5
-#&gt;   county   state income posEmotions maj                        
-#&gt;   &lt;chr&gt;    &lt;chr&gt;  &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;                      
-#&gt; 1 Autauga  AL     55165     0.00549 Majority Non-Black/Hispanic
-#&gt; 2 Baldwin  AL     50006     0.00670 Majority Non-Black/Hispanic
-#&gt; 3 Blount   AL     43450     0.00336 Majority Non-Black/Hispanic
-#&gt; 4 Butler   AL     29769     0.00407 Majority Non-Black/Hispanic
-#&gt; 5 Calhoun  AL     38473     0.00448 Majority Non-Black/Hispanic
-#&gt; 6 Chambers AL     30546     0.00523 Majority Non-Black/Hispanic</code></pre>
-</div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">twitter_counties</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span><span class="co">#&gt;   county   state income posEmotions maj                        </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;  &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;                      </span></span>
+<span><span class="co">#&gt; 1 Autauga  AL     55165     0.00549 Majority Non-Black/Hispanic</span></span>
+<span><span class="co">#&gt; 2 Baldwin  AL     50006     0.00670 Majority Non-Black/Hispanic</span></span>
+<span><span class="co">#&gt; 3 Blount   AL     43450     0.00336 Majority Non-Black/Hispanic</span></span>
+<span><span class="co">#&gt; 4 Butler   AL     29769     0.00407 Majority Non-Black/Hispanic</span></span>
+<span><span class="co">#&gt; 5 Calhoun  AL     38473     0.00448 Majority Non-Black/Hispanic</span></span>
+<span><span class="co">#&gt; 6 Chambers AL     30546     0.00523 Majority Non-Black/Hispanic</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>There are many ways to present this information graphically. Each choice emphasizes a different aspect of the data, and tells a different story.</p>
 <p>In the following visualization,</p>
@@ -384,7 +382,7 @@ div.csl-indent {
 <code>maj</code> (racial majority) is mapped to the color aesthetic</li>
 </ul>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/wurli/ggborderline">ggborderline</a></span><span class="op">)</span> <span class="co"># for making the lines pop</span></span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/wurli/ggborderline">ggborderline</a></span><span class="op">)</span> <span class="co"># for making the lines pop</span></span>
 <span></span>
 <span><span class="va">twitter_counties</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span></span>
@@ -447,7 +445,7 @@ div.csl-indent {
 <code>posEmotions</code> (positive emotions) is mapped to the “fill” color aesthetic</li>
 </ul>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">twitter_counties</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">twitter_counties</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="co"># hand-made bins (note the inconsistent bin width to </span></span>
 <span>  <span class="co"># give more space to the center of the distribution) </span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
@@ -512,7 +510,7 @@ div.csl-indent {
 <code>maj</code> (racial majority) is mapped to the “x” position aesthetic</li>
 </ul>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2023</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2023</span><span class="op">)</span></span>
 <span><span class="va">twitter_counties</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">maj</span>, <span class="va">income</span>, fill <span class="op">=</span> <span class="va">posEmotions</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="co"># sina plot</span></span>

@@ -252,14 +252,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./word-counting-improvements.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Improvements on Word Counts</span></span></a>
+  <a href="./dla.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dla.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span></a>
+  <a href="./word-counting-improvements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Improvements on Word Counts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -271,7 +271,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./decontextualized-embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Words Embeddings: Decontextualized Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -326,16 +326,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><p>For all analyses involving separating text into smaller units (e.g.&nbsp;words), this book will use the <strong>Quanteda</strong> family of packages. While it lacks some of the conceptual elegance of <a href="https://www.tidyverse.org">the tidyverse</a>, Quanteda is indispensable because of its scope and its efficiency—Quanteda functions are faster to write, faster to run, and applicable to a wider variety of uses than any other text analysis framework in R. Beyond the base <code>quanteda</code> package, Quanteda offers a plethora of specialized extensions, for example:</p>
+</header><p>For all analyses involving separating text into smaller units (e.g.&nbsp;words), this book will use the <strong>Quanteda</strong> family of packages. While it lacks some of the conceptual elegance of <a href="https://www.tidyverse.org">the tidyverse</a>, Quanteda is indispensable because of its scope and efficiency—Quanteda functions are faster to write, faster to run, and applicable to a wider variety of uses than any other text analysis framework in R. Beyond the base <code>quanteda</code> package, Quanteda offers a plethora of specialized extensions, for example:</p>
 <ul>
 <li>
 <code>quanteda.textstats</code>: Metrics for similarity, readability, lexical diversity, and more</li>
 <li>
 <code>quanteda.dictionaries</code>: Dictionaries for word counting applications</li>
 <li>
-<code>quanteda.sentiment</code>: Tools advanced dictionary-based sentiment analysis [see @#sec-word-counting-improvements]</li>
+<code>quanteda.sentiment</code>: Tools for advanced dictionary-based sentiment analysis (see <a href="word-counting-improvements.html"><span>Chapter&nbsp;16</span></a>)</li>
 </ul>
-<p>Quanteda is also well documented. See the <a href="https://tutorials.quanteda.io">quanteda tutorials webpage</a> for details on file formats and methods not covered in this book.</p>
+<p>Quanteda is also well documented. See the <a href="https://tutorials.quanteda.io">Quanteda tutorials webpage</a> for details on file formats and methods not covered in this book.</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://quanteda.io">quanteda</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -344,59 +344,54 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_df</span> <span class="op">&lt;-</span> <span class="fu">read_csv</span><span class="op">(</span><span class="st">"data/hippocorpus-u20220112/hcV3-stories.csv"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">select</span><span class="op">(</span><span class="va">AssignmentId</span>, <span class="va">story</span>, <span class="va">memType</span>, <span class="va">summary</span>, <span class="va">WorkerId</span>, </span>
-<span>         <span class="va">annotatorGender</span>, <span class="va">openness</span>, <span class="va">timeSinceEvent</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>#&gt; Rows: 6854 Columns: 23
-#&gt; ── Column specification ────────────────────────────────────────────────────────
-#&gt; Delimiter: ","
-#&gt; chr (12): AssignmentId, WorkerId, annotatorGender, annotatorRace, mainEvent,...
-#&gt; dbl (11): WorkTimeInSeconds, annotatorAge, distracted, draining, frequency, ...
-#&gt; 
-#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.
-#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<span>         <span class="va">annotatorGender</span>, <span class="va">openness</span>, <span class="va">timeSinceEvent</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Rows: 6854 Columns: 23</span></span>
+<span><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; Delimiter: ","</span></span>
+<span><span class="co">#&gt; chr (12): AssignmentId, WorkerId, annotatorGender, annotatorRace, mainEvent,...</span></span>
+<span><span class="co">#&gt; dbl (11): WorkTimeInSeconds, annotatorAge, distracted, draining, frequency, ...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">hippocorpus_df</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 8</span></span>
+<span><span class="co">#&gt;   AssignmentId           story memType summary WorkerId annotatorGender openness</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 32RIADZISTQWI5XIVG5BN… Conc… imagin… My boy… E9TY34YY man                 0   </span></span>
+<span><span class="co">#&gt; 2 3018Q3ZVOJCZJFDMPSFXA… The … recall… My boy… 237K2NI1 woman               1   </span></span>
+<span><span class="co">#&gt; 3 3IRIK4HM3B6UQBC0HI8Q5… It s… imagin… My sis… FK5QTANB woman               0.5 </span></span>
+<span><span class="co">#&gt; 4 3018Q3ZVOJCZJFDMPSFXA… Five… recall… My sis… UYOSBBRS woman               1   </span></span>
+<span><span class="co">#&gt; 5 3MTMREQS4W44RBU8OMP3X… Abou… imagin… It is … 34BFLNJV man                 0.25</span></span>
+<span><span class="co">#&gt; 6 3018Q3ZVOJCZJFDMPSFXA… Burn… recall… It is … L427B0E0 woman               1   </span></span>
+<span><span class="co">#&gt; # ℹ 1 more variable: timeSinceEvent &lt;dbl&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">hippocorpus_df</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; # A tibble: 6 × 8
-#&gt;   AssignmentId           story memType summary WorkerId annotatorGender openness
-#&gt;   &lt;chr&gt;                  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;
-#&gt; 1 32RIADZISTQWI5XIVG5BN… Conc… imagin… My boy… E9TY34YY man                 0   
-#&gt; 2 3018Q3ZVOJCZJFDMPSFXA… The … recall… My boy… 237K2NI1 woman               1   
-#&gt; 3 3IRIK4HM3B6UQBC0HI8Q5… It s… imagin… My sis… FK5QTANB woman               0.5 
-#&gt; 4 3018Q3ZVOJCZJFDMPSFXA… Five… recall… My sis… UYOSBBRS woman               1   
-#&gt; 5 3MTMREQS4W44RBU8OMP3X… Abou… imagin… It is … 34BFLNJV man                 0.25
-#&gt; 6 3018Q3ZVOJCZJFDMPSFXA… Burn… recall… It is … L427B0E0 woman               1   
-#&gt; # ℹ 1 more variable: timeSinceEvent &lt;dbl&gt;</code></pre>
-</div>
-</div>
-<p>To turn this into a corpus with the <code><a href="https://quanteda.io/reference/corpus.html">corpus()</a></code> constructor, specifying the text variable and a unique identifier by name. All other variables will automatically become <em>docvars</em>.</p>
+<p>To turn this into a corpus with the <code><a href="https://quanteda.io/reference/corpus.html">corpus()</a></code> constructor, specify the text variable and a unique identifier by name. All other variables will automatically become <em>docvars</em>.</p>
 <div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_corp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">hippocorpus_df</span>, </span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_corp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">hippocorpus_df</span>, </span>
 <span>                           docid_field <span class="op">=</span> <span class="st">"AssignmentId"</span>, </span>
 <span>                           text_field <span class="op">=</span> <span class="st">"story"</span><span class="op">)</span></span>
-<span><span class="va">hippocorpus_corp</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; Corpus consisting of 6,854 documents and 6 docvars.
-#&gt; 32RIADZISTQWI5XIVG5BN0VMYFRS4U :
-#&gt; "Concerts are my most favorite thing, and my boyfriend knew i..."
-#&gt; 
-#&gt; 3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 :
-#&gt; "The day started perfectly, with a great drive up to Denver f..."
-#&gt; 
-#&gt; 3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 :
-#&gt; "It seems just like yesterday but today makes five months ago..."
-#&gt; 
-#&gt; 3018Q3ZVOJCZJFDMPSFXATCQG04RAI :
-#&gt; "Five months ago, my niece and nephew were born.  They are my..."
-#&gt; 
-#&gt; 3MTMREQS4W44RBU8OMP3XSK8NMJAWZ :
-#&gt; "About a month ago I went to burning man. I was having a hard..."
-#&gt; 
-#&gt; 3018Q3ZVOJCZJFDMPSFXATCQG06AR3 :
-#&gt; "Burning Man metamorphoses was perfect. I am definitely still..."
-#&gt; 
-#&gt; [ reached max_ndoc ... 6,848 more documents ]</code></pre>
-</div>
+<span><span class="va">hippocorpus_corp</span></span>
+<span><span class="co">#&gt; Corpus consisting of 6,854 documents and 6 docvars.</span></span>
+<span><span class="co">#&gt; 32RIADZISTQWI5XIVG5BN0VMYFRS4U :</span></span>
+<span><span class="co">#&gt; "Concerts are my most favorite thing, and my boyfriend knew i..."</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; 3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 :</span></span>
+<span><span class="co">#&gt; "The day started perfectly, with a great drive up to Denver f..."</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; 3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 :</span></span>
+<span><span class="co">#&gt; "It seems just like yesterday but today makes five months ago..."</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; 3018Q3ZVOJCZJFDMPSFXATCQG04RAI :</span></span>
+<span><span class="co">#&gt; "Five months ago, my niece and nephew were born.  They are my..."</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; 3MTMREQS4W44RBU8OMP3XSK8NMJAWZ :</span></span>
+<span><span class="co">#&gt; "About a month ago I went to burning man. I was having a hard..."</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; 3018Q3ZVOJCZJFDMPSFXATCQG06AR3 :</span></span>
+<span><span class="co">#&gt; "Burning Man metamorphoses was perfect. I am definitely still..."</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [ reached max_ndoc ... 6,848 more documents ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 

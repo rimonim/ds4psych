@@ -11,7 +11,7 @@ In some cases, data are available for free on the internet, but the host does no
 
 ## Be Polite
 
-Often, scraping requires the code to visit many web pages. For example, say we wanted a list of poems by English poets, along with the birth dates of their authors. We might have the computer scrape the [list of English poets from the Poetry Foundation](https://www.poetryfoundation.org/poets/browse#page=1&sort_by=recently_added&region=175), which requires clicking through 17 pages of search results, and retrieve the author's birth date and the URL for each author's full list of poems. We could then have the computer visit each of those URLs and retrieve the URL for each individual poem by each author. Finally, the computer would visit each poem URL and retrieve the text of the poem. In all, this process might require visiting hundreds or even thousands of web pages.
+Each time you visit a website, the website's server must send the requested data to your computer. For normal web browsing by humans, this is not a problem. But often, scraping requires your code to visit many web pages. For example, say we wanted a list of poems by English poets, along with the birth dates of their authors. We might have the computer scrape the [list of English poets from the Poetry Foundation](https://www.poetryfoundation.org/poets/browse#page=1&sort_by=recently_added&region=175), which requires clicking through 17 pages of search results, and retrieve each author's birth date and the URL for each author's full list of poems. We could then have the computer visit each of those URLs and retrieve the URL for each individual poem by each author. Finally, the computer would visit each poem URL and retrieve the text of the poem. In all, this process might require visiting hundreds or even thousands of web pages.
 
 For the same reasons that APIs generally have rate limits ([@sec-apis]), web scraping algorithms should be polite---not, for example, requesting thousands of pages in the space of a few seconds. If you are not polite, you are likely to get banned as a bot.
 
@@ -21,7 +21,7 @@ To read more about web scraping etiquette and easy ways to implement it, see [th
 
 To give you a taste for what web scraping is like, we will give a simple example of scraping a single page.
 
-The page in this case will be [the blog reel of one the authors of this book, Louis](https://rimonim.github.io/blog.html).
+The page in this case will be [the blog reel of one of the authors of this book, Louis](https://rimonim.github.io/blog.html).
 
 ![](images/scraping1.png)
 
@@ -39,7 +39,7 @@ element names more easily, we recommend [SelectorGadget](https://rvest.tidyverse
 
 ![](images/scraping2.png)
 
-Now that we know that blog titles are called "h3.no-anchor.listing-title", we can extract those objects from the raw html using `html_elements()` and convert them to regular text using `html_text2()`.
+Now that we know that blog titles are called "h3.no-anchor.listing-title," we can extract those objects from the raw html using `html_elements()` and convert them to regular text using `html_text2()`.
 
 ```{r}
 post_titles <- html |> 
@@ -62,4 +62,4 @@ posts <- tibble(
 head(posts)
 ```
 
-This has been a very basic example. For a more in-depth tutorial on web scraping (including more complex examples), see [the relevant chapter in R for Data Science](https://r4ds.hadley.nz/webscraping).
+This is a very basic example. For a more in-depth tutorial on web scraping (including more complex examples), see [the relevant chapter in _R for Data Science_](https://r4ds.hadley.nz/webscraping).

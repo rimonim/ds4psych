@@ -5,7 +5,7 @@ library(tidyverse)
 knitr::opts_chunk$set(
   # tidy = TRUE,
   comment = "#>",
-  # collapse = TRUE,
+  collapse = TRUE,
   # cache = TRUE,
   fig.retina = 2,
   fig.width = 8

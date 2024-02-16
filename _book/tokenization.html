@@ -271,14 +271,14 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./word-counting-improvements.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Improvements on Word Counts</span></span></a>
+  <a href="./dla.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dla.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span></a>
+  <a href="./word-counting-improvements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Improvements on Word Counts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -290,7 +290,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./decontextualized-embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Words Embeddings: Decontextualized Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -335,9 +335,10 @@ div.csl-indent {
 <a href="#tokens" id="toc-tokens" class="nav-link active" data-scroll-target="#tokens"><span class="header-section-number">13.1</span> Tokens</a>
   <ul class="collapse">
 <li><a href="#words" id="toc-words" class="nav-link" data-scroll-target="#words"><span class="header-section-number">13.1.1</span> Words</a></li>
-  <li><a href="#n-grams" id="toc-n-grams" class="nav-link" data-scroll-target="#n-grams"><span class="header-section-number">13.1.2</span> N-grams</a></li>
-  <li><a href="#skipgrams" id="toc-skipgrams" class="nav-link" data-scroll-target="#skipgrams"><span class="header-section-number">13.1.3</span> Skipgrams</a></li>
-  <li><a href="#shingles" id="toc-shingles" class="nav-link" data-scroll-target="#shingles"><span class="header-section-number">13.1.4</span> Shingles</a></li>
+  <li><a href="#simplified-words-stems-and-lemmas" id="toc-simplified-words-stems-and-lemmas" class="nav-link" data-scroll-target="#simplified-words-stems-and-lemmas"><span class="header-section-number">13.1.2</span> Simplified Words: Stems and Lemmas</a></li>
+  <li><a href="#n-grams" id="toc-n-grams" class="nav-link" data-scroll-target="#n-grams"><span class="header-section-number">13.1.3</span> N-grams</a></li>
+  <li><a href="#skipgrams" id="toc-skipgrams" class="nav-link" data-scroll-target="#skipgrams"><span class="header-section-number">13.1.4</span> Skipgrams</a></li>
+  <li><a href="#shingles" id="toc-shingles" class="nav-link" data-scroll-target="#shingles"><span class="header-section-number">13.1.5</span> Shingles</a></li>
   </ul>
 </li>
   <li><a href="#custom-preprocessing" id="toc-custom-preprocessing" class="nav-link" data-scroll-target="#custom-preprocessing"><span class="header-section-number">13.2</span> Custom Preprocessing</a></li>
@@ -361,123 +362,167 @@ div.csl-indent {
 
 </header><section id="tokens" class="level2" data-number="13.1"><h2 data-number="13.1" class="anchored" data-anchor-id="tokens">
 <span class="header-section-number">13.1</span> Tokens</h2>
-<p>The first step in the process of turning texts into numbers is almost always <strong>tokenization</strong>. Tokenization means splitting a long text into smaller pieces, called <strong>tokens</strong>. Once we have these smaller pieces, we will be able to count them in texts and turn these counts into numeric representations of our texts. There are four main types of tokens: words, n-grams, skipgrams, and shingles.</p>
+<p>The first step in the process of turning texts into numbers is almost always <strong>tokenization</strong>. Tokenization means splitting a long text into smaller pieces, called <strong>tokens</strong>. Once we have these smaller pieces, we will be able to count how many times each one appears in a text and turn these counts into numeric representations of our texts. There are six main types of tokens: words, stems, lemmas, n-grams, skipgrams, and shingles.</p>
 <section id="words" class="level3" data-number="13.1.1"><h3 data-number="13.1.1" class="anchored" data-anchor-id="words">
 <span class="header-section-number">13.1.1</span> Words</h3>
 <p>Words are the obvious choice for tokens. The number of possible English sentences is infinite, but the number of possible English words is much smaller—only about 20,000 <span class="citation" data-cites="hellman_2011">(<a href="#ref-hellman_2011" role="doc-biblioref">Hellman, 2011</a>)</span>. Words are especially useful for English, since English words usually do not change their form depending on their place in a sentence, and they are nearly always separated by a space. Separating an English text into words is therefore as simple as splitting it at every space character. This is essentially the default behavior of the Quanteda <code>tokens()</code> function, which takes a character vector or corpus and returns a “tokens” object:</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tokens</span> <span class="op">&lt;-</span> <span class="fu">tokens</span><span class="op">(</span><span class="st">"20,000 is not so many words"</span><span class="op">)</span></span>
-<span><span class="va">tokens</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; Tokens consisting of 1 document.
-#&gt; text1 :
-#&gt; [1] "20,000" "is"     "not"    "so"     "many"   "words"</code></pre>
-</div>
+<span><span class="va">tokens</span></span>
+<span><span class="co">#&gt; Tokens consisting of 1 document.</span></span>
+<span><span class="co">#&gt; text1 :</span></span>
+<span><span class="co">#&gt; [1] "20,000" "is"     "not"    "so"     "many"   "words"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can likewise perform word-based tokenization for the entire corpus that we created in <a href="quanteda.html"><span>Chapter&nbsp;12</span></a>. To remove punctuation before doing so, we can add <code>remove_punct = TRUE</code>.</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_tokens</span> <span class="op">&lt;-</span> <span class="fu">tokens</span><span class="op">(</span><span class="va">hippocorpus_corp</span>,</span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_tokens</span> <span class="op">&lt;-</span> <span class="fu">tokens</span><span class="op">(</span><span class="va">hippocorpus_corp</span>,</span>
 <span>                             remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">hippocorpus_tokens</span>, <span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; Tokens consisting of 3 documents and 6 docvars.
-#&gt; 32RIADZISTQWI5XIVG5BN0VMYFRS4U :
-#&gt;  [1] "Concerts"  "are"       "my"        "most"      "favorite"  "thing"    
-#&gt;  [7] "and"       "my"        "boyfriend" "knew"      "it"        "That's"   
-#&gt; [ ... and 191 more ]
-#&gt; 
-#&gt; 3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 :
-#&gt;  [1] "The"       "day"       "started"   "perfectly" "with"      "a"        
-#&gt;  [7] "great"     "drive"     "up"        "to"        "Denver"    "for"      
-#&gt; [ ... and 171 more ]
-#&gt; 
-#&gt; 3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 :
-#&gt;  [1] "It"        "seems"     "just"      "like"      "yesterday" "but"      
-#&gt;  [7] "today"     "makes"     "five"      "months"    "ago"       "it"       
-#&gt; [ ... and 254 more ]</code></pre>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">hippocorpus_tokens</span>, <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Tokens consisting of 3 documents and 6 docvars.</span></span>
+<span><span class="co">#&gt; 32RIADZISTQWI5XIVG5BN0VMYFRS4U :</span></span>
+<span><span class="co">#&gt;  [1] "Concerts"  "are"       "my"        "most"      "favorite"  "thing"    </span></span>
+<span><span class="co">#&gt;  [7] "and"       "my"        "boyfriend" "knew"      "it"        "That's"   </span></span>
+<span><span class="co">#&gt; [ ... and 191 more ]</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; 3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 :</span></span>
+<span><span class="co">#&gt;  [1] "The"       "day"       "started"   "perfectly" "with"      "a"        </span></span>
+<span><span class="co">#&gt;  [7] "great"     "drive"     "up"        "to"        "Denver"    "for"      </span></span>
+<span><span class="co">#&gt; [ ... and 171 more ]</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; 3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 :</span></span>
+<span><span class="co">#&gt;  [1] "It"        "seems"     "just"      "like"      "yesterday" "but"      </span></span>
+<span><span class="co">#&gt;  [7] "today"     "makes"     "five"      "months"    "ago"       "it"       </span></span>
+<span><span class="co">#&gt; [ ... and 254 more ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="simplified-words-stems-and-lemmas" class="level3" data-number="13.1.2"><h3 data-number="13.1.2" class="anchored" data-anchor-id="simplified-words-stems-and-lemmas">
+<span class="header-section-number">13.1.2</span> Simplified Words: Stems and Lemmas</h3>
+<p>Are “quantify” and “quantified” the same word? What about “quantification”? Treating every new spelling as a separate word can add unnecessary complexity to analysis. It is often useful to have some way cut away the grammatical aspects of words, leaving only their core, canonical form. Stemming and lemmatization are two ways to do this.</p>
+<p>In <strong>stemming</strong>, we chop off prefixes and suffixes from either side of each word, leaving only the “stem”. For example, “quantify” and “quantified” would both be chopped down to “quantif.”</p>
+<p>We can stem our Hippocorpus tokens with Quanteda’s <code>tokens_wordstem()</code> function. This function uses an updated version of the classic algorithm developed by <span class="citation" data-cites="porter_1980">Porter (<a href="#ref-porter_1980" role="doc-biblioref">1980</a>)</span>. The algorithm was carefully designed to remove common suffixes (e.g.&nbsp;“-ic”, “-ate”, “-s”) without cutting off too much (e.g.&nbsp;“generic” and “generate” should register as different stems).</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_stems</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_tokens</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">tokens_wordstem</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">hippocorpus_stems</span>, <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Tokens consisting of 3 documents and 6 docvars.</span></span>
+<span><span class="co">#&gt; 32RIADZISTQWI5XIVG5BN0VMYFRS4U :</span></span>
+<span><span class="co">#&gt;  [1] "Concert"   "are"       "my"        "most"      "favorit"   "thing"    </span></span>
+<span><span class="co">#&gt;  [7] "and"       "my"        "boyfriend" "knew"      "it"        "That"     </span></span>
+<span><span class="co">#&gt; [ ... and 191 more ]</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; 3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 :</span></span>
+<span><span class="co">#&gt;  [1] "The"     "day"     "start"   "perfect" "with"    "a"       "great"  </span></span>
+<span><span class="co">#&gt;  [8] "drive"   "up"      "to"      "Denver"  "for"    </span></span>
+<span><span class="co">#&gt; [ ... and 171 more ]</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; 3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 :</span></span>
+<span><span class="co">#&gt;  [1] "It"        "seem"      "just"      "like"      "yesterday" "but"      </span></span>
+<span><span class="co">#&gt;  [7] "today"     "make"      "five"      "month"     "ago"       "it"       </span></span>
+<span><span class="co">#&gt; [ ... and 254 more ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Notice that “Concerts” has changed to “Concert”, “favorite” has changed to “favorit”, and “That’s” has changed to “That”.</p>
+<p><strong>Lemmatization</strong> takes a slightly different approach. Rather than chopping off prefixes and suffixes, lemmatization uses a lookup table to replace variants of words with the version that you might find in a dictionary. For example, “quantified” would become “quantify”. This canonical form is called a lemma.</p>
+<p>We can lemmatize our Hippocorpus tokens using the <code>lexicon</code> package’s <code>hash_lemmas</code> lemmatization list and Quanteda’s <code>tokens_replace()</code> function.</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_lemmas</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_tokens</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">tokens_replace</span><span class="op">(</span>pattern <span class="op">=</span> <span class="fu">lexicon</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/lexicon/man/hash_lemmas.html">hash_lemmas</a></span><span class="op">$</span><span class="va">token</span>, </span>
+<span>                 replacement <span class="op">=</span> <span class="fu">lexicon</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/lexicon/man/hash_lemmas.html">hash_lemmas</a></span><span class="op">$</span><span class="va">lemma</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">hippocorpus_lemmas</span>, <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Tokens consisting of 3 documents and 6 docvars.</span></span>
+<span><span class="co">#&gt; 32RIADZISTQWI5XIVG5BN0VMYFRS4U :</span></span>
+<span><span class="co">#&gt;  [1] "concert"   "be"        "my"        "much"      "favorite"  "thing"    </span></span>
+<span><span class="co">#&gt;  [7] "and"       "my"        "boyfriend" "know"      "it"        "That's"   </span></span>
+<span><span class="co">#&gt; [ ... and 191 more ]</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; 3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 :</span></span>
+<span><span class="co">#&gt;  [1] "The"       "day"       "start"     "perfectly" "with"      "a"        </span></span>
+<span><span class="co">#&gt;  [7] "great"     "drive"     "up"        "to"        "Denver"    "for"      </span></span>
+<span><span class="co">#&gt; [ ... and 171 more ]</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; 3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 :</span></span>
+<span><span class="co">#&gt;  [1] "It"        "seem"      "just"      "like"      "yesterday" "but"      </span></span>
+<span><span class="co">#&gt;  [7] "today"     "make"      "five"      "month"     "ago"       "it"       </span></span>
+<span><span class="co">#&gt; [ ... and 254 more ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Notice that “are” has changed to “be” and “started” has changed to “start”. Notice also that “That’s” has not changed at all. This is because it does not appear in the lookup table we are using.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="tokenization_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
-</section><section id="n-grams" class="level3" data-number="13.1.2"><h3 data-number="13.1.2" class="anchored" data-anchor-id="n-grams">
-<span class="header-section-number">13.1.2</span> N-grams</h3>
-<p>Words are great, but they do not stand alone. The sentence “20,000 is not so many words” contains the word “many”. So we can conclude that the sentence is referring to a lot of something, right? Not so fast! Word-based tokenization misses the fact the more representative unit: “not so many”. Because order creates meaning in language, it is often worthwhile to break texts into groups of a few words at a time, called n-grams. Groups of two words are called two-grams (or bigrams), groups of three words like “not so many” are called three-grams (or trigrams), and so on.</p>
+<p>The Porter algorithm’s choice to stem “quantifications” to “quantif” rather than “quantifi” is a strange one. No stemming or lemmatization algorithm is perfect. Language is complex, and simple rule-based systems are bound to leave things out or make mistakes. Even so, stemming and lemmatization can be good ways to simplify the job when working with words.</p>
+</section><section id="n-grams" class="level3" data-number="13.1.3"><h3 data-number="13.1.3" class="anchored" data-anchor-id="n-grams">
+<span class="header-section-number">13.1.3</span> N-grams</h3>
+<p>Words, stems, and lemmas are great, but they do not stand alone. The sentence “20,000 is not so many words” contains the word “many.” So we can conclude that the sentence is referring to a lot of something, right? Not so fast! Word-based tokenization misses the more representative unit: “not so many.” Because order creates meaning in language, it is often worthwhile to break texts into groups of a few words at a time, called n-grams. Groups of two words are called two-grams (or bigrams), groups of three words like “not so many” are called three-grams (or trigrams), and so on.</p>
 <p>To get all of the two-grams and three-grams from our example text, we feed the “tokens” object we created already into the <code>tokens_ngrams()</code> function, and specify that we want groups of twos and threes with <code>n = c(2L, 3L)</code>.</p>
 <div class="cell">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ngrams</span> <span class="op">&lt;-</span> <span class="fu">tokens_ngrams</span><span class="op">(</span><span class="va">tokens</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2L</span>, <span class="fl">3L</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">ngrams</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; Tokens consisting of 1 document.
-#&gt; text1 :
-#&gt; [1] "20,000_is"     "is_not"        "not_so"        "so_many"      
-#&gt; [5] "many_words"    "20,000_is_not" "is_not_so"     "not_so_many"  
-#&gt; [9] "so_many_words"</code></pre>
+<span><span class="va">ngrams</span></span>
+<span><span class="co">#&gt; Tokens consisting of 1 document.</span></span>
+<span><span class="co">#&gt; text1 :</span></span>
+<span><span class="co">#&gt; [1] "20,000_is"     "is_not"        "not_so"        "so_many"      </span></span>
+<span><span class="co">#&gt; [5] "many_words"    "20,000_is_not" "is_not_so"     "not_so_many"  </span></span>
+<span><span class="co">#&gt; [9] "so_many_words"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-</section><section id="skipgrams" class="level3" data-number="13.1.3"><h3 data-number="13.1.3" class="anchored" data-anchor-id="skipgrams">
-<span class="header-section-number">13.1.3</span> Skipgrams</h3>
-<p>Sometimes the most important combinations of words do not appear right next to each other. For example, it might be more useful to count occurrences of “not many” than it is to count occurrences of “not so many”. We can do this by using skipgrams—n-grams of non-adjacent words. In Quanteda, we can do this again with the <code>tokens_ngrams()</code>, now adding the argument <code>skip = c(0L, 1L)</code> to specify that we want both immediately adjacent words (<code>0L</code>), and ones skipping one word in between (<code>1L</code>).</p>
+</section><section id="skipgrams" class="level3" data-number="13.1.4"><h3 data-number="13.1.4" class="anchored" data-anchor-id="skipgrams">
+<span class="header-section-number">13.1.4</span> Skipgrams</h3>
+<p>Sometimes the most important combinations of words do not appear right next to each other. For example, it might be more useful to count occurrences of “not many” than it is to count occurrences of “not so many”. We can do this by using skipgrams—n-grams of non-adjacent words. In Quanteda, we can do this again with the <code>tokens_ngrams()</code>, now adding the argument <code>skip = c(0L, 1L)</code> to specify that we want both tokens of immediately adjacent words (<code>0L</code>), and tokens that skip one word in between (<code>1L</code>).</p>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">skipgrams</span> <span class="op">&lt;-</span> <span class="fu">tokens_ngrams</span><span class="op">(</span><span class="va">tokens</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2L</span>, <span class="fl">3L</span><span class="op">)</span>, skip <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0L</span>, <span class="fl">1L</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">skipgrams</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; Tokens consisting of 1 document.
-#&gt; text1 :
-#&gt;  [1] "20,000_is"     "20,000_not"    "is_not"        "is_so"        
-#&gt;  [5] "not_so"        "not_many"      "so_many"       "so_words"     
-#&gt;  [9] "many_words"    "20,000_is_not" "20,000_is_so"  "20,000_not_so"
-#&gt; [ ... and 9 more ]</code></pre>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">skipgrams</span> <span class="op">&lt;-</span> <span class="fu">tokens_ngrams</span><span class="op">(</span><span class="va">tokens</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2L</span>, <span class="fl">3L</span><span class="op">)</span>, skip <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0L</span>, <span class="fl">1L</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">skipgrams</span></span>
+<span><span class="co">#&gt; Tokens consisting of 1 document.</span></span>
+<span><span class="co">#&gt; text1 :</span></span>
+<span><span class="co">#&gt;  [1] "20,000_is"     "20,000_not"    "is_not"        "is_so"        </span></span>
+<span><span class="co">#&gt;  [5] "not_so"        "not_many"      "so_many"       "so_words"     </span></span>
+<span><span class="co">#&gt;  [9] "many_words"    "20,000_is_not" "20,000_is_so"  "20,000_not_so"</span></span>
+<span><span class="co">#&gt; [ ... and 9 more ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-</section><section id="shingles" class="level3" data-number="13.1.4"><h3 data-number="13.1.4" class="anchored" data-anchor-id="shingles">
-<span class="header-section-number">13.1.4</span> Shingles</h3>
+</section><section id="shingles" class="level3" data-number="13.1.5"><h3 data-number="13.1.5" class="anchored" data-anchor-id="shingles">
+<span class="header-section-number">13.1.5</span> Shingles</h3>
 <p>Sometimes even individual words are too coarse. For example, the fact that our sentence contains “20,000” might be too specific to be informative, but it might be useful to know that the sentence contains “,000”, which more generally signifies big, round numbers. To get tokens like this, we need to start back at the beginning, this time separating our text into individual characters.</p>
 <div class="cell">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">char_tokens</span> <span class="op">&lt;-</span> <span class="fu">tokens</span><span class="op">(</span><span class="st">"20,000 is not so many words"</span>, </span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">char_tokens</span> <span class="op">&lt;-</span> <span class="fu">tokens</span><span class="op">(</span><span class="st">"20,000 is not so many words"</span>, </span>
 <span>                      what <span class="op">=</span> <span class="st">"character"</span><span class="op">)</span></span>
-<span><span class="va">char_tokens</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; Tokens consisting of 1 document.
-#&gt; text1 :
-#&gt;  [1] "2" "0" "," "0" "0" "0" "i" "s" "n" "o" "t" "s"
-#&gt; [ ... and 10 more ]</code></pre>
+<span><span class="va">char_tokens</span></span>
+<span><span class="co">#&gt; Tokens consisting of 1 document.</span></span>
+<span><span class="co">#&gt; text1 :</span></span>
+<span><span class="co">#&gt;  [1] "2" "0" "," "0" "0" "0" "i" "s" "n" "o" "t" "s"</span></span>
+<span><span class="co">#&gt; [ ... and 10 more ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<p>Now we can create groupings of letters, called “shingles” in the same way that we made n-grams, with the <code>tokens_ngrams()</code> function.</p>
+<p>Now we can create groupings of letters, called “shingles,” in the same way that we made n-grams, with the <code>tokens_ngrams()</code> function.</p>
 <div class="cell">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">shingles</span> <span class="op">&lt;-</span> <span class="fu">tokens_ngrams</span><span class="op">(</span><span class="va">char_tokens</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4L</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">shingles</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; Tokens consisting of 1 document.
-#&gt; text1 :
-#&gt;  [1] "2_0_,_0" "0_,_0_0" ",_0_0_0" "0_0_0_i" "0_0_i_s" "0_i_s_n" "i_s_n_o"
-#&gt;  [8] "s_n_o_t" "n_o_t_s" "o_t_s_o" "t_s_o_m" "s_o_m_a"
-#&gt; [ ... and 7 more ]</code></pre>
-</div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">shingles</span> <span class="op">&lt;-</span> <span class="fu">tokens_ngrams</span><span class="op">(</span><span class="va">char_tokens</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4L</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">shingles</span></span>
+<span><span class="co">#&gt; Tokens consisting of 1 document.</span></span>
+<span><span class="co">#&gt; text1 :</span></span>
+<span><span class="co">#&gt;  [1] "2_0_,_0" "0_,_0_0" ",_0_0_0" "0_0_0_i" "0_0_i_s" "0_i_s_n" "i_s_n_o"</span></span>
+<span><span class="co">#&gt;  [8] "s_n_o_t" "n_o_t_s" "o_t_s_o" "t_s_o_m" "s_o_m_a"</span></span>
+<span><span class="co">#&gt; [ ... and 7 more ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section><section id="custom-preprocessing" class="level2" data-number="13.2"><h2 data-number="13.2" class="anchored" data-anchor-id="custom-preprocessing">
 <span class="header-section-number">13.2</span> Custom Preprocessing</h2>
-<p>We have seen above that the <code>tokens()</code> function includes some basic preprocessing capabilities, for example <code>remove_punct</code> to remove punctuation. It also offers <code>remove_numbers</code>, <code>remove_symbols</code> (e.g.&nbsp;▵, ⏱, ↤, $, ÷, ∬), and <code>remove_url</code> to remove URLs. Nevertheless, certain texts require more specific preprocessing steps. This can be achieved with the <code>stringr</code> package from the tidyverse, by modifying the raw text before turning it into a corpus object. For example, when working with texts from social media we might want to remove “RT” (a conventional indicator that the text was written by another person) with <code>text = str_replace(text, "RT ", "")</code> or user handles (used to refer to specific users) with <code>text = str_replace(text, '@\\w+:|@\\w+', " ")</code>, since neither of these are tokens that are relevant to the psychological quality of the text. In certain cases, we might be interested in counting user handles without regard to the specific user. In these cases, we might use <code>text = str_replace(text, '@\\w+:|@\\w+', "USER_TAG ")</code> so that all user tags get tokenized as “USER_TAG”.</p>
+<p>We have seen above that the <code>tokens()</code> function includes some basic preprocessing capabilities, for example <code>remove_punct</code> to remove punctuation. It also offers <code>remove_numbers</code>, <code>remove_symbols</code> (e.g.&nbsp;▵, ⏱, ↤, $, ÷, ∬), and <code>remove_url</code> to remove URLs. Nevertheless, certain texts require more specific preprocessing steps. This can be achieved with the <code>stringr</code> package from the tidyverse, by modifying the raw text before turning it into a corpus object. For example, when working with texts from social media we might want to remove “RT” (a conventional indicator that the text was written by another person) with <code>text = str_replace(text, "RT ", "")</code> or user handles (used to refer to specific users) with <code>text = str_replace(text, '@\\w+:|@\\w+', " ")</code>, since neither of these are tokens are relevant to the psychological quality of the text. In certain cases, we might be interested in counting user handles without regard for the specific user. In these cases, we might use <code>text = str_replace(text, '@\\w+:|@\\w+', "USER_TAG ")</code> so that all user tags get tokenized as “USER_TAG.”</p>
 </section><section id="sec-quanteda-dfms" class="level2" data-number="13.3"><h2 data-number="13.3" class="anchored" data-anchor-id="sec-quanteda-dfms">
 <span class="header-section-number">13.3</span> Document-Feature Matrices (DFMs)</h2>
-<p>Once we have a suitable tokens object, we can count how many times each token appears in each text. This will provide a basis for comparing those texts later on. Thinking about a text this way—as a collection of tokens with different frequencies—is often referred to as the <strong>bag of words approach</strong>. When using the bag of words approach, we ignore the order of the words. We imagine that each topic has its characteristic bag of words, and speaking or writing is just a matter of pulling them out of the bag one at a time at random. This assumption is obviously wrong, but it makes it possible to analyze text with straightforward quantitative methods. Often, this is a worthwhile trade off to make. As we advance to more and more complex methods in the coming chapters, we will find that many methods were designed to solve problems created by the overly simplistic bag of words approach.</p>
-<p>For now though, let’s start with the basics. The way to represent the counts of each token (AKA “feature”) in each document is with a <strong>document-feature matrix (DFM)</strong>. This is a table where each row is a document (i.e.&nbsp;a text in our corpus) and each column is a feature (usually a token). The cells can then contain counts of how many times a particular feature appears in a particular document.</p>
-<p>Creating DFMs in Quanteda is done with the <code>dfm()</code> function. By default, <code>dfm()</code> will also convert all text to lower case.</p>
+<p>Once we have a suitable tokens object, we can count how many times each token appears in each text. This will provide a basis for comparing those texts later on. Thinking about a text this way—as a collection of tokens with different frequencies—is often referred to as the <strong>bag of words approach</strong>. When using the bag of words approach, we ignore the order of the words. We imagine that each topic has its characteristic bag of words, and speaking or writing is just a matter of pulling them out of the bag one at a time at random. This assumption is obviously wrong, but it makes it possible to analyze text with straightforward quantitative methods. Often, this is a worthwhile trade-off to make. As we advance to more and more complex methods in the coming chapters, we will find that many methods were designed to solve problems created by the overly simplistic bag of words approach.</p>
+<p>For now though, let’s start with the basics. The way to represent the number of times each token appears in each document is with a <strong>document-feature matrix (DFM)</strong>. This is a table where each row is a document (i.e.&nbsp;a text in our corpus) and each column is a feature (usually a token). The cells can then contain counts of how many times a particular feature appears in a particular document.</p>
+<p>Creating DFMs in Quanteda is done with the <code>dfm()</code> function. By default, <code>dfm()</code> will also convert all text to lower case. In this default setting, “The” and “the” will register as two instances of the same token.</p>
 <div class="cell">
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_dfm</span> <span class="op">&lt;-</span> <span class="fu">dfm</span><span class="op">(</span><span class="va">hippocorpus_tokens</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">hippocorpus_dfm</span>, <span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; Document-feature matrix of: 3 documents, 27,906 features (99.58% sparse) and 6 docvars.
-#&gt;                                 features
-#&gt; docs                             concerts are my most favorite thing and
-#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U        1   1  5    1        2     1  11
-#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2        0   0  5    0        0     0  10
-#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61        0   0 10    3        0     1   6
-#&gt;                                 features
-#&gt; docs                             boyfriend knew it
-#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U         2    3  3
-#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2         1    0  2
-#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61         0    0  6
-#&gt; [ reached max_nfeat ... 27,896 more features ]</code></pre>
-</div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_dfm</span> <span class="op">&lt;-</span> <span class="fu">dfm</span><span class="op">(</span><span class="va">hippocorpus_tokens</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">hippocorpus_dfm</span>, <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Document-feature matrix of: 3 documents, 27,906 features (99.58% sparse) and 6 docvars.</span></span>
+<span><span class="co">#&gt;                                 features</span></span>
+<span><span class="co">#&gt; docs                             concerts are my most favorite thing and</span></span>
+<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U        1   1  5    1        2     1  11</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2        0   0  5    0        0     0  10</span></span>
+<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61        0   0 10    3        0     1   6</span></span>
+<span><span class="co">#&gt;                                 features</span></span>
+<span><span class="co">#&gt; docs                             boyfriend knew it</span></span>
+<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U         2    3  3</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2         1    0  2</span></span>
+<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61         0    0  6</span></span>
+<span><span class="co">#&gt; [ reached max_nfeat ... 27,896 more features ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Congratulations! You have turned texts into numbers! Now how do we use these numbers to measure psychological constructs?</p>
 <hr>
@@ -486,6 +531,9 @@ div.csl-indent {
 <div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
 <div id="ref-hellman_2011" class="csl-entry" role="listitem">
 Hellman, A. B. (2011). Vocabulary size and depth of word knowledge in adult-onset second language acquisition. <em>International Journal of Applied Linguistics</em>, <em>21</em>(2), 162–182.
+</div>
+<div id="ref-porter_1980" class="csl-entry" role="listitem">
+Porter, M. F. (1980). An algorithm for suffix stripping. <em>Program</em>, <em>14</em>(3), 130–137.
 </div>
 </div>
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">

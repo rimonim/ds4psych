@@ -1,16 +1,51 @@
 # Improvements on Word Counts {#sec-word-counting-improvements}
 
-## Polarity
+Fixing BOW
 
-See https://github.com/trinker/sentimentr
+## Text Normalization
 
-@plutchik_1962 argues that the opposite of surprise is anticipation
+Punctuation? 
+Capitalization? 
+Occurrence threshold (e.g. remove tokens used by less than 1% of participants)
 
-```{r}
-quanteda.sentiment::data_dictionary_NRC$anticipation
-quanteda.sentiment::data_dictionary_NRC$surprise
-```
+### Removing Stop Words
 
-## Norms
+the forms in which people choose to write a word are often predictive of their personality 
+neurotic people tend to use more first-person singulars, extraverts use longer words (Mehl et al., 2006; Schwartz et al., 2013)
+new links such as neurotics using more acronyms (Holtgraves, 2011)
+those high in openness using more quotations (Sumner et al., 2011) 
+Articles are highly predictive of males, being older, and openness (Schwartz et al., 2013)
 
-Called "Valence" in `quanteda.sentiment`
+## Binary (boolean) Tokenization
+
+
+
+## Relative Tokenization:
+
+Simple fraction of full token count (tf)
+
+@pennebaker_etal_1999
+
+Golder & Macy (2011) collected messages from all Twitter user accounts (~2.4 million) created between February 2008 and April 2009, and measured positive and negative affect as proportion of in-dictionary (from LIWC) words to full words. This calculation was done by hour of the day, day of the week, and months of the year, revealing fluctuations in mood in line with circadian rhythms and seasonal changes.
+
+Advantages/Disadvantages: If longer documents are longer because of verbosity, document length normalization makes sense. But if they are long because they cover multiple topics, such normalization will dilute true occurrences of the topic.
+
+## Good-Turing Frequency Estimation
+
+
+
+## TF-IDF
+
+Advantages: tf-idf works because BOW is not true. If all documents were just bags of words, the frequency within documents would be distributed similarly to the frequency between documents (e.g. since the 2-gram “verbal reasoning” occurs in very few tweets, you would expect the probability of it occurring twice in the same document to be near-impossible) actually, it wouldn’t be surprising to see “verbal reasoning” even 3 times in the same tweet if that tweet were discussing verbal reasoning. Weighting by IDF therefore provides a measure of how topical the token is in the document.
+Disadvantages: Operating on an assumption that less frequent tokens are less relevant to the construct in question. For semantics this is largely true, but for latent psychological constructs it may not be.
+
+## Machine Learning Approaches
+
+@giuntini_etal_2020 review
+
+In some cases (in which both natural language and questionnaire data exists for participants), statistical models based on word counts can be trained to predict questionnaire results and then generalized to unlabeled data.
+
+Zamani et al. (2018) extracted tf-idf (within-user) weighted n-grams, boolean n-grams, and LDA topics from Facebook status updates, subjected them to a dimensionality reduction process, and used the resulting features to train a ridge regression model to predict questionnaire-based measures of trustfulness  (from myPersonality - see Chapter 2).
+
+Note that tf is roughly poisson distributed, so an Anscombe transformation may be appropriate in some cases
+

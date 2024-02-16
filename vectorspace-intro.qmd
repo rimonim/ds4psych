@@ -242,3 +242,7 @@ $$
 $$
 Cosine(A,B) = \frac{A \cdot B}{|A||B|} = \frac{\sum _{i=1}^{n}  A_{i}B_{i}}{\sqrt {\sum _{i=1}^{n} A_{i}^2} \cdot \sqrt {\sum _{i=1}^{n} B_{i}^2}}
 $$
+
+## Word Counts as Vector Space
+
+@ireland_pennebaker_2010

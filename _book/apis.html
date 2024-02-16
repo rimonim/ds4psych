@@ -271,14 +271,14 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./word-counting-improvements.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Improvements on Word Counts</span></span></a>
+  <a href="./dla.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dla.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span></a>
+  <a href="./word-counting-improvements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Improvements on Word Counts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -290,7 +290,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./decontextualized-embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Word Embeddings: Decontextualized Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Words Embeddings: Decontextualized Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -432,7 +432,7 @@ div.csl-indent {
 <p>Reddit data are not representative samples of the global population. They are not even representative samples of Reddit users. This is partly due to the dynamics of the Reddit ranking algorithm, which gives precedent to viral content. The details of the algorithm are <a href="https://medium.com/hacking-and-gonzo/how-reddit-ranking-algorithms-work-ef111e33d0d9">no longer public</a>, but it is largely based on “upvotes” and “downvotes” from the community, and probably also incorporates the time since posting. The ranking system for comments is almost certainly different from the ranking system for posts. Reddit also has a “Karma” system, by which users who post popular content get subsequent content boosted. This creates an incentive system which is <a href="https://www.reddit.com/r/ModSupport/comments/162p502/why_is_reddit_doing_nothing_to_handle_the_obvious/">sometimes exploited by the advertising industry</a>. The bottom line: <strong>Reddit posts are disproportionately viral</strong>. To partially counteract this when gathering Reddit data, set the API to sort by recency (<code>sort = "new"</code>) rather than the default, “best” (<a href="#sec-reddit-threads"><span>Section&nbsp;9.2.3</span></a>).</p>
 </section><section id="communities" class="level3" data-number="9.2.2"><h3 data-number="9.2.2" class="anchored" data-anchor-id="communities">
 <span class="header-section-number">9.2.2</span> Communities</h3>
-<p>To gather retrieve the posts from a Reddit community, call <code>Authenticate("reddit")</code> followed by <code><a href="https://rdrr.io/pkg/vosonSML/man/Collect.html">Collect()</a></code> with <code>endpoint = "listing"</code>. To specify the particular community (or communities) in which you are interested, use the <code>subreddits</code> parameter. For example, the following code retrieves the 20 most recent posts from r/RedditAPIAdvocacy, a subreddit devoted to fighting restriction of the Reddit API.</p>
+<p>To retrieve the posts from a Reddit community, call <code>Authenticate("reddit")</code> followed by <code><a href="https://rdrr.io/pkg/vosonSML/man/Collect.html">Collect()</a></code> with <code>endpoint = "listing"</code>. To specify the particular community (or communities) in which you are interested, use the <code>subreddits</code> parameter. For example, the following code retrieves the 20 most recent posts from r/RedditAPIAdvocacy, a subreddit devoted to fighting restriction of the Reddit API.</p>
 <div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">APIAdvocacy_posts</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/vosonSML/man/Authenticate.html">Authenticate</a></span><span class="op">(</span><span class="st">"reddit"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -443,46 +443,31 @@ div.csl-indent {
 <span>    period <span class="op">=</span> <span class="st">"all"</span>, <span class="co"># all time</span></span>
 <span>    max <span class="op">=</span> <span class="fl">20</span>,       <span class="co"># 20 most recent posts</span></span>
 <span>    verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span>    <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>#&gt; Collecting thread listing for subreddits...</code></pre>
+<span>    <span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">APIAdvocacy_posts</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 4 × 111</span></span>
+<span><span class="co">#&gt;   approved_at_utc subreddit      selftext author_fullname saved mod_reason_title</span></span>
+<span><span class="co">#&gt;   &lt;lgl&gt;           &lt;chr&gt;          &lt;chr&gt;    &lt;chr&gt;           &lt;lgl&gt; &lt;lgl&gt;           </span></span>
+<span><span class="co">#&gt; 1 NA              RedditAPIAdvo… ""       t2_8uyouiqz     FALSE NA              </span></span>
+<span><span class="co">#&gt; 2 NA              RedditAPIAdvo… ""       t2_177u1k       FALSE NA              </span></span>
+<span><span class="co">#&gt; 3 NA              RedditAPIAdvo… ""       t2_g0y5d        FALSE NA              </span></span>
+<span><span class="co">#&gt; 4 NA              RedditAPIAdvo… "Last w… t2_177u1k       FALSE NA              </span></span>
+<span><span class="co">#&gt; # ℹ 105 more variables: gilded &lt;int&gt;, clicked &lt;lgl&gt;, title &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   link_flair_richtext &lt;list&gt;, subreddit_name_prefixed &lt;chr&gt;, hidden &lt;lgl&gt;,</span></span>
+<span><span class="co">#&gt; #   pwls &lt;lgl&gt;, link_flair_css_class &lt;lgl&gt;, downs &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   thumbnail_height &lt;lgl&gt;, top_awarded_type &lt;lgl&gt;, hide_score &lt;lgl&gt;,</span></span>
+<span><span class="co">#&gt; #   name &lt;chr&gt;, quarantine &lt;lgl&gt;, link_flair_text_color &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   upvote_ratio &lt;dbl&gt;, author_flair_background_color &lt;lgl&gt;,</span></span>
+<span><span class="co">#&gt; #   subreddit_type &lt;chr&gt;, ups &lt;int&gt;, total_awards_received &lt;int&gt;, …</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>#&gt; Waiting between 6 and 8 seconds per request.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>#&gt; Request subreddit listing: RedditAPIAdvocacy (max items: 20).
-#&gt; subreddit_id | subreddit         | count
-#&gt; ----------------------------------------
-#&gt; t5_8dyuxh    | RedditAPIAdvocacy | 4    
-#&gt; Collected metadata for 4 threads in listings.
-#&gt; Done.</code></pre>
-</div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">APIAdvocacy_posts</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; # A tibble: 4 × 111
-#&gt;   approved_at_utc subreddit      selftext author_fullname saved mod_reason_title
-#&gt;   &lt;lgl&gt;           &lt;chr&gt;          &lt;chr&gt;    &lt;chr&gt;           &lt;lgl&gt; &lt;lgl&gt;           
-#&gt; 1 NA              RedditAPIAdvo… ""       t2_8uyouiqz     FALSE NA              
-#&gt; 2 NA              RedditAPIAdvo… ""       t2_177u1k       FALSE NA              
-#&gt; 3 NA              RedditAPIAdvo… ""       t2_g0y5d        FALSE NA              
-#&gt; 4 NA              RedditAPIAdvo… "Last w… t2_177u1k       FALSE NA              
-#&gt; # ℹ 105 more variables: gilded &lt;int&gt;, clicked &lt;lgl&gt;, title &lt;chr&gt;,
-#&gt; #   link_flair_richtext &lt;list&gt;, subreddit_name_prefixed &lt;chr&gt;, hidden &lt;lgl&gt;,
-#&gt; #   pwls &lt;lgl&gt;, link_flair_css_class &lt;lgl&gt;, downs &lt;int&gt;,
-#&gt; #   thumbnail_height &lt;lgl&gt;, top_awarded_type &lt;lgl&gt;, hide_score &lt;lgl&gt;,
-#&gt; #   name &lt;chr&gt;, quarantine &lt;lgl&gt;, link_flair_text_color &lt;chr&gt;,
-#&gt; #   upvote_ratio &lt;dbl&gt;, author_flair_background_color &lt;lgl&gt;,
-#&gt; #   subreddit_type &lt;chr&gt;, ups &lt;int&gt;, total_awards_received &lt;int&gt;, …</code></pre>
-</div>
-</div>
-<p>In psychology research, the most interesting subreddits are often those devoted to psychological disorders, for example r/depression, r/socialanxiety, r/SuicideWatch, r/bipolarreddit, and r/opiates. Subreddits devoted to intellectual discussion, such as r/changemyview, r/IAmA, and r/ExplainLikeImFive, are also interesting subjects for research. Lastly, much research is devoted to the behavior of Redditors in political communities. The following is one elegant example:</p>
-<p><strong>An example of using Reddit communities in research:</strong> In a series of experiments, <span class="citation" data-cites="ashokkumar_pennebaker_2022">Ashokkumar &amp; Pennebaker (<a href="#ref-ashokkumar_pennebaker_2022" role="doc-biblioref">2022</a>)</span> used the Reddit API and other sources to develop a dictionary-based measure of group identity strength. A dictionary is a list of words associated with a given psychological or other construct, for example associating “sleepy” and “down” with depression (see <a href="word-counting.html"><span>Chapter&nbsp;14</span></a>). Ashokkumar and Pennebaker had participants write small free-form responses and fill out questionnaires on group identity strength. They then identified existing dictionaries that were associated with the questionnaire-based measures, and used these to construct a composite measure of group identity strength. When applied to text, they called this measure “unquestioning affiliation.” Among college students, they showed that unquestioning affiliation in writing could predict whether students would drop out of college one year later. Finally, they applied their method to naturalistic data retrieved from the Reddit API, from the political communities r/The_Donald and r/hillaryclinton, and showed that users’ unquestioning affiliation predicted the duration that they would stay in the community before leaving.</p>
+<p>To psychology researchers, the most interesting subreddits are often those devoted to psychological disorders, for example r/depression, r/socialanxiety, r/SuicideWatch, r/bipolarreddit, and r/opiates. Subreddits devoted to intellectual discussion, such as r/changemyview, r/IAmA, and r/ExplainLikeImFive, are also interesting subjects for research. Lastly, much research is devoted to the behavior of Redditors in political communities.</p>
+<p><strong>An example of using Reddit’s political communities in research:</strong> In a series of experiments, <span class="citation" data-cites="ashokkumar_pennebaker_2022">Ashokkumar &amp; Pennebaker (<a href="#ref-ashokkumar_pennebaker_2022" role="doc-biblioref">2022</a>)</span> used the Reddit API and other sources to develop a dictionary-based measure of group identity strength. A dictionary is a list of words associated with a given psychological or other construct, for example associating “sleepy” and “down” with depression (see <a href="word-counting.html"><span>Chapter&nbsp;14</span></a>). Ashokkumar and Pennebaker had participants write small, free-form responses and fill out questionnaires on group identity strength. They then identified existing dictionaries that were associated with the questionnaire-based measures, and used these to construct a composite measure of group identity strength. When applied to text, they called this measure “unquestioning affiliation.” Among college students, they showed that unquestioning affiliation in writing could predict whether students would drop out of college one year later. Finally, they applied their method to naturalistic data retrieved from the Reddit API, from the political communities r/The_Donald and r/hillaryclinton, and showed that users’ unquestioning affiliation predicted the duration that they would stay in the community before leaving.</p>
 </section><section id="sec-reddit-threads" class="level3" data-number="9.2.3"><h3 data-number="9.2.3" class="anchored" data-anchor-id="sec-reddit-threads">
 <span class="header-section-number">9.2.3</span> Threads</h3>
 <p>A post with all of its associated comments is called a <strong>thread</strong>. For example, Hadley Wickham, the founder of <a href="https://www.tidyverse.org">the tidyverse</a>, ran a thread on the r/dataisbeautiful subreddit in 2015, in which he answered commenters’ questions. To retrieve that thread, first find its URL. Do this by finding the threat on Reddit and copying the link from your web browser. Then call <code>Authenticate("reddit")</code> and <code><a href="https://rdrr.io/pkg/vosonSML/man/Collect.html">Collect()</a></code>, like so:</p>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># List of thread urls (in this case only one)</span></span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># List of thread urls (in this case only one)</span></span>
 <span><span class="va">threads</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"https://www.reddit.com/r/dataisbeautiful/comments/3mp9r7/im_hadley_wickham_chief_scientist_at_rstudio_and/"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Retrieve the data</span></span>
@@ -500,18 +485,16 @@ div.csl-indent {
 <span><span class="va">hadley_threads</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">user</span> <span class="op">==</span> <span class="st">"hadley"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">select</span><span class="op">(</span><span class="va">structure</span>, <span class="va">comment</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; # A tibble: 6 × 2
-#&gt;   structure comment                                                             
-#&gt;   &lt;chr&gt;     &lt;chr&gt;                                                               
-#&gt; 1 4_1       "1.  Should be out early next year \n\n2. Unfortunately not. \n\n3.…
-#&gt; 2 6_1       "I'm not aware of any discussions, but I'm not that likely to be si…
-#&gt; 3 7_1       "They already do occur in most errors (or at least in the `tracebac…
-#&gt; 4 10_1      "No, but the next version features customisable keyboard short cuts…
-#&gt; 5 12_1      "I offered to help the department with the overall design of stat40…
-#&gt; 6 13_1      "ggplot worked using function composition instead of addition. So i…</code></pre>
-</div>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 2</span></span>
+<span><span class="co">#&gt;   structure comment                                                             </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;                                                               </span></span>
+<span><span class="co">#&gt; 1 4_1       "1.  Should be out early next year \n\n2. Unfortunately not. \n\n3.…</span></span>
+<span><span class="co">#&gt; 2 6_1       "I'm not aware of any discussions, but I'm not that likely to be si…</span></span>
+<span><span class="co">#&gt; 3 7_1       "They already do occur in most errors (or at least in the `tracebac…</span></span>
+<span><span class="co">#&gt; 4 10_1      "No, but the next version features customisable keyboard short cuts…</span></span>
+<span><span class="co">#&gt; 5 12_1      "I offered to help the department with the overall design of stat40…</span></span>
+<span><span class="co">#&gt; 6 13_1      "ggplot worked using function composition instead of addition. So i…</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The resulting dataframe has many columns. The most useful are the following:</p>
 <ul>
@@ -524,9 +507,9 @@ div.csl-indent {
 <li>
 <code>comm_date</code> is the date and time of the comment, in UTC. Since this is in character format, it needs to be converted to a datetime with <code><a href="https://lubridate.tidyverse.org/reference/as_date.html">lubridate::as_datetime()</a></code>.</li>
 </ul>
-<p>By processing the <code>structure</code> values, we can conceptualize the thread as a tree, with the original post (OP) as the root and comments as branches:</p>
+<p>By processing the <code>structure</code> values, we can conceptualize the thread as a tree, with the original post as the root and comments as branches:</p>
 <div class="cell">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggraph.data-imaginist.com">ggraph</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggraph.data-imaginist.com">ggraph</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">hadley_threads</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
@@ -544,10 +527,10 @@ div.csl-indent {
 <p><img src="apis_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
-<p><strong>An example of using Reddit threads in research:</strong> <span class="citation" data-cites="xiao_mensah_2022">Xiao &amp; Mensah (<a href="#ref-xiao_mensah_2022" role="doc-biblioref">2022</a>)</span> collected threads from r/changemyview, a community in which the OP makes a claim, commenters make arguments against that claim, and the OP responds with “delta points” to indicate how much their view has been changed. <span class="citation" data-cites="xiao_mensah_2022">Xiao &amp; Mensah (<a href="#ref-xiao_mensah_2022" role="doc-biblioref">2022</a>)</span> analyzed the frequency of delta points at each level of the thread tree, and found that the OP’s view tended to change most after the 2nd, 4th, 6th, 8th, and 10th levels of comments—in other words, every other level. They then analyzed the semantic similarity between comments using cosine similarity (<a href="vectorspace-intro.html#sec-cosine-similarity"><span>Section&nbsp;17.1.2</span></a>) between simple word counts. The results suggested that every-other-level comments tend to elaborate and refine the comments immediately before them, so that the latter are perceived to be more persuasive.</p>
+<p><strong>An example of using Reddit threads in research:</strong> <span class="citation" data-cites="xiao_mensah_2022">Xiao &amp; Mensah (<a href="#ref-xiao_mensah_2022" role="doc-biblioref">2022</a>)</span> collected threads from r/changemyview, a community in which the original poster (OP) makes a claim, commenters make arguments against that claim, and the OP responds with “delta points” to indicate how much their view has been changed. <span class="citation" data-cites="xiao_mensah_2022">Xiao &amp; Mensah (<a href="#ref-xiao_mensah_2022" role="doc-biblioref">2022</a>)</span> analyzed the frequency of delta points at each level of the thread tree, and found that the OP’s view tended to change most after the 2nd, 4th, 6th, 8th, and 10th levels of comments—in other words, every other level. They then analyzed the semantic similarity between comments using cosine similarity (<a href="vectorspace-intro.html#sec-cosine-similarity"><span>Section&nbsp;17.1.2</span></a>) between simple word counts. The results suggested that every-other-level comments tend to elaborate and refine the comments immediately before them, so that the latter are perceived to be more persuasive.</p>
 </section><section id="other-reddit-features" class="level3" data-number="9.2.4"><h3 data-number="9.2.4" class="anchored" data-anchor-id="other-reddit-features">
 <span class="header-section-number">9.2.4</span> Other Reddit Features</h3>
-<p>For most applications, <code>vosonSML</code> is a sufficient Reddit API wrapper. For slightly more advanced functionality like searching subreddits with a keyword or retrieving a user’s comment history, we recommend <a href="https://github.com/ivan-rivera/RedditExtractor">Reddit Extractor</a>.</p>
+<p>For most applications, <code>vosonSML</code> is a sufficient Reddit API wrapper. For slightly more advanced functionality like searching for subreddits with a keyword or retrieving a user’s comment history, we recommend <a href="https://github.com/ivan-rivera/RedditExtractor">Reddit Extractor</a>.</p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -560,7 +543,7 @@ Advantages of Reddit Data
 <div class="callout-body-container callout-body">
 <ul>
 <li>
-<strong>Explicit Communities:</strong> Reddit communities are clearly defined and explicit about their purposes. Reddit includes communities devoted to fictional storytelling, factual storytelling, personal reflection, technical advice, political discussion, joke telling, and much more. This makes it to gather a domain-specific sample.</li>
+<strong>Explicit Communities:</strong> Reddit communities are clearly defined and explicit about their purposes. Reddit includes communities devoted to fictional storytelling, factual storytelling, personal reflection, technical advice, political discussion, joke telling, and much more. This makes it easy to gather a domain-specific sample.</li>
 <li>
 <strong>Long-form Text Responses:</strong> While some social media platforms have character limits for posts or comments, Reddit has many communities devoted to long-form text. Longer documents can make characterization of their content more accurate.</li>
 <li>
@@ -588,15 +571,15 @@ Disadvantages of Reddit Data
 </div>
 </section></section><section id="twitter-x" class="level2" data-number="9.3"><h2 data-number="9.3" class="anchored" data-anchor-id="twitter-x">
 <span class="header-section-number">9.3</span> Twitter / X</h2>
-<p>Twitter has been called the “model organism” of big data research <span class="citation" data-cites="tufekci_2014">(<a href="#ref-tufekci_2014" role="doc-biblioref">Tufekci, 2014</a>)</span>. This is because, until 2023, Twitter was the largest source of free, open social text data. In contrast to Facebook, almost all Twitter activity is public. Twitter’s standardized character limit (originally 140, now 280), along with its simple network structure make structuring and the data easy.</p>
+<p>Twitter has been called the “model organism” of big data research <span class="citation" data-cites="tufekci_2014">(<a href="#ref-tufekci_2014" role="doc-biblioref">Tufekci, 2014</a>)</span>. This is because, until 2023, Twitter was the largest source of free, open social text data. In contrast to Facebook, almost all Twitter activity is public. Twitter’s standardized character limit (originally 140, now 280), along with its simple network structure, make structuring and analyzing the data easy.</p>
 <section id="followers-mentions-and-retweets" class="level3" data-number="9.3.1"><h3 data-number="9.3.1" class="anchored" data-anchor-id="followers-mentions-and-retweets">
 <span class="header-section-number">9.3.1</span> Followers, Mentions, and Retweets</h3>
-<p>Whereas Reddit users subscribe to communities, Twitter users subscribe to other users. This is called “following”. They can also “retweet” other users’ posts to their own feed, or explicitly mention other users in posts using the “@” symbol. This focus on connections between individuals means that each user’s communal associations can be characterized in a rich, nuanced way.</p>
+<p>Whereas Reddit users subscribe to communities, Twitter users subscribe to other users. This is called “following.” They can also “retweet” other users’ posts to their own feed, or explicitly mention other users in posts using the “@” symbol. This focus on connections between individuals means that each user’s communal associations can be characterized in a rich, nuanced way.</p>
 <p><strong>An example of using Twitter networks in research:</strong> <span class="citation" data-cites="mosleh_etal_2021">Mosleh et al. (<a href="#ref-mosleh_etal_2021" role="doc-biblioref">2021</a>)</span> collected Twitter IDs of participants who filled out a set of questions with intuitively compelling but incorrect answers, testing analytic thinking. They then analyzed the Twitter accounts that each participant followed, and found a large cluster of accounts followed preferentially by people with less analytic thinking. This group most prominently featured Twitter accounts of retail brands.</p>
 </section><section id="geolocation-on-twitter" class="level3" data-number="9.3.2"><h3 data-number="9.3.2" class="anchored" data-anchor-id="geolocation-on-twitter">
 <span class="header-section-number">9.3.2</span> Geolocation on Twitter</h3>
-<p>Twitter allows users to specify a geographical location along their post. While these user provided locations can sometimes be difficult to interpret, they allow analyses by geographic location.</p>
-<p><strong>An example of using Twitter geolocation in research:</strong> <span class="citation" data-cites="takhteyev_etal_2012">Takhteyev et al. (<a href="#ref-takhteyev_etal_2012" role="doc-biblioref">2012</a>)</span> sampled users from their posts on Twitter’s public feed, and users followed by them. They then analyzed the distribution of these ties over geographical distance, national boundaries, and language differences. They found that Twitter users are most strongly tied to people in their own city, and that between regions, the number of airline flights was the best predictor of ties.</p>
+<p>Twitter allows users to specify a geographical location along their post. While these user-provided locations can sometimes be difficult to interpret, they allow analyses by geographic location.</p>
+<p><strong>An example of using Twitter geolocation in research:</strong> <span class="citation" data-cites="takhteyev_etal_2012">Takhteyev et al. (<a href="#ref-takhteyev_etal_2012" role="doc-biblioref">2012</a>)</span> used Twitter’s public feed to gather a sample of users. Researchers also collected the profiles of all the users followed by the users in the original sample. They then analyzed the distribution of these ties over geographical distance, national boundaries, and language differences. They found that Twitter users are most strongly tied to people in their own city, and that between regions, the number of airline flights was the best predictor of ties.</p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -631,20 +614,20 @@ Disadvantages of Twitter Data
 <li>
 <strong>Limited Context:</strong> Tweets may lack context, making it challenging to fully understand the meaning behind short messages.</li>
 <li>
-<strong>No more free API:</strong> While lots of historical Twitter data are available on the internet <a href="corpora.html">see&nbsp;<span>8</span></a>, <a href="https://www.wired.com/story/twitter-data-api-prices-out-nearly-everyone/">the API has been prohibitively expensive since 2023</a>.</li>
+<strong>No more free API:</strong> While lots of historical Twitter data are available on the internet (see <a href="corpora.html"><span>Chapter&nbsp;8</span></a>), <a href="https://www.wired.com/story/twitter-data-api-prices-out-nearly-everyone/">the API has been prohibitively expensive since 2023</a>.</li>
 </ul>
 </div>
 </div>
 </section></section><section id="mastodon" class="level2" data-number="9.4"><h2 data-number="9.4" class="anchored" data-anchor-id="mastodon">
 <span class="header-section-number">9.4</span> Mastodon</h2>
-<p>In some ways, you can think of Mastodon as open source Twitter. Indeed, a large portion of the Mastodon user base started using it as a replacement for Twitter after <a href="https://en.wikipedia.org/wiki/Mastodon_(social_network)#2022_Twitter-related_spikes_in_adoption">controversial events in 2022</a>. Like Twitter users, Mastodon users post short posts to their feed, in which they can mention other users with “@” or use hashtags with “#”. Like Twitter users, Mastodon users can follow other users and be followed by them.</p>
-<p>Despite their similarities, social networks on Mastodon and Twitter are not the same. The biggest difference is that each Mastodon user is associated with a <em>server</em> (also known as an <em>instance</em>). Mastodon servers can have hundreds of thousands of users, or just a few. Each server runs the Mastodon source code independently and hosts all of its users’ content. Many servers have a theme based on a specific interest. It is also common for servers to be based around a particular locality, region, ethnicity, or country. For example, <a href="https://tech.lgbt">tech.lgbt</a> is for LGBTQIA+ technologists, <a href="https://sfba.social">SFBA.social</a> is for the San Francisco Bay Area in California, and <a href="https://fediscience.org">fediscience.org</a> is for active scientists.</p>
+<p>In some ways, you can think of Mastodon as open source Twitter. Indeed, a large portion of the Mastodon user base started using it as a replacement for Twitter after <a href="https://en.wikipedia.org/wiki/Mastodon_(social_network)#2022_Twitter-related_spikes_in_adoption">controversial events in 2022</a>. Like Twitter users, Mastodon users post short posts to their feed, in which they can mention other users with “@” or use hashtags with “#.” Like Twitter users, Mastodon users can follow other users and be followed by them.</p>
+<p>Despite their similarities, networks of users on Mastodon and Twitter are not the same. The biggest difference is that each Mastodon user is associated with a <em>server</em> (also known as an <em>instance</em>). Mastodon servers can have hundreds of thousands of users, or just a few. Each server runs the Mastodon source code independently and hosts all of its users’ content. Many servers have a theme based on a specific interest. It is also common for servers to be based around a particular locality, region, ethnicity, or country. For example, <a href="https://tech.lgbt">tech.lgbt</a> is for LGBTQIA+ technologists, <a href="https://sfba.social">SFBA.social</a> is for the San Francisco Bay Area in California, and <a href="https://fediscience.org">fediscience.org</a> is for active scientists.</p>
 <p>Because of their topic-specific organization, Mastodon servers can function a bit like Reddit communities. Like Reddit communities, Mastodon servers can set their own rules for content. They can even change the default 500-character limit. The key difference is that on Reddit, <em>posts</em> are associated with a community, whereas on Mastodon, <em>users</em> are associated with a community. In other words, community affiliation on Mastodon is less related to the content of its posts and more related to the identity of its users. This feature can be useful when collecting user activity. For example, if we wanted to study the overall behavior of members of the LGBTQIA+ community, we could collect the activity of users affiliated with the <a href="https://tech.lgbt">tech.lgbt</a> and other community-specific servers.</p>
 <section id="servers" class="level3" data-number="9.4.1"><h3 data-number="9.4.1" class="anchored" data-anchor-id="servers">
 <span class="header-section-number">9.4.1</span> Servers</h3>
-<p>Mastodon server feeds are organized chronologically (unlike Reddit or Twitter, which have complex ordering algorithms). To retrieve the most recent posts on a particular server using <code>vosonSML</code>, we call <code>Authenticate("mastodon")</code> followed by <code><a href="https://rdrr.io/pkg/vosonSML/man/Collect.html">Collect()</a></code> with the “search” endpoint. The name of the server is identified with “instance”.</p>
+<p>Mastodon server feeds are organized chronologically (unlike Reddit or Twitter, which have complex ordering algorithms). To retrieve the most recent posts on a particular server using <code>vosonSML</code>, we call <code>Authenticate("mastodon")</code> followed by <code><a href="https://rdrr.io/pkg/vosonSML/man/Collect.html">Collect()</a></code> with the “search” endpoint. The name of the server is identified with “instance.”</p>
 <div class="cell">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mast_science</span> <span class="op">&lt;-</span> </span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mast_science</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/vosonSML/man/Authenticate.html">Authenticate</a></span><span class="op">(</span><span class="st">"mastodon"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/vosonSML/man/Collect.html">Collect</a></span><span class="op">(</span></span>
 <span>    endpoint <span class="op">=</span> <span class="st">"search"</span>,</span>
@@ -655,7 +638,7 @@ Disadvantages of Twitter Data
 <span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The global feed (i.e.&nbsp;across all servers) can be accessed by setting <code>local = FALSE</code>. You can also retrieve posts with a specific hashtag using the <code>hashtag</code> parameter (e.g.&nbsp;<code>hashtag = "rstats"</code>).</p>
-<p>In all cases, the call results in a list of two dataframes, “posts” and “users”. In the “posts” dataframe we have columns such as:</p>
+<p>In all cases, the call results in a list of two dataframes, “posts” and “users.” In the “posts” dataframe we have columns such as:</p>
 <ul>
 <li>
 <code>content.text</code> is the text of the post itself.</li>
@@ -666,16 +649,16 @@ Disadvantages of Twitter Data
 <li>
 <code>in_reply_to_id</code> is the ID of the post that this post is directly responding to. This can be used to build tree structures, as we did in <a href="#sec-reddit-threads"><span>Section&nbsp;9.2.3</span></a>, but see <a href="#sec-mastodon-threads"><span>Section&nbsp;9.4.2</span></a> for an alternative way to do this.</li>
 <li>
-<code>in_reply_to_account_id</code> is the account ID of the poster to whom this post is directly responding. This can be used to build networks of users as opposed to threads.</li>
+<code>in_reply_to_account_id</code> is the account ID of the poster to whom this post is directly responding. This can be used to build networks of users as opposed to networks of threads.</li>
 <li>
 <code>created_at</code> is the date and time of the post in UTC, already in datetime format.</li>
 </ul>
-<p>The “users” dataframe has the same information as the <code>account</code> column of “posts”, but formatted as a single dataframe with as one row per user.</p>
+<p>The “users” dataframe has the same information as the <code>account</code> column of “posts”, but formatted as a single dataframe with one row per user.</p>
 </section><section id="sec-mastodon-threads" class="level3" data-number="9.4.2"><h3 data-number="9.4.2" class="anchored" data-anchor-id="sec-mastodon-threads">
 <span class="header-section-number">9.4.2</span> Threads</h3>
-<p>Since Mastodon users can mark their posts as a reply to an earlier post, these posts are essentially “comments” on that original post. A chain of posts that reply in to an original post is called a thread. We can collect the contents of one or more threads with <code>endpoint = "thread"</code>, by specifying the URL of the first post in the thread with <code>threadUrls</code>. For example, we can retrieve <a href="https://fediscience.org/@almogsi/110513658753942590">a thread by one the authors of this book, Almog</a>:</p>
+<p>Since Mastodon users can mark their posts as a reply to an earlier post, these posts are essentially “comments” on the original post. A chain of posts that reply to an original post is called a thread. We can collect the contents of one or more threads with <code>endpoint = "thread"</code>, by specifying the URL of the first post in the thread with <code>threadUrls</code>. For example, we can retrieve <a href="https://fediscience.org/@almogsi/110513658753942590">a thread by one the authors of this book, Almog</a>:</p>
 <div class="cell">
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">almog_thread</span> <span class="op">&lt;-</span> </span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">almog_thread</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/vosonSML/man/Authenticate.html">Authenticate</a></span><span class="op">(</span><span class="st">"mastodon"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/vosonSML/man/Collect.html">Collect</a></span><span class="op">(</span></span>
 <span>    endpoint <span class="op">=</span> <span class="st">"thread"</span>,</span>
@@ -731,14 +714,14 @@ Disadvantages of Mastodon Data
 </section></section><section id="youtube" class="level2" data-number="9.5"><h2 data-number="9.5" class="anchored" data-anchor-id="youtube">
 <span class="header-section-number">9.5</span> YouTube</h2>
 <p>YouTube is structurally similar to Twitter in that neither users nor posts are explicitly associated with a community. Users subscribe directly to other users’ channels. Each user can upload posts to their own channel. As on Reddit, these posts generally have a title, a description, and a space for comments.</p>
-<p>YouTube is different from other social media platforms in a few ways. Most obviously, posts consist primarily of videos. This means that analyzing the content of a post’s description will not give an accurate representation of the post’s content. Analyzing the content of the video directly is generally impossible, since YouTube does not allow videos to be downloaded through their API. One possible workaround uses YouTube’s automatically generated video transcriptions—though YouTube does not allow access to full transcriptions for standard API key bearers, there are <a href="https://github.com/jdepoix/youtube-transcript-api">some workarounds available</a>. Nevertheless, we will limit ourselves here to text data. This primarily consists of comments on videos.</p>
+<p>YouTube is different from other social media platforms in a few ways. Most obviously, posts consist primarily of videos. This means that analyzing a post’s description will not give an accurate representation of the post’s content. Analyzing the content of the video directly is generally impossible, since YouTube does not allow videos to be downloaded through their API. One possible workaround uses YouTube’s automatically generated video transcriptions—though YouTube does not allow access to full transcriptions for standard API key bearers, there are <a href="https://github.com/jdepoix/youtube-transcript-api">some workarounds available</a>. Nevertheless, we will limit ourselves here to text data. This primarily consists of comments on videos.</p>
 <section id="video-comments" class="level3" data-number="9.5.1"><h3 data-number="9.5.1" class="anchored" data-anchor-id="video-comments">
 <span class="header-section-number">9.5.1</span> Video Comments</h3>
 <p>Another important difference between YouTube and other social media platforms is in the structure of the comments. Whereas Reddit comments (or Twitter/Mastodon threads) can respond one to another, generating a deep tree-like structure, YouTube comments have only two levels of depth. In other words, comments either respond directly to a video (top-level) or they respond to a top-level comment (level two). This feature can sometimes make conversations hard to track, since level two comments may be responding to another level two comment, even if they are not explicitly marked as such. On the other hand, this feature may constrain YouTube comments to respond more directly to the video.</p>
 <p>The interpretation of YouTube comments as direct responses to the original video is enhanced by the rich video format of the stimulus, which likely draws users in more than a text-only post would <span class="citation" data-cites="yadav_etal_2011">(cf. <a href="#ref-yadav_etal_2011" role="doc-biblioref">Yadav et al., 2011</a>)</span>. For this reason, YouTube can be a good platform for studying responses to shared stimuli in a social context.</p>
 <p>To access the the YouTube API, you will need an API key. You can get an API key in a matter of seconds by <a href="https://www.youtube.com/watch?v=of0nzBJrT20">registering your project with Google cloud</a>. Once you have the key, you can access the API through <code>vosonSML</code> by calling <code>youtube_auth &lt;- Authenticate("youtube", apiKey = "xxxxxxxxxxxxxx")</code>, followed by <code><a href="https://rdrr.io/pkg/vosonSML/man/Collect.html">Collect()</a></code>. In the code below, we’ll collect the comments on <a href="https://youtu.be/aircAruvnKk?si=XKJeVfrB2GGrBx3H">3Blue1Brown’s excellent explanation of deep learning algorithms</a>.</p>
 <div class="cell">
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># retrieve youtube_auth from separate R script </span></span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># retrieve youtube_auth from separate R script </span></span>
 <span><span class="co"># (so as not to publicize my key)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"~/Projects/sandbox/youtube_auth.R"</span><span class="op">)</span></span>
 <span></span>
@@ -769,7 +752,7 @@ Disadvantages of Mastodon Data
 </ul>
 <p>If we visualize these comments like we visualized the Reddit comments in <a href="#sec-reddit-threads"><span>Section&nbsp;9.2.3</span></a>, we see that the tree has only two levels:</p>
 <div class="cell">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">deep_learning_comments</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">deep_learning_comments</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">select</span><span class="op">(</span><span class="va">ParentID</span>, <span class="va">CommentID</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">tidygraph</span><span class="fu">::</span><span class="fu"><a href="https://tidygraph.data-imaginist.com/reference/tbl_graph.html">as_tbl_graph</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">ggraph</span><span class="fu">::</span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/ggraph.html">ggraph</a></span><span class="op">(</span>layout <span class="op">=</span> <span class="st">'tree'</span>, circular <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
@@ -811,7 +794,7 @@ Disadvantages of YouTube Data
 <div class="callout-body-container callout-body">
 <ul>
 <li>
-<strong>Missing Context:</strong> YouTube comments respond to videos. Since videos are a generally unavailable for download and are in any case of a different medium than text-based comments, measuring the relationship between a comment and the video it refers to can be difficult.</li>
+<strong>Missing Context:</strong> YouTube comments respond to videos. Since videos are generally unavailable for download and are in any case of a different medium than text-based comments, measuring the relationship between a comment and the video it refers to can be difficult.</li>
 <li>
 <strong>Constrained Structure:</strong> Because YouTube limits its comment trees to two levels, complex referential structures can be difficult to decode.</li>
 </ul>
@@ -824,19 +807,19 @@ Disadvantages of YouTube Data
 <li>
 <a href="https://stackexchange.com">StackExchange</a> is a network of question-and-answer sites like StackOverflow (for programmers), MathOverflow (for mathematicians), Arqade (for videogamers), Cross Validated (for statistics and machine learining), Science Fiction &amp; Fantasy (for fans) and <a href="https://stackexchange.com/sites?view=list#users">many more</a>. StackExchange provides <a href="https://api.stackexchange.com/docs">a public API</a> for retrieving questions, answers, and comments from their sites.</li>
 <li>
-<a href="https://www.wikipedia.org">Wikipedia</a> provides <a href="https://www.mediawiki.org/wiki/API:Main_page#Uses_for_the_MediaWiki_Action_API">a public API</a> for retrieving content, including <a href="https://www.mediawiki.org/wiki/API:Users">individial user data</a>.</li>
+<a href="https://www.wikipedia.org">Wikipedia</a> provides <a href="https://www.mediawiki.org/wiki/API:Main_page#Uses_for_the_MediaWiki_Action_API">a public API</a> for retrieving content, including <a href="https://www.mediawiki.org/wiki/API:Users">individial contributor data</a>.</li>
 <li>
-<a href="https://www.semanticscholar.org">Semantic Scholar</a> is a website for navigating academic literature. It offers <a href="https://www.semanticscholar.org/product/api">a public API</a> for accessing abstracts, references, citations, and other information about academic publications. The API also allows access to their contextualized semantic embeddings of publications <a href="contextualized-embeddings.html">see&nbsp;<span>19</span></a>. Obtaining an API key requires a simple registration.</li>
+<a href="https://www.semanticscholar.org">Semantic Scholar</a> is a website for navigating academic literature. It offers <a href="https://www.semanticscholar.org/product/api">a public API</a> for accessing abstracts, references, citations, and other information about academic publications. The API also allows access to their contextualized semantic embeddings of publications (see <a href="contextualized-embeddings.html"><span>Chapter&nbsp;19</span></a>). Obtaining an API key requires a simple registration.</li>
 <li>Like Semantic Scholar, <a href="https://core.ac.uk/services/dataset">CORE</a> offers access to full text articles and metadata for open access research papers. Obtaining access requires a simple registration.</li>
 <li>Facebook advertises a <a href="https://fort.fb.com/researcher-apis">research-oriented API</a>, which requires registration.</li>
 <li>Mastodon is not the only open source, decentralized social media platform with an API. <a href="https://the-federation.info">There are many</a>, though most are small.</li>
 </ul>
 <p>To access one of these APIs through R, we recommend using the <a href="https://httr2.r-lib.org"><code>httr2</code></a> package. Most APIs send data in JSON format. As we mentioned in <a href="corpora.html"><span>Chapter&nbsp;8</span></a>, a JSON file is like a list in R, but formatted slightly differently. The <code>httr2</code> package also has functions for converting JSON to R objects. In the example below, we write a function to retrieve all questions with a particular tag from a particular site on StackExchange, and format them as a tibble.</p>
 <div class="cell">
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://httr2.r-lib.org">httr2</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://httr2.r-lib.org">httr2</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># StackExchange API search endpoint</span></span>
-<span><span class="va">endpoint</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://httr2.r-lib.org/reference/request.html">request</a></span><span class="op">(</span><span class="st">"https://api.stackexchange.com/2.2/search?"</span><span class="op">)</span></span>
+<span><span class="va">endpoint</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/httr2/man/request.html">request</a></span><span class="op">(</span><span class="st">"https://api.stackexchange.com/2.2/search?"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Function to retrieve posts with a given tag</span></span>
 <span><span class="va">get_tagged_posts</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">tag</span>, <span class="va">...</span>,</span>
@@ -860,16 +843,16 @@ Disadvantages of YouTube Data
 <span>  </span>
 <span>  <span class="co"># add user agent (this is polite for APIs)</span></span>
 <span>  <span class="va">req</span> <span class="op">&lt;-</span> <span class="va">endpoint</span> <span class="op">|&gt;</span> </span>
-<span>    <span class="fu"><a href="https://httr2.r-lib.org/reference/req_user_agent.html">req_user_agent</a></span><span class="op">(</span><span class="va">user</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/httr2/man/req_user_agent.html">req_user_agent</a></span><span class="op">(</span><span class="va">user</span><span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="co"># add query parameters</span></span>
 <span>  <span class="va">req</span> <span class="op">&lt;-</span> <span class="va">req</span> <span class="op">|&gt;</span> </span>
-<span>    <span class="fu"><a href="https://httr2.r-lib.org/reference/req_url.html">req_url_query</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">params</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/httr2/man/req_url.html">req_url_query</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">params</span><span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="co"># perform request + convert to list</span></span>
 <span>  <span class="va">resp</span> <span class="op">&lt;-</span> <span class="va">req</span> <span class="op">|&gt;</span> </span>
-<span>    <span class="fu"><a href="https://httr2.r-lib.org/reference/req_perform.html">req_perform</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>    <span class="fu"><a href="https://httr2.r-lib.org/reference/resp_body_raw.html">resp_body_json</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/httr2/man/req_perform.html">req_perform</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/httr2/man/resp_body_raw.html">resp_body_json</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="co"># warn the user if API gave a "backoff" message, </span></span>
 <span>  <span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">resp</span><span class="op">$</span><span class="va">backoff</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
@@ -916,7 +899,7 @@ Disadvantages of YouTube Data
 <span>  pagesize <span class="op">=</span> <span class="fl">10</span></span>
 <span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>For further details on accessing APIs with httr2 (including how to deal with rate limits), see <a href="https://httr2.r-lib.org/articles/wrapping-apis.html">the vignette</a>.</p>
+<p>For further details on accessing APIs with <code>httr2</code> (including how to deal with rate limits), see <a href="https://httr2.r-lib.org/articles/wrapping-apis.html">the vignette</a>.</p>
 <hr>
 
 

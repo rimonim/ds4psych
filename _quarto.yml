@@ -43,8 +43,8 @@ book:
         - quanteda.qmd
         - tokenization.qmd
         - word-counting.qmd
-        - word-counting-improvements.qmd
         - dla.qmd
+        - word-counting-improvements.qmd
         - vectorspace-intro.qmd
         - decontextualized-embeddings.qmd
         - contextualized-embeddings.qmd
