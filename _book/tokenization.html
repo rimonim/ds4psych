@@ -272,13 +272,13 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dla.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Open-Vocabulary Word Counting</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./word-counting-improvements.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Improvements on Word Counts</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Transforming Word Counts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -314,13 +314,26 @@ div.csl-indent {
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Audio, Video, and Image Data</span></span>
-  </li>
+      <div class="sidebar-item-container"> 
+            <a href="./audio-video-image.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Audio, Video, and Image Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./transcription.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Transcribing Audio</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resources.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
   </div>
 </li>
     </ul>
@@ -341,7 +354,7 @@ div.csl-indent {
   <li><a href="#shingles" id="toc-shingles" class="nav-link" data-scroll-target="#shingles"><span class="header-section-number">13.1.5</span> Shingles</a></li>
   </ul>
 </li>
-  <li><a href="#custom-preprocessing" id="toc-custom-preprocessing" class="nav-link" data-scroll-target="#custom-preprocessing"><span class="header-section-number">13.2</span> Custom Preprocessing</a></li>
+  <li><a href="#sec-custom-preprocessing" id="toc-sec-custom-preprocessing" class="nav-link" data-scroll-target="#sec-custom-preprocessing"><span class="header-section-number">13.2</span> Custom Preprocessing</a></li>
   <li><a href="#sec-quanteda-dfms" id="toc-sec-quanteda-dfms" class="nav-link" data-scroll-target="#sec-quanteda-dfms"><span class="header-section-number">13.3</span> Document-Feature Matrices (DFMs)</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rimonim/ds4psych/blob/main/tokenization.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -396,7 +409,7 @@ div.csl-indent {
 </div>
 </section><section id="simplified-words-stems-and-lemmas" class="level3" data-number="13.1.2"><h3 data-number="13.1.2" class="anchored" data-anchor-id="simplified-words-stems-and-lemmas">
 <span class="header-section-number">13.1.2</span> Simplified Words: Stems and Lemmas</h3>
-<p>Are “quantify” and “quantified” the same word? What about “quantification”? Treating every new spelling as a separate word can add unnecessary complexity to analysis. It is often useful to have some way cut away the grammatical aspects of words, leaving only their core, canonical form. Stemming and lemmatization are two ways to do this.</p>
+<p>Are “quantify” and “quantified” the same word? What about “quantification”? Treating every new spelling as a separate word can add unnecessary complexity to analysis. It is often useful to have some way to cut away the grammatical aspects of words, leaving only their core, canonical form. Stemming and lemmatization are two ways to do this.</p>
 <p>In <strong>stemming</strong>, we chop off prefixes and suffixes from either side of each word, leaving only the “stem”. For example, “quantify” and “quantified” would both be chopped down to “quantif.”</p>
 <p>We can stem our Hippocorpus tokens with Quanteda’s <code>tokens_wordstem()</code> function. This function uses an updated version of the classic algorithm developed by <span class="citation" data-cites="porter_1980">Porter (<a href="#ref-porter_1980" role="doc-biblioref">1980</a>)</span>. The algorithm was carefully designed to remove common suffixes (e.g.&nbsp;“-ic”, “-ate”, “-s”) without cutting off too much (e.g.&nbsp;“generic” and “generate” should register as different stems).</p>
 <div class="cell">
@@ -500,7 +513,7 @@ div.csl-indent {
 <span><span class="co">#&gt;  [8] "s_n_o_t" "n_o_t_s" "o_t_s_o" "t_s_o_m" "s_o_m_a"</span></span>
 <span><span class="co">#&gt; [ ... and 7 more ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section></section><section id="custom-preprocessing" class="level2" data-number="13.2"><h2 data-number="13.2" class="anchored" data-anchor-id="custom-preprocessing">
+</section></section><section id="sec-custom-preprocessing" class="level2" data-number="13.2"><h2 data-number="13.2" class="anchored" data-anchor-id="sec-custom-preprocessing">
 <span class="header-section-number">13.2</span> Custom Preprocessing</h2>
 <p>We have seen above that the <code>tokens()</code> function includes some basic preprocessing capabilities, for example <code>remove_punct</code> to remove punctuation. It also offers <code>remove_numbers</code>, <code>remove_symbols</code> (e.g.&nbsp;▵, ⏱, ↤, $, ÷, ∬), and <code>remove_url</code> to remove URLs. Nevertheless, certain texts require more specific preprocessing steps. This can be achieved with the <code>stringr</code> package from the tidyverse, by modifying the raw text before turning it into a corpus object. For example, when working with texts from social media we might want to remove “RT” (a conventional indicator that the text was written by another person) with <code>text = str_replace(text, "RT ", "")</code> or user handles (used to refer to specific users) with <code>text = str_replace(text, '@\\w+:|@\\w+', " ")</code>, since neither of these are tokens are relevant to the psychological quality of the text. In certain cases, we might be interested in counting user handles without regard for the specific user. In these cases, we might use <code>text = str_replace(text, '@\\w+:|@\\w+', "USER_TAG ")</code> so that all user tags get tokenized as “USER_TAG.”</p>
 </section><section id="sec-quanteda-dfms" class="level2" data-number="13.3"><h2 data-number="13.3" class="anchored" data-anchor-id="sec-quanteda-dfms">
@@ -785,7 +798,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-center">
       &nbsp;
     </div>
-    <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
+    <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a> and is powered by <a href="https://www.netlify.com/">Netlify</a></div>
   </div>
 </footer>
 

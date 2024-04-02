@@ -7,13 +7,19 @@
 source("_common.R")
 ```
 
-Thus far we have covered various forms of counting. But more advanced methods in NLP often rely on _comparing_ instead. To understand these methods, we must get comfortable with the idea of vector space. 
+::: {.callout-important}
+## This page is still under construction. Come back soon!
+:::
+
+Thus far we have covered various forms of counting. But more advanced methods in NLP often rely on *comparing* instead. To understand these methods, we must get comfortable with the idea of vector space.
 
 This chapter is a basic introduction to the concept of representing documents as vectors. We also introduce two basic vector-based measurement techniques: euclidean distance and cosine similarity. A more advanced and in-depth guide to navigating vector space will be covered in @sec-navigating-vectorspace.
 
----
+------------------------------------------------------------------------
 
-A fictional example^[This section is adapted from @alammar_2019]: Daniel and Amos filled out a psychology questionnaire. The questionnaire measured three aspects of their personalities: extraversion, openness to experience, and neuroticism. 
+A fictional example[^vectorspace-intro-1]: Daniel and Amos filled out a psychology questionnaire. The questionnaire measured three aspects of their personalities: extraversion, openness to experience, and neuroticism.
+
+[^vectorspace-intro-1]: This section is adapted from @alammar_2019
 
 ```{r}
 #| echo: false
@@ -25,7 +31,7 @@ personality <- tribble(
 )
 ```
 
-On the extraversion scale, Amos scored a 2 and Daniel scored a 4: 
+On the extraversion scale, Amos scored a 2 and Daniel scored a 4:
 
 ```{r}
 #| echo: false
@@ -93,7 +99,6 @@ personality |>
           strip.text = element_text(size = 20))
 ```
 
-
 On the neuroticism scale, Amos scored a 4 and Daniel scored a 5.
 
 ```{r}
@@ -131,9 +136,7 @@ personality |>
           strip.text = element_text(size = 20))
 ```
 
-
-
-We can now represent each person's personality as a list of three numbers, or a _three dimensional vector_. We can graph these vectors in three dimensional space:
+We can now represent each person's personality as a list of three numbers, or a *three dimensional vector*. We can graph these vectors in three dimensional space:
 
 ```{r}
 #| echo: false
@@ -163,9 +166,6 @@ personality |>
                                     margin = margin(r = 15)),
           strip.text = element_text(size = 20))
 ```
-
-
-
 
 ```{r}
 #| echo: false
@@ -231,13 +231,31 @@ Thus far we have discussed three-dimensional vector space. But what if we want t
 
 ## Distance and Similarity
 
+When we added Elizabeth to the graph above, we could tell that she was more similar to Daniel than to Amos just by looking at the graph. But how do we quantify this similarity or difference?
+
 ### Euclidean Distance {#sec-euclidean-distance}
+
+The most straightforward way to measure the similarity between two points in space is to measure the distance between them. *Euclidean distance* is the simplest sort of distance---the length of the shortest straight line between the two points. The Euclidean distance between two vectors $A$ and $B$ can be calculated in any number of dimensions $n$ using the following formula:
 
 $$
 d\left( A,B\right)   = \sqrt {\sum _{i=1}^{n}  \left( A_{i}-B_{i}\right)^2 }
 $$
 
+Let's calculate the Euclidean distance between Daniel and Elizabeth, and between Amos and Elizabeth:
+
+```{r}
+# Elizabeth's vector
+eliza_vec <- as.numeric(personality[personality$person == "Elizabeth",-1])
+
+# distance between Elizabeth and each person
+distance_from_eliza <- personality |> 
+  mutate()
+
+```
+
 ### Cosine Similarity {#sec-cosine-similarity}
+
+Pearson correlation is centered cosine similarity.
 
 $$
 Cosine(A,B) = \frac{A \cdot B}{|A||B|} = \frac{\sum _{i=1}^{n}  A_{i}B_{i}}{\sqrt {\sum _{i=1}^{n} A_{i}^2} \cdot \sqrt {\sum _{i=1}^{n} B_{i}^2}}

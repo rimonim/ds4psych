@@ -1,4 +1,4 @@
-# Differential Language Analysis {#sec-dla}
+# Open-Vocabulary Word Counting {#sec-dla}
 
 ```{r setup}
 #| echo: false
@@ -15,12 +15,19 @@ hippocorpus_corp <- read_csv("data/hippocorpus-u20220112/hcV3-stories.csv") |>
 
 hippocorpus_dfm <- hippocorpus_corp |> 
   tokens(remove_punct = TRUE) |> 
-  dfm()
+  dfm() |> 
+  dfm_remove("~")
 ```
 
-In @sec-word-counting, we used a preexisting list of surprise-related words to test whether true autobiographical stories are more surprise-related than imagined stories. Sometimes though, it can be informative to take a theory-free approach to the difference between two groups. We might ask: **How are the words used in true autobiographical stories different from the words used in imagined stories?** We will call the investigation of questions like this Differential Language Analysis (DLA), a term coined by @schwartz_etal_2013.
+In @sec-word-counting, we used a preexisting list of surprise-related words to test whether true autobiographical stories are more surprise-related than imagined stories. Sometimes though, it can be informative to take a theory-free approach to the difference between two groups. We might ask: **How are the words used in true autobiographical stories different from the words used in imagined stories?** We will call the investigation of questions like this open vocabulary analyses, a term coined by @schwartz_etal_2013.
 
-Both DLA and dictionary-based methods use word counts, but they come from opposite directions: Dictionary-based methods start with a construct and use it to examine the difference between groups (or levels of a continuous variable). DLA, on the other hand, starts with the difference between groups (or levels of a continuous variable) and generates a list of words that can then be identified with one or more constructs after the fact.
+Both open vocabulary analyses and dictionary-based methods use word counts, but they come from opposite directions: Dictionary-based methods start with a construct and use it to examine the difference between groups (or levels of a continuous variable). The open vocabulary approach, on the other hand, starts with the difference between groups (or levels of a continuous variable) and generates a list of words that can then be identified with one or more constructs after the fact.
+
+Open vocabulary analyses are useful for three types of applications:
+
+- Open vocabulary analyses are sometimes a good second step in EDA, after looking at your data directly (see @sec-look-at-your-data). If you are planning an analysis of token counts (e.g. using dictionary-based methods), open vocabulary analyses are a good way to look for overall patterns in the way that tokens are distributed across your groups, or to look for individual tokens that are particularly representative of one group or another.
+- When training a machine learning model on token counts (@sec-machine-learning-word-counts), you will need to decide which variables (AKA features) to include in the model. You can use an open vocabulary approach to find the tokens that carry the most information about your outcome variable.
+- Open vocabulary analyses can be a final product! In some cases, researchers want to characterize difference between the language use of two groups, without being constrained by particular dictionaries. @schwartz_etal_2013 provide many elegant examples of this approach.
 
 ## Frequency Ratios {#sec-freq-ratios}
 
@@ -139,6 +146,7 @@ imagined_keyness |>
   quanteda.textplots::textplot_keyness() +
     labs(title = "Words in Imagined (target) and Recalled (reference) Stories")
 ```
+
 We can also represent the keyness values as a word cloud, as we did for frequency ratios in @sec-word-viz.
 
 ```{r}
@@ -173,23 +181,131 @@ Keyness plots like this are often a good second step in EDA, after looking at yo
 
 ## Continuous Covariates
 
+Open vocabulary analysis does not require two distinct groups. For example, we may want to investigate the differences in language associated with openness to experience. A simple way to do this is to measuring the correlation between word frequencies in documents and the documents' authors' `openness` score. 
 
+```{r}
+# openness score of the author of each document
+openness_scores <- docvars(hippocorpus_corp)$openness
 
-## Generating Dictionaries With DLA
+hippocorpus_dfm
+openness_cor <- hippocorpus_dfm |> 
+  convert(to = "data.frame") |> 
+  # compute rank-based correlation
+  summarise(
+    across(
+      -doc_id, 
+      ~ cor(.x, openness_scores, method = "spearman")
+      )
+    ) |> 
+  pivot_longer(everything(), 
+               names_to = "feature", 
+               values_to = "cor")
 
+head(openness_cor)
+```
 
+Now that we have correlation coefficients, we can once again make a word cloud.
+
+```{r}
+#| warning: false
+#| fig-height: 8
+set.seed(2)
+
+openness_cor |> 
+  # arrange in descending order
+  arrange(desc(abs(cor))) |> 
+  # only top correlating words
+  slice_head(n = 150) |> 
+  # plot
+  ggplot(aes(label = feature, 
+             size = abs(cor), 
+             color = cor,
+             angle_group = cor < 0)) +
+    geom_text_wordcloud_area(eccentricity = 1, show.legend = TRUE) + 
+    scale_size_area(max_size = 10, guide = "none") +
+    scale_color_gradient2(
+      name = "",
+      low = "red3", mid = "grey", high = "blue3",
+      breaks = c(-.05, 0, .05),
+      labels = c("Negatively Correlated\nwith Openness", "",
+                 "Positively Correlated\nwith Openness")
+      ) +
+    theme_void() # blank background
+```
+
+## Generating Dictionaries With Open Vocabulary Analysis
+
+In @sec-dictionary-sources we saw that dictionaries for word counting can be generated in many ways. One of these ways is to start with a corpus and proceed with open vocabulary analysis. As an example, let's use the [Crowdflower Emotion in Text dataset](https://data.world/crowdflower/sentiment-analysis-in-text) to generate a new dictionary for the emotion of surprise. The Crowdflower dataset includes 40,000 Twitter posts, each labeled with one of 13 sentiments. Of these, 2187 are labeled as reflecting surprise.
 
 ```{r}
 #| echo: false
+#| output: false
 
-# CrowdFlower Sentiment Analysis: Emotion in Text
-# https://data.world/crowdflower/sentiment-analysis-in-text
-crowdflower <- read_csv("~/Projects/modeling_word_counts/data/text_emotion.csv") |> 
-  rename(text = content) |> 
-  mutate(surprise = as.integer(str_detect(sentiment, "surprise")))
-
+# data from https://data.world/crowdflower/sentiment-analysis-in-text
+crowdflower <- read_csv("data/text_emotion.csv") |> 
+  rename(text = content)
 ```
 
+```{r}
+glimpse(crowdflower)
+```
 
-Downside: May not generalize properly.
+Generating a dictionary is a subtly different goal than discovering the differences between groups. In @sec-keyness above, we recommended the likelihood ratio test as a way of looking for statistically significant differences. When generating a dictionary though, we care less about statistical significance and more about information---specifically, if I observe this word in a text, how much does it tell me about the text? For this kind of question, we recommend a different keyness statistic: pointwise mutual information (PMI). 
 
+PMI can be computed just like the likelihood ratio test, using `textstat_keyness()`. We will need to be careful though, since PMI is sensitive to rare tokens---if a token appears only once in the corpus, in a text labelled surprise, it will be identified as giving lots of information about whether the text is labeled surprise. So we'll want to keep tokens with a high PMI, but remove very rare ones.
+
+```{r}
+# convert to corpus
+crowdflower_corp <- crowdflower |> 
+  corpus(docid_field = "tweet_id")
+
+# convert to DFM
+crowdflower_dfm <- crowdflower_corp |> 
+  tokens(remove_punct = TRUE) |> 
+  tokens_ngrams(n = c(1L, 2L)) |>  # 1-grams and 2-grams
+  dfm()
+
+# compute PMI
+surprise_pmi <- crowdflower_dfm |> 
+  textstat_keyness(
+    docvars(crowdflower_dfm, "sentiment") == "surprise",
+    measure = "pmi"
+    )
+
+# filter out rare words and low PMI
+surprise_pmi <- surprise_pmi |> 
+  filter(n_target + n_reference > 10, 
+         pmi > 1.5)
+
+surprise_pmi
+```
+
+We are left with a list of the unigrams and bigrams that most indicate that a tweet contains surprise. We can now use this list as a dictionary.
+
+```{r}
+tweet_surprise_dict <- dictionary(
+  list(surprise = surprise_pmi$feature),
+  separator = "_" # in n-grams, tokens are separated by "_"
+)
+```
+
+Can we use this new surprise dictionary to test our hypothesis that true autobiographical stories include more surprise than imagined stories? There is no guarantee that surprise words in Tweets will be the same as surprise words in autobiographical stories. With this in mind, we can proceed cautiously:
+
+```{r}
+# count words
+hippocorpus_surprise_df <- hippocorpus_dfm |> 
+  dfm_lookup(tweet_surprise_dict) |> # count dictionary words
+  convert("data.frame") |> # convert to dataframe
+  right_join(
+    hippocorpus_corp |> 
+      convert("data.frame") # convert to dataframe
+    ) |> 
+  mutate(wc = ntoken(hippocorpus_dfm)) # total word count
+
+# model
+tweet_surprise_mod <- MASS::glm.nb(surprise ~ memType + log(wc),
+                                   data = hippocorpus_surprise_df)
+summary(tweet_surprise_mod)
+```
+
+Using our dictionary generated from Tweets with open vocabulary analysis, we find no significant difference between true autobiographical stories and imagined stories in the amount of suprise-related language they contain (p = `r round(summary(tweet_surprise_mod)$coefficients["memTyperecalled","Pr(>|z|)"],3)`).

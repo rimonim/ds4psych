@@ -1,24 +1,52 @@
-# Improvements on Word Counts {#sec-word-counting-improvements}
+# Transforming Word Counts {#sec-word-counting-improvements}
 
-Fixing BOW
+```{r setup}
+#| echo: false
+#| include: false
+
+source("_common.R")
+library(quanteda)
+```
+
+::: {.callout-important}
+## This page is still under construction. Come back soon!
+:::
+
+In @sec-tokenization, we described how to break texts up into tokens and count the occurrences of each one. In @sec-word-counting and @sec-dla, we used these simple counts to test hypotheses and generate hypothesis-free descriptions of the differences between groups. All along, we used statistical methods that work with raw counts, like negative binomial regression in @sec-modeling-word-counts, and likelihood ratio testing in @sec-keyness (with the minor exception of @sec-word-scoring, which used averaged scores). 
+
+Raw token counts are difficult to work with: They are not normally distributed, they do not usually change linearly with predictors, and they are overly sensitive to quirks of linguistic style and text length. Researchers and engineers have proposed various ways to fix these problems by transforming the raw counts or by transforming the text before performing the counting. In this chapter, we introduce a few of the most common transformations and point out their advantages and disadvantages.
 
 ## Text Normalization
 
-Punctuation? 
-Capitalization? 
-Occurrence threshold (e.g. remove tokens used by less than 1% of participants)
+The simplest way to transform word counts is by transforming the text itself. We have already seen some simple examples of this in @sec-custom-preprocessing: removing punctuation, symbols, or URLs before tokenization. Such transformations are often called **text normalization**, since they get rid of the quirks in each text and ensure that everything follows a standard format.
+
+Besides removing or standardizing certain types of tokens, like URLs, researchers commonly enforce an **occurrence threshold**, removing any token that occurs less than a certain number of times in the data. Occurrence thresholds can be calculated on the full dataset or by participant (e.g. removing tokens used by fewer than 1% of participants). Grouping by participant is often beneficial, since sometimes a single participant will use a token a lot--either because they happen to be discussing a specific topic or because of a quirk of their own language style--and drive up the overall frequency in a misleading way. 
+
+```{r}
+# remove tokens used by fewer than 1% of participants
+
+
+```
 
 ### Removing Stop Words
 
-the forms in which people choose to write a word are often predictive of their personality 
-neurotic people tend to use more first-person singulars, extraverts use longer words (Mehl et al., 2006; Schwartz et al., 2013)
-new links such as neurotics using more acronyms (Holtgraves, 2011)
-those high in openness using more quotations (Sumner et al., 2011) 
-Articles are highly predictive of males, being older, and openness (Schwartz et al., 2013)
+In natural language processing, a common step in text normalization is to remove "stop words", everyday words like "the" and "of" that do not contribute much to the meaning of the text. Indeed, Quanteda offers a built-in list of stop words:
 
-## Binary (boolean) Tokenization
+```{r}
+stopwords() |> head()
+```
 
+Although removing stop words can be useful for analyzing the _topics_ of texts, it is generally a bad idea when you are interested in the _psychology_ of texts. This is because **the forms in which people choose to write a word---including stop words---are often predictive of their personality**. For example, neurotic people tend to use more first-person singulars [@mehl_etal_2006], and articles like "the" and "a" are highly predictive of males, being older, and openness [@schwartz_etal_2013]. 
 
+The relationships between language and personality also extent to more subtle patterns. For example, extraverts tend to use longer words [@mehl_etal_2006], those high in openness tend to use more quotations [@sumner_etal_2011], and those high in neuroticism tend to use more acronyms [@holtgraves_2011]. So if you are looking for psychological differences, be gentle with the text normalization---you never know what strange predictors you might find.
+
+## Binary (Boolean) Tokenization
+
+If one is there, it's there - recognizing non-independence
+
+```{r}
+
+```
 
 ## Relative Tokenization:
 
@@ -30,22 +58,25 @@ Golder & Macy (2011) collected messages from all Twitter user accounts (~2.4 mil
 
 Advantages/Disadvantages: If longer documents are longer because of verbosity, document length normalization makes sense. But if they are long because they cover multiple topics, such normalization will dilute true occurrences of the topic.
 
-## Good-Turing Frequency Estimation
+## The Anscombe Transformation
 
-
+Relies on BOW, since it assumes that tf is roughly poisson distributed
 
 ## TF-IDF
 
 Advantages: tf-idf works because BOW is not true. If all documents were just bags of words, the frequency within documents would be distributed similarly to the frequency between documents (e.g. since the 2-gram “verbal reasoning” occurs in very few tweets, you would expect the probability of it occurring twice in the same document to be near-impossible) actually, it wouldn’t be surprising to see “verbal reasoning” even 3 times in the same tweet if that tweet were discussing verbal reasoning. Weighting by IDF therefore provides a measure of how topical the token is in the document.
 Disadvantages: Operating on an assumption that less frequent tokens are less relevant to the construct in question. For semantics this is largely true, but for latent psychological constructs it may not be.
 
-## Machine Learning Approaches
+## Smoothing
+
+**Simple Good-Turing**
+
+## Machine Learning Approaches {#sec-machine-learning-word-counts}
 
 @giuntini_etal_2020 review
+
+those high in neuroticism tend to use more acronyms [@holtgraves_2011]
 
 In some cases (in which both natural language and questionnaire data exists for participants), statistical models based on word counts can be trained to predict questionnaire results and then generalized to unlabeled data.
 
 Zamani et al. (2018) extracted tf-idf (within-user) weighted n-grams, boolean n-grams, and LDA topics from Facebook status updates, subjected them to a dimensionality reduction process, and used the resulting features to train a ridge regression model to predict questionnaire-based measures of trustfulness  (from myPersonality - see Chapter 2).
-
-Note that tf is roughly poisson distributed, so an Anscombe transformation may be appropriate in some cases
-

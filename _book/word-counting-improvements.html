@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.450">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="author" content="Almog Simchon and Louis Teitelbaum">
-
-<title>Data Science for Psychology: Natural Language - 16&nbsp; Improvements on Word Counts</title>
+<title>Data Science for Psychology: Natural Language - 16&nbsp; Transforming Word Counts</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +17,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 /* CSS for citations */
 div.csl-bib-body { }
@@ -42,7 +73,6 @@ div.csl-indent {
   margin-left: 2em;
 }</style>
 
-
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
@@ -61,8 +91,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -82,33 +111,24 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
-
-
 </head>
-
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./word-counting-improvements.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Improvements on Word Counts</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./word-counting-improvements.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Transforming Word Counts</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Data Science for Psychology: Natural Language</a> 
         <div class="sidebar-tools-main">
@@ -128,7 +148,7 @@ div.csl-indent {
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Welcome</span></a>
@@ -154,8 +174,8 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./aesthetics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Why Aesthetic Choices are Important</span></span></a>
@@ -180,7 +200,7 @@ div.csl-indent {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./data-sources.html" class="sidebar-item-text sidebar-link">
@@ -189,8 +209,8 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./experiments.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Experiments</span></span></a>
@@ -215,7 +235,7 @@ div.csl-indent {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./quantification.html" class="sidebar-item-text sidebar-link">
@@ -224,8 +244,8 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./look-at-your-data.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Look at Your Data</span></span></a>
@@ -252,13 +272,13 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dla.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Open-Vocabulary Word Counting</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./word-counting-improvements.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Improvements on Word Counts</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Transforming Word Counts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -292,45 +312,55 @@ div.csl-indent {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Audio, Video, and Image Data</span></span>
-  </li>
+      <div class="sidebar-item-container"> 
+            <a href="./audio-video-image.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Audio, Video, and Image Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./transcription.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Transcribing Audio</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resources.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
   </div>
 </li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#text-normalization" id="toc-text-normalization" class="nav-link active" data-scroll-target="#text-normalization"><span class="header-section-number">16.1</span> Text Normalization</a>
+<li>
+<a href="#text-normalization" id="toc-text-normalization" class="nav-link active" data-scroll-target="#text-normalization"><span class="header-section-number">16.1</span> Text Normalization</a>
   <ul class="collapse">
-  <li><a href="#removing-stop-words" id="toc-removing-stop-words" class="nav-link" data-scroll-target="#removing-stop-words"><span class="header-section-number">16.1.1</span> Removing Stop Words</a></li>
-  </ul></li>
-  <li><a href="#binary-boolean-tokenization" id="toc-binary-boolean-tokenization" class="nav-link" data-scroll-target="#binary-boolean-tokenization"><span class="header-section-number">16.2</span> Binary (boolean) Tokenization</a></li>
-  <li><a href="#relative-tokenization" id="toc-relative-tokenization" class="nav-link" data-scroll-target="#relative-tokenization"><span class="header-section-number">16.3</span> Relative Tokenization:</a></li>
-  <li><a href="#good-turing-frequency-estimation" id="toc-good-turing-frequency-estimation" class="nav-link" data-scroll-target="#good-turing-frequency-estimation"><span class="header-section-number">16.4</span> Good-Turing Frequency Estimation</a></li>
-  <li><a href="#tf-idf" id="toc-tf-idf" class="nav-link" data-scroll-target="#tf-idf"><span class="header-section-number">16.5</span> TF-IDF</a></li>
-  <li><a href="#machine-learning-approaches" id="toc-machine-learning-approaches" class="nav-link" data-scroll-target="#machine-learning-approaches"><span class="header-section-number">16.6</span> Machine Learning Approaches</a></li>
+<li><a href="#removing-stop-words" id="toc-removing-stop-words" class="nav-link" data-scroll-target="#removing-stop-words"><span class="header-section-number">16.1.1</span> Removing Stop Words</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rimonim/ds4psych/blob/main/word-counting-improvements.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+</li>
+  <li><a href="#binary-boolean-tokenization" id="toc-binary-boolean-tokenization" class="nav-link" data-scroll-target="#binary-boolean-tokenization"><span class="header-section-number">16.2</span> Binary (Boolean) Tokenization</a></li>
+  <li><a href="#relative-tokenization" id="toc-relative-tokenization" class="nav-link" data-scroll-target="#relative-tokenization"><span class="header-section-number">16.3</span> Relative Tokenization:</a></li>
+  <li><a href="#the-anscombe-transformation" id="toc-the-anscombe-transformation" class="nav-link" data-scroll-target="#the-anscombe-transformation"><span class="header-section-number">16.4</span> The Anscombe Transformation</a></li>
+  <li><a href="#tf-idf" id="toc-tf-idf" class="nav-link" data-scroll-target="#tf-idf"><span class="header-section-number">16.5</span> TF-IDF</a></li>
+  <li><a href="#smoothing" id="toc-smoothing" class="nav-link" data-scroll-target="#smoothing"><span class="header-section-number">16.6</span> Smoothing</a></li>
+  <li><a href="#sec-machine-learning-word-counts" id="toc-sec-machine-learning-word-counts" class="nav-link" data-scroll-target="#sec-machine-learning-word-counts"><span class="header-section-number">16.7</span> Machine Learning Approaches</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rimonim/ds4psych/blob/main/word-counting-improvements.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title"><span id="sec-word-counting-improvements" class="quarto-section-identifier"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Improvements on Word Counts</span></span></h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title"><span id="sec-word-counting-improvements" class="quarto-section-identifier"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Transforming Word Counts</span></span></h1>
 </div>
 
 
@@ -343,54 +373,84 @@ div.csl-indent {
   </div>
   
 
-</header>
+</header><div class="callout callout-style-simple callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+This page is still under construction. Come back soon!
+</div>
+</div>
+<div class="callout-body-container callout-body">
 
-<p>Fixing BOW</p>
-<section id="text-normalization" class="level2" data-number="16.1">
-<h2 data-number="16.1" class="anchored" data-anchor-id="text-normalization"><span class="header-section-number">16.1</span> Text Normalization</h2>
-<p>Punctuation? Capitalization? Occurrence threshold (e.g.&nbsp;remove tokens used by less than 1% of participants)</p>
-<section id="removing-stop-words" class="level3" data-number="16.1.1">
-<h3 data-number="16.1.1" class="anchored" data-anchor-id="removing-stop-words"><span class="header-section-number">16.1.1</span> Removing Stop Words</h3>
-<p>the forms in which people choose to write a word are often predictive of their personality neurotic people tend to use more first-person singulars, extraverts use longer words (Mehl et al., 2006; Schwartz et al., 2013) new links such as neurotics using more acronyms (Holtgraves, 2011) those high in openness using more quotations (Sumner et al., 2011) Articles are highly predictive of males, being older, and openness (Schwartz et al., 2013)</p>
-</section>
-</section>
-<section id="binary-boolean-tokenization" class="level2" data-number="16.2">
-<h2 data-number="16.2" class="anchored" data-anchor-id="binary-boolean-tokenization"><span class="header-section-number">16.2</span> Binary (boolean) Tokenization</h2>
-</section>
-<section id="relative-tokenization" class="level2" data-number="16.3">
-<h2 data-number="16.3" class="anchored" data-anchor-id="relative-tokenization"><span class="header-section-number">16.3</span> Relative Tokenization:</h2>
+</div>
+</div>
+<p>In <a href="tokenization.html"><span>Chapter&nbsp;13</span></a>, we described how to break texts up into tokens and count the occurrences of each one. In <a href="word-counting.html"><span>Chapter&nbsp;14</span></a> and <a href="dla.html"><span>Chapter&nbsp;15</span></a>, we used these simple counts to test hypotheses and generate hypothesis-free descriptions of the differences between groups. All along, we used statistical methods that work with raw counts, like negative binomial regression in <a href="word-counting.html#sec-modeling-word-counts"><span>Section&nbsp;14.3.1</span></a>, and likelihood ratio testing in <a href="dla.html#sec-keyness"><span>Section&nbsp;15.2</span></a> (with the minor exception of <a href="word-counting.html#sec-word-scoring"><span>Section&nbsp;14.5</span></a>, which used averaged scores).</p>
+<p>Raw token counts are difficult to work with: They are not normally distributed, they do not usually change linearly with predictors, and they are overly sensitive to quirks of linguistic style and text length. Researchers and engineers have proposed various ways to fix these problems by transforming the raw counts or by transforming the text before performing the counting. In this chapter, we introduce a few of the most common transformations and point out their advantages and disadvantages.</p>
+<section id="text-normalization" class="level2" data-number="16.1"><h2 data-number="16.1" class="anchored" data-anchor-id="text-normalization">
+<span class="header-section-number">16.1</span> Text Normalization</h2>
+<p>The simplest way to transform word counts is by transforming the text itself. We have already seen some simple examples of this in <a href="tokenization.html#sec-custom-preprocessing"><span>Section&nbsp;13.2</span></a>: removing punctuation, symbols, or URLs before tokenization. Such transformations are often called <strong>text normalization</strong>, since they get rid of the quirks in each text and ensure that everything follows a standard format.</p>
+<p>Besides removing or standardizing certain types of tokens, like URLs, researchers commonly enforce an <strong>occurrence threshold</strong>, removing any token that occurs less than a certain number of times in the data. Occurrence thresholds can be calculated on the full dataset or by participant (e.g.&nbsp;removing tokens used by fewer than 1% of participants). Grouping by participant is often beneficial, since sometimes a single participant will use a token a lot–either because they happen to be discussing a specific topic or because of a quirk of their own language style–and drive up the overall frequency in a misleading way.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># remove tokens used by fewer than 1% of participants</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="removing-stop-words" class="level3" data-number="16.1.1"><h3 data-number="16.1.1" class="anchored" data-anchor-id="removing-stop-words">
+<span class="header-section-number">16.1.1</span> Removing Stop Words</h3>
+<p>In natural language processing, a common step in text normalization is to remove “stop words”, everyday words like “the” and “of” that do not contribute much to the meaning of the text. Indeed, Quanteda offers a built-in list of stop words:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">stopwords</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "i"      "me"     "my"     "myself" "we"     "our"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Although removing stop words can be useful for analyzing the <em>topics</em> of texts, it is generally a bad idea when you are interested in the <em>psychology</em> of texts. This is because <strong>the forms in which people choose to write a word—including stop words—are often predictive of their personality</strong>. For example, neurotic people tend to use more first-person singulars <span class="citation" data-cites="mehl_etal_2006">(<a href="#ref-mehl_etal_2006" role="doc-biblioref">Mehl et al., 2006</a>)</span>, and articles like “the” and “a” are highly predictive of males, being older, and openness <span class="citation" data-cites="schwartz_etal_2013">(<a href="#ref-schwartz_etal_2013" role="doc-biblioref">Schwartz et al., 2013</a>)</span>.</p>
+<p>The relationships between language and personality also extent to more subtle patterns. For example, extraverts tend to use longer words <span class="citation" data-cites="mehl_etal_2006">(<a href="#ref-mehl_etal_2006" role="doc-biblioref">Mehl et al., 2006</a>)</span>, those high in openness tend to use more quotations <span class="citation" data-cites="sumner_etal_2011">(<a href="#ref-sumner_etal_2011" role="doc-biblioref">Sumner et al., 2011</a>)</span>, and those high in neuroticism tend to use more acronyms <span class="citation" data-cites="holtgraves_2011">(<a href="#ref-holtgraves_2011" role="doc-biblioref">Holtgraves, 2011</a>)</span>. So if you are looking for psychological differences, be gentle with the text normalization—you never know what strange predictors you might find.</p>
+</section></section><section id="binary-boolean-tokenization" class="level2" data-number="16.2"><h2 data-number="16.2" class="anchored" data-anchor-id="binary-boolean-tokenization">
+<span class="header-section-number">16.2</span> Binary (Boolean) Tokenization</h2>
+<p>If one is there, it’s there - recognizing non-independence</p>
+</section><section id="relative-tokenization" class="level2" data-number="16.3"><h2 data-number="16.3" class="anchored" data-anchor-id="relative-tokenization">
+<span class="header-section-number">16.3</span> Relative Tokenization:</h2>
 <p>Simple fraction of full token count (tf)</p>
 <p><span class="citation" data-cites="pennebaker_etal_1999">Pennebaker &amp; King (<a href="#ref-pennebaker_etal_1999" role="doc-biblioref">1999</a>)</span></p>
 <p>Golder &amp; Macy (2011) collected messages from all Twitter user accounts (~2.4 million) created between February 2008 and April 2009, and measured positive and negative affect as proportion of in-dictionary (from LIWC) words to full words. This calculation was done by hour of the day, day of the week, and months of the year, revealing fluctuations in mood in line with circadian rhythms and seasonal changes.</p>
 <p>Advantages/Disadvantages: If longer documents are longer because of verbosity, document length normalization makes sense. But if they are long because they cover multiple topics, such normalization will dilute true occurrences of the topic.</p>
-</section>
-<section id="good-turing-frequency-estimation" class="level2" data-number="16.4">
-<h2 data-number="16.4" class="anchored" data-anchor-id="good-turing-frequency-estimation"><span class="header-section-number">16.4</span> Good-Turing Frequency Estimation</h2>
-</section>
-<section id="tf-idf" class="level2" data-number="16.5">
-<h2 data-number="16.5" class="anchored" data-anchor-id="tf-idf"><span class="header-section-number">16.5</span> TF-IDF</h2>
+</section><section id="the-anscombe-transformation" class="level2" data-number="16.4"><h2 data-number="16.4" class="anchored" data-anchor-id="the-anscombe-transformation">
+<span class="header-section-number">16.4</span> The Anscombe Transformation</h2>
+<p>Relies on BOW, since it assumes that tf is roughly poisson distributed</p>
+</section><section id="tf-idf" class="level2" data-number="16.5"><h2 data-number="16.5" class="anchored" data-anchor-id="tf-idf">
+<span class="header-section-number">16.5</span> TF-IDF</h2>
 <p>Advantages: tf-idf works because BOW is not true. If all documents were just bags of words, the frequency within documents would be distributed similarly to the frequency between documents (e.g.&nbsp;since the 2-gram “verbal reasoning” occurs in very few tweets, you would expect the probability of it occurring twice in the same document to be near-impossible) actually, it wouldn’t be surprising to see “verbal reasoning” even 3 times in the same tweet if that tweet were discussing verbal reasoning. Weighting by IDF therefore provides a measure of how topical the token is in the document. Disadvantages: Operating on an assumption that less frequent tokens are less relevant to the construct in question. For semantics this is largely true, but for latent psychological constructs it may not be.</p>
-</section>
-<section id="machine-learning-approaches" class="level2" data-number="16.6">
-<h2 data-number="16.6" class="anchored" data-anchor-id="machine-learning-approaches"><span class="header-section-number">16.6</span> Machine Learning Approaches</h2>
+</section><section id="smoothing" class="level2" data-number="16.6"><h2 data-number="16.6" class="anchored" data-anchor-id="smoothing">
+<span class="header-section-number">16.6</span> Smoothing</h2>
+<p><strong>Simple Good-Turing</strong></p>
+</section><section id="sec-machine-learning-word-counts" class="level2" data-number="16.7"><h2 data-number="16.7" class="anchored" data-anchor-id="sec-machine-learning-word-counts">
+<span class="header-section-number">16.7</span> Machine Learning Approaches</h2>
 <p><span class="citation" data-cites="giuntini_etal_2020">Giuntini et al. (<a href="#ref-giuntini_etal_2020" role="doc-biblioref">2020</a>)</span> review</p>
+<p>those high in neuroticism tend to use more acronyms <span class="citation" data-cites="holtgraves_2011">(<a href="#ref-holtgraves_2011" role="doc-biblioref">Holtgraves, 2011</a>)</span></p>
 <p>In some cases (in which both natural language and questionnaire data exists for participants), statistical models based on word counts can be trained to predict questionnaire results and then generalized to unlabeled data.</p>
 <p>Zamani et al.&nbsp;(2018) extracted tf-idf (within-user) weighted n-grams, boolean n-grams, and LDA topics from Facebook status updates, subjected them to a dimensionality reduction process, and used the resulting features to train a ridge regression model to predict questionnaire-based measures of trustfulness (from myPersonality - see Chapter 2).</p>
-<p>Note that tf is roughly poisson distributed, so an Anscombe transformation may be appropriate in some cases</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
 <div id="ref-giuntini_etal_2020" class="csl-entry" role="listitem">
 Giuntini, F. T., Cazzolato, M. T., Reis, M. de J. D. dos, Campbell, A. T., Traina, A. J. M., &amp; Ueyama, J. (2020). A review on recognizing depression in social networks: Challenges and opportunities. <em>Journal of Ambient Intelligence and Humanized Computing</em>, <em>11</em>(11), 4713–4729.
 </div>
+<div id="ref-holtgraves_2011" class="csl-entry" role="listitem">
+Holtgraves, T. (2011). Text messaging, personality, and the social context. <em>Journal of Research in Personality</em>, <em>45</em>(1), 92–99. https://doi.org/<a href="https://doi.org/10.1016/j.jrp.2010.11.015">https://doi.org/10.1016/j.jrp.2010.11.015</a>
+</div>
+<div id="ref-mehl_etal_2006" class="csl-entry" role="listitem">
+Mehl, M. R., Gosling, S. D., &amp; Pennebaker, J. W. (2006). Personality in its natural habitat: Manifestations and implicit folk theories of personality in daily life. <em>Journal of Personality and Social Psychology</em>, <em>90 5</em>, 862–877. <a href="https://api.semanticscholar.org/CorpusID:2932332">https://api.semanticscholar.org/CorpusID:2932332</a>
+</div>
 <div id="ref-pennebaker_etal_1999" class="csl-entry" role="listitem">
 Pennebaker, J. W., &amp; King, L. A. (1999). Linguistic styles: Language use as an individual difference. <em>Journal of Personality and Social Psychology</em>, <em>77</em>(6), 1296. <a href="https://doi.org/10.1037//0022-3514.77.6.1296">https://doi.org/10.1037//0022-3514.77.6.1296</a>
 </div>
+<div id="ref-schwartz_etal_2013" class="csl-entry" role="listitem">
+Schwartz, H. A., Eichstaedt, J. C., Kern, M. L., Dziurzynski, L., Ramones, S. M., Agrawal, M., Shah, A., Kosinski, M., Stillwell, D., Seligman, M. E. P., &amp; Ungar, L. H. (2013). Personality, gender, and age in the language of social media: The open-vocabulary approach. <em>PLOS ONE</em>, <em>8</em>(9), 1–16. <a href="https://doi.org/10.1371/journal.pone.0073791">https://doi.org/10.1371/journal.pone.0073791</a>
 </div>
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+<div id="ref-sumner_etal_2011" class="csl-entry" role="listitem">
+Sumner, C., Byers, A., &amp; Shearing, M. (2011). Determining personality traits &amp; privacy concerns from facebook activity. <em>Black Hat Brief</em>, <em>11</em>.
+</div>
+</div>
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -622,11 +682,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./dla.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Open-Vocabulary Word Counting</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
@@ -636,16 +694,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">Data Science for Psychology was written by Almog Simchon and Louis Teitelbaum.</div>   
     <div class="nav-footer-center">
       &nbsp;
     </div>
-    <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
+    <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a> and is powered by <a href="https://www.netlify.com/">Netlify</a></div>
   </div>
 </footer>
-
 
 
 </body></html>

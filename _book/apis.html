@@ -272,13 +272,13 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dla.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Differential Language Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Open-Vocabulary Word Counting</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./word-counting-improvements.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Improvements on Word Counts</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Transforming Word Counts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -314,13 +314,26 @@ div.csl-indent {
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Audio, Video, and Image Data</span></span>
-  </li>
+      <div class="sidebar-item-container"> 
+            <a href="./audio-video-image.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Audio, Video, and Image Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./transcription.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Transcribing Audio</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resources.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
   </div>
 </li>
     </ul>
@@ -819,7 +832,7 @@ Disadvantages of YouTube Data
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://httr2.r-lib.org">httr2</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># StackExchange API search endpoint</span></span>
-<span><span class="va">endpoint</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/httr2/man/request.html">request</a></span><span class="op">(</span><span class="st">"https://api.stackexchange.com/2.2/search?"</span><span class="op">)</span></span>
+<span><span class="va">endpoint</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://httr2.r-lib.org/reference/request.html">request</a></span><span class="op">(</span><span class="st">"https://api.stackexchange.com/2.2/search?"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Function to retrieve posts with a given tag</span></span>
 <span><span class="va">get_tagged_posts</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">tag</span>, <span class="va">...</span>,</span>
@@ -843,16 +856,16 @@ Disadvantages of YouTube Data
 <span>  </span>
 <span>  <span class="co"># add user agent (this is polite for APIs)</span></span>
 <span>  <span class="va">req</span> <span class="op">&lt;-</span> <span class="va">endpoint</span> <span class="op">|&gt;</span> </span>
-<span>    <span class="fu"><a href="https://rdrr.io/pkg/httr2/man/req_user_agent.html">req_user_agent</a></span><span class="op">(</span><span class="va">user</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://httr2.r-lib.org/reference/req_user_agent.html">req_user_agent</a></span><span class="op">(</span><span class="va">user</span><span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="co"># add query parameters</span></span>
 <span>  <span class="va">req</span> <span class="op">&lt;-</span> <span class="va">req</span> <span class="op">|&gt;</span> </span>
-<span>    <span class="fu"><a href="https://rdrr.io/pkg/httr2/man/req_url.html">req_url_query</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">params</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://httr2.r-lib.org/reference/req_url.html">req_url_query</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">params</span><span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="co"># perform request + convert to list</span></span>
 <span>  <span class="va">resp</span> <span class="op">&lt;-</span> <span class="va">req</span> <span class="op">|&gt;</span> </span>
-<span>    <span class="fu"><a href="https://rdrr.io/pkg/httr2/man/req_perform.html">req_perform</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>    <span class="fu"><a href="https://rdrr.io/pkg/httr2/man/resp_body_raw.html">resp_body_json</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://httr2.r-lib.org/reference/req_perform.html">req_perform</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://httr2.r-lib.org/reference/resp_body_raw.html">resp_body_json</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="co"># warn the user if API gave a "backoff" message, </span></span>
 <span>  <span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">resp</span><span class="op">$</span><span class="va">backoff</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
@@ -1175,7 +1188,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-center">
       &nbsp;
     </div>
-    <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
+    <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a> and is powered by <a href="https://www.netlify.com/">Netlify</a></div>
   </div>
 </footer>
 

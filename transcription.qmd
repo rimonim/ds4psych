@@ -1,4 +1,4 @@
-# Measures of Linguistic Complexity {#sec-linguistic-complexity}
+# Transcribing Audio {#sec-transcription}
 
 ```{r setup}
 #| echo: false

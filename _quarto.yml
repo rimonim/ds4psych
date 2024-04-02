@@ -12,7 +12,7 @@ book:
     left: |
       Data Science for Psychology was written by Almog Simchon and Louis Teitelbaum.
     right: |
-      This book was built with <a href="https://quarto.org/">Quarto</a>.
+      This book was built with <a href="https://quarto.org/">Quarto</a> and is powered by <a href="https://www.netlify.com/">Netlify</a>
   
   repo-url: https://github.com/rimonim/ds4psych
   repo-branch: main
@@ -50,7 +50,11 @@ book:
         - contextualized-embeddings.qmd
         - navigating-vectorspace.qmd
         - linguistic-complexity.qmd
+        
     - part: audio-video-image.qmd
+      chapters: 
+        - transcription.qmd
+    
     - resources.qmd
 
 bibliography: references.bib
