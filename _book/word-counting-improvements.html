@@ -347,7 +347,8 @@ div.csl-indent {
 <li>
 <a href="#text-normalization" id="toc-text-normalization" class="nav-link active" data-scroll-target="#text-normalization"><span class="header-section-number">16.1</span> Text Normalization</a>
   <ul class="collapse">
-<li><a href="#removing-stop-words" id="toc-removing-stop-words" class="nav-link" data-scroll-target="#removing-stop-words"><span class="header-section-number">16.1.1</span> Removing Stop Words</a></li>
+<li><a href="#occurrence-thresholds" id="toc-occurrence-thresholds" class="nav-link" data-scroll-target="#occurrence-thresholds"><span class="header-section-number">16.1.1</span> Occurrence Thresholds</a></li>
+  <li><a href="#removing-stop-words" id="toc-removing-stop-words" class="nav-link" data-scroll-target="#removing-stop-words"><span class="header-section-number">16.1.2</span> Removing Stop Words</a></li>
   </ul>
 </li>
   <li><a href="#binary-boolean-tokenization" id="toc-binary-boolean-tokenization" class="nav-link" data-scroll-target="#binary-boolean-tokenization"><span class="header-section-number">16.2</span> Binary (Boolean) Tokenization</a></li>
@@ -373,30 +374,54 @@ div.csl-indent {
   </div>
   
 
-</header><div class="callout callout-style-simple callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-This page is still under construction. Come back soon!
-</div>
-</div>
-<div class="callout-body-container callout-body">
-
-</div>
-</div>
-<p>In <a href="tokenization.html"><span>Chapter&nbsp;13</span></a>, we described how to break texts up into tokens and count the occurrences of each one. In <a href="word-counting.html"><span>Chapter&nbsp;14</span></a> and <a href="dla.html"><span>Chapter&nbsp;15</span></a>, we used these simple counts to test hypotheses and generate hypothesis-free descriptions of the differences between groups. All along, we used statistical methods that work with raw counts, like negative binomial regression in <a href="word-counting.html#sec-modeling-word-counts"><span>Section&nbsp;14.3.1</span></a>, and likelihood ratio testing in <a href="dla.html#sec-keyness"><span>Section&nbsp;15.2</span></a> (with the minor exception of <a href="word-counting.html#sec-word-scoring"><span>Section&nbsp;14.5</span></a>, which used averaged scores).</p>
+</header><p>In <a href="tokenization.html"><span>Chapter&nbsp;13</span></a>, we described how to break texts up into tokens and count the occurrences of each one. In <a href="word-counting.html"><span>Chapter&nbsp;14</span></a> and <a href="dla.html"><span>Chapter&nbsp;15</span></a>, we used these simple counts to test hypotheses and generate hypothesis-free descriptions of the differences between groups. All along, we used statistical methods that work with raw counts, like negative binomial regression in <a href="word-counting.html#sec-modeling-word-counts"><span>Section&nbsp;14.3.1</span></a>, and likelihood ratio testing in <a href="dla.html#sec-keyness"><span>Section&nbsp;15.2</span></a> (with the minor exception of <a href="word-counting.html#sec-word-scoring"><span>Section&nbsp;14.5</span></a>, which used averaged scores).</p>
 <p>Raw token counts are difficult to work with: They are not normally distributed, they do not usually change linearly with predictors, and they are overly sensitive to quirks of linguistic style and text length. Researchers and engineers have proposed various ways to fix these problems by transforming the raw counts or by transforming the text before performing the counting. In this chapter, we introduce a few of the most common transformations and point out their advantages and disadvantages.</p>
 <section id="text-normalization" class="level2" data-number="16.1"><h2 data-number="16.1" class="anchored" data-anchor-id="text-normalization">
 <span class="header-section-number">16.1</span> Text Normalization</h2>
 <p>The simplest way to transform word counts is by transforming the text itself. We have already seen some simple examples of this in <a href="tokenization.html#sec-custom-preprocessing"><span>Section&nbsp;13.2</span></a>: removing punctuation, symbols, or URLs before tokenization. Such transformations are often called <strong>text normalization</strong>, since they get rid of the quirks in each text and ensure that everything follows a standard format.</p>
-<p>Besides removing or standardizing certain types of tokens, like URLs, researchers commonly enforce an <strong>occurrence threshold</strong>, removing any token that occurs less than a certain number of times in the data. Occurrence thresholds can be calculated on the full dataset or by participant (e.g.&nbsp;removing tokens used by fewer than 1% of participants). Grouping by participant is often beneficial, since sometimes a single participant will use a token a lot–either because they happen to be discussing a specific topic or because of a quirk of their own language style–and drive up the overall frequency in a misleading way.</p>
+<section id="occurrence-thresholds" class="level3" data-number="16.1.1"><h3 data-number="16.1.1" class="anchored" data-anchor-id="occurrence-thresholds">
+<span class="header-section-number">16.1.1</span> Occurrence Thresholds</h3>
+<p>Besides removing or standardizing certain types of tokens, like URLs, researchers commonly enforce an <strong>occurrence threshold</strong>, removing any token that occurs less than a certain number of times in the data. Occurrence thresholds can be calculated on the full dataset (term frequency) or between documents (document frequency; e.g.&nbsp;removing tokens used in fewer than 1% of documents). Using a document frequency threshold is often beneficial, since sometimes a single document will use a token a lot–either because it happens to be discussing a specific topic or because of a quirk of the author’s language style–and drive up the overall frequency in a misleading way.</p>
+<p>Occurrence thresholds can be performed on DFMs in Quanteda using the <code>dfm_trim()</code> function, with either a <code>min_termfreq</code>, a <code>min_docfreq</code>, or both. Maximum frequency thresholds can also be imposed.</p>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># remove tokens used by fewer than 1% of participants</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># remove tokens used by fewer than 1% of documents</span></span>
+<span><span class="va">hippocorpus_dfm_threshold</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_dfm</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dfm_trim</span><span class="op">(</span>min_docfreq <span class="op">=</span> <span class="fl">0.01</span>, docfreq_type <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="removing-stop-words" class="level3" data-number="16.1.1"><h3 data-number="16.1.1" class="anchored" data-anchor-id="removing-stop-words">
-<span class="header-section-number">16.1.1</span> Removing Stop Words</h3>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Advantages of Occurrence Thresholds
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>
+<strong>Cleaner Results:</strong> Occurence thresholds are an easy way to remove quirks of individuals’ writing styles, or very rare terms that complicate analysis without adding much information.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Disadvantages of Occurrence Thresholds
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>
+<strong>Arbitrary:</strong> Determining what threshold to use can be difficult, and runs the risk of excluding important information from the analysis.</li>
+</ul>
+</div>
+</div>
+</section><section id="removing-stop-words" class="level3" data-number="16.1.2"><h3 data-number="16.1.2" class="anchored" data-anchor-id="removing-stop-words">
+<span class="header-section-number">16.1.2</span> Removing Stop Words</h3>
 <p>In natural language processing, a common step in text normalization is to remove “stop words”, everyday words like “the” and “of” that do not contribute much to the meaning of the text. Indeed, Quanteda offers a built-in list of stop words:</p>
 <div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">stopwords</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -404,30 +429,239 @@ This page is still under construction. Come back soon!
 </div>
 <p>Although removing stop words can be useful for analyzing the <em>topics</em> of texts, it is generally a bad idea when you are interested in the <em>psychology</em> of texts. This is because <strong>the forms in which people choose to write a word—including stop words—are often predictive of their personality</strong>. For example, neurotic people tend to use more first-person singulars <span class="citation" data-cites="mehl_etal_2006">(<a href="#ref-mehl_etal_2006" role="doc-biblioref">Mehl et al., 2006</a>)</span>, and articles like “the” and “a” are highly predictive of males, being older, and openness <span class="citation" data-cites="schwartz_etal_2013">(<a href="#ref-schwartz_etal_2013" role="doc-biblioref">Schwartz et al., 2013</a>)</span>.</p>
 <p>The relationships between language and personality also extent to more subtle patterns. For example, extraverts tend to use longer words <span class="citation" data-cites="mehl_etal_2006">(<a href="#ref-mehl_etal_2006" role="doc-biblioref">Mehl et al., 2006</a>)</span>, those high in openness tend to use more quotations <span class="citation" data-cites="sumner_etal_2011">(<a href="#ref-sumner_etal_2011" role="doc-biblioref">Sumner et al., 2011</a>)</span>, and those high in neuroticism tend to use more acronyms <span class="citation" data-cites="holtgraves_2011">(<a href="#ref-holtgraves_2011" role="doc-biblioref">Holtgraves, 2011</a>)</span>. So if you are looking for psychological differences, be gentle with the text normalization—you never know what strange predictors you might find.</p>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Advantages of Removing Stop Words
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>
+<strong>Intuitive Appeal:</strong> Removing stop words focusses an analysis on content, rather than form. When people think of differences between text, they generally think of differences in content.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Disadvantages of Removing Stop Words
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>
+<strong>Removes Important Information:</strong> While words like “the” and “a” may seem insignificant, they often carry important psychological information.</li>
+</ul>
+</div>
+</div>
 </section></section><section id="binary-boolean-tokenization" class="level2" data-number="16.2"><h2 data-number="16.2" class="anchored" data-anchor-id="binary-boolean-tokenization">
 <span class="header-section-number">16.2</span> Binary (Boolean) Tokenization</h2>
-<p>If one is there, it’s there - recognizing non-independence</p>
+<p>In some cases, it makes sense to stop counting at one—each text either uses a given token or it does not. While this might seem like needlessly throwing away information, binary tokenization fixes a core problem with the bag of words assumption (BOW). Recall from <a href="tokenization.html#sec-quanteda-dfms"><span>Section&nbsp;13.3</span></a> that BOW imagines that each author or topic has its characteristic bag of words, and speaking or writing is just a matter of pulling those words out of the bag one at a time at random. A central problem with this picture is that words are not pulled out one at a time at random—the word I am writing now is intimately tied to the words immediately before it. It may be very unlikely overall that I will write “parthenon”, but if I write it once, it is very likely that I will write it again in the same paragraph. This is because I am probably writing about the Parthenon.</p>
+<p>The non-independence of words in text means that the difference between zero occurences of “parthenon” and one occurence is much more meaningful than the difference between one and two. If a particular token sometimes occurs lots of times in text, statistical procedures like regression may be led to focus on that variance rather than on the more interesting first occurence. Binary tokenization is the simplest way to solve this problem.</p>
+<p>In Quanteda, a DFM can be converted to binary tokenization with <code>dfm_weight(scheme = "boolean")</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_dfm_binary</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_dfm</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dfm_weight</span><span class="op">(</span>scheme <span class="op">=</span> <span class="st">"boolean"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">hippocorpus_dfm_binary</span></span>
+<span><span class="co">#&gt; Document-feature matrix of: 6,854 documents, 27,905 features (99.50% sparse) and 6 docvars.</span></span>
+<span><span class="co">#&gt;                                 features</span></span>
+<span><span class="co">#&gt; docs                             concerts are my most favorite thing and</span></span>
+<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U        1   1  1    1        1     1   1</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2        0   0  1    0        0     0   1</span></span>
+<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61        0   0  1    1        0     1   1</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI        0   1  1    0        0     0   1</span></span>
+<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ        0   0  1    0        0     0   1</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3        0   0  1    0        0     0   1</span></span>
+<span><span class="co">#&gt;                                 features</span></span>
+<span><span class="co">#&gt; docs                             boyfriend knew it</span></span>
+<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U         1    1  1</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2         1    0  1</span></span>
+<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61         0    0  1</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI         0    0  1</span></span>
+<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ         0    0  1</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3         0    0  1</span></span>
+<span><span class="co">#&gt; [ reached max_ndoc ... 6,848 more documents, reached max_nfeat ... 27,895 more features ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Advantages of Binary Tokenization
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Removes Non-Independence of Observations:</strong></li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Disadvantages of Binary Tokenization
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Devalues Common Tokens:</strong></li>
+<li><strong>Difficult to Model:</strong></li>
+</ul>
+</div>
+</div>
 </section><section id="relative-tokenization" class="level2" data-number="16.3"><h2 data-number="16.3" class="anchored" data-anchor-id="relative-tokenization">
 <span class="header-section-number">16.3</span> Relative Tokenization:</h2>
 <p>Simple fraction of full token count (tf)</p>
 <p><span class="citation" data-cites="pennebaker_etal_1999">Pennebaker &amp; King (<a href="#ref-pennebaker_etal_1999" role="doc-biblioref">1999</a>)</span></p>
 <p>Golder &amp; Macy (2011) collected messages from all Twitter user accounts (~2.4 million) created between February 2008 and April 2009, and measured positive and negative affect as proportion of in-dictionary (from LIWC) words to full words. This calculation was done by hour of the day, day of the week, and months of the year, revealing fluctuations in mood in line with circadian rhythms and seasonal changes.</p>
 <p>Advantages/Disadvantages: If longer documents are longer because of verbosity, document length normalization makes sense. But if they are long because they cover multiple topics, such normalization will dilute true occurrences of the topic.</p>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Advantages of Relative Tokenization
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>:</strong></li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Disadvantages of Relative Tokenization
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>:</strong></li>
+</ul>
+</div>
+</div>
 </section><section id="the-anscombe-transformation" class="level2" data-number="16.4"><h2 data-number="16.4" class="anchored" data-anchor-id="the-anscombe-transformation">
 <span class="header-section-number">16.4</span> The Anscombe Transformation</h2>
 <p>Relies on BOW, since it assumes that tf is roughly poisson distributed</p>
 </section><section id="tf-idf" class="level2" data-number="16.5"><h2 data-number="16.5" class="anchored" data-anchor-id="tf-idf">
 <span class="header-section-number">16.5</span> TF-IDF</h2>
 <p>Advantages: tf-idf works because BOW is not true. If all documents were just bags of words, the frequency within documents would be distributed similarly to the frequency between documents (e.g.&nbsp;since the 2-gram “verbal reasoning” occurs in very few tweets, you would expect the probability of it occurring twice in the same document to be near-impossible) actually, it wouldn’t be surprising to see “verbal reasoning” even 3 times in the same tweet if that tweet were discussing verbal reasoning. Weighting by IDF therefore provides a measure of how topical the token is in the document. Disadvantages: Operating on an assumption that less frequent tokens are less relevant to the construct in question. For semantics this is largely true, but for latent psychological constructs it may not be.</p>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Advantages of TF-IDF
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>:</strong></li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Disadvantages of TF-IDF
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>:</strong></li>
+</ul>
+</div>
+</div>
 </section><section id="smoothing" class="level2" data-number="16.6"><h2 data-number="16.6" class="anchored" data-anchor-id="smoothing">
 <span class="header-section-number">16.6</span> Smoothing</h2>
 <p><strong>Simple Good-Turing</strong></p>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Advantages of Smoothing
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>:</strong></li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Disadvantages of Smoothing
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>:</strong></li>
+</ul>
+</div>
+</div>
 </section><section id="sec-machine-learning-word-counts" class="level2" data-number="16.7"><h2 data-number="16.7" class="anchored" data-anchor-id="sec-machine-learning-word-counts">
 <span class="header-section-number">16.7</span> Machine Learning Approaches</h2>
 <p><span class="citation" data-cites="giuntini_etal_2020">Giuntini et al. (<a href="#ref-giuntini_etal_2020" role="doc-biblioref">2020</a>)</span> review</p>
 <p>those high in neuroticism tend to use more acronyms <span class="citation" data-cites="holtgraves_2011">(<a href="#ref-holtgraves_2011" role="doc-biblioref">Holtgraves, 2011</a>)</span></p>
 <p>In some cases (in which both natural language and questionnaire data exists for participants), statistical models based on word counts can be trained to predict questionnaire results and then generalized to unlabeled data.</p>
 <p>Zamani et al.&nbsp;(2018) extracted tf-idf (within-user) weighted n-grams, boolean n-grams, and LDA topics from Facebook status updates, subjected them to a dimensionality reduction process, and used the resulting features to train a ridge regression model to predict questionnaire-based measures of trustfulness (from myPersonality - see Chapter 2).</p>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Advantages of Machine Learning Approaches
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>:</strong></li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Disadvantages of Machine Learning Approaches
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>:</strong></li>
+</ul>
+</div>
+</div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">

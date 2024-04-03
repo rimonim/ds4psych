@@ -6,11 +6,18 @@
 
 source("_common.R")
 library(quanteda)
-```
 
-::: {.callout-important}
-## This page is still under construction. Come back soon!
-:::
+hippocorpus_corp <- read_csv("data/hippocorpus-u20220112/hcV3-stories.csv") |> 
+  select(AssignmentId, story, memType, summary, WorkerId, 
+         annotatorGender, openness, timeSinceEvent) |> 
+  corpus(docid_field = "AssignmentId", 
+         text_field = "story")
+
+hippocorpus_dfm <- hippocorpus_corp |> 
+  tokens(remove_punct = TRUE) |> 
+  dfm() |> 
+  dfm_remove("~")
+```
 
 In @sec-tokenization, we described how to break texts up into tokens and count the occurrences of each one. In @sec-word-counting and @sec-dla, we used these simple counts to test hypotheses and generate hypothesis-free descriptions of the differences between groups. All along, we used statistical methods that work with raw counts, like negative binomial regression in @sec-modeling-word-counts, and likelihood ratio testing in @sec-keyness (with the minor exception of @sec-word-scoring, which used averaged scores). 
 
@@ -20,13 +27,29 @@ Raw token counts are difficult to work with: They are not normally distributed, 
 
 The simplest way to transform word counts is by transforming the text itself. We have already seen some simple examples of this in @sec-custom-preprocessing: removing punctuation, symbols, or URLs before tokenization. Such transformations are often called **text normalization**, since they get rid of the quirks in each text and ensure that everything follows a standard format.
 
-Besides removing or standardizing certain types of tokens, like URLs, researchers commonly enforce an **occurrence threshold**, removing any token that occurs less than a certain number of times in the data. Occurrence thresholds can be calculated on the full dataset or by participant (e.g. removing tokens used by fewer than 1% of participants). Grouping by participant is often beneficial, since sometimes a single participant will use a token a lot--either because they happen to be discussing a specific topic or because of a quirk of their own language style--and drive up the overall frequency in a misleading way. 
+### Occurrence Thresholds
+
+Besides removing or standardizing certain types of tokens, like URLs, researchers commonly enforce an **occurrence threshold**, removing any token that occurs less than a certain number of times in the data. Occurrence thresholds can be calculated on the full dataset (term frequency) or between documents (document frequency; e.g. removing tokens used in fewer than 1% of documents). Using a document frequency threshold is often beneficial, since sometimes a single document will use a token a lot--either because it happens to be discussing a specific topic or because of a quirk of the author's language style--and drive up the overall frequency in a misleading way. 
+
+Occurrence thresholds can be performed on DFMs in Quanteda using the `dfm_trim()` function, with either a `min_termfreq`, a `min_docfreq`, or both. Maximum frequency thresholds can also be imposed.
 
 ```{r}
-# remove tokens used by fewer than 1% of participants
-
-
+# remove tokens used by fewer than 1% of documents
+hippocorpus_dfm_threshold <- hippocorpus_dfm |> 
+  dfm_trim(min_docfreq = 0.01, docfreq_type = "prop")
 ```
+
+::: {.callout-tip icon="false"}
+## Advantages of Occurrence Thresholds
+
+-   **Cleaner Results:** Occurence thresholds are an easy way to remove quirks of individuals' writing styles, or very rare terms that complicate analysis without adding much information.
+:::
+
+::: {.callout-important icon="false"}
+## Disadvantages of Occurrence Thresholds
+
+-   **Arbitrary:** Determining what threshold to use can be difficult, and runs the risk of excluding important information from the analysis.
+:::
 
 ### Removing Stop Words
 
@@ -40,13 +63,45 @@ Although removing stop words can be useful for analyzing the _topics_ of texts, 
 
 The relationships between language and personality also extent to more subtle patterns. For example, extraverts tend to use longer words [@mehl_etal_2006], those high in openness tend to use more quotations [@sumner_etal_2011], and those high in neuroticism tend to use more acronyms [@holtgraves_2011]. So if you are looking for psychological differences, be gentle with the text normalization---you never know what strange predictors you might find.
 
+::: {.callout-tip icon="false"}
+## Advantages of Removing Stop Words
+
+-   **Intuitive Appeal:** Removing stop words focusses an analysis on content, rather than form. When people think of differences between text, they generally think of differences in content.
+:::
+
+::: {.callout-important icon="false"}
+## Disadvantages of Removing Stop Words
+
+-   **Removes Important Information:** While words like "the" and "a" may seem insignificant, they often carry important psychological information.
+:::
+
 ## Binary (Boolean) Tokenization
 
-If one is there, it's there - recognizing non-independence
+In some cases, it makes sense to stop counting at one---each text either uses a given token or it does not. While this might seem like needlessly throwing away information, binary tokenization fixes a core problem with the bag of words assumption (BOW). Recall from @sec-quanteda-dfms that BOW imagines that each author or topic has its characteristic bag of words, and speaking or writing is just a matter of pulling those words out of the bag one at a time at random. A central problem with this picture is that words are not pulled out one at a time at random---the word I am writing now is intimately tied to the words immediately before it. It may be very unlikely overall that I will write "parthenon", but if I write it once, it is very likely that I will write it again in the same paragraph. This is because I am probably writing about the Parthenon.
+
+The non-independence of words in text means that the difference between zero occurences of "parthenon" and one occurence is much more meaningful than the difference between one and two. If a particular token sometimes occurs lots of times in text, statistical procedures like regression may be led to focus on that variance rather than on the more interesting first occurence. Binary tokenization is the simplest way to solve this problem.
+
+In Quanteda, a DFM can be converted to binary tokenization with `dfm_weight(scheme = "boolean")`.
 
 ```{r}
+hippocorpus_dfm_binary <- hippocorpus_dfm |> 
+  dfm_weight(scheme = "boolean")
 
+hippocorpus_dfm_binary
 ```
+
+::: {.callout-tip icon="false"}
+## Advantages of Binary Tokenization
+
+-   **Removes Non-Independence of Observations:** 
+:::
+
+::: {.callout-important icon="false"}
+## Disadvantages of Binary Tokenization
+
+-   **Devalues Common Tokens:** 
+-   **Difficult to Model:** 
+:::
 
 ## Relative Tokenization:
 
@@ -58,6 +113,18 @@ Golder & Macy (2011) collected messages from all Twitter user accounts (~2.4 mil
 
 Advantages/Disadvantages: If longer documents are longer because of verbosity, document length normalization makes sense. But if they are long because they cover multiple topics, such normalization will dilute true occurrences of the topic.
 
+::: {.callout-tip icon="false"}
+## Advantages of Relative Tokenization
+
+-   **:** 
+:::
+
+::: {.callout-important icon="false"}
+## Disadvantages of Relative Tokenization
+
+-   **:** 
+:::
+
 ## The Anscombe Transformation
 
 Relies on BOW, since it assumes that tf is roughly poisson distributed
@@ -67,9 +134,33 @@ Relies on BOW, since it assumes that tf is roughly poisson distributed
 Advantages: tf-idf works because BOW is not true. If all documents were just bags of words, the frequency within documents would be distributed similarly to the frequency between documents (e.g. since the 2-gram “verbal reasoning” occurs in very few tweets, you would expect the probability of it occurring twice in the same document to be near-impossible) actually, it wouldn’t be surprising to see “verbal reasoning” even 3 times in the same tweet if that tweet were discussing verbal reasoning. Weighting by IDF therefore provides a measure of how topical the token is in the document.
 Disadvantages: Operating on an assumption that less frequent tokens are less relevant to the construct in question. For semantics this is largely true, but for latent psychological constructs it may not be.
 
+::: {.callout-tip icon="false"}
+## Advantages of TF-IDF
+
+-   **:** 
+:::
+
+::: {.callout-important icon="false"}
+## Disadvantages of TF-IDF
+
+-   **:** 
+:::
+
 ## Smoothing
 
 **Simple Good-Turing**
+
+::: {.callout-tip icon="false"}
+## Advantages of Smoothing
+
+-   **:** 
+:::
+
+::: {.callout-important icon="false"}
+## Disadvantages of Smoothing
+
+-   **:** 
+:::
 
 ## Machine Learning Approaches {#sec-machine-learning-word-counts}
 
@@ -80,3 +171,15 @@ those high in neuroticism tend to use more acronyms [@holtgraves_2011]
 In some cases (in which both natural language and questionnaire data exists for participants), statistical models based on word counts can be trained to predict questionnaire results and then generalized to unlabeled data.
 
 Zamani et al. (2018) extracted tf-idf (within-user) weighted n-grams, boolean n-grams, and LDA topics from Facebook status updates, subjected them to a dimensionality reduction process, and used the resulting features to train a ridge regression model to predict questionnaire-based measures of trustfulness  (from myPersonality - see Chapter 2).
+
+::: {.callout-tip icon="false"}
+## Advantages of Machine Learning Approaches
+
+-   **:** 
+:::
+
+::: {.callout-important icon="false"}
+## Disadvantages of Machine Learning Approaches
+
+-   **:** 
+:::
