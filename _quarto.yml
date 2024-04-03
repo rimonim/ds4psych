@@ -10,7 +10,7 @@ book:
   
   page-footer: 
     left: |
-      Data Science for Psychology was written by Almog Simchon and Louis Teitelbaum.
+      Data Science for Psychology was written by <a href="https://rimonim.github.io">Louis Teitelbaum</a> and <a href="https://almogsi.com">Almog Simchon</a>.
     right: |
       This book was built with <a href="https://quarto.org/">Quarto</a> and is powered by <a href="https://www.netlify.com/">Netlify</a>
   
@@ -69,7 +69,7 @@ format:
     
     code-link: true
     
-    author-meta: "Almog Simchon and Louis Teitelbaum"
+    author-meta: "Louis Teitelbaum and Almog Simchon"
     callout-appearance: simple
 
 editor: source

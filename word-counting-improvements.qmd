@@ -19,6 +19,10 @@ hippocorpus_dfm <- hippocorpus_corp |>
   dfm_remove("~")
 ```
 
+::: {.callout-important}
+## This page is still under construction. Come back soon!
+:::
+
 In @sec-tokenization, we described how to break texts up into tokens and count the occurrences of each one. In @sec-word-counting and @sec-dla, we used these simple counts to test hypotheses and generate hypothesis-free descriptions of the differences between groups. All along, we used statistical methods that work with raw counts, like negative binomial regression in @sec-modeling-word-counts, and likelihood ratio testing in @sec-keyness (with the minor exception of @sec-word-scoring, which used averaged scores). 
 
 Raw token counts are difficult to work with: They are not normally distributed, they do not usually change linearly with predictors, and they are overly sensitive to quirks of linguistic style and text length. Researchers and engineers have proposed various ways to fix these problems by transforming the raw counts or by transforming the text before performing the counting. In this chapter, we introduce a few of the most common transformations and point out their advantages and disadvantages.

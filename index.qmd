@@ -14,7 +14,7 @@ How to Cite This Book:
 
 ------------------------------------------------------------------------
 
-This book was written for the "Data Science for Psychology Lab" course in the psychology department at Ben Gurion University of the Negev (BGU), and is supported by funding from BGU.
+This book was written for the "Data Science for Psychology Lab" course in the psychology department at Ben-Gurion University of the Negev (BGU), and is supported by funding from BGU.
 
 ------------------------------------------------------------------------
 

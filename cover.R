@@ -117,8 +117,8 @@ bg <- grid::rasterGrob(c("#132749", "#2F3157"),
                  height = unit(1,"npc"), 
                  interpolate = TRUE)
 
-ytop <- 3.53
-ybottom <- 2.78
+ytop <- 3.55
+ybottom <- 2.80
 yheight <- ytop - ybottom
 
 cover <- ra_posts |> 
@@ -126,13 +126,20 @@ cover <- ra_posts |>
     annotation_custom(bg, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) +
     annotate("text",
              x = min(range(ra_posts$V_pred)), y = ytop - 2*yheight/10,
-             size = 20, family = "Avenir Next",
-             lineheight = .9, hjust = 0,
-             label = "Data Science\nfor Psychology",
+             size = 16, family = "Avenir Next",
+             lineheight = .9, hjust = 0,fontface = "bold",
+             label = "Data Science\nfor Psychology:\n",
              color = "white"
              ) +
     annotate("text",
-             x = min(range(ra_posts$V_pred)), y = ytop - 4*yheight/10,
+             x = min(range(ra_posts$V_pred)), y = ytop - 2*yheight/10,
+             size = 16, family = "Avenir Next", 
+             lineheight = .9, hjust = 0,
+             label = "\n\nNatural Language",
+             color = "white"
+    ) +
+    annotate("text",
+             x = min(range(ra_posts$V_pred)), y = ytop - 10*yheight/23,
              size = 10, family = "Avenir Next",
              lineheight = .9, hjust = 0,
              label = "with examples in R",
@@ -142,7 +149,7 @@ cover <- ra_posts |>
              x = max(range(ra_posts$V_pred)), y = ybottom + yheight/15,
              size = 8, family = "Avenir Next",
              lineheight = 1.2, hjust = 1,
-             label = "Almog Simchon\n& Louis Teitelbaum",
+             label = "Louis Teitelbaum\n& Almog Simchon",
              color = "white"
     ) +
     geom_point(alpha = .8, stroke = NA) +
@@ -156,6 +163,8 @@ cover <- ra_posts |>
                              range(ra_posts$V_pred)[2]), 
                     ylim = c(ybottom, ytop)) +
     theme_void()
+
+cover
 
 ggsave(filename = "images/cover.png", plot = cover,
        width = 16, height = 16, units = "cm")

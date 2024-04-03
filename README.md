@@ -1,7 +1,7 @@
 # Data Science for Psychology
 [![Netlify Status](https://api.netlify.com/api/v1/badges/73deb477-ee93-4f28-8931-cd45410eb94a/deploy-status)](https://app.netlify.com/sites/ds4psych/deploys)
 
-This repository contains the source of [Data Science for Psychology: Natural Language](). The book is built using [Quarto](https://quarto.org/).
+This repository contains the source of [Data Science for Psychology: Natural Language](https://ds4psych.com). The book is built using [Quarto](https://quarto.org/).
 
 ## Code of Conduct
 
