@@ -1,4 +1,4 @@
-# Open-Vocabulary Word Counting {#sec-dla}
+# Open Vocabulary Word Counting {#sec-dla}
 
 ```{r setup}
 #| echo: false
@@ -19,7 +19,7 @@ hippocorpus_dfm <- hippocorpus_corp |>
   dfm_remove("~")
 ```
 
-In @sec-word-counting, we used a preexisting list of surprise-related words to test whether true autobiographical stories are more surprise-related than imagined stories. Sometimes though, it can be informative to take a theory-free approach to the difference between two groups. We might ask: **How are the words used in true autobiographical stories different from the words used in imagined stories?** We will call the investigation of questions like this open vocabulary analyses, a term coined by @schwartz_etal_2013.
+In @sec-word-counting, we used a preexisting list of surprise-related words to test whether true autobiographical stories are more surprise-related than imagined stories. Sometimes though, it can be informative to take a theory-free approach to the difference between two groups. We might ask: **How are the words used in true autobiographical stories different from the words used in imagined stories?** We call the investigation of questions like this open vocabulary analyses, a term coined by @schwartz_etal_2013.
 
 Both open vocabulary analyses and dictionary-based methods use word counts, but they come from opposite directions: Dictionary-based methods start with a construct and use it to examine the difference between groups (or levels of a continuous variable). The open vocabulary approach, on the other hand, starts with the difference between groups (or levels of a continuous variable) and generates a list of words that can then be identified with one or more constructs after the fact.
 
@@ -31,7 +31,7 @@ Open vocabulary analyses are useful for three types of applications:
 
 ## Frequency Ratios {#sec-freq-ratios}
 
-The most intuitive way to compare texts from two groups is one we already explored in depth in @sec-word-viz: frequency ratios. To get frequency ratios from a Quanteda DFM, we can use the `textstat_frequency()` function from the [`quanteda.textstats`](https://github.com/quanteda/quanteda.textstats) package, with the `groups` parameter set to the categorical variable of interest. Let's compare true stories from fictional ones in the _Hippocorpus_ data.
+The most intuitive way to compare texts from two groups is one we already explored in the context of data visualization in @sec-word-viz: frequency ratios. To get frequency ratios from a Quanteda DFM, we can use the `textstat_frequency()` function from the [`quanteda.textstats`](https://github.com/quanteda/quanteda.textstats) package, with the `groups` parameter set to the categorical variable of interest. Let's compare true stories from fictional ones in the _Hippocorpus_ data.
 
 ```{r}
 library(quanteda.textstats)
@@ -42,7 +42,7 @@ imagined_vs_recalled <- hippocorpus_dfm |>
 head(imagined_vs_recalled)
 ```
 
-The resulting dataframe has one row per feature per category. `frequency` is the number of times the feature appears in the group, `rank` is the ordering from highest to lowest frequency within each group, and `docfreq` is the number of documents in the group in which the feature appears at least once. To compare imagined stories to recalled ones, we can calculate frequency ratios. 
+In the resulting dataframe, each row represents one feature within each category. `frequency` is the number of times the feature appears in the group, `rank` is the ordering from highest to lowest frequency within each group, and `docfreq` is the number of documents in the group in which the feature appears at least once. To compare imagined stories to recalled ones, we can calculate frequency ratios. 
 
 ```{r}
 imagined_vs_recalled <- imagined_vs_recalled |> 
@@ -51,7 +51,9 @@ imagined_vs_recalled <- imagined_vs_recalled |>
               names_from = "group", 
               values_from = "frequency",
               names_prefix = "count_") |> 
-  mutate(imagined_freq_ratio = count_imagined/count_recalled)
+  mutate(freq_imagined = count_imagined/sum(count_imagined, na.rm = TRUE),
+         freq_recalled = count_recalled/sum(count_recalled, na.rm = TRUE),
+         imagined_freq_ratio = freq_imagined/freq_recalled)
 
 head(imagined_vs_recalled)
 ```
@@ -67,7 +69,7 @@ set.seed(2023)
 p <- imagined_vs_recalled |> 
   mutate(
     # calculate total frequency
-    common = count_imagined + count_recalled,
+    common = (freq_imagined + freq_recalled)/2,
     # remove single quotes (for html)
     feature = str_replace_all(feature, "'", "`")) |> 
   ggplot(aes(imagined_freq_ratio, common, 
@@ -80,7 +82,7 @@ p <- imagined_vs_recalled |>
     geom_text_repel_interactive(size = 2) +
     scale_y_continuous(
       trans = "log2", breaks = ~.x,
-      minor_breaks = ~2^(seq(0,log2(.x[2]))),
+      minor_breaks = ~2^(seq(0, log2(.x[2]))),
       labels = c("Rare", "Common")
       ) +   
     scale_x_continuous(
@@ -115,13 +117,13 @@ girafe_options(
   )
 ```
 
-This view allows us to explore individual words that are characteristic of one or the other group. It also shows the overall shape of the distribution---the slight skew to the left indicates that recalled stories tend to be slightly longer than true ones.
+This view allows us to explore individual words that are characteristic of one or the other group. It also shows the overall shape of the distribution---the slight skew to the left suggests that recalled stories tend to have a slightly richer vocabulary than imagined ones.
 
 ## Keyness {#sec-keyness}
 
-Working with frequency ratios has an intuitive appeal that is perfect for data visualization; "10 times more common in group A than group B" is a statement that anyone can understand. Even so, **frequency ratios are statistically misleading**, since they do not account for random sampling error. For example, a word that appears 1000 times in group A and 100 times in group B is much more convincingly representative of group A than a word that appears 10 times in group A and 1 time in group B, even though the frequency ratio is identical. Furthermore, simple frequency ratios do not account for base rates---as we saw in the the F/F plot in @sec-freq-ratios, ratios can be skewed to one side simply because texts in one group are longer than those in another. These problems can be solved by using more statistically motivated methods for group comparisons, sometimes referred to as _keyness_ statistics.
+Working with frequency ratios has an intuitive appeal that is perfect for data visualization; "10 times more common in group A than group B" is a statement that anyone can understand. Even so, **frequency ratios are statistically misleading**, since they do not account for random sampling error. For example, a word that appears 1000 times in group A and 100 times in group B is much more convincingly representative of group A than a word that appears 10 times in group A and 1 time in group B, even though the frequency ratio is identical. Furthermore, simple frequency ratios do not account for base rates---ratios can be skewed to one side simply because texts in one group are longer than those in another. The F/F plot in @sec-freq-ratios solved this problem by working with relative frequencies (the count divided by total words in the group; @sec-relative-tokenization), but these problems can be solved more elegantly by using statistically motivated methods for group comparisons, sometimes referred to as _keyness_ statistics.
 
-Quanteda's default keyness statistic is none other than the chi-squared value, which compares the observed frequencies to the expected ones if there were no difference between the groups^[More precisely, the chi-squared statistic is the sum of the differences between observed and expected frequencies, divided by the expected frequency.]. We can compute the chi-squared statistic directly from the DFM using the `textstat_keyness()` function, with the "target" parameter set to one of the two groups of documents, in this case imagined ones, or `docvars(imagined_vs_recalled_dfm, "memType") == "imagined"`. The function keeps the chi-squared statistic positive or flips it to negative based on whether the frequency in the target group is higher or lower than the expected value. Though chi-squared is the default, we recommend using a likelihood ratio test (`measure = "lr"`) for most application. This setting produces the G-squared statistic, a close relative of chi-squared. For smaller samples, we recommend Fisher's exact test (`measure = "exact"`), which is more reliable for hypothesis testing but takes much longer to compute.
+Quanteda's default keyness statistic is none other than the chi-squared value, which measures how different the two groups are relative to what might be expected by random chance^[More precisely, the chi-squared statistic is the sum of the differences between observed frequencies and the frequencies that would be expected if there were no difference between the groups, divided by the expected frequency.]. We can compute the chi-squared statistic directly from the DFM using the `textstat_keyness()` function from  [`quanteda.textstats`](https://github.com/quanteda/quanteda.textstats), with the "target" parameter set to one of the two groups of documents, in this case imagined ones, or `docvars(imagined_vs_recalled_dfm, "memType") == "imagined"`. This group is referred to as the target group, while everything else becomes the reference group. The function keeps a token's chi-squared statistic positive if it is more common than expected in the target group, or flips it to negative if it is less common than expected in the target group. Though chi-squared is the default, we recommend using a likelihood ratio test (`measure = "lr"`) for most applications. This setting produces the G-squared statistic, a close relative of chi-squared. For smaller samples, we recommend Fisher's exact test (`measure = "exact"`), which is more reliable for hypothesis testing but takes much longer to compute.
 
 ```{r}
 # Filtered DFM
@@ -181,7 +183,7 @@ Keyness plots like this are often a good second step in EDA, after looking at yo
 
 ## Continuous Covariates
 
-Open vocabulary analysis does not require two distinct groups. For example, we may want to investigate the differences in language associated with openness to experience. A simple way to do this is to measuring the correlation between word frequencies in documents and the documents' authors' `openness` score. 
+Open vocabulary analysis does not require two distinct groups. For example, we may want to investigate the differences in language associated with openness to experience. A simple way to do this is to measure the correlation between word frequencies in documents and the documents' authors' `openness` score. 
 
 ```{r}
 # openness score of the author of each document
@@ -233,7 +235,7 @@ openness_cor |>
     theme_void() # blank background
 ```
 
-## Generating Dictionaries With Open Vocabulary Analysis
+## Generating Dictionaries With Open Vocabulary Analysis {#sec-generating-dictionaries}
 
 In @sec-dictionary-sources we saw that dictionaries for word counting can be generated in many ways. One of these ways is to start with a corpus and proceed with open vocabulary analysis. As an example, let's use the [Crowdflower Emotion in Text dataset](https://data.world/crowdflower/sentiment-analysis-in-text) to generate a new dictionary for the emotion of surprise. The Crowdflower dataset includes 40,000 Twitter posts, each labeled with one of 13 sentiments. Of these, 2187 are labeled as reflecting surprise.
 
@@ -250,7 +252,7 @@ crowdflower <- read_csv("data/text_emotion.csv") |>
 glimpse(crowdflower)
 ```
 
-Generating a dictionary is a subtly different goal than discovering the differences between groups. In @sec-keyness above, we recommended the likelihood ratio test as a way of looking for statistically significant differences. When generating a dictionary though, we care less about statistical significance and more about information---specifically, if I observe this word in a text, how much does it tell me about the text? For this kind of question, we recommend a different keyness statistic: pointwise mutual information (PMI). 
+Generating a dictionary is a subtly different goal than discovering the differences between groups. In @sec-keyness above, we recommended the likelihood ratio test as a way of looking for statistically significant differences. When generating a dictionary though, we care less about statistical significance and more about information---if I observe this word in a text, how much does it tell me about the text? For this kind of question, we recommend a different keyness statistic: pointwise mutual information (PMI). 
 
 PMI can be computed just like the likelihood ratio test, using `textstat_keyness()`. We will need to be careful though, since PMI is sensitive to rare tokens---if a token appears only once in the corpus, in a text labelled surprise, it will be identified as giving lots of information about whether the text is labeled surprise. So we'll want to keep tokens with a high PMI, but remove very rare ones.
 
@@ -289,7 +291,7 @@ tweet_surprise_dict <- dictionary(
 )
 ```
 
-Can we use this new surprise dictionary to test our hypothesis that true autobiographical stories include more surprise than imagined stories? There is no guarantee that surprise words in Tweets will be the same as surprise words in autobiographical stories. With this in mind, we can proceed cautiously:
+Can we use this new surprise dictionary to test our hypothesis that true autobiographical stories include more surprise than imagined stories? Maybe. There is no guarantee that surprise words in Tweets will be the same as surprise words in autobiographical stories. With this in mind, we can proceed cautiously:
 
 ```{r}
 # count words
@@ -309,3 +311,5 @@ summary(tweet_surprise_mod)
 ```
 
 Using our dictionary generated from Tweets with open vocabulary analysis, we find no significant difference between true autobiographical stories and imagined stories in the amount of suprise-related language they contain (p = `r round(summary(tweet_surprise_mod)$coefficients["memTyperecalled","Pr(>|z|)"],3)`).
+
+---

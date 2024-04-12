@@ -238,7 +238,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dla.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Open-Vocabulary Word Counting</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Open Vocabulary Word Counting</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -250,7 +250,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./vectorspace-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Thinking in Vector Space</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Introduction to Vector Space</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -356,6 +356,7 @@ This page is still under construction. Come back soon!
 <li>Jensen–Shannon distance</li>
 </ul></section><section id="sec-dimension-projection" class="level2" data-number="20.3"><h2 data-number="20.3" class="anchored" data-anchor-id="sec-dimension-projection">
 <span class="header-section-number">20.3</span> Dimension Projection</h2>
+<p><span class="citation" data-cites="grand_etal_2022">Grand et al. (<a href="#ref-grand_etal_2022" role="doc-biblioref">2022</a>)</span></p>
 <p><strong>An example of using dimension projection in research:</strong> <span class="citation" data-cites="simchon_etal_2023">Simchon et al. (<a href="#ref-simchon_etal_2023" role="doc-biblioref">2023</a>)</span> collected 10,000 messages from the <a href="https://www.reddit.com/r/depression">r/depression</a> subreddit, along with a control group of 100 messages each from 100 randomly selected subreddits. They then used a variant of the SBERT model called <code>all-MiniLM-L6-v2</code> to compute CCR embeddings (<a href="contextualized-embeddings.html"><span>Chapter&nbsp;19</span></a>) of a psychological questionnaire measuring “locus of control,” the feeling that you have control over your own life. The questionnaire included items measuring an internal locus of control (“I have control”), and items measuring an external locus of control (“External forces have control”). Simchon et al.&nbsp;constructed an anchored vector to capture the direction between internal and external locus of control, and projected embeddings of the Reddit posts onto that vector to measure how much each post reflected an internal vs.&nbsp;an external locus of control. They found that posts in r/depression exhibited a more external locus of control than posts in the control group.</p>
 </section><section id="sec-machine-learning-methods" class="level2" data-number="20.4"><h2 data-number="20.4" class="anchored" data-anchor-id="sec-machine-learning-methods">
 <span class="header-section-number">20.4</span> Machine Learning Methods</h2>
@@ -365,6 +366,9 @@ This page is still under construction. Come back soon!
 <div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
 <div id="ref-chersoni_etal_2021" class="csl-entry" role="listitem">
 Chersoni, E., Santus, E., Huang, C.-R., &amp; Lenci, A. (2021). Decoding word embeddings with brain-based semantic features. <em>Computational Linguistics</em>, <em>47</em>(3), 663–698. <a href="https://doi.org/10.1162/coli_a_00412">https://doi.org/10.1162/coli_a_00412</a>
+</div>
+<div id="ref-grand_etal_2022" class="csl-entry" role="listitem">
+Grand, G., Blank, I. A., Pereira, F., &amp; Fedorenko, E. (2022). Semantic projection recovers rich human knowledge of multiple object features from word embeddings. <em>Nature Human Behaviour</em>, <em>6</em>(7), 975–987. <a href="https://doi.org/10.1038/s41562-022-01316-8">https://doi.org/10.1038/s41562-022-01316-8</a>
 </div>
 <div id="ref-gunther_etal_2019" class="csl-entry" role="listitem">
 Günther, F., Rinaldi, L., &amp; Marelli, M. (2019). Vector-space models of semantic representation from a cognitive perspective: A discussion of common misconceptions. <em>Perspectives on Psychological Science</em>, <em>14</em>(6), 1006–1033. <a href="https://doi.org/10.1177/1745691619861372">https://doi.org/10.1177/1745691619861372</a>

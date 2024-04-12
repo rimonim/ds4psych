@@ -1,4 +1,4 @@
-# Thinking in Vector Space {#sec-vectorspace-intro}
+# Introduction to Vector Space {#sec-vectorspace-intro}
 
 ```{r setup}
 #| echo: false
@@ -7,13 +7,9 @@
 source("_common.R")
 ```
 
-::: {.callout-important}
-## This page is still under construction. Come back soon!
-:::
-
 Thus far we have covered various forms of counting. But more advanced methods in NLP often rely on *comparing* instead. To understand these methods, we must get comfortable with the idea of vector space.
 
-This chapter is a basic introduction to the concept of representing documents as vectors. We also introduce two basic vector-based measurement techniques: euclidean distance and cosine similarity. A more advanced and in-depth guide to navigating vector space will be covered in @sec-navigating-vectorspace.
+This chapter is a basic introduction to the concept of representing documents as vectors. We also introduce two basic vector-based measurement techniques: Euclidean distance and cosine similarity. A more advanced and in-depth guide to navigating vector space will be covered in @sec-navigating-vectorspace.
 
 ------------------------------------------------------------------------
 
@@ -241,26 +237,162 @@ $$
 d\left( A,B\right)   = \sqrt {\sum _{i=1}^{n}  \left( A_{i}-B_{i}\right)^2 }
 $$
 
-Let's calculate the Euclidean distance between Daniel and Elizabeth, and between Amos and Elizabeth:
+**A low Euclidean distance means two vectors are very similar**. Let's calculate the Euclidean distance between Daniel and Elizabeth, and between Amos and Elizabeth:
 
 ```{r}
+# dataset
+personality
+
 # Elizabeth's vector
-eliza_vec <- as.numeric(personality[personality$person == "Elizabeth",-1])
+eliza_vec <- personality |> 
+  filter(person == "Elizabeth") |> 
+  select(extraversion:neuroticism) |> 
+  as.numeric()
+
+# Euclidean distance function
+euc_dist <- function(x, y){
+  diff <- x - y
+  sqrt(sum(diff^2))
+}
 
 # distance between Elizabeth and each person
-distance_from_eliza <- personality |> 
-  mutate()
+personality_dist <- personality |> 
+  rowwise() |> 
+  mutate(
+    dist_from_eliza = euc_dist(c_across(extraversion:neuroticism), eliza_vec)
+  )
 
+personality_dist
 ```
+We now see that the closest person to Elizabeth is... Elizabeth herself, with a distance of 0. After that, the closest is Daniel. So we can conclude that Daniel has a more Elizabeth-like personality than Amos does.
 
 ### Cosine Similarity {#sec-cosine-similarity}
 
-Pearson correlation is centered cosine similarity.
+Besides Euclidean distance, the most common way to measure the similarity between two vectors is with cosine similarity. This is just the cosine of the angle between the two vectors. Since the cosine of 0 is 1, **a high cosine similarity (close to 1) means two vectors are very similar**.
+
+```{r}
+#| echo: false
+#| warning: false
+library(patchwork)
+
+cos_plot <- personality |> 
+  filter(person != "Daniel") |> 
+  ggplot() +
+    geom_segment(aes(openness, neuroticism, xend = 0, yend = 0)) +
+    ggforce::geom_arc(
+      aes(x0 = 0, y0 = 0, r = 4, start = 1.1659, end = 0.588),
+      linewidth = 2, color = "red4", arrow = arrow(ends = "both")
+      ) +
+    geom_point(aes(openness, neuroticism, color = person), size = 4) +
+    geom_text(aes(openness + .5, neuroticism + .5, label = person)) +
+    scale_color_manual(
+      breaks = c("Elizabeth", "Amos"),
+      values = c("forestgreen", "purple")
+    ) +
+    guides(color = "none") +
+    coord_fixed(xlim = c(0, 8), ylim = c(0, 7)) +
+    labs(title = "Cosine Similarity") +
+    theme_minimal() +
+    theme(plot.title = element_text(size = 30, hjust = .5, color = "red4"))
+
+euc_plot <- personality |> 
+  filter(person != "Daniel") |> 
+  ggplot() +
+    # geom_segment(aes(openness, neuroticism, xend = 0, yend = 0)) +
+    geom_point(aes(openness, neuroticism, color = person), size = 4) +
+    geom_segment(
+      aes(openness, neuroticism, xend = lead(openness), yend = lead(neuroticism)),
+      linewidth = 2, color = "royalblue", arrow = arrow(ends = "both")
+      ) +
+    geom_text(aes(openness + .5, neuroticism + .5, label = person)) +
+    scale_color_manual(
+      breaks = c("Elizabeth", "Amos"),
+      values = c("forestgreen", "purple")
+    ) +
+    guides(color = "none") +
+    coord_fixed(xlim = c(0, 8), ylim = c(0, 7)) +
+    labs(title = "Euclidean Distance") +
+    theme_minimal() +
+    theme(plot.title = element_text(size = 30, hjust = .5, color = "royalblue"))
+
+euc_plot + cos_plot
+```
+
+A nice thing about the cosine is that it is always between -1 and 1: When the two vectors are pointing in a similar direction, the cosine is close to 1, and when they are pointing in a near-opposite direction (180°), the cosine is close to -1. 
+
+Looking at the above visualization, you might wonder: Why should the angle be fixed at the zero point? What does the zero point have to do with anything? If you wondered this, good job. You are absolutely right: **cosine similarity works best when your vector space is centered at zero (or close to it)**. In other words, it works best when zero represents a medium level of each variable. This fact is sometimes taken for granted because, in practice, most vector spaces are already centered at zero. For example, neural network embeddings (@sec-word-embeddings, @sec-contextualized-embeddings) can usually be assumed to center at zero because neural networks are almost always trained with a penalty for high values of weights (weight decay) and because many modern neural networks internally rely on dot products between embeddings (the dot product is another close cousin of cosine similarity) for their internal representations of data. The ubiquity of zero-centered vector spaces makes cosine similarity a very useful tool. Even so, not all vector spaces are zero-centered, so take a moment to consider the nature of your vector space before deciding which similarity or distance metric to use.
+
+The formula for calculating cosine similarity might look a bit complicated:
 
 $$
 Cosine(A,B) = \frac{A \cdot B}{|A||B|} = \frac{\sum _{i=1}^{n}  A_{i}B_{i}}{\sqrt {\sum _{i=1}^{n} A_{i}^2} \cdot \sqrt {\sum _{i=1}^{n} B_{i}^2}}
 $$
+In R though, it's pretty simple. Let's calculate the cosine similarity between Elizabeth and each of the other people in our sample. To make sure the vector space is centered at zero, we will subtract 4 from each value (the scales all range from 1 to 7).
+
+```{r}
+# cosine similarity function
+cos_sim <- function(x, y){
+  dot <- x %*% y
+  normx <- sqrt(sum(x^2))
+  normy <- sqrt(sum(y^2))
+  dot / (normx*normy)
+}
+
+# center at 0
+eliza_vec_centered <- eliza_vec - 4
+personality_sim <- personality |> 
+  mutate(across(extraversion:neuroticism, ~.x - 4))
+
+# distance between Elizabeth and each person
+personality_sim <- personality_sim |> 
+  rowwise() |> 
+  mutate(
+    similarity_to_eliza = cos_sim(c_across(extraversion:neuroticism), eliza_vec_centered)
+  )
+
+personality_sim
+```
+Once again, we see that the most similar person to Elizabeth is Elizabeth herself, with a cosine similarity of 1. The next closest, as before, is Daniel.
+
+If you are comfortable with cosines, you might be happy with the explanation we have given so far. Nevertheless, it might be helpful to consider the relationship between cosine similarity and another statistic that ranges between -1 and 1: the Pearson correlation coefficient. Cosine similarity measures the similarity between two _vectors_, while the correlation coefficient measures the similarity between two _variables_. Now just imagine our vectors as variables, with each dimension as an observation, like this:
+
+```{r}
+#| echo: false
+#| warning: false
+personality |> 
+  filter(person != "Daniel") |> 
+  pivot_longer(extraversion:neuroticism, names_to = "dimension") |> 
+  pivot_wider(names_from = "person") |> 
+  ggplot(aes(Amos, Elizabeth, label = dimension)) +
+    geom_point(size = 3) +
+    geom_text(aes(Amos + .3, Elizabeth + .3)) +
+    coord_equal(xlim = c(1, 8), ylim = c(4, 9)) +
+    theme_minimal()
+```
+
+Now imagine centering those variables at zero, like this:
+
+```{r}
+#| echo: false
+#| warning: false
+personality |> 
+  filter(person != "Daniel") |> 
+  pivot_longer(extraversion:neuroticism, names_to = "dimension") |> 
+  pivot_wider(names_from = "person") |> 
+  mutate(across(Amos:Elizabeth, ~.x - mean(.x))) |> 
+  ggplot(aes(Amos, Elizabeth, label = dimension)) +
+    geom_point(size = 3) +
+    geom_text(aes(Amos + .3, Elizabeth + .3)) +
+    coord_equal(xlim = c(-3, 3), ylim = c(-3, 3)) +
+    theme_minimal()
+```
+
+When seen like this, the correlation is the same as the cosine similarity. In other words, **the correlation between two vectors is the same as the cosine similarity between them when the values of each vector are centered at zero**^[For proof, see @oconnor_2012]. Seeing cosine similarity as the non-centered version of correlation might give you extra intuition for why cosine similarity works best for vector spaces that are centered at zero.
 
 ## Word Counts as Vector Space
 
-@ireland_pennebaker_2010
+The advantage of thinking in vector space is that we can quantify on similarities and differences even without understanding what any of the dimensions in the vector space are measuring. In the coming chapters, we will introduce methods that require this kind of relational thinking, since the dimensions of the vector space are abstract statistical contrivances. Even so, any collection of variables can be thought of as dimensions in a vector space. You might, for example, use distance or similarity metrics to analyze groups of word counts.
+
+**An example of word counts as relational vectors in research:** @ireland_pennebaker_2010 asked students to answer essay questions written in different styles. They then calculated dictionary-based word counts for both the questions and the answers using 9 linguistic word lists from LIWC (see @sec-dictionary-sources), including personal pronouns (e.g. "I", "you"), and articles (e.g, "a", "the"). They treated these 9 word counts as a 9-dimensional vector for each text, and measured the similarity between questions and responses with a metric similar to Euclidean distance. They found that students automatically matched the linguistic style of the questions (i.e. answers were more similar to the question they were answering than to other questions) and that women and students with higher grades matched their answers especially closely to the style of the questions.
+
+---

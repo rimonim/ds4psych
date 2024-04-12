@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Louis Teitelbaum and Almog Simchon">
-<title>Data Science for Psychology: Natural Language - 17&nbsp; Thinking in Vector Space</title>
+<title>Data Science for Psychology: Natural Language - 17&nbsp; Introduction to Vector Space</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -121,7 +121,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./vectorspace-intro.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Thinking in Vector Space</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./vectorspace-intro.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Introduction to Vector Space</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -274,7 +274,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dla.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Open-Vocabulary Word Counting</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Open Vocabulary Word Counting</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -286,7 +286,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./vectorspace-intro.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Thinking in Vector Space</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Introduction to Vector Space</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -358,7 +358,7 @@ div.csl-indent {
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-vectorspace-intro" class="quarto-section-identifier"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Thinking in Vector Space</span></span></h1>
+<h1 class="title"><span id="sec-vectorspace-intro" class="quarto-section-identifier"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Introduction to Vector Space</span></span></h1>
 </div>
 
 
@@ -371,21 +371,8 @@ div.csl-indent {
   </div>
   
 
-</header><div class="callout callout-style-simple callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-This page is still under construction. Come back soon!
-</div>
-</div>
-<div class="callout-body-container callout-body">
-
-</div>
-</div>
-<p>Thus far we have covered various forms of counting. But more advanced methods in NLP often rely on <em>comparing</em> instead. To understand these methods, we must get comfortable with the idea of vector space.</p>
-<p>This chapter is a basic introduction to the concept of representing documents as vectors. We also introduce two basic vector-based measurement techniques: euclidean distance and cosine similarity. A more advanced and in-depth guide to navigating vector space will be covered in <a href="navigating-vectorspace.html"><span>Chapter&nbsp;20</span></a>.</p>
+</header><p>Thus far we have covered various forms of counting. But more advanced methods in NLP often rely on <em>comparing</em> instead. To understand these methods, we must get comfortable with the idea of vector space.</p>
+<p>This chapter is a basic introduction to the concept of representing documents as vectors. We also introduce two basic vector-based measurement techniques: Euclidean distance and cosine similarity. A more advanced and in-depth guide to navigating vector space will be covered in <a href="navigating-vectorspace.html"><span>Chapter&nbsp;20</span></a>.</p>
 <hr>
 <p>A fictional example<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>: Daniel and Amos filled out a psychology questionnaire. The questionnaire measured three aspects of their personalities: extraversion, openness to experience, and neuroticism.</p>
 <p>On the extraversion scale, Amos scored a 2 and Daniel scored a 4:</p>
@@ -415,14 +402,14 @@ This page is still under construction. Come back soon!
 <div class="cell">
 <div class="cell-output-display">
 <div class="plotly html-widget html-fill-item" id="htmlwidget-74cfae68c7f2192b61f0" style="width:100%;height:406px;"></div>
-<script type="application/json" data-for="htmlwidget-74cfae68c7f2192b61f0">{"x":{"visdat":{"f0da55787a4":["function () ","plotlyVisDat"],"f0da358a22b9":["function () ","data"]},"cur_data":"f0da358a22b9","attrs":{"f0da55787a4":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","inherit":true},"f0da55787a4.1":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"text":{},"type":"scatter3d","mode":"text","inherit":true},"f0da358a22b9":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"lines","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"zerolinecolor":"black","zerolinewidth":10},"showlegend":false,"scene":{"xaxis":{"title":"extraversion"},"yaxis":{"title":"openness"},"zaxis":{"title":"neuroticism"}},"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[2],"y":[7],"z":[3],"type":"scatter3d","mode":"markers","name":"Amos","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[4],"y":[6],"z":[5],"type":"scatter3d","mode":"markers","name":"Daniel","marker":{"color":"rgba(255,127,14,1)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null},{"x":[2],"y":[7],"z":[3],"text":"Amos","type":"scatter3d","mode":"text","name":"Amos","marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"frame":null},{"x":[4],"y":[6],"z":[5],"text":"Daniel","type":"scatter3d","mode":"text","name":"Daniel","marker":{"color":"rgba(214,39,40,1)","line":{"color":"rgba(214,39,40,1)"}},"error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"line":{"color":"rgba(214,39,40,1)"},"frame":null},{"x":[2,0],"y":[7,0],"z":[3,0],"type":"scatter3d","mode":"lines","name":"Amos","marker":{"color":"rgba(148,103,189,1)","line":{"color":"rgba(148,103,189,1)"}},"error_y":{"color":"rgba(148,103,189,1)"},"error_x":{"color":"rgba(148,103,189,1)"},"line":{"color":"rgba(148,103,189,1)"},"frame":null},{"x":[4,0],"y":[6,0],"z":[5,0],"type":"scatter3d","mode":"lines","name":"Daniel","marker":{"color":"rgba(140,86,75,1)","line":{"color":"rgba(140,86,75,1)"}},"error_y":{"color":"rgba(140,86,75,1)"},"error_x":{"color":"rgba(140,86,75,1)"},"line":{"color":"rgba(140,86,75,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-74cfae68c7f2192b61f0">{"x":{"visdat":{"519917aa2970":["function () ","plotlyVisDat"],"519924868433":["function () ","data"]},"cur_data":"519924868433","attrs":{"519917aa2970":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","inherit":true},"519917aa2970.1":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"text":{},"type":"scatter3d","mode":"text","inherit":true},"519924868433":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"lines","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"zerolinecolor":"black","zerolinewidth":10},"showlegend":false,"scene":{"xaxis":{"title":"extraversion"},"yaxis":{"title":"openness"},"zaxis":{"title":"neuroticism"}},"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[2],"y":[7],"z":[3],"type":"scatter3d","mode":"markers","name":"Amos","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[4],"y":[6],"z":[5],"type":"scatter3d","mode":"markers","name":"Daniel","marker":{"color":"rgba(255,127,14,1)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null},{"x":[2],"y":[7],"z":[3],"text":"Amos","type":"scatter3d","mode":"text","name":"Amos","marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"frame":null},{"x":[4],"y":[6],"z":[5],"text":"Daniel","type":"scatter3d","mode":"text","name":"Daniel","marker":{"color":"rgba(214,39,40,1)","line":{"color":"rgba(214,39,40,1)"}},"error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"line":{"color":"rgba(214,39,40,1)"},"frame":null},{"x":[2,0],"y":[7,0],"z":[3,0],"type":"scatter3d","mode":"lines","name":"Amos","marker":{"color":"rgba(148,103,189,1)","line":{"color":"rgba(148,103,189,1)"}},"error_y":{"color":"rgba(148,103,189,1)"},"error_x":{"color":"rgba(148,103,189,1)"},"line":{"color":"rgba(148,103,189,1)"},"frame":null},{"x":[4,0],"y":[6,0],"z":[5,0],"type":"scatter3d","mode":"lines","name":"Daniel","marker":{"color":"rgba(140,86,75,1)","line":{"color":"rgba(140,86,75,1)"}},"error_y":{"color":"rgba(140,86,75,1)"},"error_x":{"color":"rgba(140,86,75,1)"},"line":{"color":"rgba(140,86,75,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>Now imagine that we encounter a third person, Elizabeth. We would like to know whether Elizabeth is more similar to Daniel or to Amos.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div class="plotly html-widget html-fill-item" id="htmlwidget-c01c30d07c8447bee182" style="width:100%;height:406px;"></div>
-<script type="application/json" data-for="htmlwidget-c01c30d07c8447bee182">{"x":{"visdat":{"f0da50997a19":["function () ","plotlyVisDat"],"f0dac1f28a6":["function () ","data"]},"cur_data":"f0dac1f28a6","attrs":{"f0da50997a19":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","inherit":true},"f0da50997a19.1":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"text":{},"type":"scatter3d","mode":"text","inherit":true},"f0dac1f28a6":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"lines","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"zerolinecolor":"black","zerolinewidth":10},"showlegend":false,"scene":{"xaxis":{"title":"Dim1"},"yaxis":{"title":"Dim2"},"zaxis":{"title":"Dim3"}},"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[2],"y":[7],"z":[3],"type":"scatter3d","mode":"markers","name":"Amos","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[4],"y":[6],"z":[5],"type":"scatter3d","mode":"markers","name":"Daniel","marker":{"color":"rgba(255,127,14,1)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null},{"x":[8],"y":[4],"z":[6],"type":"scatter3d","mode":"markers","name":"Elizabeth","marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"frame":null},{"x":[2],"y":[7],"z":[3],"text":"Amos","type":"scatter3d","mode":"text","name":"Amos","marker":{"color":"rgba(214,39,40,1)","line":{"color":"rgba(214,39,40,1)"}},"error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"line":{"color":"rgba(214,39,40,1)"},"frame":null},{"x":[4],"y":[6],"z":[5],"text":"Daniel","type":"scatter3d","mode":"text","name":"Daniel","marker":{"color":"rgba(148,103,189,1)","line":{"color":"rgba(148,103,189,1)"}},"error_y":{"color":"rgba(148,103,189,1)"},"error_x":{"color":"rgba(148,103,189,1)"},"line":{"color":"rgba(148,103,189,1)"},"frame":null},{"x":[8],"y":[4],"z":[6],"text":"Elizabeth","type":"scatter3d","mode":"text","name":"Elizabeth","marker":{"color":"rgba(140,86,75,1)","line":{"color":"rgba(140,86,75,1)"}},"error_y":{"color":"rgba(140,86,75,1)"},"error_x":{"color":"rgba(140,86,75,1)"},"line":{"color":"rgba(140,86,75,1)"},"frame":null},{"x":[2,0],"y":[7,0],"z":[3,0],"type":"scatter3d","mode":"lines","name":"Amos","marker":{"color":"rgba(227,119,194,1)","line":{"color":"rgba(227,119,194,1)"}},"error_y":{"color":"rgba(227,119,194,1)"},"error_x":{"color":"rgba(227,119,194,1)"},"line":{"color":"rgba(227,119,194,1)"},"frame":null},{"x":[4,0],"y":[6,0],"z":[5,0],"type":"scatter3d","mode":"lines","name":"Daniel","marker":{"color":"rgba(127,127,127,1)","line":{"color":"rgba(127,127,127,1)"}},"error_y":{"color":"rgba(127,127,127,1)"},"error_x":{"color":"rgba(127,127,127,1)"},"line":{"color":"rgba(127,127,127,1)"},"frame":null},{"x":[8,0],"y":[4,0],"z":[6,0],"type":"scatter3d","mode":"lines","name":"Elizabeth","marker":{"color":"rgba(188,189,34,1)","line":{"color":"rgba(188,189,34,1)"}},"error_y":{"color":"rgba(188,189,34,1)"},"error_x":{"color":"rgba(188,189,34,1)"},"line":{"color":"rgba(188,189,34,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-c01c30d07c8447bee182">{"x":{"visdat":{"51991405f440":["function () ","plotlyVisDat"],"519912e6a005":["function () ","data"]},"cur_data":"519912e6a005","attrs":{"51991405f440":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","inherit":true},"51991405f440.1":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"text":{},"type":"scatter3d","mode":"text","inherit":true},"519912e6a005":{"x":{},"y":{},"z":{},"split":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"lines","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"zerolinecolor":"black","zerolinewidth":10},"showlegend":false,"scene":{"xaxis":{"title":"Dim1"},"yaxis":{"title":"Dim2"},"zaxis":{"title":"Dim3"}},"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[2],"y":[7],"z":[3],"type":"scatter3d","mode":"markers","name":"Amos","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[4],"y":[6],"z":[5],"type":"scatter3d","mode":"markers","name":"Daniel","marker":{"color":"rgba(255,127,14,1)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null},{"x":[8],"y":[4],"z":[6],"type":"scatter3d","mode":"markers","name":"Elizabeth","marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"frame":null},{"x":[2],"y":[7],"z":[3],"text":"Amos","type":"scatter3d","mode":"text","name":"Amos","marker":{"color":"rgba(214,39,40,1)","line":{"color":"rgba(214,39,40,1)"}},"error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"line":{"color":"rgba(214,39,40,1)"},"frame":null},{"x":[4],"y":[6],"z":[5],"text":"Daniel","type":"scatter3d","mode":"text","name":"Daniel","marker":{"color":"rgba(148,103,189,1)","line":{"color":"rgba(148,103,189,1)"}},"error_y":{"color":"rgba(148,103,189,1)"},"error_x":{"color":"rgba(148,103,189,1)"},"line":{"color":"rgba(148,103,189,1)"},"frame":null},{"x":[8],"y":[4],"z":[6],"text":"Elizabeth","type":"scatter3d","mode":"text","name":"Elizabeth","marker":{"color":"rgba(140,86,75,1)","line":{"color":"rgba(140,86,75,1)"}},"error_y":{"color":"rgba(140,86,75,1)"},"error_x":{"color":"rgba(140,86,75,1)"},"line":{"color":"rgba(140,86,75,1)"},"frame":null},{"x":[2,0],"y":[7,0],"z":[3,0],"type":"scatter3d","mode":"lines","name":"Amos","marker":{"color":"rgba(227,119,194,1)","line":{"color":"rgba(227,119,194,1)"}},"error_y":{"color":"rgba(227,119,194,1)"},"error_x":{"color":"rgba(227,119,194,1)"},"line":{"color":"rgba(227,119,194,1)"},"frame":null},{"x":[4,0],"y":[6,0],"z":[5,0],"type":"scatter3d","mode":"lines","name":"Daniel","marker":{"color":"rgba(127,127,127,1)","line":{"color":"rgba(127,127,127,1)"}},"error_y":{"color":"rgba(127,127,127,1)"},"error_x":{"color":"rgba(127,127,127,1)"},"line":{"color":"rgba(127,127,127,1)"},"frame":null},{"x":[8,0],"y":[4,0],"z":[6,0],"type":"scatter3d","mode":"lines","name":"Elizabeth","marker":{"color":"rgba(188,189,34,1)","line":{"color":"rgba(188,189,34,1)"}},"error_y":{"color":"rgba(188,189,34,1)"},"error_x":{"color":"rgba(188,189,34,1)"},"line":{"color":"rgba(188,189,34,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>After graphing all three people in three-dimensional vector space, it becomes obvious that Elizabeth is more similar to Daniel than she is to Amos. Thinking of people (or any sort of observations) as vectors is powerful because it allows us to apply geometric reasoning to data. The beauty of this approach is that we can measure these things without knowing anything about what the dimensions represent. This will be important later.</p>
@@ -436,24 +423,109 @@ This page is still under construction. Come back soon!
 <p><span class="math display">\[
 d\left( A,B\right)   = \sqrt {\sum _{i=1}^{n}  \left( A_{i}-B_{i}\right)^2 }
 \]</span></p>
-<p>Let’s calculate the Euclidean distance between Daniel and Elizabeth, and between Amos and Elizabeth:</p>
+<p><strong>A low Euclidean distance means two vectors are very similar</strong>. Let’s calculate the Euclidean distance between Daniel and Elizabeth, and between Amos and Elizabeth:</p>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Elizabeth's vector</span></span>
-<span><span class="va">eliza_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">personality</span><span class="op">[</span><span class="va">personality</span><span class="op">$</span><span class="va">person</span> <span class="op">==</span> <span class="st">"Elizabeth"</span>,<span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># dataset</span></span>
+<span><span class="va">personality</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 4</span></span>
+<span><span class="co">#&gt;   person    extraversion openness neuroticism</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;            &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Daniel               4        6           5</span></span>
+<span><span class="co">#&gt; 2 Amos                 2        7           3</span></span>
+<span><span class="co">#&gt; 3 Elizabeth            8        4           6</span></span>
+<span></span>
+<span><span class="co"># Elizabeth's vector</span></span>
+<span><span class="va">eliza_vec</span> <span class="op">&lt;-</span> <span class="va">personality</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">person</span> <span class="op">==</span> <span class="st">"Elizabeth"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="va">extraversion</span><span class="op">:</span><span class="va">neuroticism</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Euclidean distance function</span></span>
+<span><span class="va">euc_dist</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="va">diff</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">-</span> <span class="va">y</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">diff</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
 <span></span>
 <span><span class="co"># distance between Elizabeth and each person</span></span>
-<span><span class="va">distance_from_eliza</span> <span class="op">&lt;-</span> <span class="va">personality</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">mutate</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">personality_dist</span> <span class="op">&lt;-</span> <span class="va">personality</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">rowwise</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    dist_from_eliza <span class="op">=</span> <span class="fu">euc_dist</span><span class="op">(</span><span class="fu">c_across</span><span class="op">(</span><span class="va">extraversion</span><span class="op">:</span><span class="va">neuroticism</span><span class="op">)</span>, <span class="va">eliza_vec</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">personality_dist</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 5</span></span>
+<span><span class="co">#&gt; # Rowwise: </span></span>
+<span><span class="co">#&gt;   person    extraversion openness neuroticism dist_from_eliza</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;            &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;           &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Daniel               4        6           5            4.58</span></span>
+<span><span class="co">#&gt; 2 Amos                 2        7           3            7.35</span></span>
+<span><span class="co">#&gt; 3 Elizabeth            8        4           6            0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>We now see that the closest person to Elizabeth is… Elizabeth herself, with a distance of 0. After that, the closest is Daniel. So we can conclude that Daniel has a more Elizabeth-like personality than Amos does.</p>
 </section><section id="sec-cosine-similarity" class="level3" data-number="17.1.2"><h3 data-number="17.1.2" class="anchored" data-anchor-id="sec-cosine-similarity">
 <span class="header-section-number">17.1.2</span> Cosine Similarity</h3>
-<p>Pearson correlation is centered cosine similarity.</p>
+<p>Besides Euclidean distance, the most common way to measure the similarity between two vectors is with cosine similarity. This is just the cosine of the angle between the two vectors. Since the cosine of 0 is 1, <strong>a high cosine similarity (close to 1) means two vectors are very similar</strong>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="vectorspace-intro_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>A nice thing about the cosine is that it is always between -1 and 1: When the two vectors are pointing in a similar direction, the cosine is close to 1, and when they are pointing in a near-opposite direction (180°), the cosine is close to -1.</p>
+<p>Looking at the above visualization, you might wonder: Why should the angle be fixed at the zero point? What does the zero point have to do with anything? If you wondered this, good job. You are absolutely right: <strong>cosine similarity works best when your vector space is centered at zero (or close to it)</strong>. In other words, it works best when zero represents a medium level of each variable. This fact is sometimes taken for granted because, in practice, most vector spaces are already centered at zero. For example, neural network embeddings (<a href="decontextualized-embeddings.html#sec-word-embeddings"><span>Section&nbsp;18.3</span></a>, <a href="contextualized-embeddings.html"><span>Chapter&nbsp;19</span></a>) can usually be assumed to center at zero because neural networks are almost always trained with a penalty for high values of weights (weight decay) and because many modern neural networks internally rely on dot products between embeddings (the dot product is another close cousin of cosine similarity) for their internal representations of data. The ubiquity of zero-centered vector spaces makes cosine similarity a very useful tool. Even so, not all vector spaces are zero-centered, so take a moment to consider the nature of your vector space before deciding which similarity or distance metric to use.</p>
+<p>The formula for calculating cosine similarity might look a bit complicated:</p>
 <p><span class="math display">\[
 Cosine(A,B) = \frac{A \cdot B}{|A||B|} = \frac{\sum _{i=1}^{n}  A_{i}B_{i}}{\sqrt {\sum _{i=1}^{n} A_{i}^2} \cdot \sqrt {\sum _{i=1}^{n} B_{i}^2}}
-\]</span></p>
+\]</span> In R though, it’s pretty simple. Let’s calculate the cosine similarity between Elizabeth and each of the other people in our sample. To make sure the vector space is centered at zero, we will subtract 4 from each value (the scales all range from 1 to 7).</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># cosine similarity function</span></span>
+<span><span class="va">cos_sim</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="va">dot</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span> <span class="va">y</span></span>
+<span>  <span class="va">normx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">normy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">y</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">dot</span> <span class="op">/</span> <span class="op">(</span><span class="va">normx</span><span class="op">*</span><span class="va">normy</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># center at 0</span></span>
+<span><span class="va">eliza_vec_centered</span> <span class="op">&lt;-</span> <span class="va">eliza_vec</span> <span class="op">-</span> <span class="fl">4</span></span>
+<span><span class="va">personality_sim</span> <span class="op">&lt;-</span> <span class="va">personality</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="va">extraversion</span><span class="op">:</span><span class="va">neuroticism</span>, <span class="op">~</span><span class="va">.x</span> <span class="op">-</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># distance between Elizabeth and each person</span></span>
+<span><span class="va">personality_sim</span> <span class="op">&lt;-</span> <span class="va">personality_sim</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">rowwise</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    similarity_to_eliza <span class="op">=</span> <span class="fu">cos_sim</span><span class="op">(</span><span class="fu">c_across</span><span class="op">(</span><span class="va">extraversion</span><span class="op">:</span><span class="va">neuroticism</span><span class="op">)</span>, <span class="va">eliza_vec_centered</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">personality_sim</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 5</span></span>
+<span><span class="co">#&gt; # Rowwise: </span></span>
+<span><span class="co">#&gt;   person    extraversion openness neuroticism similarity_to_eliza[,1]</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;            &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;                   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Daniel               0        2           1                   0.2  </span></span>
+<span><span class="co">#&gt; 2 Amos                -2        3          -1                  -0.598</span></span>
+<span><span class="co">#&gt; 3 Elizabeth            4        0           2                   1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Once again, we see that the most similar person to Elizabeth is Elizabeth herself, with a cosine similarity of 1. The next closest, as before, is Daniel.</p>
+<p>If you are comfortable with cosines, you might be happy with the explanation we have given so far. Nevertheless, it might be helpful to consider the relationship between cosine similarity and another statistic that ranges between -1 and 1: the Pearson correlation coefficient. Cosine similarity measures the similarity between two <em>vectors</em>, while the correlation coefficient measures the similarity between two <em>variables</em>. Now just imagine our vectors as variables, with each dimension as an observation, like this:</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="vectorspace-intro_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>Now imagine centering those variables at zero, like this:</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="vectorspace-intro_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>When seen like this, the correlation is the same as the cosine similarity. In other words, <strong>the correlation between two vectors is the same as the cosine similarity between them when the values of each vector are centered at zero</strong><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Seeing cosine similarity as the non-centered version of correlation might give you extra intuition for why cosine similarity works best for vector spaces that are centered at zero.</p>
 </section></section><section id="word-counts-as-vector-space" class="level2" data-number="17.2"><h2 data-number="17.2" class="anchored" data-anchor-id="word-counts-as-vector-space">
 <span class="header-section-number">17.2</span> Word Counts as Vector Space</h2>
-<p><span class="citation" data-cites="ireland_pennebaker_2010">Ireland &amp; Pennebaker (<a href="#ref-ireland_pennebaker_2010" role="doc-biblioref">2010</a>)</span></p>
+<p>The advantage of thinking in vector space is that we can quantify on similarities and differences even without understanding what any of the dimensions in the vector space are measuring. In the coming chapters, we will introduce methods that require this kind of relational thinking, since the dimensions of the vector space are abstract statistical contrivances. Even so, any collection of variables can be thought of as dimensions in a vector space. You might, for example, use distance or similarity metrics to analyze groups of word counts.</p>
+<p><strong>An example of word counts as relational vectors in research:</strong> <span class="citation" data-cites="ireland_pennebaker_2010">Ireland &amp; Pennebaker (<a href="#ref-ireland_pennebaker_2010" role="doc-biblioref">2010</a>)</span> asked students to answer essay questions written in different styles. They then calculated dictionary-based word counts for both the questions and the answers using 9 linguistic word lists from LIWC (see <a href="word-counting.html#sec-dictionary-sources"><span>Section&nbsp;14.6</span></a>), including personal pronouns (e.g.&nbsp;“I”, “you”), and articles (e.g, “a”, “the”). They treated these 9 word counts as a 9-dimensional vector for each text, and measured the similarity between questions and responses with a metric similar to Euclidean distance. They found that students automatically matched the linguistic style of the questions (i.e.&nbsp;answers were more similar to the question they were answering than to other questions) and that women and students with higher grades matched their answers especially closely to the style of the questions.</p>
+<hr>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
@@ -463,10 +535,14 @@ Alammar, J. (2019). The illustrated Word2vec. In <em>Jay Alammar – Visualizing
 <div id="ref-ireland_pennebaker_2010" class="csl-entry" role="listitem">
 Ireland, M. E., &amp; Pennebaker, J. W. (2010). Language style matching in writing: Synchrony in essays, correspondence, and poetry. <em>Journal of Personality and Social Psychology</em>, <em>99</em>(3), 549–571.
 </div>
+<div id="ref-oconnor_2012" class="csl-entry" role="listitem">
+O’Connor, B. (2012). Cosine similarity, <span>Pearson</span> correlation, and <span>OLS</span> coefficients. In <em>AI and Social Science</em>. <a href="https://brenocon.com/blog/2012/03/cosine-similarity-pearson-correlation-and-ols-coefficients/">https://brenocon.com/blog/2012/03/cosine-similarity-pearson-correlation-and-ols-coefficients/</a>
+</div>
 </div>
 </section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
 <ol>
 <li id="fn1"><p>This section is adapted from <span class="citation" data-cites="alammar_2019">Alammar (<a href="#ref-alammar_2019" role="doc-biblioref">2019</a>)</span><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>For proof, see <span class="citation" data-cites="oconnor_2012">O’Connor (<a href="#ref-oconnor_2012" role="doc-biblioref">2012</a>)</span><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

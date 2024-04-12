@@ -299,6 +299,7 @@ If we visualize these comments like we visualized the Reddit comments in @sec-re
 
 ```{r}
 #| warning: false
+set.seed(2)
 deep_learning_comments |> 
   select(ParentID, CommentID) |> 
   tidygraph::as_tbl_graph() |> 

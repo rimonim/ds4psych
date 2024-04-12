@@ -7,7 +7,7 @@
 source("_common.R")
 ```
 
-The hardest part of data visualization is identifying a story in the first place. This is especially true in natural language processing---ince language is such a rich source of information, it is sometimes hard to decide what aspect of it to focus on. The stories are hiding in plain sight. The job of the data visualizer is to find them and bring them out into the open.
+The hardest part of data visualization is identifying a story in the first place. This is especially true in natural language processing---since language is such a rich source of information, it is sometimes hard to decide what aspect of it to focus on. The stories are hiding in plain sight. The job of the data visualizer is to find them and bring them out into the open.
 
 ## A Small, Compelling Story is Better Than a Big, Confusing One {#sec-simplify-the-story}
 

@@ -272,7 +272,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dla.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Open-Vocabulary Word Counting</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Open Vocabulary Word Counting</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -284,7 +284,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./vectorspace-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Thinking in Vector Space</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Introduction to Vector Space</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -500,7 +500,7 @@ div.csl-indent {
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_surprise_df</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_surprise_df</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>wc <span class="op">=</span> <span class="fu">ntoken</span><span class="op">(</span><span class="va">hippocorpus_dfm</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We are now ready for modeling! When your dependent variable is a count of words, we recommend using negative binomial regression, available in R with the <code>MASS</code> package. For extra sensitivity to the variable rates at which word frequencies grow with text length <span class="citation" data-cites="baayen_2001">(see <a href="#ref-baayen_2001" role="doc-biblioref">Baayen, 2001</a>)</span>, we include <code>wc</code> as a both a predictor and an offset <code>offset(log(wc))</code> in the regression (an offset is just a predictor with its parameter at 1). We use <code><a href="https://rdrr.io/r/base/Log.html">log()</a></code> to account for the fact that negative binomial regression links the predictors with the outcome variable through a log link. This means that including <code>offset(log(wc))</code> is equivalent to modeling the ratio of surprise words to total words (for a more detailed explanation of this dynamic, see the discussion <a href="https://stats.stackexchange.com/questions/307369/how-to-interpret-glm-and-ols-with-offset">here</a>).</p>
+<p>We are now ready for modeling! When your dependent variable is a count of words, we recommend using negative binomial regression, available in R with the <code>MASS</code> package<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. For extra sensitivity to the variable rates at which word frequencies grow with text length <span class="citation" data-cites="baayen_2001">(see <a href="#ref-baayen_2001" role="doc-biblioref">Baayen, 2001</a>)</span>, we include <code>wc</code> as a both a predictor and an offset <code>offset(log(wc))</code> in the regression (an offset is just a predictor with its parameter at 1). We use <code><a href="https://rdrr.io/r/base/Log.html">log()</a></code> to account for the fact that negative binomial regression links the predictors with the outcome variable through a log link. This means that including <code>offset(log(wc))</code> is equivalent to modeling the ratio of surprise words to total words (for a more detailed explanation of this dynamic, see the discussion <a href="https://stats.stackexchange.com/questions/307369/how-to-interpret-glm-and-ols-with-offset">here</a>).</p>
 <div class="cell">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">surprise_mod</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/glm.nb.html">glm.nb</a></span><span class="op">(</span><span class="va">surprise</span> <span class="op">~</span> <span class="va">memType</span> <span class="op">+</span> <span class="va">wc</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/offset.html">offset</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">wc</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                             data <span class="op">=</span> <span class="va">hippocorpus_surprise_df</span><span class="op">)</span></span>
@@ -867,6 +867,7 @@ Warriner, A. B., Kuperman, V., &amp; Brysbaert, M. (2013). Norms of valence, aro
 </section></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
 <ol>
 <li id="fn1"><p>We use total word count here for the sake of the example, but total word count may not always be the appropriate measure of text length. For example, you may want to measure the amount of surprise <em>relative to other emotional content</em>. In this case, it would be more appropriate to control for the total number of emotion-related words, as opposed to the total word count. Similarly, if you were measuring the number of first person singular pronouns, you may want to control for the total number of pronouns rather than the total word count.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>We use a simple count of words as the dependent variable here, but keep in mind that it may be more appropriate to apply a transformation such as Simple Good-Turing frequency estimation (<a href="word-counting-improvements.html#sec-smoothing"><span>Section&nbsp;16.6</span></a>).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1106,7 +1107,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
   <div class="nav-page nav-page-next">
       <a href="./dla.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Open-Vocabulary Word Counting</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Open Vocabulary Word Counting</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
