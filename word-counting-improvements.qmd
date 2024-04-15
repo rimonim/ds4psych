@@ -41,9 +41,9 @@ tweet_surprise_dict <- dictionary(
 )
 ```
 
-In @sec-tokenization, we described how to break texts up into tokens and count the occurrences of each one. In @sec-word-counting and @sec-dla, we used these simple counts to test hypotheses and generate hypothesis-free descriptions of the differences between groups. All along, we used statistical methods that work with raw counts, like negative binomial regression in @sec-modeling-word-counts, and likelihood ratio testing in @sec-keyness (with the minor exception of @sec-word-scoring, which used averaged scores).
+So far, we have used statistical methods that work with raw counts, like negative binomial regression in @sec-modeling-word-counts, and likelihood ratio testing in @sec-keyness (with the minor exception of @sec-word-scoring, which used averaged scores). Raw token counts are difficult to work with: They are not normally distributed, they do not usually change linearly with predictors, and they are overly sensitive to quirks of linguistic style and text length. 
 
-Raw token counts are difficult to work with: They are not normally distributed, they do not usually change linearly with predictors, and they are overly sensitive to quirks of linguistic style and text length. Researchers and engineers have proposed various ways to fix these problems by transforming the raw counts or by transforming the text before performing the counting. In this chapter, we introduce a few of the most common transformations and point out their advantages and disadvantages.
+Researchers and engineers have proposed various ways to fix these problems by transforming the raw counts or by transforming the text before performing the counting. In this chapter, we introduce a few of the most common transformations. These transformations can be applied to any analysis of word counts, including dictionary-based analysis (@sec-word-counting) and open vocabulary methods (@sec-dla), to bypass certain problems or bring out certain features of the data. As always, each technique has its own advantages and disadvantages.
 
 ## Text Normalization
 
@@ -51,7 +51,7 @@ The simplest way to transform word counts is by transforming the text itself. We
 
 ### Occurrence Thresholds
 
-Besides removing or standardizing certain types of tokens, like URLs, researchers commonly enforce an **occurrence threshold**, removing any token that occurs less than a certain number of times in the data. Occurrence thresholds can be calculated on the full dataset (term frequency) or between documents (document frequency; e.g. removing tokens used in fewer than 1% of documents). Using a document frequency threshold is often beneficial, since sometimes a single document will use a token a lot--either because it happens to be discussing a specific topic or because of a quirk of the author's language style--and drive up the overall frequency in a misleading way.
+Besides removing or standardizing certain types of tokens, like URLs, researchers commonly enforce an **occurrence threshold**, removing any token that occurs less than a certain number of times in the data. Occurrence thresholds can be calculated on the full dataset (term frequency) or between documents (document frequency; e.g. removing tokens used in fewer than 1% of documents). Using a document frequency threshold is often beneficial, since sometimes a single document will use a token a lot---either because it happens to be discussing a specific topic or because of a quirk of the author's language style---and drive up the overall frequency in a misleading way.
 
 Occurrence thresholds can be performed on DFMs in Quanteda using the `dfm_trim()` function, with either a `min_termfreq`, a `min_docfreq`, or both. Maximum frequency thresholds can also be imposed.
 
@@ -75,7 +75,7 @@ hippocorpus_dfm_threshold <- hippocorpus_dfm |>
 
 ### Removing Stop Words {#sec-stopwords}
 
-In natural language processing, a common step in text normalization is to remove "stop words", everyday words like "the" and "of" that do not contribute much to the meaning of the text. Indeed, Quanteda offers a built-in list of stop words:
+In natural language processing, a common step in text normalization is to remove "stop words," everyday words like "the" and "of" that do not contribute much to the meaning of the text. Indeed, Quanteda offers a built-in list of stop words:
 
 ```{r}
 stopwords() |> head()
@@ -83,12 +83,12 @@ stopwords() |> head()
 
 Although removing stop words can be useful for analyzing the *topics* of texts, it is generally a bad idea when you are interested in the *psychology* of texts. This is because **the forms in which people choose to write a word---including stop words---are often predictive of their personality**. For example, neurotic people tend to use more first-person singulars [@mehl_etal_2006], and articles like "the" and "a" are highly predictive of males, being older, and openness [@schwartz_etal_2013].
 
-The relationships between language and personality also extent to more subtle patterns. For example, extraverts tend to use longer words [@mehl_etal_2006], those high in openness tend to use more quotations [@sumner_etal_2011], and those high in neuroticism tend to use more acronyms [@holtgraves_2011]. So if you are looking for psychological differences, be gentle with the text normalization---you never know what strange predictors you might find.
+The relationships between language and personality also extend to more subtle patterns. For example, extraverts tend to use longer words [@mehl_etal_2006], those high in openness tend to use more quotations [@sumner_etal_2011], and those high in neuroticism tend to use more acronyms [@holtgraves_2011]. So if you are looking for psychological differences, be gentle with the text normalization---you never know what strange predictors you might find.
 
 ::: {.callout-tip icon="false"}
 ## Advantages of Removing Stop Words
 
--   **Intuitive Appeal:** Removing stop words focuses an analysis on content, rather than form. When people think of differences between text, they generally think of differences in content.
+-   **Intuitive Appeal:** Removing stop words focuses an analysis on content, rather than form. When people think of differences between texts, they generally think of differences in content.
 :::
 
 ::: {.callout-important icon="false"}
@@ -99,7 +99,7 @@ The relationships between language and personality also extent to more subtle pa
 
 ## Binary (Boolean) Tokenization
 
-In some cases, it makes sense to stop counting at one---each text either uses a given token or it does not. While this might seem like needlessly throwing away information, binary tokenization fixes a core problem with the bag of words assumption (BOW). Recall from @sec-quanteda-dfms that BOW imagines that each author or topic has its characteristic bag of words, and speaking or writing is just a matter of pulling those words out of the bag one at a time at random. A central problem with this picture is that words are not pulled out one at a time at random---the word I am writing now is intimately tied to the words immediately before it. It may be very unlikely overall that I will write "parthenon", but if I write it once, it is very likely that I will write it again in the same paragraph. This is because I am probably writing about the Parthenon.
+In some cases, it makes sense to stop counting at one---each text either uses a given token or it does not. While this might seem like needlessly throwing away information, binary tokenization fixes a core problem with the bag of words assumption (BOW). Recall from @sec-quanteda-dfms that BOW imagines that each author or topic has its characteristic bag of words, and speaking or writing is just a matter of pulling those words out of the bag one at a time at random. A central problem with this picture is that words are not pulled out one at a time at random---the word I am writing now is intimately tied to the words immediately before it. It may be very unlikely overall that I will write "parthenon," but if I write it once, it is very likely that I will write it again in the same paragraph. This is because I am probably writing about the Parthenon.
 
 The non-independence of words in text means that the difference between zero occurrences of "parthenon" and one occurrence is much more meaningful than the difference between one and two. If a particular token sometimes occurs lots of times in text, statistical procedures like regression may be led to focus on that variance rather than on the more interesting first occurrence. Binary tokenization is the simplest way to avoid this problem.
 
@@ -109,7 +109,7 @@ In Quanteda, a DFM can be converted to binary tokenization with `dfm_weight(sche
 hippocorpus_dfm_binary <- hippocorpus_dfm |> 
   dfm_weight(scheme = "boolean")
 
-hippocorpus_dfm_binary
+print(hippocorpus_dfm_binary, max_ndoc = 6, max_nfeat = 6)
 ```
 
 To use binary tokenization in dictionary-based analysis, you can also perform the dictionary look-up first (@sec-word-counting) and then convert it to binary with `mutate(surprise_binary = as.integer(surprise > 0))`.
@@ -125,38 +125,38 @@ Keep in mind: Once you convert your DFM to binary tokenization, you are no longe
 ::: {.callout-important icon="false"}
 ## Disadvantages of Binary Tokenization
 
--   **Devalues Common Tokens:** With binary tokenization, you might miss differences in common tokens like "the". Since almost every text uses "the" at least once, you won't be able to detect that one group uses "the" more often than another.
+-   **Devalues Common Tokens:** With binary tokenization, you might miss differences in common tokens like "the." Since almost every text uses "the" at least once, you won't be able to detect that one group uses "the" more often than another.
 -   **Difficult to Control for Text Length:** The longer a text is, the more likely any given word is to appear in it. But when we stop counting after the first word, this relationship becomes especially difficult to characterize. When working with shorter texts, beware of mistaking differences in text length for differences in the probability of a word appearing!
 :::
 
 ## Relative Tokenization {#sec-relative-tokenization}
 
-The most common transformation that researchers apply to word counts is to divide them by the total number of word in the text. The resulting ratio is referred to as a **relative frequency**. This strategy has intuitive appeal (e.g. what percentage of the words are surprise-related), and the value of intuitive appeal should not be discounted [see @sec-simplify-the-story]. But working with ratios or percentages can cause problems with statistical analysis. This is because dividing by the total number of words is no guarantee that the total number of words will be properly controlled for. Regression analyses on relative frequencies are likely to give false positives when predictors are correlated with text length [@kronmal_1993]. This is the same reason why we added total word count as both a log offset and a regular predictor in @sec-modeling-word-counts.
+The most common transformation that researchers apply to word counts is dividing them by the total number of words (or other tokens) in the text. The resulting ratio is referred to as a **relative frequency**. This strategy has intuitive appeal (e.g. what percentage of the words are surprise-related), and the value of intuitive appeal should not be discounted [see @sec-simplify-the-story]. But working with ratios or percentages can cause problems with statistical analysis. This is because dividing by the total number of words is no guarantee that the total number of words will be properly controlled for---these are two separate variables. Regression analyses on relative frequencies are likely to give false positives when predictors are correlated with text length [@kronmal_1993]. This is the same reason why we added total word count as both a log offset and a regular predictor in @sec-modeling-word-counts.
 
 Before you start worrying about how to control for text length, make sure to stop and ponder: Do you want to control for text length? Usually we assume that longer documents are longer because the author is more verbose. But what if longer texts are longer because they cover multiple topics, and one of those topics is what we are interested in? In this case, controlling for text length---especially using relative tokenization---will make it look like the longer texts have less of that topic, when in fact they just have more of other topics.
 
-For dictionary-based word counts, you can just divide your count by the total word count to get a relative frequency. If you want to convert a full DFM to relative tokenization, you can use `dfm_weight(scheme = "prop")`.
+If you decide to use relative tokenization, the process is simple. For dictionary-based word counts, divide your count by the total word count to get a relative frequency. If you want to convert a full DFM to relative tokenization, you can use `dfm_weight(scheme = "prop")`.
 
 ```{r}
 hippocorpus_dfm_relative <- hippocorpus_dfm |> 
   dfm_weight(scheme = "prop")
 
-hippocorpus_dfm_relative
+print(hippocorpus_dfm_relative, max_ndoc = 6, max_nfeat = 4)
 ```
 
-**An example of relative tokenization in research:** Golder & Macy (2011) collected messages from all Twitter user accounts (\~2.4 million) created between February 2008 and April 2009, and measured positive and negative affect as proportion of in-dictionary (from LIWC) words to full words. This calculation was done by hour of the day, day of the week, and months of the year, revealing fluctuations in mood in line with circadian rhythms and seasonal changes.
+**An example of relative tokenization in research:** Golder & Macy (2011) collected messages from all Twitter user accounts (\~2.4 million) created between February 2008 and April 2009, and measured positive and negative affect as proportion of in-dictionary (from LIWC) words to total word count. This calculation was done by hour of the day, day of the week, and month of the year, revealing fluctuations in mood in line with circadian rhythms and seasonal changes.
 
 ::: {.callout-tip icon="false"}
 ## Advantages of Relative Tokenization
 
--   **Intuitive Appeal:** Relative tokenization make sense if longer documents are longer because of verbosity, or if the construct of interest does not fluctuate over the course of a longer text (e.g. personality).
+-   **Intuitive Appeal:** Relative tokenization makes sense if longer documents are longer because of verbosity, or if the construct of interest does not fluctuate over the course of a longer text (e.g. personality).
 :::
 
 ::: {.callout-important icon="false"}
 ## Disadvantages of Relative Tokenization
 
 -   **Discounts Longer Texts:** If texts are long because they cover multiple topics (or multiple emotions), relative tokenization will dilute true occurrences of the construct of interest.
--   **Does Not Control for Text Length:** People often assume that using a percentage will control for the denominator in statistical analyses. This is wrong, which makes some statisticians think that ratios are more trouble than they're worth.
+-   **Does Not Control for Text Length:** People often assume that using a percentage will control for the denominator in statistical analyses. This is wrong, which might make ratios like relative tokenization more trouble than they're worth.
 -   **Not Normally Distributed:** Dividing count variables by text length does not make them normally distributed. This can cause problems for certain statistical methods. Using the Anscombe transform can partially remedy these problems.
 :::
 
@@ -170,6 +170,7 @@ The Anscombe transform can be useful for analyzing very large numbers of word co
 ## Advantages of the Anscombe Transform
 
 -   **Computational Efficiency**
+-   **Addresses Non-Normality of Word Frequencies**
 :::
 
 ::: {.callout-important icon="false"}
@@ -182,13 +183,13 @@ The Anscombe transform can be useful for analyzing very large numbers of word co
 
 Term frequency-inverse document frequency (TF-IDF) is one of the great triumphs of NLP in the last century. It was first introduced by @sparckjones_1972 and is still widely used half a century later, especially in search engines.
 
-The idea of TF-IDF is to measure how *topical* a token is in a text. In other words, how representative is that token of the particular features of that text as opposed to other texts? Let's start with term frequency (TF). TF is just relative frequency - a word count divided by the total number of words in the text. The problem with relative frequency is that it emphasizes common words that don't tell us much about the meaning of the text---if a text has a high frequency of "the", should we conclude that "the" is very important to the meaning of the text? Of course not. To fix this, we multiply TF by inverse document frequency (IDF). Document frequency is the proportion of documents that have at least one instance of our token (i.e. the average binary tokenization across documents). IDF is the log of the inverse of the document frequency. **IDF answers the question: How unusual is it for this token to appear at all in the document?** So "the", which appears in almost every document, will have a very low IDF---it is not unusual at all. So, even though "the" appears a lot in our document (TF is high), its TF-IDF score will be low, reflecting the fact that "the" doesn't tell us much about the content of this particular document.
+The idea of TF-IDF is to measure how *topical* a token is in a document In other words, how representative is that token of the particular features of that document as opposed to other documents? Let's start with term frequency (TF). TF is just relative frequency - a word count divided by the total number of words in the document The problem with relative frequency is that it emphasizes common words that don't tell us much about the meaning of the document---if a document has a high frequency of "the," should we conclude that "the" is very important to the meaning of the document? Of course not. To fix this, we multiply TF by inverse document frequency (IDF). Document frequency is the proportion of documents that have at least one instance of our token (i.e. the average binary tokenization across documents). IDF is the log of the inverse of the document frequency. **IDF answers the question: How unusual is it for this token to appear at all in a document?** So "the," which appears in almost every document, will have a very low IDF---it is not unusual at all. Even though "the" appears a lot in our document (TF is high), its TF-IDF score will be low, reflecting the fact that "the" doesn't tell us much about the content of this particular document.
 
 $$
 TF \cdot IDF = relative\:frequency × \log{\frac{total\:documents}{documents\:with\:token}}
 $$
 
-You might wonder: If we want to compare how common the token is in this document to how common it is in other documents, shouldn't we use the inverse *token* frequency (i.e. the average relative frequency across documents in the corpus)? Why do we use the inverse document frequency? The answer: TF-IDF does not make the BOW assumption. If all documents were just bags of words, the frequency within documents would be distributed similarly to the frequency between documents (e.g. since the 2-gram “verbal reasoning” occurs in very few tweets, you would expect the probability of it occurring twice in the same document to be near-impossible). In reality though, it wouldn’t be surprising to see “verbal reasoning” even 3 times in the same tweet if that tweet were discussing verbal reasoning. Multiplying relative *term frequency* by inverse *document frequency* provides a measure of exactly how wrong BOW is in this case. In other words, how topical is the token?
+You might wonder: If we want to compare how common the token is in this document to how common it is in other documents, shouldn't we use the inverse *token* frequency (i.e. the average relative frequency of tokens across documents in the corpus)? Why do we use the inverse document frequency? The answer: TF-IDF does not make the BOW assumption. If all documents were just bags of words, the frequency within documents would be distributed similarly to the frequency between documents (e.g. since the bigram “verbal reasoning” occurs in very few tweets, you would expect the probability of it occurring twice in the same document to be near-impossible). In reality though, it wouldn’t be surprising to see “verbal reasoning” even 3 times in the same tweet if that tweet were discussing verbal reasoning. Multiplying relative *term frequency* by inverse *document frequency* provides a measure of exactly how wrong BOW is in this case. In other words, how topical is the token?
 
 In Quanteda, we can convert a DFM to TF-IDF with the `dfm_tfidf()` function:
 
@@ -196,7 +197,7 @@ In Quanteda, we can convert a DFM to TF-IDF with the `dfm_tfidf()` function:
 hippocorpus_dfm_tfidf <- hippocorpus_dfm |> 
   dfm_tfidf(scheme_tf = "prop")
 
-hippocorpus_dfm_tfidf
+print(hippocorpus_dfm_tfidf, max_ndoc = 6, max_nfeat = 4)
 ```
 
 Overall, TF-IDF combines the advantages of many simpler word count transformations without many of their downsides. For example, removing stop words focuses the analysis on text content, but may remove important information. TF-IDF discounts uninformative tokens like stop words without removing them outright. Likewise, we saw that binary tokenization solves part of the problem with the BOW assumption, but throws out a lot of information in the process. Once again, TF-IDF turns this problem into a feature (quantifying how topical a token is) without throwing out any information.
@@ -207,8 +208,8 @@ Despite all of its benefits, TF-IDF is not widely used in psychology research. T
 ## Advantages of TF-IDF
 
 -   **Computational Efficiency**
--   **Discounts Uninformative Tokens Without Losing Information:** TF-IDF combines the advantages stop word removal without removing tokens from the analysis.
--   **Does Not Rely on BOW:** TF-IDF leverages the discrepancy between term frequency and document frequency to discover patterns of meaning
+-   **Discounts Uninformative Tokens Without Losing Information:** TF-IDF combines the advantages of stop word removal without removing tokens from the analysis.
+-   **Does Not Rely on BOW:** TF-IDF leverages the discrepancy between term frequency and document frequency to discover patterns of meaning.
 -   **Proven to Work:** TF-IDF has a long history of use in search engines and automated recommendations. It works surprisingly well for such a simple calculation.
 :::
 
@@ -226,7 +227,7 @@ Consider this short text written by an imaginary participant, Allison:
 
 | _I was sitting at the table, and **suddenly** I understood._
 
-The text has 10 words in total. One of these, "suddenly" is a surprise-related word. Given only this text, you might estimate the probability of surprise words in Allison's language at 1/10, the relative frequency. You would be wrong. To see why, imagine that we also wanted to measure the probability of anger-related words. There are no anger-related words in this text. Is the probability of anger-related words then 0/10 = 0? Of course not. If we read more of Allison's texts, we might very well encounter an anger-related word. Relative frequency therefore underestimates the probability of unobserved words. Conversely, it must overestimate the probability of observed words. So to leave room for the probability of unobserved words, we must admit that the true probability of anger-related words is likely to be a little less than 1/10. 
+The text has 10 words in total. One of these, "suddenly," is a surprise-related word. Given only this text, you might estimate the probability of surprise words in Allison's language at 1/10, the relative frequency. You would be wrong. To see why, imagine that we also wanted to measure the probability of anger-related words. There are no anger-related words in this text. Is the probability of anger-related words then 0/10 = 0? Of course not. If we read more of Allison's texts, we might very well encounter an anger-related word. Relative frequency therefore underestimates the probability of unobserved words. Conversely, it must overestimate the probability of observed words. So to leave room for the probability of unobserved words, we must admit that the true probability of anger-related words is likely to be a little less than 1/10. 
 
 The first solution to this kind of problem was offered by @laplace_1816, who proposed to simply add one to all the frequency counts before computing the relative frequency. This is called **Laplace smoothing**, or sometimes simply _add-one smoothing_. To perform Laplace smoothing in Quanteda, use the `dfm_smooth()` function to add one, and then call `dfm_weight()` as before.
 
@@ -235,14 +236,14 @@ hippocorpus_dfm_laplace <- hippocorpus_dfm |>
   dfm_smooth(smoothing = 1) |> 
   dfm_weight(scheme = "prop")
 
-hippocorpus_dfm_laplace
+print(hippocorpus_dfm_laplace, max_ndoc = 6, max_nfeat = 4)
 ```
 
-Laplace smoothing is better than nothing, but it is designed for a situation where the number of possible token types is small and known. In the case of natural language, the number of possible tokens is extremely large and entirely unknown [@baayen_2001]. You can partially make up for this by adding a very small smoothing number instead of 1 (e.g. 1 divided by the number of token types in the corpus: `smoothing = 1/ncol(hippocorpus_dfm)`), but if you are willing to invest a bit more computation time, there are better ways.
+Laplace smoothing is better than nothing, but it is designed for a situation in which the number of possible token types is small and known. In the case of natural language, the number of possible tokens is extremely large and entirely unknown [@baayen_2001]. You can partially make up for this by adding a very small smoothing number instead of 1 (e.g. 1 divided by the number of token types in the corpus: `smoothing = 1/ncol(hippocorpus_dfm)`), but if you are willing to invest a bit more computation time, there are better ways.
 
 During World War II, the German navy encrypted and decrypted its communications using the Enigma machine, which scrambled and unscrambled messages according to an initial input setting. This input setting was updated each day, and part of the process required the operator of the machine to select a three-letter sequence from a large book “at random” [@good_2000]. Alan Turing, who was in charge of the decryption effort on the part of the British, quickly understood that the German operators’ choices from this book were not entirely random, and that patterns in their choices could be exploited to narrow down the search. The problem became how to estimate the probability of each three-letter sequence based on a relatively small sample of previously decoded input settings—a sample much smaller than the number of three-letter sequences in the book (which, like the number of possible tokens in English text, was extremely large). Turing solved this problem---essentially the same problem posed by word frequencies in text---by developing a method that used frequencies of frequencies in the sample to estimate the total probability of yet-unseen sequences and correct the observed frequencies based on this estimate. The algorithm was later refined and published by Turing’s assistant I. J. Good [-@good_1953], and has since seen many variations. Today, the most popular of these variations is the **Simple Good-Turing** algorithm [@gale_sampson_1995]. Unfortunately, Simple Good-Turing smoothing is not yet implemented in Quanteda, but that is expected to change in the coming months. As soon as it does, we will add it to the textbook.
 
-While smoothing may seem unnecessarily complex, it can be an important safeguard against false positives when analyzing word counts or frequencies. This is because the bias that smoothing is accounting for (due to unobserved tokens) is stronger for shorter texts, and grows in a non-linear pattern [@baayen_2001]. This bias can become a confounding factor in regression models, especially when a predictor variable is strongly correlated with text length.
+While smoothing may seem unnecessarily complex, it can be an important safeguard against false positives when analyzing word counts or frequencies. This is because the bias that smoothing accounts for (due to unobserved tokens) is stronger for shorter texts, and grows in a non-linear pattern [@baayen_2001]. This bias can become a confounding factor in regression models, especially when a predictor variable is strongly correlated with text length.
 
 ::: {.callout-tip icon="false"}
 ## Advantages of Smoothing
@@ -259,13 +260,13 @@ While smoothing may seem unnecessarily complex, it can be an important safeguard
 
 ## Machine Learning Approaches {#sec-machine-learning-word-counts}
 
-This chapter has been dedicated to methods that can be carried out after computing word counts (@sec-tokenization) and before analysis (@sec-word-counting; @sec-dla). These methods can be generally thought of as transformations that we apply to the word counts to make them better at measuring what we want them to measure. The last of these transformations is the most elaborate one: supervised machine learning. 
+This chapter is dedicated to methods that can be carried out after computing word counts (@sec-tokenization) and before analysis (@sec-word-counting; @sec-dla). These methods can be thought of as transformations that we apply to word counts to make them better at measuring what we want them to measure. The last of these transformations is the most elaborate one: supervised machine learning. 
 
-For supervised machine learning, you will need a training dataset of text that is already labeled with your construct of interest. We already saw a dataset like this for the emotion of surprise in @sec-generating-dictionaries: [Crowdflower Emotion in Text dataset](https://data.world/crowdflower/sentiment-analysis-in-text). Many other good examples can be found in @sec-corpora. The labels could be generated by participants who read the texts, or by the authors of the texts themselves (e.g. in the form of questionnaires that measure their personality).
+For supervised machine learning, you need a training dataset of text that is already labeled with your construct of interest. We already saw a dataset like this for the emotion of surprise in @sec-generating-dictionaries: [Crowdflower Emotion in Text dataset](https://data.world/crowdflower/sentiment-analysis-in-text). Many other good examples can be found in @sec-corpora. The labels could be generated by participants who read the texts, or by the authors of the texts themselves (e.g. in the form of questionnaires that measure their personality).
 
-Once you have your training dataset, compute word counts for its texts. These could be dictionary-based counts from a variety of different dictionaries, or they could be individual token counts in the form of a DFM. You can even transform these counts in some of the ways described in this chapter (or even more than one). These counts will become the predictor variables for your machine learning model.
+Once you have your training dataset, compute word counts for its texts (@sec-tokenization). These could be dictionary-based counts from a variety of different dictionaries, or they could be individual token counts in the form of a DFM. You can even transform these counts in some of the ways described in this chapter (or even more than one). These counts will become the predictor variables for your machine learning model.
 
-This book is not the place an in-depth tutorial on machine learning^[For a good overview of different methods, see @giuntini_etal_2020], but we will give a brief example. Recall that in @sec-generating-dictionaries we used the [Crowdflower Emotion in Text dataset](https://data.world/crowdflower/sentiment-analysis-in-text) to find the words most indicative of surprise in tweets (based on PMI). In @sec-generating-dictionaries we used these words as a dictionary, but we could get more robust results by using them as predictor variables to train a regularized machine learning model, [in this case ridge regression](https://topepo.github.io/caret/available-models.html).
+This book is not the place an in-depth tutorial on machine learning^[For a good overview of different methods, see @giuntini_etal_2020], but we will give a brief example. Recall that in @sec-generating-dictionaries we used the [Crowdflower Emotion in Text dataset](https://data.world/crowdflower/sentiment-analysis-in-text) to find the words most indicative of surprise in tweets (based on PMI). In @sec-generating-dictionaries we used these words as a dictionary, but we could get more robust results by using them as predictor variables to train a regularized machine learning model, in this case ridge regression, although [there are many other options](https://topepo.github.io/caret/available-models.html).
 
 ```{r}
 #| warning: false
@@ -335,7 +336,7 @@ hippocorpus_features <- hippocorpus_features |>
   mutate(surprise_pred = surprise_pred)
 ```
 
-Now that we have a new ML-powered estimate of surprise for the Hippocorpus data, we can retest our hypothesis that true autobiographical stories include more surprise than imagined stories. 
+Now that we have a new machine-learning-powered estimate of surprise for the Hippocorpus data, we can retest our hypothesis that true autobiographical stories include more surprise than imagined stories. 
 
 ```{r}
 surprise_mod_ml <- lm(surprise_pred ~ memType, 
@@ -347,7 +348,7 @@ We find that imagined stories have significantly less surprise-related language 
 
 Despite the exciting result, we should be careful with this newfangled approach. As with dictionary-based methods, beware of problems with generalization---there is no guarantee that surprise in Tweets will look similar to surprise in autobiographical accounts. Likewise, keep in mind all of the regular challenges of machine learning. Notice for example that the intercept of this model is extremely low (`r round(summary(surprise_mod_ml)$coefficients["(Intercept)","Estimate"],3)`; surprise is measured between 0 and 1). This reflects the fact that the Crowdflower dataset is not balanced; there are very few Tweets labeled with surprise relative to the size of the dataset. 
 
-**An example of machine learning approaches in research:** @zamani_etal_2018 extracted n-grams from Facebook status updates. They then computed TF-IDF scores, binary tokenization, and LDA topics (@sec-lda), subjected all of these values to a dimensionality reduction process, and used the resulting features to train a ridge regression model to predict questionnaire-based measures of trustfulness. This regression model could then be used on novel texts to estimate the trustworthiness of their authors.
+**An example of machine learning approaches in research:** @zamani_etal_2018 extracted n-grams from Facebook status updates. They then computed TF-IDF scores, binary tokenization, and LDA topics (@sec-lda), subjected all of these values to a dimensionality reduction process to reduce overfitting, and used the resulting features to train a ridge regression model to predict questionnaire-based measures of trustfulness. This regression model could then be used on novel texts to estimate the trustworthiness of their authors.
 
 ::: {.callout-tip icon="false"}
 ## Advantages of Machine Learning Approaches

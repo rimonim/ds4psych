@@ -32,7 +32,7 @@ We can likewise perform word-based tokenization for the entire corpus that we cr
 ```{r}
 hippocorpus_tokens <- tokens(hippocorpus_corp,
                              remove_punct = TRUE)
-head(hippocorpus_tokens, 3)
+print(hippocorpus_tokens, max_ndoc = 3, max_ntok = 6)
 ```
 
 ### Simplified Words: Stems and Lemmas
@@ -47,7 +47,7 @@ We can stem our Hippocorpus tokens with Quanteda's `tokens_wordstem()` function.
 hippocorpus_stems <- hippocorpus_tokens |> 
   tokens_wordstem()
 
-head(hippocorpus_stems, 3)
+print(hippocorpus_stems, max_ndoc = 3, max_ntok = 6)
 ```
 
 Notice that "Concerts" has changed to "Concert", "favorite" has changed to "favorit", and "That's" has changed to "That".
@@ -61,7 +61,7 @@ hippocorpus_lemmas <- hippocorpus_tokens |>
   tokens_replace(pattern = lexicon::hash_lemmas$token, 
                  replacement = lexicon::hash_lemmas$lemma)
 
-head(hippocorpus_lemmas, 3)
+print(hippocorpus_lemmas, max_ndoc = 3, max_ntok = 6)
 ```
 
 Notice that "are" has changed to "be" and "started" has changed to "start". Notice also that "That's" has not changed at all. This is because it does not appear in the lookup table we are using.
@@ -175,7 +175,7 @@ Creating DFMs in Quanteda is done with the `dfm()` function. By default, `dfm()`
 
 ```{r}
 hippocorpus_dfm <- dfm(hippocorpus_tokens)
-head(hippocorpus_dfm, 3)
+print(hippocorpus_dfm, max_ndoc = 6, max_nfeat = 6)
 ```
 
 Congratulations! You have turned texts into numbers! Now how do we use these numbers to measure psychological constructs?

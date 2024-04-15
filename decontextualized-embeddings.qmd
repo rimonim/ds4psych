@@ -7,7 +7,7 @@
 source("_common.R")
 ```
 
-::: {.callout-important}
+::: callout-important
 ## This page is still under construction. Come back soon!
 :::
 
@@ -15,13 +15,13 @@ source("_common.R")
 
 Hence "Distributional Semantic Models" (DSMs)
 
-- Two words are similar in meaning not because of their mutual co-occurrence score, but rather if they have similar global distributional patterns over all contexts. Due to this, synonyms, which tend to very rarely co-occur directly, will have very similar mean- ings in DSMs [@gunther_etal_2019].
+Two words are similar in meaning not when they appear together often, but rather when they tend to appear in similar contexts. So synonyms, which tend to very rarely co-occur directly, will have very similar meanings in DSMs [@gunther_etal_2019].
 
 ## Document Embeddings
 
 ### LSA {#sec-lsa}
 
-DFM -> Weighting (tf-idf, PPMI) -> Dimensionality reduction
+DFM -\> Weighting (tf-idf, PPMI) -\> Dimensionality reduction
 
 [AffectiveSpace](https://sentic.net/downloads/)
 
@@ -29,17 +29,17 @@ DFM -> Weighting (tf-idf, PPMI) -> Dimensionality reduction
 
 @garcia_sikstrom_2013
 
-https://quanteda.io/articles/pkgdown/examples/lsa.html
+[LSA in Quanteda](https://quanteda.io/articles/pkgdown/examples/lsa.html)
 
 ### Topic Modeling {#sec-lda}
 
 #### Supervised LDA {#sec-slda}
 
-https://books.psychstat.org/textmining/topic-models.html#supervised-topic-modeling
+[sLDA in R](https://books.psychstat.org/textmining/topic-models.html#supervised-topic-modeling)
 
 #### Semi-Supervised LDA {#sec-seededlda}
 
-https://koheiw.github.io/seededlda/
+[seededLDA in R](https://koheiw.github.io/seededlda/)
 
 ## Word Embeddings {#sec-word-embeddings}
 
@@ -51,8 +51,8 @@ https://koheiw.github.io/seededlda/
 
 @pennington_etal_2014
 
-GloVe is built on the same metric that we used in @sec-word-viz and @sec-eda - relative frequency ratios. Rather than comparing two word frequencies in two groups of texts, it instead compares co-occurrence with one word to co-occurrence with another. 
+GloVe is built on the same metric that we used in @sec-word-viz and @sec-dla - relative frequency ratios. Rather than comparing two word frequencies in two groups of texts, it instead compares co-occurrence with one word to co-occurrence with another.
 
 #### Training a Custom GloVe Model
 
-https://quanteda.io/articles/pkgdown/replication/text2vec.html
+[Training a custom GloVe model in Quanteda](https://quanteda.io/articles/pkgdown/replication/text2vec.html)

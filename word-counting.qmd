@@ -19,7 +19,8 @@ hippocorpus_corp <- read_csv("data/hippocorpus-u20220112/hcV3-stories.csv") |>
 hippocorpus_tokens <- hippocorpus_corp |> tokens(remove_punct = TRUE)
 
 hippocorpus_dfm <- hippocorpus_tokens |> 
-  dfm()
+  dfm() |> 
+  dfm_remove("~")
 ```
 
 In @sec-tokenization, we transformed our corpus into a DFM with counts of each word in each document. But not all words are created equal; some words are much more psychologically interesting than others. The simplest way to count relevant words while ignoring others is by using a **dictionary**. 
@@ -176,19 +177,22 @@ hippocorpus_surprise_anticipation_df <-
   right_join(
     hippocorpus_corp |> 
       convert("data.frame") # convert to dataframe
-    )
+    ) |> 
+  mutate(wc = ntoken(hippocorpus_dfm))
 ```
 
 Since we are still modelling word counts as an output, we again use negative binomial regression. Rather than controlling for the total word count, however, we can control for the total number of surprise words plus the number of anticipation words. Because of the log link function (along with the endlessly useful properties of logarithms) entering this sum as a log offset (`offset(log(surprise + anticipation))`) is equivalent to modeling the ratio of surprise-related to anticipation-related words.
 
 ```{r}
+#| warning: false
 # remove zeros to prevent divide by zero errors
 hippocorpus_surprise_anticipation_df <- 
   hippocorpus_surprise_anticipation_df |> 
     filter(surprise + anticipation > 0)
 
+set.seed(2024)
 surprise_anticipation_mod <- MASS::glm.nb(
-  surprise ~ memType + offset(log(surprise + anticipation)),
+  surprise ~ memType + wc + offset(log(surprise + anticipation)),
   data = hippocorpus_surprise_anticipation_df,
   # increase iterations to ensure model converges
   control = glm.control(maxit = 10000) 

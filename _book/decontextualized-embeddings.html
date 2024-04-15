@@ -358,25 +358,24 @@ This page is still under construction. Come back soon!
 <section id="the-distributional-hypothesis" class="level2" data-number="18.1"><h2 data-number="18.1" class="anchored" data-anchor-id="the-distributional-hypothesis">
 <span class="header-section-number">18.1</span> The Distributional Hypothesis</h2>
 <p>Hence “Distributional Semantic Models” (DSMs)</p>
-<ul>
-<li>Two words are similar in meaning not because of their mutual co-occurrence score, but rather if they have similar global distributional patterns over all contexts. Due to this, synonyms, which tend to very rarely co-occur directly, will have very similar mean- ings in DSMs <span class="citation" data-cites="gunther_etal_2019">(<a href="#ref-gunther_etal_2019" role="doc-biblioref">Günther et al., 2019</a>)</span>.</li>
-</ul></section><section id="document-embeddings" class="level2" data-number="18.2"><h2 data-number="18.2" class="anchored" data-anchor-id="document-embeddings">
+<p>Two words are similar in meaning not when they appear together often, but rather when they tend to appear in similar contexts. So synonyms, which tend to very rarely co-occur directly, will have very similar meanings in DSMs <span class="citation" data-cites="gunther_etal_2019">(<a href="#ref-gunther_etal_2019" role="doc-biblioref">Günther et al., 2019</a>)</span>.</p>
+</section><section id="document-embeddings" class="level2" data-number="18.2"><h2 data-number="18.2" class="anchored" data-anchor-id="document-embeddings">
 <span class="header-section-number">18.2</span> Document Embeddings</h2>
 <section id="sec-lsa" class="level3" data-number="18.2.1"><h3 data-number="18.2.1" class="anchored" data-anchor-id="sec-lsa">
 <span class="header-section-number">18.2.1</span> LSA</h3>
 <p>DFM -&gt; Weighting (tf-idf, PPMI) -&gt; Dimensionality reduction</p>
 <p><a href="https://sentic.net/downloads/">AffectiveSpace</a></p>
-<p><span class="citation" data-cites="deerwester_etal_1990"><span>“Indexing by Latent Semantic Analysis”</span> (<a href="#ref-deerwester_etal_1990" role="doc-biblioref">1990</a>)</span></p>
+<p><span class="citation" data-cites="deerwester_etal_1990">Deerwester et al. (<a href="#ref-deerwester_etal_1990" role="doc-biblioref">1990</a>)</span></p>
 <p><span class="citation" data-cites="garcia_sikstrom_2013">Garcia &amp; Sikström (<a href="#ref-garcia_sikstrom_2013" role="doc-biblioref">2013</a>)</span></p>
-<p>https://quanteda.io/articles/pkgdown/examples/lsa.html</p>
+<p><a href="https://quanteda.io/articles/pkgdown/examples/lsa.html">LSA in Quanteda</a></p>
 </section><section id="sec-lda" class="level3" data-number="18.2.2"><h3 data-number="18.2.2" class="anchored" data-anchor-id="sec-lda">
 <span class="header-section-number">18.2.2</span> Topic Modeling</h3>
 <section id="sec-slda" class="level4" data-number="18.2.2.1"><h4 data-number="18.2.2.1" class="anchored" data-anchor-id="sec-slda">
 <span class="header-section-number">18.2.2.1</span> Supervised LDA</h4>
-<p>https://books.psychstat.org/textmining/topic-models.html#supervised-topic-modeling</p>
+<p><a href="https://books.psychstat.org/textmining/topic-models.html#supervised-topic-modeling">sLDA in R</a></p>
 </section><section id="sec-seededlda" class="level4" data-number="18.2.2.2"><h4 data-number="18.2.2.2" class="anchored" data-anchor-id="sec-seededlda">
 <span class="header-section-number">18.2.2.2</span> Semi-Supervised LDA</h4>
-<p>https://koheiw.github.io/seededlda/</p>
+<p><a href="https://koheiw.github.io/seededlda/">seededLDA in R</a></p>
 </section></section></section><section id="sec-word-embeddings" class="level2" data-number="18.3"><h2 data-number="18.3" class="anchored" data-anchor-id="sec-word-embeddings">
 <span class="header-section-number">18.3</span> Word Embeddings</h2>
 <section id="sec-word2vec" class="level3" data-number="18.3.1"><h3 data-number="18.3.1" class="anchored" data-anchor-id="sec-word2vec">
@@ -385,24 +384,24 @@ This page is still under construction. Come back soon!
 </section><section id="sec-glove" class="level3" data-number="18.3.2"><h3 data-number="18.3.2" class="anchored" data-anchor-id="sec-glove">
 <span class="header-section-number">18.3.2</span> GloVe</h3>
 <p><span class="citation" data-cites="pennington_etal_2014">Pennington et al. (<a href="#ref-pennington_etal_2014" role="doc-biblioref">2014</a>)</span></p>
-<p>GloVe is built on the same metric that we used in <a href="word-viz.html"><span>Chapter&nbsp;5</span></a> and <span class="quarto-unresolved-ref">?sec-eda</span> - relative frequency ratios. Rather than comparing two word frequencies in two groups of texts, it instead compares co-occurrence with one word to co-occurrence with another.</p>
+<p>GloVe is built on the same metric that we used in <a href="word-viz.html"><span>Chapter&nbsp;5</span></a> and <a href="dla.html"><span>Chapter&nbsp;15</span></a> - relative frequency ratios. Rather than comparing two word frequencies in two groups of texts, it instead compares co-occurrence with one word to co-occurrence with another.</p>
 <section id="training-a-custom-glove-model" class="level4" data-number="18.3.2.1"><h4 data-number="18.3.2.1" class="anchored" data-anchor-id="training-a-custom-glove-model">
 <span class="header-section-number">18.3.2.1</span> Training a Custom GloVe Model</h4>
-<p>https://quanteda.io/articles/pkgdown/replication/text2vec.html</p>
+<p><a href="https://quanteda.io/articles/pkgdown/replication/text2vec.html">Training a custom GloVe model in Quanteda</a></p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
 <div id="ref-chatterjee_etal_2023" class="csl-entry" role="listitem">
 Chatterjee, P., Mishra, H., &amp; Mishra, A. (2023). Does the first letter of one’s name affect life decisions? A natural language processing examination of nominative determinism. <em>Journal of Personality and Social Psychology</em>, <em>125</em>. <a href="https://doi.org/10.1037/pspa0000347">https://doi.org/10.1037/pspa0000347</a>
 </div>
+<div id="ref-deerwester_etal_1990" class="csl-entry" role="listitem">
+Deerwester, S., Dumais, S. T., Furnas, G. W., Landauer, T. K., &amp; Harshman, R. A. (1990). Indexing by latent semantic analysis. <em>Journal of the Association for Information Science and Technology</em>, <em>41</em>(6), 391–407. <a href="https://doi.org/10.1002/(SICI)1097-4571(199009)41:6<391::AID-ASI1>3.0.CO;2-9">https://doi.org/10.1002/(SICI)1097-4571(199009)41:6&lt;391::AID-ASI1&gt;3.0.CO;2-9</a>
+</div>
 <div id="ref-garcia_sikstrom_2013" class="csl-entry" role="listitem">
 Garcia, D., &amp; Sikström, S. (2013). <span class="nocase">Quantifying the Semantic Representations of Adolescents’ Memories of Positive and Negative Life Events</span>. <em>Journal of Happiness Studies</em>, <em>14</em>(4), 1309–1323. <a href="https://doi.org/10.1007/s10902-012-9385-8">https://doi.org/10.1007/s10902-012-9385-8</a>
 </div>
 <div id="ref-gunther_etal_2019" class="csl-entry" role="listitem">
 Günther, F., Rinaldi, L., &amp; Marelli, M. (2019). Vector-space models of semantic representation from a cognitive perspective: A discussion of common misconceptions. <em>Perspectives on Psychological Science</em>, <em>14</em>(6), 1006–1033. <a href="https://doi.org/10.1177/1745691619861372">https://doi.org/10.1177/1745691619861372</a>
-</div>
-<div id="ref-deerwester_etal_1990" class="csl-entry" role="listitem">
-Indexing by latent semantic analysis. (1990). <em>Journal of the Association for Information Science and Technology</em>, <em>41</em>(6), 391–407. <a href="https://doi.org/10.1002/(SICI)1097-4571(199009)41:6<391::AID-ASI1>3.0.CO;2-9">https://doi.org/10.1002/(SICI)1097-4571(199009)41:6&lt;391::AID-ASI1&gt;3.0.CO;2-9</a>
 </div>
 <div id="ref-pennington_etal_2014" class="csl-entry" role="listitem">
 Pennington, J., Socher, R., &amp; Manning, C. D. (2014). GloVe: Global vectors for word representation. <em>Empirical Methods in Natural Language Processing (EMNLP)</em>, 1532–1543. <a href="http://www.aclweb.org/anthology/D14-1162">http://www.aclweb.org/anthology/D14-1162</a>

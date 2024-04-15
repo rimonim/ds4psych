@@ -508,33 +508,33 @@ div.csl-indent {
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
 <span><span class="co">#&gt; MASS::glm.nb(formula = surprise ~ memType + wc + offset(log(wc)), </span></span>
-<span><span class="co">#&gt;     data = hippocorpus_surprise_df, init.theta = 6.06836219, </span></span>
+<span><span class="co">#&gt;     data = hippocorpus_surprise_df, init.theta = 6.070929358, </span></span>
 <span><span class="co">#&gt;     link = log)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
 <span><span class="co">#&gt;                   Estimate Std. Error  z value Pr(&gt;|z|)    </span></span>
-<span><span class="co">#&gt; (Intercept)     -3.907e+00  2.586e-02 -151.050  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; memTyperecalled -3.228e-02  1.766e-02   -1.827  0.06767 .  </span></span>
-<span><span class="co">#&gt; memTyperetold   -6.080e-02  2.194e-02   -2.771  0.00559 ** </span></span>
-<span><span class="co">#&gt; wc              -8.847e-04  8.761e-05  -10.099  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; (Intercept)     -3.9065113  0.0258623 -151.050  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; memTyperecalled -0.0324360  0.0176595   -1.837  0.06625 .  </span></span>
+<span><span class="co">#&gt; memTyperetold   -0.0614152  0.0219399   -2.799  0.00512 ** </span></span>
+<span><span class="co">#&gt; wc              -0.0008833  0.0000876  -10.082  &lt; 2e-16 ***</span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; (Dispersion parameter for Negative Binomial(6.0684) family taken to be 1)</span></span>
+<span><span class="co">#&gt; (Dispersion parameter for Negative Binomial(6.0709) family taken to be 1)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     Null deviance: 7489.5  on 6853  degrees of freedom</span></span>
-<span><span class="co">#&gt; Residual deviance: 7369.6  on 6850  degrees of freedom</span></span>
-<span><span class="co">#&gt; AIC: 30993</span></span>
+<span><span class="co">#&gt;     Null deviance: 7490.2  on 6853  degrees of freedom</span></span>
+<span><span class="co">#&gt; Residual deviance: 7370.5  on 6850  degrees of freedom</span></span>
+<span><span class="co">#&gt; AIC: 30997</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;               Theta:  6.068 </span></span>
+<span><span class="co">#&gt;               Theta:  6.071 </span></span>
 <span><span class="co">#&gt;           Std. Err.:  0.270 </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;  2 x log-likelihood:  -30983.084</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt;  2 x log-likelihood:  -30987.333</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Looking at the p-values for the coefficients, we see that there was no significant difference between recalled and imagined stories (p = 0.068). There was, however, a significant difference between <em>retold</em> and imagined stories, such that retold stories used fewer surprise words (p = 0.006).</p>
+<p>Looking at the p-values for the coefficients, we see that there was no significant difference between recalled and imagined stories (p = 0.066). There was, however, a significant difference between <em>retold</em> and imagined stories, such that retold stories used fewer surprise words (p = 0.005).</p>
 <p><strong>An example of using raw word counts in research:</strong> <span class="citation" data-cites="simchon_etal_2023">Simchon et al. (<a href="#ref-simchon_etal_2023" role="doc-biblioref">2023</a>)</span> collected Twitter activity over a three month period from over 2.7 million users. Using a dictionary, they then counted the number of passive auxiliary verbs (e.g.&nbsp;“they <strong>were</strong> analyzed”; “my homework <strong>will be</strong> completed”) in each user’s activity. They found that users with more followers (indicating higher social status) used much fewer passive auxiliary verbs, controlling for total word count.</p>
 </section></section><section id="sec-polarity" class="level2" data-number="14.4"><h2 data-number="14.4" class="anchored" data-anchor-id="sec-polarity">
 <span class="header-section-number">14.4</span> Polarity</h2>
@@ -576,7 +576,8 @@ div.csl-indent {
 <span>  <span class="fu">right_join</span><span class="op">(</span></span>
 <span>    <span class="va">hippocorpus_corp</span> <span class="op">|&gt;</span> </span>
 <span>      <span class="fu"><a href="https://quanteda.io/reference/convert.html">convert</a></span><span class="op">(</span><span class="st">"data.frame"</span><span class="op">)</span> <span class="co"># convert to dataframe</span></span>
-<span>    <span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>wc <span class="op">=</span> <span class="fu"><a href="https://quanteda.io/reference/ntoken.html">ntoken</a></span><span class="op">(</span><span class="va">hippocorpus_dfm</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(doc_id)`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Since we are still modelling word counts as an output, we again use negative binomial regression. Rather than controlling for the total word count, however, we can control for the total number of surprise words plus the number of anticipation words. Because of the log link function (along with the endlessly useful properties of logarithms) entering this sum as a log offset (<code>offset(log(surprise + anticipation))</code>) is equivalent to modeling the ratio of surprise-related to anticipation-related words.</p>
@@ -586,8 +587,9 @@ div.csl-indent {
 <span>  <span class="va">hippocorpus_surprise_anticipation_df</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">surprise</span> <span class="op">+</span> <span class="va">anticipation</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
 <span><span class="va">surprise_anticipation_mod</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/glm.nb.html">glm.nb</a></span><span class="op">(</span></span>
-<span>  <span class="va">surprise</span> <span class="op">~</span> <span class="va">memType</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/offset.html">offset</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">surprise</span> <span class="op">+</span> <span class="va">anticipation</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="va">surprise</span> <span class="op">~</span> <span class="va">memType</span> <span class="op">+</span> <span class="va">wc</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/offset.html">offset</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">surprise</span> <span class="op">+</span> <span class="va">anticipation</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">hippocorpus_surprise_anticipation_df</span>,</span>
 <span>  <span class="co"># increase iterations to ensure model converges</span></span>
 <span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.control.html">glm.control</a></span><span class="op">(</span>maxit <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span> </span>
@@ -596,29 +598,30 @@ div.csl-indent {
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">surprise_anticipation_mod</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
-<span><span class="co">#&gt; MASS::glm.nb(formula = surprise ~ memType + offset(log(surprise + </span></span>
+<span><span class="co">#&gt; MASS::glm.nb(formula = surprise ~ memType + wc + offset(log(surprise + </span></span>
 <span><span class="co">#&gt;     anticipation)), data = hippocorpus_surprise_anticipation_df, </span></span>
-<span><span class="co">#&gt;     control = glm.control(maxit = 10000), init.theta = 3.20666397e+17, </span></span>
+<span><span class="co">#&gt;     control = glm.control(maxit = 10000), init.theta = 2.949221746e+17, </span></span>
 <span><span class="co">#&gt;     link = log)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
-<span><span class="co">#&gt;                  Estimate Std. Error  z value Pr(&gt;|z|)    </span></span>
-<span><span class="co">#&gt; (Intercept)     -1.123039   0.009672 -116.114   &lt;2e-16 ***</span></span>
-<span><span class="co">#&gt; memTyperecalled -0.012682   0.013443   -0.943    0.345    </span></span>
-<span><span class="co">#&gt; memTyperetold   -0.020434   0.016929   -1.207    0.227    </span></span>
+<span><span class="co">#&gt;                   Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span><span class="co">#&gt; (Intercept)     -1.107e+00  1.990e-02 -55.659   &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt; memTyperecalled -1.128e-02  1.356e-02  -0.831    0.406    </span></span>
+<span><span class="co">#&gt; memTyperetold   -1.966e-02  1.697e-02  -1.158    0.247    </span></span>
+<span><span class="co">#&gt; wc              -5.675e-05  6.462e-05  -0.878    0.380    </span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; (Dispersion parameter for Negative Binomial(3.206664e+17) family taken to be 1)</span></span>
+<span><span class="co">#&gt; (Dispersion parameter for Negative Binomial(2.949222e+17) family taken to be 1)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     Null deviance: 4884.2  on 6843  degrees of freedom</span></span>
-<span><span class="co">#&gt; Residual deviance: 4882.5  on 6841  degrees of freedom</span></span>
-<span><span class="co">#&gt; AIC: 8</span></span>
+<span><span class="co">#&gt;     Null deviance: 4884.6  on 6843  degrees of freedom</span></span>
+<span><span class="co">#&gt; Residual deviance: 4882.1  on 6840  degrees of freedom</span></span>
+<span><span class="co">#&gt; AIC: 10</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;               Theta:  3.206664e+17 </span></span>
+<span><span class="co">#&gt;               Theta:  2.949222e+17 </span></span>
 <span><span class="co">#&gt;           Std. Err.:  6.158994e+14 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  2 x log-likelihood:  0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -694,19 +697,19 @@ div.csl-indent {
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Residuals:</span></span>
 <span><span class="co">#&gt;       Min        1Q    Median        3Q       Max </span></span>
-<span><span class="co">#&gt; -0.085691 -0.015690 -0.000448  0.015114  0.104478 </span></span>
+<span><span class="co">#&gt; -0.085708 -0.015726 -0.000448  0.015093  0.104459 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
 <span><span class="co">#&gt;                  Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">#&gt; (Intercept)     0.1401829  0.0004432 316.264  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; memTyperecalled 0.0029707  0.0006255   4.749 2.09e-06 ***</span></span>
-<span><span class="co">#&gt; memTyperetold   0.0021784  0.0007791   2.796  0.00519 ** </span></span>
+<span><span class="co">#&gt; (Intercept)     0.1402018  0.0004433 316.300  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; memTyperecalled 0.0029688  0.0006256   4.746 2.12e-06 ***</span></span>
+<span><span class="co">#&gt; memTyperetold   0.0021648  0.0007791   2.779  0.00548 ** </span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Residual standard error: 0.02327 on 6851 degrees of freedom</span></span>
-<span><span class="co">#&gt; Multiple R-squared:  0.003416,   Adjusted R-squared:  0.003125 </span></span>
-<span><span class="co">#&gt; F-statistic: 11.74 on 2 and 6851 DF,  p-value: 8.129e-06</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; Multiple R-squared:  0.003406,   Adjusted R-squared:  0.003116 </span></span>
+<span><span class="co">#&gt; F-statistic: 11.71 on 2 and 6851 DF,  p-value: 8.388e-06</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We found a significant difference between recalled and imagined stories (p &lt; .001), such that recalled stories have more surprise-related language! This supports Sap et al.’s hypothesis that true autobiographical stories would include more surprising events than imagined stories. The new model also indicated a significant difference between retold and imagined stories, such that retold stories used <em>more</em> surprise-related language—the opposite direction relative to our original finding with the crowdsourced dictionary (p = 0.005).</p>
 </section></section><section id="sec-dictionary-sources" class="level2" data-number="14.6"><h2 data-number="14.6" class="anchored" data-anchor-id="sec-dictionary-sources">

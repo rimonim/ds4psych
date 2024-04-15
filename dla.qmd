@@ -254,7 +254,7 @@ glimpse(crowdflower)
 
 Generating a dictionary is a subtly different goal than discovering the differences between groups. In @sec-keyness above, we recommended the likelihood ratio test as a way of looking for statistically significant differences. When generating a dictionary though, we care less about statistical significance and more about information---if I observe this word in a text, how much does it tell me about the text? For this kind of question, we recommend a different keyness statistic: pointwise mutual information (PMI). 
 
-PMI can be computed just like the likelihood ratio test, using `textstat_keyness()`. We will need to be careful though, since PMI is sensitive to rare tokens---if a token appears only once in the corpus, in a text labelled surprise, it will be identified as giving lots of information about whether the text is labeled surprise. So we'll want to keep tokens with a high PMI, but remove very rare ones.
+PMI can be computed just like the likelihood ratio test, using `textstat_keyness()`. We will need to be careful though, since PMI is sensitive to rare tokens---if a token appears only once in the corpus, in a text labelled surprise, it will be identified as giving lots of information about whether the text is labeled surprise. This is true enough within our training corpus, but with such a small sample size, the appearance of a rare token in a text is probably due to random variation. Rare tokens are therefore unlikely to generalize to other data sets when we use them in a dictionary. So we'll want to keep tokens with a high PMI, but remove very rare ones.
 
 ```{r}
 # convert to corpus

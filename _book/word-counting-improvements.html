@@ -374,14 +374,14 @@ div.csl-indent {
   </div>
   
 
-</header><p>In <a href="tokenization.html"><span>Chapter&nbsp;13</span></a>, we described how to break texts up into tokens and count the occurrences of each one. In <a href="word-counting.html"><span>Chapter&nbsp;14</span></a> and <a href="dla.html"><span>Chapter&nbsp;15</span></a>, we used these simple counts to test hypotheses and generate hypothesis-free descriptions of the differences between groups. All along, we used statistical methods that work with raw counts, like negative binomial regression in <a href="word-counting.html#sec-modeling-word-counts"><span>Section&nbsp;14.3.1</span></a>, and likelihood ratio testing in <a href="dla.html#sec-keyness"><span>Section&nbsp;15.2</span></a> (with the minor exception of <a href="word-counting.html#sec-word-scoring"><span>Section&nbsp;14.5</span></a>, which used averaged scores).</p>
-<p>Raw token counts are difficult to work with: They are not normally distributed, they do not usually change linearly with predictors, and they are overly sensitive to quirks of linguistic style and text length. Researchers and engineers have proposed various ways to fix these problems by transforming the raw counts or by transforming the text before performing the counting. In this chapter, we introduce a few of the most common transformations and point out their advantages and disadvantages.</p>
+</header><p>So far, we have used statistical methods that work with raw counts, like negative binomial regression in <a href="word-counting.html#sec-modeling-word-counts"><span>Section&nbsp;14.3.1</span></a>, and likelihood ratio testing in <a href="dla.html#sec-keyness"><span>Section&nbsp;15.2</span></a> (with the minor exception of <a href="word-counting.html#sec-word-scoring"><span>Section&nbsp;14.5</span></a>, which used averaged scores). Raw token counts are difficult to work with: They are not normally distributed, they do not usually change linearly with predictors, and they are overly sensitive to quirks of linguistic style and text length.</p>
+<p>Researchers and engineers have proposed various ways to fix these problems by transforming the raw counts or by transforming the text before performing the counting. In this chapter, we introduce a few of the most common transformations. These transformations can be applied to any analysis of word counts, including dictionary-based analysis (<a href="word-counting.html"><span>Chapter&nbsp;14</span></a>) and open vocabulary methods (<a href="dla.html"><span>Chapter&nbsp;15</span></a>), to bypass certain problems or bring out certain features of the data. As always, each technique has its own advantages and disadvantages.</p>
 <section id="text-normalization" class="level2" data-number="16.1"><h2 data-number="16.1" class="anchored" data-anchor-id="text-normalization">
 <span class="header-section-number">16.1</span> Text Normalization</h2>
 <p>The simplest way to transform word counts is by transforming the text itself. We have already seen some simple examples of this in <a href="tokenization.html#sec-custom-preprocessing"><span>Section&nbsp;13.2</span></a>: removing punctuation, symbols, or URLs before tokenization. Such transformations are often called <strong>text normalization</strong>, since they get rid of the quirks in each text and ensure that everything follows a standard format.</p>
 <section id="occurrence-thresholds" class="level3" data-number="16.1.1"><h3 data-number="16.1.1" class="anchored" data-anchor-id="occurrence-thresholds">
 <span class="header-section-number">16.1.1</span> Occurrence Thresholds</h3>
-<p>Besides removing or standardizing certain types of tokens, like URLs, researchers commonly enforce an <strong>occurrence threshold</strong>, removing any token that occurs less than a certain number of times in the data. Occurrence thresholds can be calculated on the full dataset (term frequency) or between documents (document frequency; e.g.&nbsp;removing tokens used in fewer than 1% of documents). Using a document frequency threshold is often beneficial, since sometimes a single document will use a token a lot–either because it happens to be discussing a specific topic or because of a quirk of the author’s language style–and drive up the overall frequency in a misleading way.</p>
+<p>Besides removing or standardizing certain types of tokens, like URLs, researchers commonly enforce an <strong>occurrence threshold</strong>, removing any token that occurs less than a certain number of times in the data. Occurrence thresholds can be calculated on the full dataset (term frequency) or between documents (document frequency; e.g.&nbsp;removing tokens used in fewer than 1% of documents). Using a document frequency threshold is often beneficial, since sometimes a single document will use a token a lot—either because it happens to be discussing a specific topic or because of a quirk of the author’s language style—and drive up the overall frequency in a misleading way.</p>
 <p>Occurrence thresholds can be performed on DFMs in Quanteda using the <code>dfm_trim()</code> function, with either a <code>min_termfreq</code>, a <code>min_docfreq</code>, or both. Maximum frequency thresholds can also be imposed.</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># remove tokens used by fewer than 1% of documents</span></span>
@@ -422,13 +422,13 @@ Disadvantages of Occurrence Thresholds
 </div>
 </section><section id="sec-stopwords" class="level3" data-number="16.1.2"><h3 data-number="16.1.2" class="anchored" data-anchor-id="sec-stopwords">
 <span class="header-section-number">16.1.2</span> Removing Stop Words</h3>
-<p>In natural language processing, a common step in text normalization is to remove “stop words”, everyday words like “the” and “of” that do not contribute much to the meaning of the text. Indeed, Quanteda offers a built-in list of stop words:</p>
+<p>In natural language processing, a common step in text normalization is to remove “stop words,” everyday words like “the” and “of” that do not contribute much to the meaning of the text. Indeed, Quanteda offers a built-in list of stop words:</p>
 <div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">stopwords</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "i"      "me"     "my"     "myself" "we"     "our"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Although removing stop words can be useful for analyzing the <em>topics</em> of texts, it is generally a bad idea when you are interested in the <em>psychology</em> of texts. This is because <strong>the forms in which people choose to write a word—including stop words—are often predictive of their personality</strong>. For example, neurotic people tend to use more first-person singulars <span class="citation" data-cites="mehl_etal_2006">(<a href="#ref-mehl_etal_2006" role="doc-biblioref">Mehl et al., 2006</a>)</span>, and articles like “the” and “a” are highly predictive of males, being older, and openness <span class="citation" data-cites="schwartz_etal_2013">(<a href="#ref-schwartz_etal_2013" role="doc-biblioref">Schwartz et al., 2013</a>)</span>.</p>
-<p>The relationships between language and personality also extent to more subtle patterns. For example, extraverts tend to use longer words <span class="citation" data-cites="mehl_etal_2006">(<a href="#ref-mehl_etal_2006" role="doc-biblioref">Mehl et al., 2006</a>)</span>, those high in openness tend to use more quotations <span class="citation" data-cites="sumner_etal_2011">(<a href="#ref-sumner_etal_2011" role="doc-biblioref">Sumner et al., 2011</a>)</span>, and those high in neuroticism tend to use more acronyms <span class="citation" data-cites="holtgraves_2011">(<a href="#ref-holtgraves_2011" role="doc-biblioref">Holtgraves, 2011</a>)</span>. So if you are looking for psychological differences, be gentle with the text normalization—you never know what strange predictors you might find.</p>
+<p>The relationships between language and personality also extend to more subtle patterns. For example, extraverts tend to use longer words <span class="citation" data-cites="mehl_etal_2006">(<a href="#ref-mehl_etal_2006" role="doc-biblioref">Mehl et al., 2006</a>)</span>, those high in openness tend to use more quotations <span class="citation" data-cites="sumner_etal_2011">(<a href="#ref-sumner_etal_2011" role="doc-biblioref">Sumner et al., 2011</a>)</span>, and those high in neuroticism tend to use more acronyms <span class="citation" data-cites="holtgraves_2011">(<a href="#ref-holtgraves_2011" role="doc-biblioref">Holtgraves, 2011</a>)</span>. So if you are looking for psychological differences, be gentle with the text normalization—you never know what strange predictors you might find.</p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -441,7 +441,7 @@ Advantages of Removing Stop Words
 <div class="callout-body-container callout-body">
 <ul>
 <li>
-<strong>Intuitive Appeal:</strong> Removing stop words focuses an analysis on content, rather than form. When people think of differences between text, they generally think of differences in content.</li>
+<strong>Intuitive Appeal:</strong> Removing stop words focuses an analysis on content, rather than form. When people think of differences between texts, they generally think of differences in content.</li>
 </ul>
 </div>
 </div>
@@ -463,32 +463,24 @@ Disadvantages of Removing Stop Words
 </div>
 </section></section><section id="binary-boolean-tokenization" class="level2" data-number="16.2"><h2 data-number="16.2" class="anchored" data-anchor-id="binary-boolean-tokenization">
 <span class="header-section-number">16.2</span> Binary (Boolean) Tokenization</h2>
-<p>In some cases, it makes sense to stop counting at one—each text either uses a given token or it does not. While this might seem like needlessly throwing away information, binary tokenization fixes a core problem with the bag of words assumption (BOW). Recall from <a href="tokenization.html#sec-quanteda-dfms"><span>Section&nbsp;13.3</span></a> that BOW imagines that each author or topic has its characteristic bag of words, and speaking or writing is just a matter of pulling those words out of the bag one at a time at random. A central problem with this picture is that words are not pulled out one at a time at random—the word I am writing now is intimately tied to the words immediately before it. It may be very unlikely overall that I will write “parthenon”, but if I write it once, it is very likely that I will write it again in the same paragraph. This is because I am probably writing about the Parthenon.</p>
+<p>In some cases, it makes sense to stop counting at one—each text either uses a given token or it does not. While this might seem like needlessly throwing away information, binary tokenization fixes a core problem with the bag of words assumption (BOW). Recall from <a href="tokenization.html#sec-quanteda-dfms"><span>Section&nbsp;13.3</span></a> that BOW imagines that each author or topic has its characteristic bag of words, and speaking or writing is just a matter of pulling those words out of the bag one at a time at random. A central problem with this picture is that words are not pulled out one at a time at random—the word I am writing now is intimately tied to the words immediately before it. It may be very unlikely overall that I will write “parthenon,” but if I write it once, it is very likely that I will write it again in the same paragraph. This is because I am probably writing about the Parthenon.</p>
 <p>The non-independence of words in text means that the difference between zero occurrences of “parthenon” and one occurrence is much more meaningful than the difference between one and two. If a particular token sometimes occurs lots of times in text, statistical procedures like regression may be led to focus on that variance rather than on the more interesting first occurrence. Binary tokenization is the simplest way to avoid this problem.</p>
 <p>In Quanteda, a DFM can be converted to binary tokenization with <code>dfm_weight(scheme = "boolean")</code>.</p>
 <div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_dfm_binary</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_dfm</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dfm_weight</span><span class="op">(</span>scheme <span class="op">=</span> <span class="st">"boolean"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">hippocorpus_dfm_binary</span></span>
-<span><span class="co">#&gt; Document-feature matrix of: 6,854 documents, 27,905 features (99.50% sparse) and 6 docvars.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_dfm_binary</span>, max_ndoc <span class="op">=</span> <span class="fl">6</span>, max_nfeat <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Document-feature matrix of: 6,854 documents, 27,667 features (99.50% sparse) and 6 docvars.</span></span>
 <span><span class="co">#&gt;                                 features</span></span>
-<span><span class="co">#&gt; docs                             concerts are my most favorite thing and</span></span>
-<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U        1   1  1    1        1     1   1</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2        0   0  1    0        0     0   1</span></span>
-<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61        0   0  1    1        0     1   1</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI        0   1  1    0        0     0   1</span></span>
-<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ        0   0  1    0        0     0   1</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3        0   0  1    0        0     0   1</span></span>
-<span><span class="co">#&gt;                                 features</span></span>
-<span><span class="co">#&gt; docs                             boyfriend knew it</span></span>
-<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U         1    1  1</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2         1    0  1</span></span>
-<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61         0    0  1</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI         0    0  1</span></span>
-<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ         0    0  1</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3         0    0  1</span></span>
-<span><span class="co">#&gt; [ reached max_ndoc ... 6,848 more documents, reached max_nfeat ... 27,895 more features ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; docs                             concerts are my most favorite thing</span></span>
+<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U        1   1  1    1        1     1</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2        0   0  1    0        0     0</span></span>
+<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61        0   0  1    1        0     1</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI        0   1  1    0        0     0</span></span>
+<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ        0   0  1    0        0     0</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3        0   0  1    0        0     0</span></span>
+<span><span class="co">#&gt; [ reached max_ndoc ... 6,848 more documents, reached max_nfeat ... 27,661 more features ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To use binary tokenization in dictionary-based analysis, you can also perform the dictionary look-up first (<a href="word-counting.html"><span>Chapter&nbsp;14</span></a>) and then convert it to binary with <code>mutate(surprise_binary = as.integer(surprise &gt; 0))</code>.</p>
 <p>Keep in mind: Once you convert your DFM to binary tokenization, you are no longer working with a count variable. This means that the negative binomial regression models we covered in <a href="word-counting.html"><span>Chapter&nbsp;14</span></a> are no longer appropriate. Instead, if you want to model the binary tokenization as a dependent variable, you will have to use a binary model like logistic regression.</p>
@@ -520,7 +512,7 @@ Disadvantages of Binary Tokenization
 <div class="callout-body-container callout-body">
 <ul>
 <li>
-<strong>Devalues Common Tokens:</strong> With binary tokenization, you might miss differences in common tokens like “the”. Since almost every text uses “the” at least once, you won’t be able to detect that one group uses “the” more often than another.</li>
+<strong>Devalues Common Tokens:</strong> With binary tokenization, you might miss differences in common tokens like “the.” Since almost every text uses “the” at least once, you won’t be able to detect that one group uses “the” more often than another.</li>
 <li>
 <strong>Difficult to Control for Text Length:</strong> The longer a text is, the more likely any given word is to appear in it. But when we stop counting after the first word, this relationship becomes especially difficult to characterize. When working with shorter texts, beware of mistaking differences in text length for differences in the probability of a word appearing!</li>
 </ul>
@@ -528,15 +520,15 @@ Disadvantages of Binary Tokenization
 </div>
 </section><section id="sec-relative-tokenization" class="level2" data-number="16.3"><h2 data-number="16.3" class="anchored" data-anchor-id="sec-relative-tokenization">
 <span class="header-section-number">16.3</span> Relative Tokenization</h2>
-<p>The most common transformation that researchers apply to word counts is to divide them by the total number of word in the text. The resulting ratio is referred to as a <strong>relative frequency</strong>. This strategy has intuitive appeal (e.g.&nbsp;what percentage of the words are surprise-related), and the value of intuitive appeal should not be discounted <a href="telling-a-story.html#sec-simplify-the-story">see&nbsp;<span>4.1</span></a>. But working with ratios or percentages can cause problems with statistical analysis. This is because dividing by the total number of words is no guarantee that the total number of words will be properly controlled for. Regression analyses on relative frequencies are likely to give false positives when predictors are correlated with text length <span class="citation" data-cites="kronmal_1993">(<a href="#ref-kronmal_1993" role="doc-biblioref">Kronmal, 1993</a>)</span>. This is the same reason why we added total word count as both a log offset and a regular predictor in <a href="word-counting.html#sec-modeling-word-counts"><span>Section&nbsp;14.3.1</span></a>.</p>
+<p>The most common transformation that researchers apply to word counts is dividing them by the total number of words (or other tokens) in the text. The resulting ratio is referred to as a <strong>relative frequency</strong>. This strategy has intuitive appeal (e.g.&nbsp;what percentage of the words are surprise-related), and the value of intuitive appeal should not be discounted <a href="telling-a-story.html#sec-simplify-the-story">see&nbsp;<span>4.1</span></a>. But working with ratios or percentages can cause problems with statistical analysis. This is because dividing by the total number of words is no guarantee that the total number of words will be properly controlled for—these are two separate variables. Regression analyses on relative frequencies are likely to give false positives when predictors are correlated with text length <span class="citation" data-cites="kronmal_1993">(<a href="#ref-kronmal_1993" role="doc-biblioref">Kronmal, 1993</a>)</span>. This is the same reason why we added total word count as both a log offset and a regular predictor in <a href="word-counting.html#sec-modeling-word-counts"><span>Section&nbsp;14.3.1</span></a>.</p>
 <p>Before you start worrying about how to control for text length, make sure to stop and ponder: Do you want to control for text length? Usually we assume that longer documents are longer because the author is more verbose. But what if longer texts are longer because they cover multiple topics, and one of those topics is what we are interested in? In this case, controlling for text length—especially using relative tokenization—will make it look like the longer texts have less of that topic, when in fact they just have more of other topics.</p>
-<p>For dictionary-based word counts, you can just divide your count by the total word count to get a relative frequency. If you want to convert a full DFM to relative tokenization, you can use <code>dfm_weight(scheme = "prop")</code>.</p>
+<p>If you decide to use relative tokenization, the process is simple. For dictionary-based word counts, divide your count by the total word count to get a relative frequency. If you want to convert a full DFM to relative tokenization, you can use <code>dfm_weight(scheme = "prop")</code>.</p>
 <div class="cell">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_dfm_relative</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_dfm</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dfm_weight</span><span class="op">(</span>scheme <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">hippocorpus_dfm_relative</span></span>
-<span><span class="co">#&gt; Document-feature matrix of: 6,854 documents, 27,905 features (99.50% sparse) and 6 docvars.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_dfm_relative</span>, max_ndoc <span class="op">=</span> <span class="fl">6</span>, max_nfeat <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Document-feature matrix of: 6,854 documents, 27,667 features (99.50% sparse) and 6 docvars.</span></span>
 <span><span class="co">#&gt;                                 features</span></span>
 <span><span class="co">#&gt; docs                                concerts         are         my        most</span></span>
 <span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 0.004926108 0.004926108 0.02463054 0.004926108</span></span>
@@ -545,25 +537,9 @@ Disadvantages of Binary Tokenization
 <span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI 0           0.006060606 0.02424242 0          </span></span>
 <span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 0           0           0.03086420 0          </span></span>
 <span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 0           0           0.01257862 0          </span></span>
-<span><span class="co">#&gt;                                 features</span></span>
-<span><span class="co">#&gt; docs                                favorite       thing        and   boyfriend</span></span>
-<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 0.009852217 0.004926108 0.05418719 0.009852217</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 0           0           0.05464481 0.005464481</span></span>
-<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 0           0.003759398 0.02255639 0          </span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI 0           0           0.03636364 0          </span></span>
-<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 0           0           0.03086420 0          </span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 0           0           0.01886792 0          </span></span>
-<span><span class="co">#&gt;                                 features</span></span>
-<span><span class="co">#&gt; docs                                   knew          it</span></span>
-<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 0.01477833 0.014778325</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 0          0.010928962</span></span>
-<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 0          0.022556391</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI 0          0.006060606</span></span>
-<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 0          0.012345679</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 0          0.018867925</span></span>
-<span><span class="co">#&gt; [ reached max_ndoc ... 6,848 more documents, reached max_nfeat ... 27,895 more features ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; [ reached max_ndoc ... 6,848 more documents, reached max_nfeat ... 27,663 more features ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>An example of relative tokenization in research:</strong> Golder &amp; Macy (2011) collected messages from all Twitter user accounts (~2.4 million) created between February 2008 and April 2009, and measured positive and negative affect as proportion of in-dictionary (from LIWC) words to full words. This calculation was done by hour of the day, day of the week, and months of the year, revealing fluctuations in mood in line with circadian rhythms and seasonal changes.</p>
+<p><strong>An example of relative tokenization in research:</strong> Golder &amp; Macy (2011) collected messages from all Twitter user accounts (~2.4 million) created between February 2008 and April 2009, and measured positive and negative affect as proportion of in-dictionary (from LIWC) words to total word count. This calculation was done by hour of the day, day of the week, and month of the year, revealing fluctuations in mood in line with circadian rhythms and seasonal changes.</p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -576,7 +552,7 @@ Advantages of Relative Tokenization
 <div class="callout-body-container callout-body">
 <ul>
 <li>
-<strong>Intuitive Appeal:</strong> Relative tokenization make sense if longer documents are longer because of verbosity, or if the construct of interest does not fluctuate over the course of a longer text (e.g.&nbsp;personality).</li>
+<strong>Intuitive Appeal:</strong> Relative tokenization makes sense if longer documents are longer because of verbosity, or if the construct of interest does not fluctuate over the course of a longer text (e.g.&nbsp;personality).</li>
 </ul>
 </div>
 </div>
@@ -594,7 +570,7 @@ Disadvantages of Relative Tokenization
 <li>
 <strong>Discounts Longer Texts:</strong> If texts are long because they cover multiple topics (or multiple emotions), relative tokenization will dilute true occurrences of the construct of interest.</li>
 <li>
-<strong>Does Not Control for Text Length:</strong> People often assume that using a percentage will control for the denominator in statistical analyses. This is wrong, which makes some statisticians think that ratios are more trouble than they’re worth.</li>
+<strong>Does Not Control for Text Length:</strong> People often assume that using a percentage will control for the denominator in statistical analyses. This is wrong, which might make ratios like relative tokenization more trouble than they’re worth.</li>
 <li>
 <strong>Not Normally Distributed:</strong> Dividing count variables by text length does not make them normally distributed. This can cause problems for certain statistical methods. Using the Anscombe transform can partially remedy these problems.</li>
 </ul>
@@ -616,6 +592,7 @@ Advantages of the Anscombe Transform
 <div class="callout-body-container callout-body">
 <ul>
 <li><strong>Computational Efficiency</strong></li>
+<li><strong>Addresses Non-Normality of Word Frequencies</strong></li>
 </ul>
 </div>
 </div>
@@ -637,18 +614,18 @@ Disadvantages of the Anscombe Transform
 </section><section id="sec-tfidf" class="level2" data-number="16.5"><h2 data-number="16.5" class="anchored" data-anchor-id="sec-tfidf">
 <span class="header-section-number">16.5</span> TF-IDF</h2>
 <p>Term frequency-inverse document frequency (TF-IDF) is one of the great triumphs of NLP in the last century. It was first introduced by <span class="citation" data-cites="sparckjones_1972">Sparck Jones (<a href="#ref-sparckjones_1972" role="doc-biblioref">1972</a>)</span> and is still widely used half a century later, especially in search engines.</p>
-<p>The idea of TF-IDF is to measure how <em>topical</em> a token is in a text. In other words, how representative is that token of the particular features of that text as opposed to other texts? Let’s start with term frequency (TF). TF is just relative frequency - a word count divided by the total number of words in the text. The problem with relative frequency is that it emphasizes common words that don’t tell us much about the meaning of the text—if a text has a high frequency of “the”, should we conclude that “the” is very important to the meaning of the text? Of course not. To fix this, we multiply TF by inverse document frequency (IDF). Document frequency is the proportion of documents that have at least one instance of our token (i.e.&nbsp;the average binary tokenization across documents). IDF is the log of the inverse of the document frequency. <strong>IDF answers the question: How unusual is it for this token to appear at all in the document?</strong> So “the”, which appears in almost every document, will have a very low IDF—it is not unusual at all. So, even though “the” appears a lot in our document (TF is high), its TF-IDF score will be low, reflecting the fact that “the” doesn’t tell us much about the content of this particular document.</p>
+<p>The idea of TF-IDF is to measure how <em>topical</em> a token is in a document In other words, how representative is that token of the particular features of that document as opposed to other documents? Let’s start with term frequency (TF). TF is just relative frequency - a word count divided by the total number of words in the document The problem with relative frequency is that it emphasizes common words that don’t tell us much about the meaning of the document—if a document has a high frequency of “the,” should we conclude that “the” is very important to the meaning of the document? Of course not. To fix this, we multiply TF by inverse document frequency (IDF). Document frequency is the proportion of documents that have at least one instance of our token (i.e.&nbsp;the average binary tokenization across documents). IDF is the log of the inverse of the document frequency. <strong>IDF answers the question: How unusual is it for this token to appear at all in a document?</strong> So “the,” which appears in almost every document, will have a very low IDF—it is not unusual at all. Even though “the” appears a lot in our document (TF is high), its TF-IDF score will be low, reflecting the fact that “the” doesn’t tell us much about the content of this particular document.</p>
 <p><span class="math display">\[
 TF \cdot IDF = relative\:frequency × \log{\frac{total\:documents}{documents\:with\:token}}
 \]</span></p>
-<p>You might wonder: If we want to compare how common the token is in this document to how common it is in other documents, shouldn’t we use the inverse <em>token</em> frequency (i.e.&nbsp;the average relative frequency across documents in the corpus)? Why do we use the inverse document frequency? The answer: TF-IDF does not make the BOW assumption. If all documents were just bags of words, the frequency within documents would be distributed similarly to the frequency between documents (e.g.&nbsp;since the 2-gram “verbal reasoning” occurs in very few tweets, you would expect the probability of it occurring twice in the same document to be near-impossible). In reality though, it wouldn’t be surprising to see “verbal reasoning” even 3 times in the same tweet if that tweet were discussing verbal reasoning. Multiplying relative <em>term frequency</em> by inverse <em>document frequency</em> provides a measure of exactly how wrong BOW is in this case. In other words, how topical is the token?</p>
+<p>You might wonder: If we want to compare how common the token is in this document to how common it is in other documents, shouldn’t we use the inverse <em>token</em> frequency (i.e.&nbsp;the average relative frequency of tokens across documents in the corpus)? Why do we use the inverse document frequency? The answer: TF-IDF does not make the BOW assumption. If all documents were just bags of words, the frequency within documents would be distributed similarly to the frequency between documents (e.g.&nbsp;since the bigram “verbal reasoning” occurs in very few tweets, you would expect the probability of it occurring twice in the same document to be near-impossible). In reality though, it wouldn’t be surprising to see “verbal reasoning” even 3 times in the same tweet if that tweet were discussing verbal reasoning. Multiplying relative <em>term frequency</em> by inverse <em>document frequency</em> provides a measure of exactly how wrong BOW is in this case. In other words, how topical is the token?</p>
 <p>In Quanteda, we can convert a DFM to TF-IDF with the <code>dfm_tfidf()</code> function:</p>
 <div class="cell">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_dfm_tfidf</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_dfm</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dfm_tfidf</span><span class="op">(</span>scheme_tf <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">hippocorpus_dfm_tfidf</span></span>
-<span><span class="co">#&gt; Document-feature matrix of: 6,854 documents, 27,905 features (99.50% sparse) and 6 docvars.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_dfm_tfidf</span>, max_ndoc <span class="op">=</span> <span class="fl">6</span>, max_nfeat <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Document-feature matrix of: 6,854 documents, 27,667 features (99.50% sparse) and 6 docvars.</span></span>
 <span><span class="co">#&gt;                                 features</span></span>
 <span><span class="co">#&gt; docs                               concerts         are           my</span></span>
 <span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 0.01296465 0.002577006 0.0005541024</span></span>
@@ -658,30 +635,14 @@ TF \cdot IDF = relative\:frequency × \log{\frac{total\:documents}{documents\:wi
 <span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 0          0           0.0006943381</span></span>
 <span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 0          0           0.0002829755</span></span>
 <span><span class="co">#&gt;                                 features</span></span>
-<span><span class="co">#&gt; docs                                    most   favorite       thing</span></span>
-<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 0.003125847 0.01137638 0.003845152</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 0           0          0          </span></span>
-<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 0.007156545 0          0.002934458</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI 0           0          0          </span></span>
-<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 0           0          0          </span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 0           0          0          </span></span>
-<span><span class="co">#&gt;                                 features</span></span>
-<span><span class="co">#&gt; docs                                      and   boyfriend       knew</span></span>
-<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 2.381120e-04 0.013854107 0.01045155</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 2.401228e-04 0.007684108 0         </span></span>
-<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 9.911838e-05 0           0         </span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI 1.597908e-04 0           0         </span></span>
-<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 1.356249e-04 0           0         </span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 8.291034e-05 0           0         </span></span>
-<span><span class="co">#&gt;                                 features</span></span>
-<span><span class="co">#&gt; docs                                       it</span></span>
-<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 0.0004158409</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 0.0003075253</span></span>
-<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 0.0006347045</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI 0.0001705368</span></span>
-<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 0.0003473897</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 0.0005309164</span></span>
-<span><span class="co">#&gt; [ reached max_ndoc ... 6,848 more documents, reached max_nfeat ... 27,895 more features ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; docs                                    most</span></span>
+<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 0.003125847</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 0          </span></span>
+<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 0.007156545</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI 0          </span></span>
+<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 0          </span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 0          </span></span>
+<span><span class="co">#&gt; [ reached max_ndoc ... 6,848 more documents, reached max_nfeat ... 27,663 more features ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Overall, TF-IDF combines the advantages of many simpler word count transformations without many of their downsides. For example, removing stop words focuses the analysis on text content, but may remove important information. TF-IDF discounts uninformative tokens like stop words without removing them outright. Likewise, we saw that binary tokenization solves part of the problem with the BOW assumption, but throws out a lot of information in the process. Once again, TF-IDF turns this problem into a feature (quantifying how topical a token is) without throwing out any information.</p>
 <p>Despite all of its benefits, TF-IDF is not widely used in psychology research. This is for two reasons. First, it is difficult to interpret intuitively, and researchers prize interpretability. Second, it focuses the analysis on the <em>topic</em> of texts rather than the subtleties of language style that are often associated with psychological differences (see <a href="#sec-stopwords"><span>Section&nbsp;16.1.2</span></a>). Nevertheless, if your construct is of a less subtle nature—more akin to the “topic” of the text—consider using TF-IDF.</p>
@@ -698,9 +659,9 @@ Advantages of TF-IDF
 <ul>
 <li><strong>Computational Efficiency</strong></li>
 <li>
-<strong>Discounts Uninformative Tokens Without Losing Information:</strong> TF-IDF combines the advantages stop word removal without removing tokens from the analysis.</li>
+<strong>Discounts Uninformative Tokens Without Losing Information:</strong> TF-IDF combines the advantages of stop word removal without removing tokens from the analysis.</li>
 <li>
-<strong>Does Not Rely on BOW:</strong> TF-IDF leverages the discrepancy between term frequency and document frequency to discover patterns of meaning</li>
+<strong>Does Not Rely on BOW:</strong> TF-IDF leverages the discrepancy between term frequency and document frequency to discover patterns of meaning.</li>
 <li>
 <strong>Proven to Work:</strong> TF-IDF has a long history of use in search engines and automated recommendations. It works surprisingly well for such a simple calculation.</li>
 </ul>
@@ -727,8 +688,8 @@ Disadvantages of TF-IDF
 <p>In <a href="#sec-relative-tokenization"><span>Section&nbsp;16.3</span></a>, we mentioned that dividing by text length does not adequately control for text length. This is true of ratios in general, but for word frequencies in particular there is extra cause for concern.</p>
 <p>Consider this short text written by an imaginary participant, Allison:</p>
 <p><em>I was sitting at the table, and <strong>suddenly</strong> I understood.</em></p>
-<p>The text has 10 words in total. One of these, “suddenly” is a surprise-related word. Given only this text, you might estimate the probability of surprise words in Allison’s language at 1/10, the relative frequency. You would be wrong. To see why, imagine that we also wanted to measure the probability of anger-related words. There are no anger-related words in this text. Is the probability of anger-related words then 0/10 = 0? Of course not. If we read more of Allison’s texts, we might very well encounter an anger-related word. Relative frequency therefore underestimates the probability of unobserved words. Conversely, it must overestimate the probability of observed words. So to leave room for the probability of unobserved words, we must admit that the true probability of anger-related words is likely to be a little less than 1/10.</p>
-<p>The first solution to this kind of problem was offered by <span class="citation" data-cites="laplace_1816">Pierre Simon : de Laplace (<a href="#ref-laplace_1816" role="doc-biblioref">1816</a>)</span>, who proposed to simply add one to all the frequency counts before computing the relative frequency. This is called <strong>Laplace smoothing</strong>, or sometimes simply <em>add-one smoothing</em>. To perform Laplace smoothing in Quanteda, use the <code>dfm_smooth()</code> function to add one, and then call <code>dfm_weight()</code> as before.</p>
+<p>The text has 10 words in total. One of these, “suddenly,” is a surprise-related word. Given only this text, you might estimate the probability of surprise words in Allison’s language at 1/10, the relative frequency. You would be wrong. To see why, imagine that we also wanted to measure the probability of anger-related words. There are no anger-related words in this text. Is the probability of anger-related words then 0/10 = 0? Of course not. If we read more of Allison’s texts, we might very well encounter an anger-related word. Relative frequency therefore underestimates the probability of unobserved words. Conversely, it must overestimate the probability of observed words. So to leave room for the probability of unobserved words, we must admit that the true probability of anger-related words is likely to be a little less than 1/10.</p>
+<p>The first solution to this kind of problem was offered by <span class="citation" data-cites="laplace_1816">Laplace (<a href="#ref-laplace_1816" role="doc-biblioref">1816</a>)</span>, who proposed to simply add one to all the frequency counts before computing the relative frequency. This is called <strong>Laplace smoothing</strong>, or sometimes simply <em>add-one smoothing</em>. To perform Laplace smoothing in Quanteda, use the <code>dfm_smooth()</code> function to add one, and then call <code>dfm_weight()</code> as before.</p>
 <div class="cell">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_dfm_laplace</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_dfm</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dfm_smooth</span><span class="op">(</span>smoothing <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -736,45 +697,29 @@ Disadvantages of TF-IDF
 <span><span class="co">#&gt; Warning in asMethod(object): sparse-&gt;dense coercion: allocating vector of size</span></span>
 <span><span class="co">#&gt; 1.4 GiB</span></span>
 <span></span>
-<span><span class="va">hippocorpus_dfm_laplace</span></span>
-<span><span class="co">#&gt; Document-feature matrix of: 6,854 documents, 27,905 features (0.00% sparse) and 6 docvars.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_dfm_laplace</span>, max_ndoc <span class="op">=</span> <span class="fl">6</span>, max_nfeat <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Document-feature matrix of: 6,854 documents, 27,667 features (0.00% sparse) and 6 docvars.</span></span>
 <span><span class="co">#&gt;                                 features</span></span>
 <span><span class="co">#&gt; docs                                 concerts          are           my</span></span>
-<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 7.115412e-05 7.115412e-05 0.0002134624</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 3.560239e-05 3.560239e-05 0.0002136144</span></span>
-<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 3.549750e-05 3.549750e-05 0.0003904725</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI 3.562522e-05 7.125045e-05 0.0001781261</span></span>
-<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 3.562903e-05 3.562903e-05 0.0002137742</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 3.543209e-05 3.543209e-05 0.0001771605</span></span>
+<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 7.176175e-05 7.176175e-05 0.0002152853</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 3.590664e-05 3.590664e-05 0.0002154399</span></span>
+<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 3.579995e-05 3.579995e-05 0.0003937994</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI 3.592986e-05 7.185973e-05 0.0001796493</span></span>
+<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 3.593374e-05 3.593374e-05 0.0002156024</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 3.573343e-05 3.573343e-05 0.0001786671</span></span>
 <span><span class="co">#&gt;                                 features</span></span>
-<span><span class="co">#&gt; docs                                     most     favorite        thing</span></span>
-<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 7.115412e-05 1.067312e-04 7.115412e-05</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 3.560239e-05 3.560239e-05 3.560239e-05</span></span>
-<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 1.419900e-04 3.549750e-05 7.099499e-05</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI 3.562522e-05 3.562522e-05 3.562522e-05</span></span>
-<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 3.562903e-05 3.562903e-05 3.562903e-05</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 3.543209e-05 3.543209e-05 3.543209e-05</span></span>
-<span><span class="co">#&gt;                                 features</span></span>
-<span><span class="co">#&gt; docs                                      and    boyfriend         knew</span></span>
-<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 0.0004269247 1.067312e-04 1.423082e-04</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 0.0003916263 7.120478e-05 3.560239e-05</span></span>
-<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 0.0002484825 3.549750e-05 3.549750e-05</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI 0.0002493766 3.562522e-05 3.562522e-05</span></span>
-<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 0.0002137742 3.562903e-05 3.562903e-05</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 0.0002480247 3.543209e-05 3.543209e-05</span></span>
-<span><span class="co">#&gt;                                 features</span></span>
-<span><span class="co">#&gt; docs                                       it</span></span>
-<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 1.423082e-04</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 1.068072e-04</span></span>
-<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 2.484825e-04</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI 7.125045e-05</span></span>
-<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 1.068871e-04</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 2.480247e-04</span></span>
-<span><span class="co">#&gt; [ reached max_ndoc ... 6,848 more documents, reached max_nfeat ... 27,895 more features ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; docs                                     most</span></span>
+<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 7.176175e-05</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 3.590664e-05</span></span>
+<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 1.431998e-04</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI 3.592986e-05</span></span>
+<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 3.593374e-05</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 3.573343e-05</span></span>
+<span><span class="co">#&gt; [ reached max_ndoc ... 6,848 more documents, reached max_nfeat ... 27,663 more features ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Laplace smoothing is better than nothing, but it is designed for a situation where the number of possible token types is small and known. In the case of natural language, the number of possible tokens is extremely large and entirely unknown <span class="citation" data-cites="baayen_2001">(<a href="#ref-baayen_2001" role="doc-biblioref">Baayen, 2001</a>)</span>. You can partially make up for this by adding a very small smoothing number instead of 1 (e.g.&nbsp;1 divided by the number of token types in the corpus: <code>smoothing = 1/ncol(hippocorpus_dfm)</code>), but if you are willing to invest a bit more computation time, there are better ways.</p>
+<p>Laplace smoothing is better than nothing, but it is designed for a situation in which the number of possible token types is small and known. In the case of natural language, the number of possible tokens is extremely large and entirely unknown <span class="citation" data-cites="baayen_2001">(<a href="#ref-baayen_2001" role="doc-biblioref">Baayen, 2001</a>)</span>. You can partially make up for this by adding a very small smoothing number instead of 1 (e.g.&nbsp;1 divided by the number of token types in the corpus: <code>smoothing = 1/ncol(hippocorpus_dfm)</code>), but if you are willing to invest a bit more computation time, there are better ways.</p>
 <p>During World War II, the German navy encrypted and decrypted its communications using the Enigma machine, which scrambled and unscrambled messages according to an initial input setting. This input setting was updated each day, and part of the process required the operator of the machine to select a three-letter sequence from a large book “at random” <span class="citation" data-cites="good_2000">(<a href="#ref-good_2000" role="doc-biblioref">Good, 2000</a>)</span>. Alan Turing, who was in charge of the decryption effort on the part of the British, quickly understood that the German operators’ choices from this book were not entirely random, and that patterns in their choices could be exploited to narrow down the search. The problem became how to estimate the probability of each three-letter sequence based on a relatively small sample of previously decoded input settings—a sample much smaller than the number of three-letter sequences in the book (which, like the number of possible tokens in English text, was extremely large). Turing solved this problem—essentially the same problem posed by word frequencies in text—by developing a method that used frequencies of frequencies in the sample to estimate the total probability of yet-unseen sequences and correct the observed frequencies based on this estimate. The algorithm was later refined and published by Turing’s assistant I. J. Good <span class="citation" data-cites="good_1953">(<a href="#ref-good_1953" role="doc-biblioref">1953</a>)</span>, and has since seen many variations. Today, the most popular of these variations is the <strong>Simple Good-Turing</strong> algorithm <span class="citation" data-cites="gale_sampson_1995">(<a href="#ref-gale_sampson_1995" role="doc-biblioref">Gale &amp; Sampson, 1995</a>)</span>. Unfortunately, Simple Good-Turing smoothing is not yet implemented in Quanteda, but that is expected to change in the coming months. As soon as it does, we will add it to the textbook.</p>
-<p>While smoothing may seem unnecessarily complex, it can be an important safeguard against false positives when analyzing word counts or frequencies. This is because the bias that smoothing is accounting for (due to unobserved tokens) is stronger for shorter texts, and grows in a non-linear pattern <span class="citation" data-cites="baayen_2001">(<a href="#ref-baayen_2001" role="doc-biblioref">Baayen, 2001</a>)</span>. This bias can become a confounding factor in regression models, especially when a predictor variable is strongly correlated with text length.</p>
+<p>While smoothing may seem unnecessarily complex, it can be an important safeguard against false positives when analyzing word counts or frequencies. This is because the bias that smoothing accounts for (due to unobserved tokens) is stronger for shorter texts, and grows in a non-linear pattern <span class="citation" data-cites="baayen_2001">(<a href="#ref-baayen_2001" role="doc-biblioref">Baayen, 2001</a>)</span>. This bias can become a confounding factor in regression models, especially when a predictor variable is strongly correlated with text length.</p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -810,10 +755,10 @@ Disadvantages of Smoothing
 </div>
 </section><section id="sec-machine-learning-word-counts" class="level2" data-number="16.7"><h2 data-number="16.7" class="anchored" data-anchor-id="sec-machine-learning-word-counts">
 <span class="header-section-number">16.7</span> Machine Learning Approaches</h2>
-<p>This chapter has been dedicated to methods that can be carried out after computing word counts (<a href="tokenization.html"><span>Chapter&nbsp;13</span></a>) and before analysis (<a href="word-counting.html"><span>Chapter&nbsp;14</span></a>; <a href="dla.html"><span>Chapter&nbsp;15</span></a>). These methods can be generally thought of as transformations that we apply to the word counts to make them better at measuring what we want them to measure. The last of these transformations is the most elaborate one: supervised machine learning.</p>
-<p>For supervised machine learning, you will need a training dataset of text that is already labeled with your construct of interest. We already saw a dataset like this for the emotion of surprise in <a href="dla.html#sec-generating-dictionaries"><span>Section&nbsp;15.4</span></a>: <a href="https://data.world/crowdflower/sentiment-analysis-in-text">Crowdflower Emotion in Text dataset</a>. Many other good examples can be found in <a href="corpora.html"><span>Chapter&nbsp;8</span></a>. The labels could be generated by participants who read the texts, or by the authors of the texts themselves (e.g.&nbsp;in the form of questionnaires that measure their personality).</p>
-<p>Once you have your training dataset, compute word counts for its texts. These could be dictionary-based counts from a variety of different dictionaries, or they could be individual token counts in the form of a DFM. You can even transform these counts in some of the ways described in this chapter (or even more than one). These counts will become the predictor variables for your machine learning model.</p>
-<p>This book is not the place an in-depth tutorial on machine learning<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, but we will give a brief example. Recall that in <a href="dla.html#sec-generating-dictionaries"><span>Section&nbsp;15.4</span></a> we used the <a href="https://data.world/crowdflower/sentiment-analysis-in-text">Crowdflower Emotion in Text dataset</a> to find the words most indicative of surprise in tweets (based on PMI). In <a href="dla.html#sec-generating-dictionaries"><span>Section&nbsp;15.4</span></a> we used these words as a dictionary, but we could get more robust results by using them as predictor variables to train a regularized machine learning model, <a href="https://topepo.github.io/caret/available-models.html">in this case ridge regression</a>.</p>
+<p>This chapter is dedicated to methods that can be carried out after computing word counts (<a href="tokenization.html"><span>Chapter&nbsp;13</span></a>) and before analysis (<a href="word-counting.html"><span>Chapter&nbsp;14</span></a>; <a href="dla.html"><span>Chapter&nbsp;15</span></a>). These methods can be thought of as transformations that we apply to word counts to make them better at measuring what we want them to measure. The last of these transformations is the most elaborate one: supervised machine learning.</p>
+<p>For supervised machine learning, you need a training dataset of text that is already labeled with your construct of interest. We already saw a dataset like this for the emotion of surprise in <a href="dla.html#sec-generating-dictionaries"><span>Section&nbsp;15.4</span></a>: <a href="https://data.world/crowdflower/sentiment-analysis-in-text">Crowdflower Emotion in Text dataset</a>. Many other good examples can be found in <a href="corpora.html"><span>Chapter&nbsp;8</span></a>. The labels could be generated by participants who read the texts, or by the authors of the texts themselves (e.g.&nbsp;in the form of questionnaires that measure their personality).</p>
+<p>Once you have your training dataset, compute word counts for its texts (<a href="tokenization.html"><span>Chapter&nbsp;13</span></a>). These could be dictionary-based counts from a variety of different dictionaries, or they could be individual token counts in the form of a DFM. You can even transform these counts in some of the ways described in this chapter (or even more than one). These counts will become the predictor variables for your machine learning model.</p>
+<p>This book is not the place an in-depth tutorial on machine learning<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, but we will give a brief example. Recall that in <a href="dla.html#sec-generating-dictionaries"><span>Section&nbsp;15.4</span></a> we used the <a href="https://data.world/crowdflower/sentiment-analysis-in-text">Crowdflower Emotion in Text dataset</a> to find the words most indicative of surprise in tweets (based on PMI). In <a href="dla.html#sec-generating-dictionaries"><span>Section&nbsp;15.4</span></a> we used these words as a dictionary, but we could get more robust results by using them as predictor variables to train a regularized machine learning model, in this case ridge regression, although <a href="https://topepo.github.io/caret/available-models.html">there are many other options</a>.</p>
 <div class="cell">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># New Hippocorpus DFM </span></span>
 <span><span class="va">hippocorpus_dfm_ngrams</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_corp</span> <span class="op">|&gt;</span> </span>
@@ -880,7 +825,7 @@ Disadvantages of Smoothing
 <span><span class="va">hippocorpus_features</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_features</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>surprise_pred <span class="op">=</span> <span class="va">surprise_pred</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now that we have a new ML-powered estimate of surprise for the Hippocorpus data, we can retest our hypothesis that true autobiographical stories include more surprise than imagined stories.</p>
+<p>Now that we have a new machine-learning-powered estimate of surprise for the Hippocorpus data, we can retest our hypothesis that true autobiographical stories include more surprise than imagined stories.</p>
 <div class="cell">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">surprise_mod_ml</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">surprise_pred</span> <span class="op">~</span> <span class="va">memType</span>, </span>
 <span>                      data <span class="op">=</span> <span class="va">hippocorpus_features</span><span class="op">)</span></span>
@@ -891,23 +836,23 @@ Disadvantages of Smoothing
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Residuals:</span></span>
 <span><span class="co">#&gt;       Min        1Q    Median        3Q       Max </span></span>
-<span><span class="co">#&gt; -0.004668 -0.004625 -0.004251  0.002974  0.066575 </span></span>
+<span><span class="co">#&gt; -0.004668 -0.004625 -0.004251  0.002972  0.066572 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
 <span><span class="co">#&gt;                   Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">#&gt; (Intercept)      0.0573336  0.0001458 393.100   &lt;2e-16 ***</span></span>
-<span><span class="co">#&gt; memTyperecalled -0.0004172  0.0002058  -2.027   0.0427 *  </span></span>
-<span><span class="co">#&gt; memTyperetold   -0.0000429  0.0002564  -0.167   0.8671    </span></span>
+<span><span class="co">#&gt; (Intercept)      5.735e-02  1.458e-04 393.268   &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt; memTyperecalled -4.174e-04  2.058e-04  -2.028   0.0426 *  </span></span>
+<span><span class="co">#&gt; memTyperetold   -4.367e-05  2.563e-04  -0.170   0.8647    </span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Residual standard error: 0.007657 on 6851 degrees of freedom</span></span>
-<span><span class="co">#&gt; Multiple R-squared:  0.000673,   Adjusted R-squared:  0.0003812 </span></span>
-<span><span class="co">#&gt; F-statistic: 2.307 on 2 and 6851 DF,  p-value: 0.09966</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; Residual standard error: 0.007655 on 6851 degrees of freedom</span></span>
+<span><span class="co">#&gt; Multiple R-squared:  0.0006732,  Adjusted R-squared:  0.0003814 </span></span>
+<span><span class="co">#&gt; F-statistic: 2.308 on 2 and 6851 DF,  p-value: 0.09958</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We find that imagined stories have significantly less surprise-related language than autobiographical stories (p = 0.043)!</p>
 <p>Despite the exciting result, we should be careful with this newfangled approach. As with dictionary-based methods, beware of problems with generalization—there is no guarantee that surprise in Tweets will look similar to surprise in autobiographical accounts. Likewise, keep in mind all of the regular challenges of machine learning. Notice for example that the intercept of this model is extremely low (0.057; surprise is measured between 0 and 1). This reflects the fact that the Crowdflower dataset is not balanced; there are very few Tweets labeled with surprise relative to the size of the dataset.</p>
-<p><strong>An example of machine learning approaches in research:</strong> <span class="citation" data-cites="zamani_etal_2018">Zamani et al. (<a href="#ref-zamani_etal_2018" role="doc-biblioref">2018</a>)</span> extracted n-grams from Facebook status updates. They then computed TF-IDF scores, binary tokenization, and LDA topics (<a href="decontextualized-embeddings.html#sec-lda"><span>Section&nbsp;18.2.2</span></a>), subjected all of these values to a dimensionality reduction process, and used the resulting features to train a ridge regression model to predict questionnaire-based measures of trustfulness. This regression model could then be used on novel texts to estimate the trustworthiness of their authors.</p>
+<p><strong>An example of machine learning approaches in research:</strong> <span class="citation" data-cites="zamani_etal_2018">Zamani et al. (<a href="#ref-zamani_etal_2018" role="doc-biblioref">2018</a>)</span> extracted n-grams from Facebook status updates. They then computed TF-IDF scores, binary tokenization, and LDA topics (<a href="decontextualized-embeddings.html#sec-lda"><span>Section&nbsp;18.2.2</span></a>), subjected all of these values to a dimensionality reduction process to reduce overfitting, and used the resulting features to train a ridge regression model to predict questionnaire-based measures of trustfulness. This regression model could then be used on novel texts to estimate the trustworthiness of their authors.</p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -969,11 +914,11 @@ Holtgraves, T. (2011). Text messaging, personality, and the social context. <em>
 <div id="ref-kronmal_1993" class="csl-entry" role="listitem">
 Kronmal, R. A. (1993). Spurious correlation and the fallacy of the ratio standard revisited. <em>Journal of the Royal Statistical Society Series A</em>, <em>156</em>(3), 379–392. <a href="https://www.jstor.org/stable/2983064">https://www.jstor.org/stable/2983064</a>
 </div>
+<div id="ref-laplace_1816" class="csl-entry" role="listitem">
+Laplace, P. S. de. (1816). <em>Essai philosophique sur les probabilités; par <span>M</span>. Le comte <span>Laplace</span> ..</em> M.me v.e Courcier, impr.-libr. pour les mathématiques et la marine, quai des Augustins, no 57. <a href="http://archive.org/details/bub_gb_vVzdR0tuoWAC">http://archive.org/details/bub_gb_vVzdR0tuoWAC</a>
+</div>
 <div id="ref-mehl_etal_2006" class="csl-entry" role="listitem">
 Mehl, M. R., Gosling, S. D., &amp; Pennebaker, J. W. (2006). Personality in its natural habitat: Manifestations and implicit folk theories of personality in daily life. <em>Journal of Personality and Social Psychology</em>, <em>90 5</em>, 862–877. <a href="https://api.semanticscholar.org/CorpusID:2932332">https://api.semanticscholar.org/CorpusID:2932332</a>
-</div>
-<div id="ref-laplace_1816" class="csl-entry" role="listitem">
-Pierre Simon : de Laplace. (1816). <em>Essai philosophique sur les probabilités; par <span>M</span>. Le comte <span>Laplace</span> ..</em> M.me v.e Courcier, impr.-libr. pour les mathématiques et la marine, quai des Augustins, no 57. <a href="http://archive.org/details/bub_gb_vVzdR0tuoWAC">http://archive.org/details/bub_gb_vVzdR0tuoWAC</a>
 </div>
 <div id="ref-schwartz_etal_2013" class="csl-entry" role="listitem">
 Schwartz, H. A., Eichstaedt, J. C., Kern, M. L., Dziurzynski, L., Ramones, S. M., Agrawal, M., Shah, A., Kosinski, M., Stillwell, D., Seligman, M. E. P., &amp; Ungar, L. H. (2013). Personality, gender, and age in the language of social media: The open-vocabulary approach. <em>PLOS ONE</em>, <em>8</em>(9), 1–16. <a href="https://doi.org/10.1371/journal.pone.0073791">https://doi.org/10.1371/journal.pone.0073791</a>

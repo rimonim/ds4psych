@@ -311,7 +311,14 @@ div.csl-indent {
    
   <ul>
 <li><a href="#sec-parallelograms" id="toc-sec-parallelograms" class="nav-link active" data-scroll-target="#sec-parallelograms"><span class="header-section-number">20.1</span> Parallelograms</a></li>
-  <li><a href="#sec-advanced-similarity" id="toc-sec-advanced-similarity" class="nav-link" data-scroll-target="#sec-advanced-similarity"><span class="header-section-number">20.2</span> Advanced Similarity Measures</a></li>
+  <li>
+<a href="#sec-advanced-similarity" id="toc-sec-advanced-similarity" class="nav-link" data-scroll-target="#sec-advanced-similarity"><span class="header-section-number">20.2</span> Advanced Similarity Measures</a>
+  <ul class="collapse">
+<li><a href="#jaccard-similarity" id="toc-jaccard-similarity" class="nav-link" data-scroll-target="#jaccard-similarity"><span class="header-section-number">20.2.1</span> Jaccard similarity</a></li>
+  <li><a href="#mutual-information" id="toc-mutual-information" class="nav-link" data-scroll-target="#mutual-information"><span class="header-section-number">20.2.2</span> Mutual Information</a></li>
+  <li><a href="#jensenshannon-divergence" id="toc-jensenshannon-divergence" class="nav-link" data-scroll-target="#jensenshannon-divergence"><span class="header-section-number">20.2.3</span> Jensen–Shannon divergence</a></li>
+  </ul>
+</li>
   <li><a href="#sec-dimension-projection" id="toc-sec-dimension-projection" class="nav-link" data-scroll-target="#sec-dimension-projection"><span class="header-section-number">20.3</span> Dimension Projection</a></li>
   <li><a href="#sec-machine-learning-methods" id="toc-sec-machine-learning-methods" class="nav-link" data-scroll-target="#sec-machine-learning-methods"><span class="header-section-number">20.4</span> Machine Learning Methods</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rimonim/ds4psych/blob/main/navigating-vectorspace.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -352,9 +359,13 @@ This page is still under construction. Come back soon!
 <p>In CCR, for example, there’s a difference between agreeing with statements in a questionnaire and actually writing like a questionnaire. How do I know that I’m measuring how anxious/depressed the comments are and not how questionnaire-y they are? Potential workaround: reverse all of the statements in the questionnaire (as for reverse-coded items), add them to the original questionnaire, and get the average embedding of the construct-neutral questionnaire. Then subtract this embedding from the original questionnaire average embedding.</p>
 </section><section id="sec-advanced-similarity" class="level2" data-number="20.2"><h2 data-number="20.2" class="anchored" data-anchor-id="sec-advanced-similarity">
 <span class="header-section-number">20.2</span> Advanced Similarity Measures</h2>
-<ul>
-<li>Jensen–Shannon distance</li>
-</ul></section><section id="sec-dimension-projection" class="level2" data-number="20.3"><h2 data-number="20.3" class="anchored" data-anchor-id="sec-dimension-projection">
+<section id="jaccard-similarity" class="level3" data-number="20.2.1"><h3 data-number="20.2.1" class="anchored" data-anchor-id="jaccard-similarity">
+<span class="header-section-number">20.2.1</span> Jaccard similarity</h3>
+</section><section id="mutual-information" class="level3" data-number="20.2.2"><h3 data-number="20.2.2" class="anchored" data-anchor-id="mutual-information">
+<span class="header-section-number">20.2.2</span> Mutual Information</h3>
+</section><section id="jensenshannon-divergence" class="level3" data-number="20.2.3"><h3 data-number="20.2.3" class="anchored" data-anchor-id="jensenshannon-divergence">
+<span class="header-section-number">20.2.3</span> Jensen–Shannon divergence</h3>
+</section></section><section id="sec-dimension-projection" class="level2" data-number="20.3"><h2 data-number="20.3" class="anchored" data-anchor-id="sec-dimension-projection">
 <span class="header-section-number">20.3</span> Dimension Projection</h2>
 <p><span class="citation" data-cites="grand_etal_2022">Grand et al. (<a href="#ref-grand_etal_2022" role="doc-biblioref">2022</a>)</span></p>
 <p><strong>An example of using dimension projection in research:</strong> <span class="citation" data-cites="simchon_etal_2023">Simchon et al. (<a href="#ref-simchon_etal_2023" role="doc-biblioref">2023</a>)</span> collected 10,000 messages from the <a href="https://www.reddit.com/r/depression">r/depression</a> subreddit, along with a control group of 100 messages each from 100 randomly selected subreddits. They then used a variant of the SBERT model called <code>all-MiniLM-L6-v2</code> to compute CCR embeddings (<a href="contextualized-embeddings.html"><span>Chapter&nbsp;19</span></a>) of a psychological questionnaire measuring “locus of control,” the feeling that you have control over your own life. The questionnaire included items measuring an internal locus of control (“I have control”), and items measuring an external locus of control (“External forces have control”). Simchon et al.&nbsp;constructed an anchored vector to capture the direction between internal and external locus of control, and projected embeddings of the Reddit posts onto that vector to measure how much each post reflected an internal vs.&nbsp;an external locus of control. They found that posts in r/depression exhibited a more external locus of control than posts in the control group.</p>

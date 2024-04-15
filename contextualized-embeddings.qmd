@@ -17,9 +17,9 @@ source("_common.R")
 
 @kjell_etal_2022
 
-## DDR
+## Distributed Dictionary Representation (DDR)
 
-## CCR
+## Contextualized Construct Representation (CCR)
 
 @atari_etal_2023
 

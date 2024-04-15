@@ -390,22 +390,21 @@ div.csl-indent {
 <div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_tokens</span> <span class="op">&lt;-</span> <span class="fu">tokens</span><span class="op">(</span><span class="va">hippocorpus_corp</span>,</span>
 <span>                             remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">hippocorpus_tokens</span>, <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Tokens consisting of 3 documents and 6 docvars.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_tokens</span>, max_ndoc <span class="op">=</span> <span class="fl">3</span>, max_ntok <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Tokens consisting of 6,854 documents and 6 docvars.</span></span>
 <span><span class="co">#&gt; 32RIADZISTQWI5XIVG5BN0VMYFRS4U :</span></span>
-<span><span class="co">#&gt;  [1] "Concerts"  "are"       "my"        "most"      "favorite"  "thing"    </span></span>
-<span><span class="co">#&gt;  [7] "and"       "my"        "boyfriend" "knew"      "it"        "That's"   </span></span>
-<span><span class="co">#&gt; [ ... and 191 more ]</span></span>
+<span><span class="co">#&gt; [1] "Concerts" "are"      "my"       "most"     "favorite" "thing"   </span></span>
+<span><span class="co">#&gt; [ ... and 197 more ]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; 3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 :</span></span>
-<span><span class="co">#&gt;  [1] "The"       "day"       "started"   "perfectly" "with"      "a"        </span></span>
-<span><span class="co">#&gt;  [7] "great"     "drive"     "up"        "to"        "Denver"    "for"      </span></span>
-<span><span class="co">#&gt; [ ... and 171 more ]</span></span>
+<span><span class="co">#&gt; [1] "The"       "day"       "started"   "perfectly" "with"      "a"        </span></span>
+<span><span class="co">#&gt; [ ... and 177 more ]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; 3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 :</span></span>
-<span><span class="co">#&gt;  [1] "It"        "seems"     "just"      "like"      "yesterday" "but"      </span></span>
-<span><span class="co">#&gt;  [7] "today"     "makes"     "five"      "months"    "ago"       "it"       </span></span>
-<span><span class="co">#&gt; [ ... and 254 more ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; [1] "It"        "seems"     "just"      "like"      "yesterday" "but"      </span></span>
+<span><span class="co">#&gt; [ ... and 260 more ]</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [ reached max_ndoc ... 6,851 more documents ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section><section id="simplified-words-stems-and-lemmas" class="level3" data-number="13.1.2"><h3 data-number="13.1.2" class="anchored" data-anchor-id="simplified-words-stems-and-lemmas">
 <span class="header-section-number">13.1.2</span> Simplified Words: Stems and Lemmas</h3>
@@ -416,22 +415,21 @@ div.csl-indent {
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_stems</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_tokens</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">tokens_wordstem</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">hippocorpus_stems</span>, <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Tokens consisting of 3 documents and 6 docvars.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_stems</span>, max_ndoc <span class="op">=</span> <span class="fl">3</span>, max_ntok <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Tokens consisting of 6,854 documents and 6 docvars.</span></span>
 <span><span class="co">#&gt; 32RIADZISTQWI5XIVG5BN0VMYFRS4U :</span></span>
-<span><span class="co">#&gt;  [1] "Concert"   "are"       "my"        "most"      "favorit"   "thing"    </span></span>
-<span><span class="co">#&gt;  [7] "and"       "my"        "boyfriend" "knew"      "it"        "That"     </span></span>
-<span><span class="co">#&gt; [ ... and 191 more ]</span></span>
+<span><span class="co">#&gt; [1] "Concert" "are"     "my"      "most"    "favorit" "thing"  </span></span>
+<span><span class="co">#&gt; [ ... and 197 more ]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; 3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 :</span></span>
-<span><span class="co">#&gt;  [1] "The"     "day"     "start"   "perfect" "with"    "a"       "great"  </span></span>
-<span><span class="co">#&gt;  [8] "drive"   "up"      "to"      "Denver"  "for"    </span></span>
-<span><span class="co">#&gt; [ ... and 171 more ]</span></span>
+<span><span class="co">#&gt; [1] "The"     "day"     "start"   "perfect" "with"    "a"      </span></span>
+<span><span class="co">#&gt; [ ... and 177 more ]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; 3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 :</span></span>
-<span><span class="co">#&gt;  [1] "It"        "seem"      "just"      "like"      "yesterday" "but"      </span></span>
-<span><span class="co">#&gt;  [7] "today"     "make"      "five"      "month"     "ago"       "it"       </span></span>
-<span><span class="co">#&gt; [ ... and 254 more ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; [1] "It"        "seem"      "just"      "like"      "yesterday" "but"      </span></span>
+<span><span class="co">#&gt; [ ... and 260 more ]</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [ reached max_ndoc ... 6,851 more documents ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Notice that “Concerts” has changed to “Concert”, “favorite” has changed to “favorit”, and “That’s” has changed to “That”.</p>
 <p><strong>Lemmatization</strong> takes a slightly different approach. Rather than chopping off prefixes and suffixes, lemmatization uses a lookup table to replace variants of words with the version that you might find in a dictionary. For example, “quantified” would become “quantify”. This canonical form is called a lemma.</p>
@@ -441,22 +439,21 @@ div.csl-indent {
 <span>  <span class="fu">tokens_replace</span><span class="op">(</span>pattern <span class="op">=</span> <span class="fu">lexicon</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/lexicon/man/hash_lemmas.html">hash_lemmas</a></span><span class="op">$</span><span class="va">token</span>, </span>
 <span>                 replacement <span class="op">=</span> <span class="fu">lexicon</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/lexicon/man/hash_lemmas.html">hash_lemmas</a></span><span class="op">$</span><span class="va">lemma</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">hippocorpus_lemmas</span>, <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Tokens consisting of 3 documents and 6 docvars.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_lemmas</span>, max_ndoc <span class="op">=</span> <span class="fl">3</span>, max_ntok <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Tokens consisting of 6,854 documents and 6 docvars.</span></span>
 <span><span class="co">#&gt; 32RIADZISTQWI5XIVG5BN0VMYFRS4U :</span></span>
-<span><span class="co">#&gt;  [1] "concert"   "be"        "my"        "much"      "favorite"  "thing"    </span></span>
-<span><span class="co">#&gt;  [7] "and"       "my"        "boyfriend" "know"      "it"        "That's"   </span></span>
-<span><span class="co">#&gt; [ ... and 191 more ]</span></span>
+<span><span class="co">#&gt; [1] "concert"  "be"       "my"       "much"     "favorite" "thing"   </span></span>
+<span><span class="co">#&gt; [ ... and 197 more ]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; 3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 :</span></span>
-<span><span class="co">#&gt;  [1] "The"       "day"       "start"     "perfectly" "with"      "a"        </span></span>
-<span><span class="co">#&gt;  [7] "great"     "drive"     "up"        "to"        "Denver"    "for"      </span></span>
-<span><span class="co">#&gt; [ ... and 171 more ]</span></span>
+<span><span class="co">#&gt; [1] "The"       "day"       "start"     "perfectly" "with"      "a"        </span></span>
+<span><span class="co">#&gt; [ ... and 177 more ]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; 3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 :</span></span>
-<span><span class="co">#&gt;  [1] "It"        "seem"      "just"      "like"      "yesterday" "but"      </span></span>
-<span><span class="co">#&gt;  [7] "today"     "make"      "five"      "month"     "ago"       "it"       </span></span>
-<span><span class="co">#&gt; [ ... and 254 more ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; [1] "It"        "seem"      "just"      "like"      "yesterday" "but"      </span></span>
+<span><span class="co">#&gt; [ ... and 260 more ]</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [ reached max_ndoc ... 6,851 more documents ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Notice that “are” has changed to “be” and “started” has changed to “start”. Notice also that “That’s” has not changed at all. This is because it does not appear in the lookup table we are using.</p>
 <div class="cell">
@@ -523,19 +520,17 @@ div.csl-indent {
 <p>Creating DFMs in Quanteda is done with the <code>dfm()</code> function. By default, <code>dfm()</code> will also convert all text to lower case. In this default setting, “The” and “the” will register as two instances of the same token.</p>
 <div class="cell">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_dfm</span> <span class="op">&lt;-</span> <span class="fu">dfm</span><span class="op">(</span><span class="va">hippocorpus_tokens</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">hippocorpus_dfm</span>, <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Document-feature matrix of: 3 documents, 27,906 features (99.58% sparse) and 6 docvars.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_dfm</span>, max_ndoc <span class="op">=</span> <span class="fl">6</span>, max_nfeat <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Document-feature matrix of: 6,854 documents, 27,668 features (99.50% sparse) and 6 docvars.</span></span>
 <span><span class="co">#&gt;                                 features</span></span>
-<span><span class="co">#&gt; docs                             concerts are my most favorite thing and</span></span>
-<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U        1   1  5    1        2     1  11</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2        0   0  5    0        0     0  10</span></span>
-<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61        0   0 10    3        0     1   6</span></span>
-<span><span class="co">#&gt;                                 features</span></span>
-<span><span class="co">#&gt; docs                             boyfriend knew it</span></span>
-<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U         2    3  3</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2         1    0  2</span></span>
-<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61         0    0  6</span></span>
-<span><span class="co">#&gt; [ reached max_nfeat ... 27,896 more features ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; docs                             concerts are my most favorite thing</span></span>
+<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U        1   1  5    1        2     1</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2        0   0  5    0        0     0</span></span>
+<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61        0   0 10    3        0     1</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI        0   1  4    0        0     0</span></span>
+<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ        0   0  5    0        0     0</span></span>
+<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3        0   0  4    0        0     0</span></span>
+<span><span class="co">#&gt; [ reached max_ndoc ... 6,848 more documents, reached max_nfeat ... 27,662 more features ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Congratulations! You have turned texts into numbers! Now how do we use these numbers to measure psychological constructs?</p>
 <hr>
