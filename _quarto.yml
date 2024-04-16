@@ -14,6 +14,8 @@ book:
     right: |
       This book was built with <a href="https://quarto.org/">Quarto</a> and is powered by <a href="https://www.netlify.com/">Netlify</a>
   
+  site-url: https://ds4psych.com
+  sharing: [twitter, facebook, linkedin]
   repo-url: https://github.com/rimonim/ds4psych
   repo-branch: main
   repo-actions: [source, issue]
@@ -71,6 +73,14 @@ format:
     
     author-meta: "Louis Teitelbaum and Almog Simchon"
     callout-appearance: simple
+  pdf: 
+    documentclass: scrreprt
+    keep-tex: true
+    papersize: a4
+    fontsize: 11pt
+    mainfont: "Libertinus Sans"
+    sansfont: "Libertinus Sans"
+    monofont: "Courier New"
 
 editor: source
 
