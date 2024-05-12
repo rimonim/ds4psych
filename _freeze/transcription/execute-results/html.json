@@ -1,0 +1,15 @@
+{
+  "hash": "20cfdf2d6f438202e0d99fa1c778f9f2",
+  "result": {
+    "engine": "knitr",
+    "markdown": "# Transcribing Audio {#sec-transcription}\n\n\n\n\n\n::: {.callout-important}\n## This section has not yet been written. Check again in a few months!\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

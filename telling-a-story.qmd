@@ -267,13 +267,13 @@ tibble(num = factor(1:7),
         color = num, 
         label = frequency
         ), 
-      size = 2.9, hjust = .5) +
+      size = 2.9, hjust = .5) + 
     scale_fill_manual(
-      palette = function(n) hcl.colors(n, "Berlin"), 
+      values = hcl.colors(7, "Berlin"), 
       guide = "none"
       ) +
     scale_color_manual(
-      palette = function(n) contrast(hcl.colors(n, "Berlin"),.7),
+      values = contrast(hcl.colors(7, "Berlin"),.7),
       guide = "none"
       ) +
     new_scale_fill() +
@@ -293,11 +293,11 @@ tibble(num = factor(1:7),
         ), 
       size = 2.9, hjust = .5) +
     scale_fill_manual(
-      palette = function(n) hcl.colors(n, "Purple-Green"), 
+      values = hcl.colors(7, "Purple-Green"), 
       guide = "none"
       ) +
     scale_color_manual(
-      palette = function(n) contrast(hcl.colors(n, "Purple-Green"),.7),
+      values = contrast(hcl.colors(7, "Purple-Green"),.7),
       guide = "none"
       ) +
     new_scale_fill() +
@@ -317,11 +317,11 @@ tibble(num = factor(1:7),
         ), 
       size = 4, hjust = .5) +
     scale_fill_manual(
-      palette = function(n) hcl.colors(n, "Blue-Red", rev = TRUE), 
+      values = hcl.colors(7, "Blue-Red", rev = TRUE), 
       guide = "none"
       ) +
     scale_color_manual(
-      palette = function(n) contrast(hcl.colors(n, "Blue-Red", rev = TRUE),.7),
+      values = contrast(hcl.colors(7, "Blue-Red", rev = TRUE),.7),
       guide = "none"
       ) +
     labs(
@@ -362,7 +362,7 @@ tibble(num = factor(1:7),
               size = 2.9, hjust = .5) +
     scale_fill_brewer(palette = "YlGnBu", guide = "none") +
     scale_color_manual(
-      palette = function(n) contrast(brewer.pal(n, "YlGnBu"),.7),
+      values = contrast(brewer.pal(7, "YlGnBu"),.7),
       guide = "none"
       ) +    
     new_scale_fill() +
@@ -374,7 +374,7 @@ tibble(num = factor(1:7),
               size = 2.9, hjust = .5) +
     scale_fill_brewer(palette = "OrRd", guide = "none") +
     scale_color_manual(
-      palette = function(n) contrast(brewer.pal(n, "OrRd"),.7),
+      values = contrast(brewer.pal(7, "OrRd"),.7),
       guide = "none"
       ) +
     new_scale_fill() +
@@ -385,11 +385,11 @@ tibble(num = factor(1:7),
     geom_text(aes(y = "Weekdays", color = num, label = weekday), 
               size = 2.9, hjust = .5) +
     scale_fill_manual(
-      palette = function(n) hcl.colors(n, "Sunset", rev = TRUE), 
+      values = hcl.colors(7, "Sunset", rev = TRUE), 
       guide = "none"
       ) +
     scale_color_manual(
-      palette = function(n) contrast(hcl.colors(n, "Sunset", rev = TRUE),.7),
+      values = contrast(hcl.colors(7, "Sunset", rev = TRUE),.7),
       guide = "none"
       ) +
     labs(title = "Sequential Color Scale",
@@ -633,7 +633,7 @@ tibble(num = factor(1:5),
     geom_text(aes(y = "Intelligence\nComponent", color = num, label = components), 
               size = 3.5, hjust = .5) +
     scale_fill_brewer(palette = "Set1", guide = "none") +
-    scale_color_manual(palette = function(n) contrast(brewer.pal(n, "Set1"),.9),
+    scale_color_manual(values = contrast(brewer.pal(5, "Set1"),.9),
                        guide = "none") +    
     new_scale_fill() +
     new_scale_color() +
@@ -651,10 +651,10 @@ tibble(num = factor(1:5),
     geom_text(aes(y = "Parts of\nSpeech", color = num, label = speech_parts), 
               size = 3.5, hjust = .5) +
     scale_fill_manual(
-      palette = function(n) hcl.colors(n, "Pastel 1", rev = TRUE), guide = "none"
+      values = hcl.colors(5, "Pastel 1", rev = TRUE), guide = "none"
       ) +
     scale_color_manual(
-      palette = function(n) contrast(hcl.colors(n, "Pastel 1", rev = TRUE),.7),
+      values = contrast(hcl.colors(5, "Pastel 1", rev = TRUE),.7),
       guide = "none"
       ) +
     labs(title = "Qualitative Color Scales",

@@ -310,6 +310,6 @@ tweet_surprise_mod <- MASS::glm.nb(surprise ~ memType + log(wc),
 summary(tweet_surprise_mod)
 ```
 
-Using our dictionary generated from Tweets with open vocabulary analysis, we find no significant difference between true autobiographical stories and imagined stories in the amount of suprise-related language they contain (p = `r round(summary(tweet_surprise_mod)$coefficients["memTyperecalled","Pr(>|z|)"],3)`).
+Using our dictionary generated from Tweets with open vocabulary analysis, we find no significant difference between true autobiographical stories and imagined stories in the amount of surprise-related language they contain (p = `r round(summary(tweet_surprise_mod)$coefficients["memTyperecalled","Pr(>|z|)"],3)`).
 
 ---

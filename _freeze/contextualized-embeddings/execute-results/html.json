@@ -1,0 +1,15 @@
+{
+  "hash": "a8132ca192f7f51240fb83f0506776d8",
+  "result": {
+    "engine": "knitr",
+    "markdown": "# Contextualization and Large Language Models {#sec-contextualized-embeddings}\n\n\n\n\n\n::: {.callout-important}\n## This page is still under construction. Come back soon!\n:::\n\n## Hugging Face and the `text` Package\n\n@kjell_etal_2021\n\n@kjell_etal_2022\n\n## Distributed Dictionary Representation (DDR)\n\n## Contextualized Construct Representation (CCR)\n\n@atari_etal_2023\n\n## Correlational Methods\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

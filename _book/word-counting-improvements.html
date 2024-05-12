@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.553">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Louis Teitelbaum and Almog Simchon">
 <title>Data Science for Psychology: Natural Language - 16&nbsp; Transforming Word Counts</title>
@@ -20,7 +20,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -56,6 +56,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -97,7 +98,13 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -106,33 +113,82 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 </head>
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./word-counting-improvements.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Transforming Word Counts</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./word-counting-improvements.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Transforming Word Counts</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Data Science for Psychology: Natural Language</a> 
-        <div class="sidebar-tools-main">
-    <a href="https://github.com/rimonim/ds4psych" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/rimonim/ds4psych" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=%7Curl%7C">
+              <i class="bi bi-bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=%7Curl%7C">
+              <i class="bi bi-bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=%7Curl%7C">
+              <i class="bi bi-bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+</div>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -290,7 +346,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./decontextualized-embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Words Embeddings: Decontextualized Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Word Embeddings</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -338,7 +394,7 @@ div.csl-indent {
 </li>
     </ul>
 </div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
@@ -357,10 +413,10 @@ div.csl-indent {
   <li><a href="#sec-tfidf" id="toc-sec-tfidf" class="nav-link" data-scroll-target="#sec-tfidf"><span class="header-section-number">16.5</span> TF-IDF</a></li>
   <li><a href="#sec-smoothing" id="toc-sec-smoothing" class="nav-link" data-scroll-target="#sec-smoothing"><span class="header-section-number">16.6</span> Smoothing</a></li>
   <li><a href="#sec-machine-learning-word-counts" id="toc-sec-machine-learning-word-counts" class="nav-link" data-scroll-target="#sec-machine-learning-word-counts"><span class="header-section-number">16.7</span> Machine Learning Approaches</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rimonim/ds4psych/blob/main/word-counting-improvements.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/rimonim/ds4psych/blob/main/word-counting-improvements.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./word-counting-improvements.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Transforming Word Counts</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title"><span id="sec-word-counting-improvements" class="quarto-section-identifier"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Transforming Word Counts</span></span></h1>
 </div>
 
@@ -374,11 +430,12 @@ div.csl-indent {
   </div>
   
 
-</header><p>So far, we have used statistical methods that work with raw counts, like negative binomial regression in <a href="word-counting.html#sec-modeling-word-counts"><span>Section&nbsp;14.3.1</span></a>, and likelihood ratio testing in <a href="dla.html#sec-keyness"><span>Section&nbsp;15.2</span></a> (with the minor exception of <a href="word-counting.html#sec-word-scoring"><span>Section&nbsp;14.5</span></a>, which used averaged scores). Raw token counts are difficult to work with: They are not normally distributed, they do not usually change linearly with predictors, and they are overly sensitive to quirks of linguistic style and text length.</p>
-<p>Researchers and engineers have proposed various ways to fix these problems by transforming the raw counts or by transforming the text before performing the counting. In this chapter, we introduce a few of the most common transformations. These transformations can be applied to any analysis of word counts, including dictionary-based analysis (<a href="word-counting.html"><span>Chapter&nbsp;14</span></a>) and open vocabulary methods (<a href="dla.html"><span>Chapter&nbsp;15</span></a>), to bypass certain problems or bring out certain features of the data. As always, each technique has its own advantages and disadvantages.</p>
+
+</header><p>So far, we have used statistical methods that work with raw counts, like negative binomial regression in <a href="word-counting.html#sec-modeling-word-counts" class="quarto-xref"><span>Section 14.3.1</span></a>, and likelihood ratio testing in <a href="dla.html#sec-keyness" class="quarto-xref"><span>Section 15.2</span></a> (with the minor exception of <a href="word-counting.html#sec-word-scoring" class="quarto-xref"><span>Section 14.5</span></a>, which used averaged scores). Raw token counts are difficult to work with: They are not normally distributed, they do not usually change linearly with predictors, and they are overly sensitive to quirks of linguistic style and text length.</p>
+<p>Researchers and engineers have proposed various ways to fix these problems by transforming the raw counts or by transforming the text before performing the counting. In this chapter, we introduce a few of the most common transformations. These transformations can be applied to any analysis of word counts, including dictionary-based analysis (<a href="word-counting.html" class="quarto-xref"><span>Chapter 14</span></a>) and open vocabulary methods (<a href="dla.html" class="quarto-xref"><span>Chapter 15</span></a>), to bypass certain problems or bring out certain features of the data. As always, each technique has its own advantages and disadvantages.</p>
 <section id="text-normalization" class="level2" data-number="16.1"><h2 data-number="16.1" class="anchored" data-anchor-id="text-normalization">
 <span class="header-section-number">16.1</span> Text Normalization</h2>
-<p>The simplest way to transform word counts is by transforming the text itself. We have already seen some simple examples of this in <a href="tokenization.html#sec-custom-preprocessing"><span>Section&nbsp;13.2</span></a>: removing punctuation, symbols, or URLs before tokenization. Such transformations are often called <strong>text normalization</strong>, since they get rid of the quirks in each text and ensure that everything follows a standard format.</p>
+<p>The simplest way to transform word counts is by transforming the text itself. We have already seen some simple examples of this in <a href="tokenization.html#sec-custom-preprocessing" class="quarto-xref"><span>Section 13.2</span></a>: removing punctuation, symbols, or URLs before tokenization. Such transformations are often called <strong>text normalization</strong>, since they get rid of the quirks in each text and ensure that everything follows a standard format.</p>
 <section id="occurrence-thresholds" class="level3" data-number="16.1.1"><h3 data-number="16.1.1" class="anchored" data-anchor-id="occurrence-thresholds">
 <span class="header-section-number">16.1.1</span> Occurrence Thresholds</h3>
 <p>Besides removing or standardizing certain types of tokens, like URLs, researchers commonly enforce an <strong>occurrence threshold</strong>, removing any token that occurs less than a certain number of times in the data. Occurrence thresholds can be calculated on the full dataset (term frequency) or between documents (document frequency; e.g.&nbsp;removing tokens used in fewer than 1% of documents). Using a document frequency threshold is often beneficial, since sometimes a single document will use a token a lot—either because it happens to be discussing a specific topic or because of a quirk of the author’s language style—and drive up the overall frequency in a misleading way.</p>
@@ -424,8 +481,10 @@ Disadvantages of Occurrence Thresholds
 <span class="header-section-number">16.1.2</span> Removing Stop Words</h3>
 <p>In natural language processing, a common step in text normalization is to remove “stop words,” everyday words like “the” and “of” that do not contribute much to the meaning of the text. Indeed, Quanteda offers a built-in list of stop words:</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">stopwords</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "i"      "me"     "my"     "myself" "we"     "our"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">stopwords</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] "i"      "me"     "my"     "myself" "we"     "our"</code></pre>
+</div>
 </div>
 <p>Although removing stop words can be useful for analyzing the <em>topics</em> of texts, it is generally a bad idea when you are interested in the <em>psychology</em> of texts. This is because <strong>the forms in which people choose to write a word—including stop words—are often predictive of their personality</strong>. For example, neurotic people tend to use more first-person singulars <span class="citation" data-cites="mehl_etal_2006">(<a href="#ref-mehl_etal_2006" role="doc-biblioref">Mehl et al., 2006</a>)</span>, and articles like “the” and “a” are highly predictive of males, being older, and openness <span class="citation" data-cites="schwartz_etal_2013">(<a href="#ref-schwartz_etal_2013" role="doc-biblioref">Schwartz et al., 2013</a>)</span>.</p>
 <p>The relationships between language and personality also extend to more subtle patterns. For example, extraverts tend to use longer words <span class="citation" data-cites="mehl_etal_2006">(<a href="#ref-mehl_etal_2006" role="doc-biblioref">Mehl et al., 2006</a>)</span>, those high in openness tend to use more quotations <span class="citation" data-cites="sumner_etal_2011">(<a href="#ref-sumner_etal_2011" role="doc-biblioref">Sumner et al., 2011</a>)</span>, and those high in neuroticism tend to use more acronyms <span class="citation" data-cites="holtgraves_2011">(<a href="#ref-holtgraves_2011" role="doc-biblioref">Holtgraves, 2011</a>)</span>. So if you are looking for psychological differences, be gentle with the text normalization—you never know what strange predictors you might find.</p>
@@ -463,27 +522,29 @@ Disadvantages of Removing Stop Words
 </div>
 </section></section><section id="binary-boolean-tokenization" class="level2" data-number="16.2"><h2 data-number="16.2" class="anchored" data-anchor-id="binary-boolean-tokenization">
 <span class="header-section-number">16.2</span> Binary (Boolean) Tokenization</h2>
-<p>In some cases, it makes sense to stop counting at one—each text either uses a given token or it does not. While this might seem like needlessly throwing away information, binary tokenization fixes a core problem with the bag of words assumption (BOW). Recall from <a href="tokenization.html#sec-quanteda-dfms"><span>Section&nbsp;13.3</span></a> that BOW imagines that each author or topic has its characteristic bag of words, and speaking or writing is just a matter of pulling those words out of the bag one at a time at random. A central problem with this picture is that words are not pulled out one at a time at random—the word I am writing now is intimately tied to the words immediately before it. It may be very unlikely overall that I will write “parthenon,” but if I write it once, it is very likely that I will write it again in the same paragraph. This is because I am probably writing about the Parthenon.</p>
+<p>In some cases, it makes sense to stop counting at one—each text either uses a given token or it does not. While this might seem like needlessly throwing away information, binary tokenization fixes a core problem with the bag of words assumption (BOW). Recall from <a href="tokenization.html#sec-quanteda-dfms" class="quarto-xref"><span>Section 13.3</span></a> that BOW imagines that each author or topic has its characteristic bag of words, and speaking or writing is just a matter of pulling those words out of the bag one at a time at random. A central problem with this picture is that words are not pulled out one at a time at random—the word I am writing now is intimately tied to the words immediately before it. It may be very unlikely overall that I will write “parthenon,” but if I write it once, it is very likely that I will write it again in the same paragraph. This is because I am probably writing about the Parthenon.</p>
 <p>The non-independence of words in text means that the difference between zero occurrences of “parthenon” and one occurrence is much more meaningful than the difference between one and two. If a particular token sometimes occurs lots of times in text, statistical procedures like regression may be led to focus on that variance rather than on the more interesting first occurrence. Binary tokenization is the simplest way to avoid this problem.</p>
 <p>In Quanteda, a DFM can be converted to binary tokenization with <code>dfm_weight(scheme = "boolean")</code>.</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_dfm_binary</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_dfm</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_dfm_binary</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_dfm</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dfm_weight</span><span class="op">(</span>scheme <span class="op">=</span> <span class="st">"boolean"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_dfm_binary</span>, max_ndoc <span class="op">=</span> <span class="fl">6</span>, max_nfeat <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Document-feature matrix of: 6,854 documents, 27,667 features (99.50% sparse) and 6 docvars.</span></span>
-<span><span class="co">#&gt;                                 features</span></span>
-<span><span class="co">#&gt; docs                             concerts are my most favorite thing</span></span>
-<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U        1   1  1    1        1     1</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2        0   0  1    0        0     0</span></span>
-<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61        0   0  1    1        0     1</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI        0   1  1    0        0     0</span></span>
-<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ        0   0  1    0        0     0</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3        0   0  1    0        0     0</span></span>
-<span><span class="co">#&gt; [ reached max_ndoc ... 6,848 more documents, reached max_nfeat ... 27,661 more features ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_dfm_binary</span>, max_ndoc <span class="op">=</span> <span class="fl">6</span>, max_nfeat <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; Document-feature matrix of: 6,854 documents, 27,667 features (99.50% sparse) and 6 docvars.
+#&gt;                                 features
+#&gt; docs                             concerts are my most favorite thing
+#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U        1   1  1    1        1     1
+#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2        0   0  1    0        0     0
+#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61        0   0  1    1        0     1
+#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI        0   1  1    0        0     0
+#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ        0   0  1    0        0     0
+#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3        0   0  1    0        0     0
+#&gt; [ reached max_ndoc ... 6,848 more documents, reached max_nfeat ... 27,661 more features ]</code></pre>
 </div>
-<p>To use binary tokenization in dictionary-based analysis, you can also perform the dictionary look-up first (<a href="word-counting.html"><span>Chapter&nbsp;14</span></a>) and then convert it to binary with <code>mutate(surprise_binary = as.integer(surprise &gt; 0))</code>.</p>
-<p>Keep in mind: Once you convert your DFM to binary tokenization, you are no longer working with a count variable. This means that the negative binomial regression models we covered in <a href="word-counting.html"><span>Chapter&nbsp;14</span></a> are no longer appropriate. Instead, if you want to model the binary tokenization as a dependent variable, you will have to use a binary model like logistic regression.</p>
+</div>
+<p>To use binary tokenization in dictionary-based analysis, you can also perform the dictionary look-up first (<a href="word-counting.html" class="quarto-xref"><span>Chapter 14</span></a>) and then convert it to binary with <code>mutate(surprise_binary = as.integer(surprise &gt; 0))</code>.</p>
+<p>Keep in mind: Once you convert your DFM to binary tokenization, you are no longer working with a count variable. This means that the negative binomial regression models we covered in <a href="word-counting.html" class="quarto-xref"><span>Chapter 14</span></a> are no longer appropriate. Instead, if you want to model the binary tokenization as a dependent variable, you will have to use a binary model like logistic regression.</p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -520,24 +581,26 @@ Disadvantages of Binary Tokenization
 </div>
 </section><section id="sec-relative-tokenization" class="level2" data-number="16.3"><h2 data-number="16.3" class="anchored" data-anchor-id="sec-relative-tokenization">
 <span class="header-section-number">16.3</span> Relative Tokenization</h2>
-<p>The most common transformation that researchers apply to word counts is dividing them by the total number of words (or other tokens) in the text. The resulting ratio is referred to as a <strong>relative frequency</strong>. This strategy has intuitive appeal (e.g.&nbsp;what percentage of the words are surprise-related), and the value of intuitive appeal should not be discounted <a href="telling-a-story.html#sec-simplify-the-story">see&nbsp;<span>4.1</span></a>. But working with ratios or percentages can cause problems with statistical analysis. This is because dividing by the total number of words is no guarantee that the total number of words will be properly controlled for—these are two separate variables. Regression analyses on relative frequencies are likely to give false positives when predictors are correlated with text length <span class="citation" data-cites="kronmal_1993">(<a href="#ref-kronmal_1993" role="doc-biblioref">Kronmal, 1993</a>)</span>. This is the same reason why we added total word count as both a log offset and a regular predictor in <a href="word-counting.html#sec-modeling-word-counts"><span>Section&nbsp;14.3.1</span></a>.</p>
+<p>The most common transformation that researchers apply to word counts is dividing them by the total number of words (or other tokens) in the text. The resulting ratio is referred to as a <strong>relative frequency</strong>. This strategy has intuitive appeal (e.g.&nbsp;what percentage of the words are surprise-related), and the value of intuitive appeal should not be discounted <a href="telling-a-story.html#sec-simplify-the-story" class="quarto-xref">see&nbsp;<span>4.1</span></a>. But working with ratios or percentages can cause problems with statistical analysis. This is because dividing by the total number of words is no guarantee that the total number of words will be properly controlled for—these are two separate variables. Regression analyses on relative frequencies are likely to give false positives when predictors are correlated with text length <span class="citation" data-cites="kronmal_1993">(<a href="#ref-kronmal_1993" role="doc-biblioref">Kronmal, 1993</a>)</span>. This is the same reason why we added total word count as both a log offset and a regular predictor in <a href="word-counting.html#sec-modeling-word-counts" class="quarto-xref"><span>Section 14.3.1</span></a>.</p>
 <p>Before you start worrying about how to control for text length, make sure to stop and ponder: Do you want to control for text length? Usually we assume that longer documents are longer because the author is more verbose. But what if longer texts are longer because they cover multiple topics, and one of those topics is what we are interested in? In this case, controlling for text length—especially using relative tokenization—will make it look like the longer texts have less of that topic, when in fact they just have more of other topics.</p>
 <p>If you decide to use relative tokenization, the process is simple. For dictionary-based word counts, divide your count by the total word count to get a relative frequency. If you want to convert a full DFM to relative tokenization, you can use <code>dfm_weight(scheme = "prop")</code>.</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_dfm_relative</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_dfm</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_dfm_relative</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_dfm</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dfm_weight</span><span class="op">(</span>scheme <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_dfm_relative</span>, max_ndoc <span class="op">=</span> <span class="fl">6</span>, max_nfeat <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Document-feature matrix of: 6,854 documents, 27,667 features (99.50% sparse) and 6 docvars.</span></span>
-<span><span class="co">#&gt;                                 features</span></span>
-<span><span class="co">#&gt; docs                                concerts         are         my        most</span></span>
-<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 0.004926108 0.004926108 0.02463054 0.004926108</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 0           0           0.02732240 0          </span></span>
-<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 0           0           0.03759398 0.011278195</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI 0           0.006060606 0.02424242 0          </span></span>
-<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 0           0           0.03086420 0          </span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 0           0           0.01257862 0          </span></span>
-<span><span class="co">#&gt; [ reached max_ndoc ... 6,848 more documents, reached max_nfeat ... 27,663 more features ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_dfm_relative</span>, max_ndoc <span class="op">=</span> <span class="fl">6</span>, max_nfeat <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; Document-feature matrix of: 6,854 documents, 27,667 features (99.50% sparse) and 6 docvars.
+#&gt;                                 features
+#&gt; docs                                concerts         are         my        most
+#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 0.004926108 0.004926108 0.02463054 0.004926108
+#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 0           0           0.02732240 0          
+#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 0           0           0.03759398 0.011278195
+#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI 0           0.006060606 0.02424242 0          
+#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 0           0           0.03086420 0          
+#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 0           0           0.01257862 0          
+#&gt; [ reached max_ndoc ... 6,848 more documents, reached max_nfeat ... 27,663 more features ]</code></pre>
+</div>
 </div>
 <p><strong>An example of relative tokenization in research:</strong> Golder &amp; Macy (2011) collected messages from all Twitter user accounts (~2.4 million) created between February 2008 and April 2009, and measured positive and negative affect as proportion of in-dictionary (from LIWC) words to total word count. This calculation was done by hour of the day, day of the week, and month of the year, revealing fluctuations in mood in line with circadian rhythms and seasonal changes.</p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
@@ -578,7 +641,7 @@ Disadvantages of Relative Tokenization
 </div>
 </section><section id="sec-anscombe" class="level2" data-number="16.4"><h2 data-number="16.4" class="anchored" data-anchor-id="sec-anscombe">
 <span class="header-section-number">16.4</span> The Anscombe Transform</h2>
-<p>Word counts (whether divided by text length or not) are not normally distributed. In <a href="word-counting.html"><span>Chapter&nbsp;14</span></a>, we avoided this problem by using negative binomial regression. An alternative way to deal with this problem is to try to transform the counts to a normal distribution. Remember that complicated-looking formula from <span class="citation" data-cites="schwartz_etal_2013">Schwartz et al. (<a href="#ref-schwartz_etal_2013" role="doc-biblioref">2013</a>)</span> in <a href="telling-a-story.html#sec-simplify-the-story"><span>Section&nbsp;4.1</span></a>? The upper part of that formula is relative tokenization. The lower part is called the Anscombe transform, and it transforms a Poisson distribution (i.e.&nbsp;a well-behaved count variable) into an approximately normal distribution. The transformed variable can then be used in linear regression. In R, the Anscombe transform can be written as <code>2*sqrt(count + 3/8)</code>.</p>
+<p>Word counts (whether divided by text length or not) are not normally distributed. In <a href="word-counting.html" class="quarto-xref"><span>Chapter 14</span></a>, we avoided this problem by using negative binomial regression. An alternative way to deal with this problem is to try to transform the counts to a normal distribution. Remember that complicated-looking formula from <span class="citation" data-cites="schwartz_etal_2013">Schwartz et al. (<a href="#ref-schwartz_etal_2013" role="doc-biblioref">2013</a>)</span> in <a href="telling-a-story.html#sec-simplify-the-story" class="quarto-xref"><span>Section 4.1</span></a>? The upper part of that formula is relative tokenization. The lower part is called the Anscombe transform, and it transforms a Poisson distribution (i.e.&nbsp;a well-behaved count variable) into an approximately normal distribution. The transformed variable can then be used in linear regression. In R, the Anscombe transform can be written as <code>2*sqrt(count + 3/8)</code>.</p>
 <p>The Anscombe transform can be useful for analyzing very large numbers of word count variables (as <span class="citation" data-cites="schwartz_etal_2013">Schwartz et al. (<a href="#ref-schwartz_etal_2013" role="doc-biblioref">2013</a>)</span> did) without having to run negative binomial regression each time. But if you are only analyzing a few variables, we recommend against it. This is because word counts do not follow a Poisson distribution and therefore will not be properly normally distributed even after the transform. The Poisson process assumes that words occur independently from each other, and with equal probability throughout a text. In other words, it makes the BOW assumption. As we’ve covered already, this assumption is problematic. In this case, the fact that words are not pulled randomly out of a bag makes word count distributions <em>overdispersed</em>, meaning that the variance of the distribution is higher than expected in a Poisson process. Negative binomial regression may be complicated and take longer to compute, but it tends to be robust to overdispersion.</p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -621,31 +684,33 @@ TF \cdot IDF = relative\:frequency × \log{\frac{total\:documents}{documents\:wi
 <p>You might wonder: If we want to compare how common the token is in this document to how common it is in other documents, shouldn’t we use the inverse <em>token</em> frequency (i.e.&nbsp;the average relative frequency of tokens across documents in the corpus)? Why do we use the inverse document frequency? The answer: TF-IDF does not make the BOW assumption. If all documents were just bags of words, the frequency within documents would be distributed similarly to the frequency between documents (e.g.&nbsp;since the bigram “verbal reasoning” occurs in very few tweets, you would expect the probability of it occurring twice in the same document to be near-impossible). In reality though, it wouldn’t be surprising to see “verbal reasoning” even 3 times in the same tweet if that tweet were discussing verbal reasoning. Multiplying relative <em>term frequency</em> by inverse <em>document frequency</em> provides a measure of exactly how wrong BOW is in this case. In other words, how topical is the token?</p>
 <p>In Quanteda, we can convert a DFM to TF-IDF with the <code>dfm_tfidf()</code> function:</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_dfm_tfidf</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_dfm</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_dfm_tfidf</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_dfm</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dfm_tfidf</span><span class="op">(</span>scheme_tf <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_dfm_tfidf</span>, max_ndoc <span class="op">=</span> <span class="fl">6</span>, max_nfeat <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Document-feature matrix of: 6,854 documents, 27,667 features (99.50% sparse) and 6 docvars.</span></span>
-<span><span class="co">#&gt;                                 features</span></span>
-<span><span class="co">#&gt; docs                               concerts         are           my</span></span>
-<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 0.01296465 0.002577006 0.0005541024</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 0          0           0.0006146600</span></span>
-<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 0          0           0.0008457352</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI 0          0.003170499 0.0005453711</span></span>
-<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 0          0           0.0006943381</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 0          0           0.0002829755</span></span>
-<span><span class="co">#&gt;                                 features</span></span>
-<span><span class="co">#&gt; docs                                    most</span></span>
-<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 0.003125847</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 0          </span></span>
-<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 0.007156545</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI 0          </span></span>
-<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 0          </span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 0          </span></span>
-<span><span class="co">#&gt; [ reached max_ndoc ... 6,848 more documents, reached max_nfeat ... 27,663 more features ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_dfm_tfidf</span>, max_ndoc <span class="op">=</span> <span class="fl">6</span>, max_nfeat <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; Document-feature matrix of: 6,854 documents, 27,667 features (99.50% sparse) and 6 docvars.
+#&gt;                                 features
+#&gt; docs                               concerts         are           my
+#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 0.01296465 0.002577006 0.0005541024
+#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 0          0           0.0006146600
+#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 0          0           0.0008457352
+#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI 0          0.003170499 0.0005453711
+#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 0          0           0.0006943381
+#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 0          0           0.0002829755
+#&gt;                                 features
+#&gt; docs                                    most
+#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 0.003125847
+#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 0          
+#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 0.007156545
+#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI 0          
+#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 0          
+#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 0          
+#&gt; [ reached max_ndoc ... 6,848 more documents, reached max_nfeat ... 27,663 more features ]</code></pre>
+</div>
 </div>
 <p>Overall, TF-IDF combines the advantages of many simpler word count transformations without many of their downsides. For example, removing stop words focuses the analysis on text content, but may remove important information. TF-IDF discounts uninformative tokens like stop words without removing them outright. Likewise, we saw that binary tokenization solves part of the problem with the BOW assumption, but throws out a lot of information in the process. Once again, TF-IDF turns this problem into a feature (quantifying how topical a token is) without throwing out any information.</p>
-<p>Despite all of its benefits, TF-IDF is not widely used in psychology research. This is for two reasons. First, it is difficult to interpret intuitively, and researchers prize interpretability. Second, it focuses the analysis on the <em>topic</em> of texts rather than the subtleties of language style that are often associated with psychological differences (see <a href="#sec-stopwords"><span>Section&nbsp;16.1.2</span></a>). Nevertheless, if your construct is of a less subtle nature—more akin to the “topic” of the text—consider using TF-IDF.</p>
+<p>Despite all of its benefits, TF-IDF is not widely used in psychology research. This is for two reasons. First, it is difficult to interpret intuitively, and researchers prize interpretability. Second, it focuses the analysis on the <em>topic</em> of texts rather than the subtleties of language style that are often associated with psychological differences (see <a href="#sec-stopwords" class="quarto-xref"><span>Section 16.1.2</span></a>). Nevertheless, if your construct is of a less subtle nature—more akin to the “topic” of the text—consider using TF-IDF.</p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -685,37 +750,40 @@ Disadvantages of TF-IDF
 </div>
 </section><section id="sec-smoothing" class="level2" data-number="16.6"><h2 data-number="16.6" class="anchored" data-anchor-id="sec-smoothing">
 <span class="header-section-number">16.6</span> Smoothing</h2>
-<p>In <a href="#sec-relative-tokenization"><span>Section&nbsp;16.3</span></a>, we mentioned that dividing by text length does not adequately control for text length. This is true of ratios in general, but for word frequencies in particular there is extra cause for concern.</p>
+<p>In <a href="#sec-relative-tokenization" class="quarto-xref"><span>Section 16.3</span></a>, we mentioned that dividing by text length does not adequately control for text length. This is true of ratios in general, but for word frequencies in particular there is extra cause for concern.</p>
 <p>Consider this short text written by an imaginary participant, Allison:</p>
-<p><em>I was sitting at the table, and <strong>suddenly</strong> I understood.</em></p>
+<div class="line-block"><em>I was sitting at the table, and <strong>suddenly</strong> I understood.</em></div>
 <p>The text has 10 words in total. One of these, “suddenly,” is a surprise-related word. Given only this text, you might estimate the probability of surprise words in Allison’s language at 1/10, the relative frequency. You would be wrong. To see why, imagine that we also wanted to measure the probability of anger-related words. There are no anger-related words in this text. Is the probability of anger-related words then 0/10 = 0? Of course not. If we read more of Allison’s texts, we might very well encounter an anger-related word. Relative frequency therefore underestimates the probability of unobserved words. Conversely, it must overestimate the probability of observed words. So to leave room for the probability of unobserved words, we must admit that the true probability of anger-related words is likely to be a little less than 1/10.</p>
 <p>The first solution to this kind of problem was offered by <span class="citation" data-cites="laplace_1816">Laplace (<a href="#ref-laplace_1816" role="doc-biblioref">1816</a>)</span>, who proposed to simply add one to all the frequency counts before computing the relative frequency. This is called <strong>Laplace smoothing</strong>, or sometimes simply <em>add-one smoothing</em>. To perform Laplace smoothing in Quanteda, use the <code>dfm_smooth()</code> function to add one, and then call <code>dfm_weight()</code> as before.</p>
 <div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_dfm_laplace</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_dfm</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_dfm_laplace</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_dfm</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dfm_smooth</span><span class="op">(</span>smoothing <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">dfm_weight</span><span class="op">(</span>scheme <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in asMethod(object): sparse-&gt;dense coercion: allocating vector of size</span></span>
-<span><span class="co">#&gt; 1.4 GiB</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_dfm_laplace</span>, max_ndoc <span class="op">=</span> <span class="fl">6</span>, max_nfeat <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Document-feature matrix of: 6,854 documents, 27,667 features (0.00% sparse) and 6 docvars.</span></span>
-<span><span class="co">#&gt;                                 features</span></span>
-<span><span class="co">#&gt; docs                                 concerts          are           my</span></span>
-<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 7.176175e-05 7.176175e-05 0.0002152853</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 3.590664e-05 3.590664e-05 0.0002154399</span></span>
-<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 3.579995e-05 3.579995e-05 0.0003937994</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI 3.592986e-05 7.185973e-05 0.0001796493</span></span>
-<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 3.593374e-05 3.593374e-05 0.0002156024</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 3.573343e-05 3.573343e-05 0.0001786671</span></span>
-<span><span class="co">#&gt;                                 features</span></span>
-<span><span class="co">#&gt; docs                                     most</span></span>
-<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 7.176175e-05</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 3.590664e-05</span></span>
-<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 1.431998e-04</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI 3.592986e-05</span></span>
-<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 3.593374e-05</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 3.573343e-05</span></span>
-<span><span class="co">#&gt; [ reached max_ndoc ... 6,848 more documents, reached max_nfeat ... 27,663 more features ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">dfm_weight</span><span class="op">(</span>scheme <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; Warning in asMethod(object): sparse-&gt;dense coercion: allocating vector of size
+#&gt; 1.4 GiB</code></pre>
+</div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_dfm_laplace</span>, max_ndoc <span class="op">=</span> <span class="fl">6</span>, max_nfeat <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; Document-feature matrix of: 6,854 documents, 27,667 features (0.00% sparse) and 6 docvars.
+#&gt;                                 features
+#&gt; docs                                 concerts          are           my
+#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 7.176175e-05 7.176175e-05 0.0002152853
+#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 3.590664e-05 3.590664e-05 0.0002154399
+#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 3.579995e-05 3.579995e-05 0.0003937994
+#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI 3.592986e-05 7.185973e-05 0.0001796493
+#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 3.593374e-05 3.593374e-05 0.0002156024
+#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 3.573343e-05 3.573343e-05 0.0001786671
+#&gt;                                 features
+#&gt; docs                                     most
+#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U 7.176175e-05
+#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 3.590664e-05
+#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 1.431998e-04
+#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI 3.592986e-05
+#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ 3.593374e-05
+#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3 3.573343e-05
+#&gt; [ reached max_ndoc ... 6,848 more documents, reached max_nfeat ... 27,663 more features ]</code></pre>
+</div>
 </div>
 <p>Laplace smoothing is better than nothing, but it is designed for a situation in which the number of possible token types is small and known. In the case of natural language, the number of possible tokens is extremely large and entirely unknown <span class="citation" data-cites="baayen_2001">(<a href="#ref-baayen_2001" role="doc-biblioref">Baayen, 2001</a>)</span>. You can partially make up for this by adding a very small smoothing number instead of 1 (e.g.&nbsp;1 divided by the number of token types in the corpus: <code>smoothing = 1/ncol(hippocorpus_dfm)</code>), but if you are willing to invest a bit more computation time, there are better ways.</p>
 <p>During World War II, the German navy encrypted and decrypted its communications using the Enigma machine, which scrambled and unscrambled messages according to an initial input setting. This input setting was updated each day, and part of the process required the operator of the machine to select a three-letter sequence from a large book “at random” <span class="citation" data-cites="good_2000">(<a href="#ref-good_2000" role="doc-biblioref">Good, 2000</a>)</span>. Alan Turing, who was in charge of the decryption effort on the part of the British, quickly understood that the German operators’ choices from this book were not entirely random, and that patterns in their choices could be exploited to narrow down the search. The problem became how to estimate the probability of each three-letter sequence based on a relatively small sample of previously decoded input settings—a sample much smaller than the number of three-letter sequences in the book (which, like the number of possible tokens in English text, was extremely large). Turing solved this problem—essentially the same problem posed by word frequencies in text—by developing a method that used frequencies of frequencies in the sample to estimate the total probability of yet-unseen sequences and correct the observed frequencies based on this estimate. The algorithm was later refined and published by Turing’s assistant I. J. Good <span class="citation" data-cites="good_1953">(<a href="#ref-good_1953" role="doc-biblioref">1953</a>)</span>, and has since seen many variations. Today, the most popular of these variations is the <strong>Simple Good-Turing</strong> algorithm <span class="citation" data-cites="gale_sampson_1995">(<a href="#ref-gale_sampson_1995" role="doc-biblioref">Gale &amp; Sampson, 1995</a>)</span>. Unfortunately, Simple Good-Turing smoothing is not yet implemented in Quanteda, but that is expected to change in the coming months. As soon as it does, we will add it to the textbook.</p>
@@ -755,12 +823,12 @@ Disadvantages of Smoothing
 </div>
 </section><section id="sec-machine-learning-word-counts" class="level2" data-number="16.7"><h2 data-number="16.7" class="anchored" data-anchor-id="sec-machine-learning-word-counts">
 <span class="header-section-number">16.7</span> Machine Learning Approaches</h2>
-<p>This chapter is dedicated to methods that can be carried out after computing word counts (<a href="tokenization.html"><span>Chapter&nbsp;13</span></a>) and before analysis (<a href="word-counting.html"><span>Chapter&nbsp;14</span></a>; <a href="dla.html"><span>Chapter&nbsp;15</span></a>). These methods can be thought of as transformations that we apply to word counts to make them better at measuring what we want them to measure. The last of these transformations is the most elaborate one: supervised machine learning.</p>
-<p>For supervised machine learning, you need a training dataset of text that is already labeled with your construct of interest. We already saw a dataset like this for the emotion of surprise in <a href="dla.html#sec-generating-dictionaries"><span>Section&nbsp;15.4</span></a>: <a href="https://data.world/crowdflower/sentiment-analysis-in-text">Crowdflower Emotion in Text dataset</a>. Many other good examples can be found in <a href="corpora.html"><span>Chapter&nbsp;8</span></a>. The labels could be generated by participants who read the texts, or by the authors of the texts themselves (e.g.&nbsp;in the form of questionnaires that measure their personality).</p>
-<p>Once you have your training dataset, compute word counts for its texts (<a href="tokenization.html"><span>Chapter&nbsp;13</span></a>). These could be dictionary-based counts from a variety of different dictionaries, or they could be individual token counts in the form of a DFM. You can even transform these counts in some of the ways described in this chapter (or even more than one). These counts will become the predictor variables for your machine learning model.</p>
-<p>This book is not the place an in-depth tutorial on machine learning<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, but we will give a brief example. Recall that in <a href="dla.html#sec-generating-dictionaries"><span>Section&nbsp;15.4</span></a> we used the <a href="https://data.world/crowdflower/sentiment-analysis-in-text">Crowdflower Emotion in Text dataset</a> to find the words most indicative of surprise in tweets (based on PMI). In <a href="dla.html#sec-generating-dictionaries"><span>Section&nbsp;15.4</span></a> we used these words as a dictionary, but we could get more robust results by using them as predictor variables to train a regularized machine learning model, in this case ridge regression, although <a href="https://topepo.github.io/caret/available-models.html">there are many other options</a>.</p>
+<p>This chapter is dedicated to methods that can be carried out after computing word counts (<a href="tokenization.html" class="quarto-xref"><span>Chapter 13</span></a>) and before analysis (<a href="word-counting.html" class="quarto-xref"><span>Chapter 14</span></a>; <a href="dla.html" class="quarto-xref"><span>Chapter 15</span></a>). These methods can be thought of as transformations that we apply to word counts to make them better at measuring what we want them to measure. The last of these transformations is the most elaborate one: supervised machine learning.</p>
+<p>For supervised machine learning, you need a training dataset of text that is already labeled with your construct of interest. We already saw a dataset like this for the emotion of surprise in <a href="dla.html#sec-generating-dictionaries" class="quarto-xref"><span>Section 15.4</span></a>: <a href="https://data.world/crowdflower/sentiment-analysis-in-text">Crowdflower Emotion in Text dataset</a>. Many other good examples can be found in <a href="corpora.html" class="quarto-xref"><span>Chapter 8</span></a>. The labels could be generated by participants who read the texts, or by the authors of the texts themselves (e.g.&nbsp;in the form of questionnaires that measure their personality).</p>
+<p>Once you have your training dataset, compute word counts for its texts (<a href="tokenization.html" class="quarto-xref"><span>Chapter 13</span></a>). These could be dictionary-based counts from a variety of different dictionaries, or they could be individual token counts in the form of a DFM. You can even transform these counts in some of the ways described in this chapter (or even more than one). These counts will become the predictor variables for your machine learning model.</p>
+<p>This book is not the place an in-depth tutorial on machine learning<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, but we will give a brief example. Recall that in <a href="dla.html#sec-generating-dictionaries" class="quarto-xref"><span>Section 15.4</span></a> we used the <a href="https://data.world/crowdflower/sentiment-analysis-in-text">Crowdflower Emotion in Text dataset</a> to find the words most indicative of surprise in tweets (based on PMI). In <a href="dla.html#sec-generating-dictionaries" class="quarto-xref"><span>Section 15.4</span></a> we used these words as a dictionary, but we could get more robust results by using them as predictor variables to train a regularized machine learning model, in this case ridge regression, although <a href="https://topepo.github.io/caret/available-models.html">there are many other options</a>.</p>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># New Hippocorpus DFM </span></span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># New Hippocorpus DFM </span></span>
 <span><span class="va">hippocorpus_dfm_ngrams</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_corp</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">tokens</span><span class="op">(</span>remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">tokens_ngrams</span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fl">2L</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="co"># 1-grams and 2-grams</span></span>
@@ -827,32 +895,34 @@ Disadvantages of Smoothing
 </div>
 <p>Now that we have a new machine-learning-powered estimate of surprise for the Hippocorpus data, we can retest our hypothesis that true autobiographical stories include more surprise than imagined stories.</p>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">surprise_mod_ml</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">surprise_pred</span> <span class="op">~</span> <span class="va">memType</span>, </span>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">surprise_mod_ml</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">surprise_pred</span> <span class="op">~</span> <span class="va">memType</span>, </span>
 <span>                      data <span class="op">=</span> <span class="va">hippocorpus_features</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">surprise_mod_ml</span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Call:</span></span>
-<span><span class="co">#&gt; lm(formula = surprise_pred ~ memType, data = hippocorpus_features)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Residuals:</span></span>
-<span><span class="co">#&gt;       Min        1Q    Median        3Q       Max </span></span>
-<span><span class="co">#&gt; -0.004668 -0.004625 -0.004251  0.002972  0.066572 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Coefficients:</span></span>
-<span><span class="co">#&gt;                   Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">#&gt; (Intercept)      5.735e-02  1.458e-04 393.268   &lt;2e-16 ***</span></span>
-<span><span class="co">#&gt; memTyperecalled -4.174e-04  2.058e-04  -2.028   0.0426 *  </span></span>
-<span><span class="co">#&gt; memTyperetold   -4.367e-05  2.563e-04  -0.170   0.8647    </span></span>
-<span><span class="co">#&gt; ---</span></span>
-<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Residual standard error: 0.007655 on 6851 degrees of freedom</span></span>
-<span><span class="co">#&gt; Multiple R-squared:  0.0006732,  Adjusted R-squared:  0.0003814 </span></span>
-<span><span class="co">#&gt; F-statistic: 2.308 on 2 and 6851 DF,  p-value: 0.09958</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">surprise_mod_ml</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; lm(formula = surprise_pred ~ memType, data = hippocorpus_features)
+#&gt; 
+#&gt; Residuals:
+#&gt;       Min        1Q    Median        3Q       Max 
+#&gt; -0.004668 -0.004625 -0.004251  0.002972  0.066572 
+#&gt; 
+#&gt; Coefficients:
+#&gt;                   Estimate Std. Error t value Pr(&gt;|t|)    
+#&gt; (Intercept)      5.735e-02  1.458e-04 393.268   &lt;2e-16 ***
+#&gt; memTyperecalled -4.174e-04  2.058e-04  -2.028   0.0426 *  
+#&gt; memTyperetold   -4.367e-05  2.563e-04  -0.170   0.8647    
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#&gt; 
+#&gt; Residual standard error: 0.007655 on 6851 degrees of freedom
+#&gt; Multiple R-squared:  0.0006732,  Adjusted R-squared:  0.0003814 
+#&gt; F-statistic: 2.308 on 2 and 6851 DF,  p-value: 0.09958</code></pre>
+</div>
 </div>
 <p>We find that imagined stories have significantly less surprise-related language than autobiographical stories (p = 0.043)!</p>
 <p>Despite the exciting result, we should be careful with this newfangled approach. As with dictionary-based methods, beware of problems with generalization—there is no guarantee that surprise in Tweets will look similar to surprise in autobiographical accounts. Likewise, keep in mind all of the regular challenges of machine learning. Notice for example that the intercept of this model is extremely low (0.057; surprise is measured between 0 and 1). This reflects the fact that the Crowdflower dataset is not balanced; there are very few Tweets labeled with surprise relative to the size of the dataset.</p>
-<p><strong>An example of machine learning approaches in research:</strong> <span class="citation" data-cites="zamani_etal_2018">Zamani et al. (<a href="#ref-zamani_etal_2018" role="doc-biblioref">2018</a>)</span> extracted n-grams from Facebook status updates. They then computed TF-IDF scores, binary tokenization, and LDA topics (<a href="decontextualized-embeddings.html#sec-lda"><span>Section&nbsp;18.2.2</span></a>), subjected all of these values to a dimensionality reduction process to reduce overfitting, and used the resulting features to train a ridge regression model to predict questionnaire-based measures of trustfulness. This regression model could then be used on novel texts to estimate the trustworthiness of their authors.</p>
+<p><strong>An example of machine learning approaches in research:</strong> <span class="citation" data-cites="zamani_etal_2018">Zamani et al. (<a href="#ref-zamani_etal_2018" role="doc-biblioref">2018</a>)</span> extracted n-grams from Facebook status updates. They then computed TF-IDF scores, binary tokenization, and LDA topics (<a href="decontextualized-embeddings.html#sec-lda" class="quarto-xref"><span>Section 18.5</span></a>), subjected all of these values to a dimensionality reduction process to reduce overfitting, and used the resulting features to train a ridge regression model to predict questionnaire-based measures of trustfulness. This regression model could then be used on novel texts to estimate the trustworthiness of their authors.</p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -892,7 +962,7 @@ Disadvantages of Machine Learning Approaches
 <hr>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-baayen_2001" class="csl-entry" role="listitem">
 Baayen, R. H. (2001). <em>Word frequency distributions</em>. Springer Netherlands. <a href="https://link.springer.com/book/10.1007/978-94-010-0844-0">https://link.springer.com/book/10.1007/978-94-010-0844-0</a>
 </div>
@@ -1015,10 +1085,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/ds4psych\.com");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1028,8 +1115,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1041,7 +1137,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1085,6 +1304,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1110,6 +1330,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1169,23 +1415,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./dla.html" class="pagination-link">
+      <a href="./dla.html" class="pagination-link" aria-label="Open Vocabulary Word Counting">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Open Vocabulary Word Counting</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./vectorspace-intro.html" class="pagination-link">
+      <a href="./vectorspace-intro.html" class="pagination-link" aria-label="Introduction to Vector Space">
         <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Introduction to Vector Space</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
-    <div class="nav-footer-left">Data Science for Psychology was written by <a href="https://rimonim.github.io">Louis Teitelbaum</a> and <a href="https://almogsi.com">Almog Simchon</a>.</div>   
+    <div class="nav-footer-left">
+<p>Data Science for Psychology was written by <a href="https://rimonim.github.io">Louis Teitelbaum</a> and <a href="https://almogsi.com">Almog Simchon</a>.</p>
+</div>   
     <div class="nav-footer-center">
       &nbsp;
-    </div>
-    <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a> and is powered by <a href="https://www.netlify.com/">Netlify</a></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/rimonim/ds4psych/blob/main/word-counting-improvements.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>This book was built with <a href="https://quarto.org/">Quarto</a> and is powered by <a href="https://www.netlify.com/">Netlify</a></p>
+</div>
   </div>
 </footer>
 

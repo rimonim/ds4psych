@@ -2,6 +2,9 @@ project:
   type: book
   output-dir: _book
 
+execute: 
+  freeze: auto
+
 book:
   title: "Data Science for Psychology: Natural Language"
   reader-mode: true

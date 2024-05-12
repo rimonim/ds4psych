@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.553">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Louis Teitelbaum and Almog Simchon">
 <title>Data Science for Psychology: Natural Language - 4&nbsp; Don’t Distract From the Story</title>
@@ -20,7 +20,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -56,6 +56,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -97,7 +98,13 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -106,6 +113,7 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -116,23 +124,46 @@ div.csl-indent {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./data-viz.html">Data Visualization</a></li><li class="breadcrumb-item"><a href="./telling-a-story.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Don't Distract From the Story</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./data-viz.html">Data Visualization</a></li><li class="breadcrumb-item"><a href="./telling-a-story.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Don’t Distract From the Story</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Data Science for Psychology: Natural Language</a> 
-        <div class="sidebar-tools-main">
-    <a href="https://github.com/rimonim/ds4psych" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/rimonim/ds4psych" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=%7Curl%7C">
+              <i class="bi bi-bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=%7Curl%7C">
+              <i class="bi bi-bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=%7Curl%7C">
+              <i class="bi bi-bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+</div>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -290,7 +321,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./decontextualized-embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Words Embeddings: Decontextualized Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Word Embeddings</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -338,7 +369,7 @@ div.csl-indent {
 </li>
     </ul>
 </div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
@@ -355,10 +386,10 @@ div.csl-indent {
   <li><a href="#sec-aspect-ratios" id="toc-sec-aspect-ratios" class="nav-link" data-scroll-target="#sec-aspect-ratios"><span class="header-section-number">4.2.5</span> Aspect Ratios</a></li>
   </ul>
 </li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rimonim/ds4psych/blob/main/telling-a-story.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/rimonim/ds4psych/blob/main/telling-a-story.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./data-viz.html">Data Visualization</a></li><li class="breadcrumb-item"><a href="./telling-a-story.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Don’t Distract From the Story</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title"><span id="sec-telling-a-story" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Don’t Distract From the Story</span></span></h1>
 </div>
 
@@ -372,13 +403,14 @@ div.csl-indent {
   </div>
   
 
+
 </header><p>The hardest part of data visualization is identifying a story in the first place. This is especially true in natural language processing—since language is such a rich source of information, it is sometimes hard to decide what aspect of it to focus on. The stories are hiding in plain sight. The job of the data visualizer is to find them and bring them out into the open.</p>
 <section id="sec-simplify-the-story" class="level2" data-number="4.1"><h2 data-number="4.1" class="anchored" data-anchor-id="sec-simplify-the-story">
 <span class="header-section-number">4.1</span> A Small, Compelling Story is Better Than a Big, Confusing One</h2>
-<p><span class="citation" data-cites="schwartz_etal_2013">Schwartz et al. (<a href="#ref-schwartz_etal_2013" role="doc-biblioref">2013</a>)</span> collected 15.4 million Facebook status updates from participants who had filled out a variety of questionnaires on the <em>My Personality</em> application (discussed in <a href="ethics.html"><span>Chapter&nbsp;2</span></a>). They analyzed the frequencies of millions of words, phrases, and topics as they correlate with gender, age, and personality traits of the author. The resulting paper focused on methodology, but <span class="citation" data-cites="schwartz_etal_2013">Schwartz et al. (<a href="#ref-schwartz_etal_2013" role="doc-biblioref">2013</a>)</span> nevertheless understood the importance of telling a good story. Here is their figure 5B:</p>
+<p><span class="citation" data-cites="schwartz_etal_2013">Schwartz et al. (<a href="#ref-schwartz_etal_2013" role="doc-biblioref">2013</a>)</span> collected 15.4 million Facebook status updates from participants who had filled out a variety of questionnaires on the <em>My Personality</em> application (discussed in <a href="ethics.html" class="quarto-xref"><span>Chapter 2</span></a>). They analyzed the frequencies of millions of words, phrases, and topics as they correlate with gender, age, and personality traits of the author. The resulting paper focused on methodology, but <span class="citation" data-cites="schwartz_etal_2013">Schwartz et al. (<a href="#ref-schwartz_etal_2013" role="doc-biblioref">2013</a>)</span> nevertheless understood the importance of telling a good story. Here is their figure 5B:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0073791"><img src="images/schwartz_etal_2013_fig5C.png" class="img-fluid figure-img" alt="The older people are, the more they say 'we' and the less they say 'I'"></a></p>
-<figcaption class="figure-caption">Figure from <span class="citation" data-cites="schwartz_etal_2013">Schwartz et al. (<a href="#ref-schwartz_etal_2013" role="doc-biblioref">2013</a>)</span></figcaption></figure>
+<figcaption>Figure from <span class="citation" data-cites="schwartz_etal_2013">Schwartz et al. (<a href="#ref-schwartz_etal_2013" role="doc-biblioref">2013</a>)</span></figcaption></figure>
 </div>
 <p>This is a beautiful data visualization. The story it tells is so clear and simple that it doesn’t need a caption: Older people use “I” less and “we” more. The unstated implication is either that people get less individualistic with age, or that the young people of today are self-centered. Both are excellent stories.</p>
 <p>How did Schwartz et al.&nbsp;achieve such a clear story? Let’s take a closer look at some of their choices:</p>
@@ -388,19 +420,19 @@ div.csl-indent {
 <p>Lastly, let’s take a look at the y axis: What is “Standardized Frequency”? We have an intuitive idea that higher means using the word more and lower means using it less. But this intuitive simplicity did not come easily—it had to be carefully constructed by the authors of the paper. Actually, “Standardized Frequency” is calculated using this formula:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0073791#s6"><img src="images/schwartz_etal_2013_equation.png" class="img-fluid figure-img" alt="Complicated Equation"></a></p>
-<figcaption class="figure-caption">Figure from <span class="citation" data-cites="schwartz_etal_2013">Schwartz et al. (<a href="#ref-schwartz_etal_2013" role="doc-biblioref">2013</a>)</span></figcaption></figure>
+<figcaption>Figure from <span class="citation" data-cites="schwartz_etal_2013">Schwartz et al. (<a href="#ref-schwartz_etal_2013" role="doc-biblioref">2013</a>)</span></figcaption></figure>
 </div>
-<p>Don’t understand any of this? That’s OK. We’ll cover methods of standardizing word frequencies in <a href="word-counting-improvements.html"><span>Chapter&nbsp;16</span></a>. For now, the point is this: <strong>Sometimes you have to do something complicated to make something simple</strong>. If Schwartz et al.&nbsp;had not performed them, “I” would likely be much higher frequency than “we” at all ages, and the story, which requires the viewer to focus on the slopes of the lines, would be much harder to appreciate.</p>
+<p>Don’t understand any of this? That’s OK. We’ll cover methods of standardizing word frequencies in <a href="word-counting-improvements.html" class="quarto-xref"><span>Chapter 16</span></a>. For now, the point is this: <strong>Sometimes you have to do something complicated to make something simple</strong>. If Schwartz et al.&nbsp;had not performed them, “I” would likely be much higher frequency than “we” at all ages, and the story, which requires the viewer to focus on the slopes of the lines, would be much harder to appreciate.</p>
 </section><section id="engineer-your-aesthetics" class="level2" data-number="4.2"><h2 data-number="4.2" class="anchored" data-anchor-id="engineer-your-aesthetics">
 <span class="header-section-number">4.2</span> Engineer Your Aesthetics</h2>
-<p>We have just seen in Schwartz et al.’s beautiful data visualization (<a href="#sec-simplify-the-story"><span>Section&nbsp;4.1</span></a>) that choosing to map the <code>frequency</code> variable to the y position aesthetic was not enough. In order to make the story clear, they carefully engineered the scale on which they measured frequency. In their case, this required some complicated standardization tailored to the particular statistics underlying their data. Often though, the solution is much more straightforward.</p>
+<p>We have just seen in Schwartz et al.’s beautiful data visualization (<a href="#sec-simplify-the-story" class="quarto-xref"><span>Section 4.1</span></a>) that choosing to map the <code>frequency</code> variable to the y position aesthetic was not enough. In order to make the story clear, they carefully engineered the scale on which they measured frequency. In their case, this required some complicated standardization tailored to the particular statistics underlying their data. Often though, the solution is much more straightforward.</p>
 <p>The remainder of this chapter outlines some common ways to engineer aesthetics that can help make a story clear and intuitive.</p>
 <section id="sec-nonlinear-axes" class="level3" data-number="4.2.1"><h3 data-number="4.2.1" class="anchored" data-anchor-id="sec-nonlinear-axes">
 <span class="header-section-number">4.2.1</span> Nonlinear Axes</h3>
 <p>Often a simple log scale is enough to reveal a much clearer presentation of data. The following graph uses data from <span class="citation" data-cites="buechel_etal_2018">Buechel et al. (<a href="#ref-buechel_etal_2018" role="doc-biblioref">2018</a>)</span>, in which participants read news stories, rated their own empathy and distress after reading them, and then described their thoughts in their own words.</p>
 <p>This visualization tells a story about the most and least common words in participant’s responses.</p>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/slowkow/ggrepel">ggrepel</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggrepel.slowkow.com/">ggrepel</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">distressed_texts_binary_ordered</span> <span class="op">&lt;-</span> <span class="va">distressed_texts_binary</span> <span class="op">|&gt;</span> </span>
@@ -416,7 +448,7 @@ div.csl-indent {
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"blue3"</span>, </span>
 <span>               size <span class="op">=</span> <span class="fl">1</span>, </span>
 <span>               alpha <span class="op">=</span> <span class="fl">.2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_text_repel</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html">geom_text_repel</a></span><span class="op">(</span></span>
 <span>      size <span class="op">=</span> <span class="fl">3</span>, </span>
 <span>      data <span class="op">=</span> <span class="va">distressed_texts_binary_ordered</span> <span class="op">|&gt;</span> </span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">distressed_freq_ratio</span> <span class="op">&gt;</span> <span class="fl">1.75</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -440,7 +472,7 @@ div.csl-indent {
 <span>             color <span class="op">=</span> <span class="va">distressed_freq_ratio</span> <span class="op">&lt;</span> <span class="fl">1</span><span class="op">)</span></span>
 <span>         <span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">.2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_text_repel</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html">geom_text_repel</a></span><span class="op">(</span></span>
 <span>      size <span class="op">=</span> <span class="fl">3</span>, </span>
 <span>      data <span class="op">=</span> <span class="va">distressed_texts_binary_ordered</span> <span class="op">|&gt;</span> </span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">distressed_freq_ratio</span> <span class="op">&gt;</span> <span class="fl">1.75</span> <span class="op">|</span> <span class="va">distressed_freq_ratio</span> <span class="op">&lt;</span> <span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,</span>
@@ -466,7 +498,10 @@ div.csl-indent {
 <span></span>
 <span><span class="va">goodplot1</span> <span class="op">+</span> <span class="va">badplot1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="telling-a-story_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="768"></p>
+<div>
+<figure class="figure"><p><img src="telling-a-story_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>When plotting ratios, it is almost always a good idea to use a log scale (left). This way, the viewer can compare the largest and the smallest relative values. Without the log scale (right), the smallest values are squished into oblivion.</p>
@@ -474,7 +509,7 @@ div.csl-indent {
 <span class="header-section-number">4.2.2</span> Ordering Categorical Variables</h3>
 <p>Take another look at the graph labeled “Log Scale” above, and notice the ordering along the x axis. Words, on their own, are an unordered categorical variable. Nevertheless, <strong>in the context of a story, even unordered variables have an order</strong>. Ordering the categorical variable along the continuous variable of interest calls attention to the distribution and removes confusion.</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/slowkow/ggrepel">ggrepel</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggrepel.slowkow.com/">ggrepel</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2023</span><span class="op">)</span></span>
@@ -489,7 +524,7 @@ div.csl-indent {
 <span>      <span class="op">)</span></span>
 <span>    <span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_text_repel</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html">geom_text_repel</a></span><span class="op">(</span></span>
 <span>      size <span class="op">=</span> <span class="fl">3</span>, </span>
 <span>      data <span class="op">=</span> <span class="va">distressed_texts_binary_ordered</span> <span class="op">|&gt;</span> </span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">distressed_freq_ratio</span> <span class="op">&gt;</span> <span class="fl">1.75</span> <span class="op">|</span> <span class="va">distressed_freq_ratio</span> <span class="op">&lt;</span> <span class="fl">.5</span><span class="op">)</span>,</span>
@@ -520,7 +555,10 @@ div.csl-indent {
 <span></span>
 <span><span class="va">goodplot2</span> <span class="op">+</span> <span class="va">badplot2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="telling-a-story_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="768"></p>
+<div>
+<figure class="figure"><p><img src="telling-a-story_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
 </div>
 </div>
 </section><section id="sec-color-scales" class="level3" data-number="4.2.3"><h3 data-number="4.2.3" class="anchored" data-anchor-id="sec-color-scales">
@@ -528,23 +566,32 @@ div.csl-indent {
 <p>We have already seen how a data visualizer can clarify a story by spatially ordering a categorical variable. A carefully tailored color scale can be an even more powerful communicator than an x or y axis. This is because color, even though it is usually treated as a single aesthetic, actually has many dimensions: luminosity, saturation, redness, blueness, etc.</p>
 <p>The first step in choosing a color scale for any variable is to consider whether the thing being measured is diverging, sequential, or qualitative.</p>
 <p><strong>Diverging scales</strong> measure something with a neutral center. This center is often represented by zero, but beware! Sometimes a neutral center is 4 on a seven point Likert scale (see “Agreement” in the figure below). When dealing with fractions, the neutral center is 1 (see “Frequency Ratio” in the figure below).</p>
-<p>When applying diverging scales, keep in mind any associations people might have with the colors involved. For example, red should always be <em>bad</em> and blue/green <em>good</em> (see the plot in <a href="#sec-ordering-categorical-variables"><span>Section&nbsp;4.2.2</span></a>, in which red = distress = bad).</p>
+<p>When applying diverging scales, keep in mind any associations people might have with the colors involved. For example, red should always be <em>bad</em> and blue/green <em>good</em> (see the plot in <a href="#sec-ordering-categorical-variables" class="quarto-xref"><span>Section 4.2.2</span></a>, in which red = distress = bad).</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="telling-a-story_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="768"></p>
+<div>
+<figure class="figure"><p><img src="telling-a-story_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
 </div>
 </div>
 <p><strong>Sequential scales</strong> measure something that has an order, but no neutral center. Often, one side of the scale is at zero, so that the scale goes from nothing to something. In these cases, the appropriate color scale will represent amount with luminosity, where zero is the lightest (see “Frequency” and “Anxiety” in the figure below). This way, the lower amounts have lower contrast against the white background of the plot (if using a non-white plot background, make sure the low end of the scale matches).</p>
 <p>Sometimes sequential scales do not measure amount, as in “Weekdays” in the figure below. Weekdays have an order—rom the beginning of the week to the end—ut it would be a mistake to use a scale with one side blending in to the background and the other intensely dark, since that would suggest that Thursday is somehow ‘more’ than Wednesday. Likewise, there is no neutral center (there’s nothing neutral about Wednesday). In such case, the scale should go from one noticeable color to another. The chart below uses a palette reminiscent of sunset to give the impression of time passing.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="telling-a-story_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="768"></p>
+<div>
+<figure class="figure"><p><img src="telling-a-story_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>To emphasize the point about weekdays, consider the following two versions of the same graph (data taken from Reddit users associated with subreddits for 9 US cities):</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="telling-a-story_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="768"></p>
+<div>
+<figure class="figure"><p><img src="telling-a-story_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Both versions are confusing to look at (these data might be better represented as a heat map), but the one with the sequential color scale is much better. Whereas the qualitative scale requires the viewer to look constantly back and forth between the legend and the plot, the sequential scale maps to an intuitive understanding of beginning-of-week vs.&nbsp;end-of-week.</p>
@@ -552,12 +599,15 @@ div.csl-indent {
 <p>Again, keep in mind any associations people might have with colors involved. For example, countries should be represented by colors that appear in their flags. This is of course sometimes difficult—all of the countries in the figure below have red in their flag, and all but China have blue and white. Nevertheless, try your best. The <a href="https://en.wikipedia.org/wiki/National_colours">Wikipedia page for national colors</a> was helpful in making the chart below.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="telling-a-story_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="768"></p>
+<div>
+<figure class="figure"><p><img src="telling-a-story_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
 </div>
 </div>
 </section><section id="sec-accent-colors" class="level3" data-number="4.2.4"><h3 data-number="4.2.4" class="anchored" data-anchor-id="sec-accent-colors">
 <span class="header-section-number">4.2.4</span> Accent colors</h3>
-<p>Because color has many dimensions, it can sometimes be used to represent two scales at the same time. One common tactic is to use luminosity or saturation to emphasize certain values and de-emphasize others. Below, we have redrawn the frequency ratio plot from earlier in this chapter (<a href="#sec-nonlinear-axes"><span>Section&nbsp;4.2.1</span></a>) to tell a story about two words in particular. By using accent colors to emphasize the two words of interest, we remove distractors while maintaining the broader context of the story.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>Because color has many dimensions, it can sometimes be used to represent two scales at the same time. One common tactic is to use luminosity or saturation to emphasize certain values and de-emphasize others. Below, we have redrawn the frequency ratio plot from earlier in this chapter (<a href="#sec-nonlinear-axes" class="quarto-xref"><span>Section 4.2.1</span></a>) to tell a story about two words in particular. By using accent colors to emphasize the two words of interest, we remove distractors while maintaining the broader context of the story.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://eliocamp.github.io/ggnewscale/">ggnewscale</a></span><span class="op">)</span></span>
 <span></span>
@@ -570,7 +620,7 @@ div.csl-indent {
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span><span class="op">(</span>linetype <span class="op">=</span> <span class="fl">2</span>, yintercept <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_colour_discrete.html">scale_color_discrete</a></span><span class="op">(</span></span>
 <span>      type <span class="op">=</span> <span class="fu">colorspace</span><span class="fu">::</span><span class="fu"><a href="https://colorspace.R-Forge.R-project.org/reference/lighten.html">lighten</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#F8766D"</span>, <span class="st">"#00BFC4"</span><span class="op">)</span>, <span class="fl">.7</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_text_repel</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html">geom_text_repel</a></span><span class="op">(</span></span>
 <span>      size <span class="op">=</span> <span class="fl">3</span>, </span>
 <span>      data <span class="op">=</span> <span class="va">distressed_texts_binary_ordered</span> <span class="op">|&gt;</span> </span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">distressed_freq_ratio</span> <span class="op">&gt;</span> <span class="fl">3.6</span> </span>
@@ -583,7 +633,7 @@ div.csl-indent {
 <span>      size <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>      data <span class="op">=</span> <span class="va">distressed_texts_binary_ordered</span> <span class="op">|&gt;</span> </span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">word</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"i"</span>, <span class="st">"we"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_text_repel</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html">geom_text_repel</a></span><span class="op">(</span></span>
 <span>      size <span class="op">=</span> <span class="fl">4</span>, </span>
 <span>      data <span class="op">=</span> <span class="va">distressed_texts_binary_ordered</span> <span class="op">|&gt;</span> </span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">word</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"i"</span>, <span class="st">"we"</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -601,7 +651,10 @@ div.csl-indent {
 <span>          axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>          axis.ticks.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="telling-a-story_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="576"></p>
+<div>
+<figure class="figure"><p><img src="telling-a-story_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
 </div>
 </div>
 </section><section id="sec-aspect-ratios" class="level3" data-number="4.2.5"><h3 data-number="4.2.5" class="anchored" data-anchor-id="sec-aspect-ratios">
@@ -635,7 +688,10 @@ div.csl-indent {
 <span>  <span class="va">plot</span> <span class="op">+</span> <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html">plot_layout</a></span><span class="op">(</span>heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_annotation.html">plot_annotation</a></span><span class="op">(</span>tag_levels <span class="op">=</span> <span class="st">'A'</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="telling-a-story_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="960"></p>
+<div>
+<figure class="figure"><p><img src="telling-a-story_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Which aspect ratio is the right one? A good aspect ratio is one that communicates the meaning of the variables in question. Since months are spread out over time (by definition), it makes sense to make the x-axis longer so that viewers have the feeling of time passing as they scan it. But it shouldn’t be too wide, since the aspect ratio should also emphasize important differences in position (here, the positive slope of both lines). Something in between B and C seems appropriate. Indeed, this is the figure printed in the final paper:</p>
@@ -645,7 +701,7 @@ div.csl-indent {
 <hr>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-buechel_etal_2018" class="csl-entry" role="listitem">
 Buechel, S., Buffone, A., Slaff, B., Ungar, L. H., &amp; Sedoc, J. (2018). Modeling empathy and distress in reaction to news stories. <em>CoRR</em>, <em>abs/1808.10399</em>. <a href="http://arxiv.org/abs/1808.10399">http://arxiv.org/abs/1808.10399</a>
 </div>
@@ -738,10 +794,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/ds4psych\.com");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -751,8 +824,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -764,7 +846,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -808,6 +1013,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -833,6 +1039,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -892,23 +1124,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./aesthetics.html" class="pagination-link">
+      <a href="./aesthetics.html" class="pagination-link" aria-label="Why Aesthetic Choices are Important">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Why Aesthetic Choices are Important</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./word-viz.html" class="pagination-link">
+      <a href="./word-viz.html" class="pagination-link" aria-label="Visualizing Distributions of Words">
         <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Visualizing Distributions of Words</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
-    <div class="nav-footer-left">Data Science for Psychology was written by <a href="https://rimonim.github.io">Louis Teitelbaum</a> and <a href="https://almogsi.com">Almog Simchon</a>.</div>   
+    <div class="nav-footer-left">
+<p>Data Science for Psychology was written by <a href="https://rimonim.github.io">Louis Teitelbaum</a> and <a href="https://almogsi.com">Almog Simchon</a>.</p>
+</div>   
     <div class="nav-footer-center">
       &nbsp;
-    </div>
-    <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a> and is powered by <a href="https://www.netlify.com/">Netlify</a></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/rimonim/ds4psych/blob/main/telling-a-story.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>This book was built with <a href="https://quarto.org/">Quarto</a> and is powered by <a href="https://www.netlify.com/">Netlify</a></p>
+</div>
   </div>
 </footer>
 

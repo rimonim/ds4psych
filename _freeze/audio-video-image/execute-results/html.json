@@ -1,0 +1,15 @@
+{
+  "hash": "ccb77a96df37fd2ce71aab7fd1735312",
+  "result": {
+    "engine": "knitr",
+    "markdown": "# Audio, Video, and Image Data {#sec-audio-video-image}\n\n\n\n\n\nThis section has not yet been written. Check again in a few months!",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

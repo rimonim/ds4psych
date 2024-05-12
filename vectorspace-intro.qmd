@@ -341,7 +341,7 @@ cos_sim <- function(x, y){
   dot <- x %*% y
   normx <- sqrt(sum(x^2))
   normy <- sqrt(sum(y^2))
-  dot / (normx*normy)
+  as.vector( dot / (normx*normy) )
 }
 
 # center at 0
@@ -397,7 +397,7 @@ personality |>
 
 When seen like this, the correlation is the same as the cosine similarity. In other words, **the correlation between two vectors is the same as the cosine similarity between them when the values of each vector are centered at zero**.^[For proof, see @oconnor_2012] Seeing cosine similarity as the non-centered version of correlation might give you extra intuition for why cosine similarity works best for vector spaces that are centered at zero.
 
-## Word Counts as Vector Space
+## Word Counts as Vector Space {#sec-word-count-vectors}
 
 The advantage of thinking in vector space is that we can quantify similarities and differences even without understanding what any of the dimensions in the vector space are measuring. In the coming chapters, we will introduce methods that require this kind of relational thinking, since the dimensions of the vector space are abstract statistical contrivances. Even so, any collection of variables can be thought of as dimensions in a vector space. You might, for example, use distance or similarity metrics to analyze groups of word counts.
 

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.553">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Louis Teitelbaum and Almog Simchon">
 <title>Data Science for Psychology: Natural Language - 13&nbsp; Tokenization</title>
@@ -20,7 +20,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -56,6 +56,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -97,7 +98,13 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -106,6 +113,7 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -116,23 +124,46 @@ div.csl-indent {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./tokenization.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Tokenization</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./tokenization.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Tokenization</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Data Science for Psychology: Natural Language</a> 
-        <div class="sidebar-tools-main">
-    <a href="https://github.com/rimonim/ds4psych" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/rimonim/ds4psych" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=%7Curl%7C">
+              <i class="bi bi-bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=%7Curl%7C">
+              <i class="bi bi-bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=%7Curl%7C">
+              <i class="bi bi-bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+</div>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -290,7 +321,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./decontextualized-embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Bag of Words Embeddings: Decontextualized Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Word Embeddings</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -338,7 +369,7 @@ div.csl-indent {
 </li>
     </ul>
 </div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
@@ -351,15 +382,15 @@ div.csl-indent {
   <li><a href="#simplified-words-stems-and-lemmas" id="toc-simplified-words-stems-and-lemmas" class="nav-link" data-scroll-target="#simplified-words-stems-and-lemmas"><span class="header-section-number">13.1.2</span> Simplified Words: Stems and Lemmas</a></li>
   <li><a href="#n-grams" id="toc-n-grams" class="nav-link" data-scroll-target="#n-grams"><span class="header-section-number">13.1.3</span> N-grams</a></li>
   <li><a href="#skipgrams" id="toc-skipgrams" class="nav-link" data-scroll-target="#skipgrams"><span class="header-section-number">13.1.4</span> Skipgrams</a></li>
-  <li><a href="#shingles" id="toc-shingles" class="nav-link" data-scroll-target="#shingles"><span class="header-section-number">13.1.5</span> Shingles</a></li>
+  <li><a href="#sec-shingles" id="toc-sec-shingles" class="nav-link" data-scroll-target="#sec-shingles"><span class="header-section-number">13.1.5</span> Shingles</a></li>
   </ul>
 </li>
   <li><a href="#sec-custom-preprocessing" id="toc-sec-custom-preprocessing" class="nav-link" data-scroll-target="#sec-custom-preprocessing"><span class="header-section-number">13.2</span> Custom Preprocessing</a></li>
   <li><a href="#sec-quanteda-dfms" id="toc-sec-quanteda-dfms" class="nav-link" data-scroll-target="#sec-quanteda-dfms"><span class="header-section-number">13.3</span> Document-Feature Matrices (DFMs)</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rimonim/ds4psych/blob/main/tokenization.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/rimonim/ds4psych/blob/main/tokenization.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./tokenization.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Tokenization</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title"><span id="sec-tokenization" class="quarto-section-identifier"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Tokenization</span></span></h1>
 </div>
 
@@ -373,6 +404,7 @@ div.csl-indent {
   </div>
   
 
+
 </header><section id="tokens" class="level2" data-number="13.1"><h2 data-number="13.1" class="anchored" data-anchor-id="tokens">
 <span class="header-section-number">13.1</span> Tokens</h2>
 <p>The first step in the process of turning texts into numbers is almost always <strong>tokenization</strong>. Tokenization means splitting a long text into smaller pieces, called <strong>tokens</strong>. Once we have these smaller pieces, we will be able to count how many times each one appears in a text and turn these counts into numeric representations of our texts. There are six main types of tokens: words, stems, lemmas, n-grams, skipgrams, and shingles.</p>
@@ -381,30 +413,34 @@ div.csl-indent {
 <p>Words are the obvious choice for tokens. The number of possible English sentences is infinite, but the number of possible English words is much smaller—only about 20,000 <span class="citation" data-cites="hellman_2011">(<a href="#ref-hellman_2011" role="doc-biblioref">Hellman, 2011</a>)</span>. Words are especially useful for English, since English words usually do not change their form depending on their place in a sentence, and they are nearly always separated by a space. Separating an English text into words is therefore as simple as splitting it at every space character. This is essentially the default behavior of the Quanteda <code>tokens()</code> function, which takes a character vector or corpus and returns a “tokens” object:</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tokens</span> <span class="op">&lt;-</span> <span class="fu">tokens</span><span class="op">(</span><span class="st">"20,000 is not so many words"</span><span class="op">)</span></span>
-<span><span class="va">tokens</span></span>
-<span><span class="co">#&gt; Tokens consisting of 1 document.</span></span>
-<span><span class="co">#&gt; text1 :</span></span>
-<span><span class="co">#&gt; [1] "20,000" "is"     "not"    "so"     "many"   "words"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">tokens</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; Tokens consisting of 1 document.
+#&gt; text1 :
+#&gt; [1] "20,000" "is"     "not"    "so"     "many"   "words"</code></pre>
 </div>
-<p>We can likewise perform word-based tokenization for the entire corpus that we created in <a href="quanteda.html"><span>Chapter&nbsp;12</span></a>. To remove punctuation before doing so, we can add <code>remove_punct = TRUE</code>.</p>
+</div>
+<p>We can likewise perform word-based tokenization for the entire corpus that we created in <a href="quanteda.html" class="quarto-xref"><span>Chapter 12</span></a>. To remove punctuation before doing so, we can add <code>remove_punct = TRUE</code>.</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_tokens</span> <span class="op">&lt;-</span> <span class="fu">tokens</span><span class="op">(</span><span class="va">hippocorpus_corp</span>,</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_tokens</span> <span class="op">&lt;-</span> <span class="fu">tokens</span><span class="op">(</span><span class="va">hippocorpus_corp</span>,</span>
 <span>                             remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_tokens</span>, max_ndoc <span class="op">=</span> <span class="fl">3</span>, max_ntok <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Tokens consisting of 6,854 documents and 6 docvars.</span></span>
-<span><span class="co">#&gt; 32RIADZISTQWI5XIVG5BN0VMYFRS4U :</span></span>
-<span><span class="co">#&gt; [1] "Concerts" "are"      "my"       "most"     "favorite" "thing"   </span></span>
-<span><span class="co">#&gt; [ ... and 197 more ]</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; 3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 :</span></span>
-<span><span class="co">#&gt; [1] "The"       "day"       "started"   "perfectly" "with"      "a"        </span></span>
-<span><span class="co">#&gt; [ ... and 177 more ]</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; 3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 :</span></span>
-<span><span class="co">#&gt; [1] "It"        "seems"     "just"      "like"      "yesterday" "but"      </span></span>
-<span><span class="co">#&gt; [ ... and 260 more ]</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [ reached max_ndoc ... 6,851 more documents ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_tokens</span>, max_ndoc <span class="op">=</span> <span class="fl">3</span>, max_ntok <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; Tokens consisting of 6,854 documents and 6 docvars.
+#&gt; 32RIADZISTQWI5XIVG5BN0VMYFRS4U :
+#&gt; [1] "Concerts" "are"      "my"       "most"     "favorite" "thing"   
+#&gt; [ ... and 197 more ]
+#&gt; 
+#&gt; 3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 :
+#&gt; [1] "The"       "day"       "started"   "perfectly" "with"      "a"        
+#&gt; [ ... and 177 more ]
+#&gt; 
+#&gt; 3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 :
+#&gt; [1] "It"        "seems"     "just"      "like"      "yesterday" "but"      
+#&gt; [ ... and 260 more ]
+#&gt; 
+#&gt; [ reached max_ndoc ... 6,851 more documents ]</code></pre>
+</div>
 </div>
 </section><section id="simplified-words-stems-and-lemmas" class="level3" data-number="13.1.2"><h3 data-number="13.1.2" class="anchored" data-anchor-id="simplified-words-stems-and-lemmas">
 <span class="header-section-number">13.1.2</span> Simplified Words: Stems and Lemmas</h3>
@@ -412,53 +448,60 @@ div.csl-indent {
 <p>In <strong>stemming</strong>, we chop off prefixes and suffixes from either side of each word, leaving only the “stem”. For example, “quantify” and “quantified” would both be chopped down to “quantif.”</p>
 <p>We can stem our Hippocorpus tokens with Quanteda’s <code>tokens_wordstem()</code> function. This function uses an updated version of the classic algorithm developed by <span class="citation" data-cites="porter_1980">Porter (<a href="#ref-porter_1980" role="doc-biblioref">1980</a>)</span>. The algorithm was carefully designed to remove common suffixes (e.g.&nbsp;“-ic”, “-ate”, “-s”) without cutting off too much (e.g.&nbsp;“generic” and “generate” should register as different stems).</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_stems</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_tokens</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_stems</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_tokens</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">tokens_wordstem</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_stems</span>, max_ndoc <span class="op">=</span> <span class="fl">3</span>, max_ntok <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Tokens consisting of 6,854 documents and 6 docvars.</span></span>
-<span><span class="co">#&gt; 32RIADZISTQWI5XIVG5BN0VMYFRS4U :</span></span>
-<span><span class="co">#&gt; [1] "Concert" "are"     "my"      "most"    "favorit" "thing"  </span></span>
-<span><span class="co">#&gt; [ ... and 197 more ]</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; 3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 :</span></span>
-<span><span class="co">#&gt; [1] "The"     "day"     "start"   "perfect" "with"    "a"      </span></span>
-<span><span class="co">#&gt; [ ... and 177 more ]</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; 3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 :</span></span>
-<span><span class="co">#&gt; [1] "It"        "seem"      "just"      "like"      "yesterday" "but"      </span></span>
-<span><span class="co">#&gt; [ ... and 260 more ]</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [ reached max_ndoc ... 6,851 more documents ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_stems</span>, max_ndoc <span class="op">=</span> <span class="fl">3</span>, max_ntok <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; Tokens consisting of 6,854 documents and 6 docvars.
+#&gt; 32RIADZISTQWI5XIVG5BN0VMYFRS4U :
+#&gt; [1] "Concert" "are"     "my"      "most"    "favorit" "thing"  
+#&gt; [ ... and 197 more ]
+#&gt; 
+#&gt; 3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 :
+#&gt; [1] "The"     "day"     "start"   "perfect" "with"    "a"      
+#&gt; [ ... and 177 more ]
+#&gt; 
+#&gt; 3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 :
+#&gt; [1] "It"        "seem"      "just"      "like"      "yesterday" "but"      
+#&gt; [ ... and 260 more ]
+#&gt; 
+#&gt; [ reached max_ndoc ... 6,851 more documents ]</code></pre>
+</div>
 </div>
 <p>Notice that “Concerts” has changed to “Concert”, “favorite” has changed to “favorit”, and “That’s” has changed to “That”.</p>
 <p><strong>Lemmatization</strong> takes a slightly different approach. Rather than chopping off prefixes and suffixes, lemmatization uses a lookup table to replace variants of words with the version that you might find in a dictionary. For example, “quantified” would become “quantify”. This canonical form is called a lemma.</p>
 <p>We can lemmatize our Hippocorpus tokens using the <code>lexicon</code> package’s <code>hash_lemmas</code> lemmatization list and Quanteda’s <code>tokens_replace()</code> function.</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_lemmas</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_tokens</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_lemmas</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_tokens</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">tokens_replace</span><span class="op">(</span>pattern <span class="op">=</span> <span class="fu">lexicon</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/lexicon/man/hash_lemmas.html">hash_lemmas</a></span><span class="op">$</span><span class="va">token</span>, </span>
 <span>                 replacement <span class="op">=</span> <span class="fu">lexicon</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/lexicon/man/hash_lemmas.html">hash_lemmas</a></span><span class="op">$</span><span class="va">lemma</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_lemmas</span>, max_ndoc <span class="op">=</span> <span class="fl">3</span>, max_ntok <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Tokens consisting of 6,854 documents and 6 docvars.</span></span>
-<span><span class="co">#&gt; 32RIADZISTQWI5XIVG5BN0VMYFRS4U :</span></span>
-<span><span class="co">#&gt; [1] "concert"  "be"       "my"       "much"     "favorite" "thing"   </span></span>
-<span><span class="co">#&gt; [ ... and 197 more ]</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; 3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 :</span></span>
-<span><span class="co">#&gt; [1] "The"       "day"       "start"     "perfectly" "with"      "a"        </span></span>
-<span><span class="co">#&gt; [ ... and 177 more ]</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; 3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 :</span></span>
-<span><span class="co">#&gt; [1] "It"        "seem"      "just"      "like"      "yesterday" "but"      </span></span>
-<span><span class="co">#&gt; [ ... and 260 more ]</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [ reached max_ndoc ... 6,851 more documents ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_lemmas</span>, max_ndoc <span class="op">=</span> <span class="fl">3</span>, max_ntok <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; Tokens consisting of 6,854 documents and 6 docvars.
+#&gt; 32RIADZISTQWI5XIVG5BN0VMYFRS4U :
+#&gt; [1] "concert"  "be"       "my"       "much"     "favorite" "thing"   
+#&gt; [ ... and 197 more ]
+#&gt; 
+#&gt; 3018Q3ZVOJCZJFDMPSFXATCQ4DARA2 :
+#&gt; [1] "The"       "day"       "start"     "perfectly" "with"      "a"        
+#&gt; [ ... and 177 more ]
+#&gt; 
+#&gt; 3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61 :
+#&gt; [1] "It"        "seem"      "just"      "like"      "yesterday" "but"      
+#&gt; [ ... and 260 more ]
+#&gt; 
+#&gt; [ reached max_ndoc ... 6,851 more documents ]</code></pre>
+</div>
 </div>
 <p>Notice that “are” has changed to “be” and “started” has changed to “start”. Notice also that “That’s” has not changed at all. This is because it does not appear in the lookup table we are using.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="tokenization_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="768"></p>
+<div>
+<figure class="figure"><p><img src="tokenization_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The Porter algorithm’s choice to stem “quantifications” to “quantif” rather than “quantifi” is a strange one. No stemming or lemmatization algorithm is perfect. Language is complex, and simple rule-based systems are bound to leave things out or make mistakes. Even so, stemming and lemmatization can be good ways to simplify the job when working with words.</p>
@@ -467,48 +510,56 @@ div.csl-indent {
 <p>Words, stems, and lemmas are great, but they do not stand alone. The sentence “20,000 is not so many words” contains the word “many.” So we can conclude that the sentence is referring to a lot of something, right? Not so fast! Word-based tokenization misses the more representative unit: “not so many.” Because order creates meaning in language, it is often worthwhile to break texts into groups of a few words at a time, called n-grams. Groups of two words are called two-grams (or bigrams), groups of three words like “not so many” are called three-grams (or trigrams), and so on.</p>
 <p>To get all of the two-grams and three-grams from our example text, we feed the “tokens” object we created already into the <code>tokens_ngrams()</code> function, and specify that we want groups of twos and threes with <code>n = c(2L, 3L)</code>.</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ngrams</span> <span class="op">&lt;-</span> <span class="fu">tokens_ngrams</span><span class="op">(</span><span class="va">tokens</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2L</span>, <span class="fl">3L</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">ngrams</span></span>
-<span><span class="co">#&gt; Tokens consisting of 1 document.</span></span>
-<span><span class="co">#&gt; text1 :</span></span>
-<span><span class="co">#&gt; [1] "20,000_is"     "is_not"        "not_so"        "so_many"      </span></span>
-<span><span class="co">#&gt; [5] "many_words"    "20,000_is_not" "is_not_so"     "not_so_many"  </span></span>
-<span><span class="co">#&gt; [9] "so_many_words"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ngrams</span> <span class="op">&lt;-</span> <span class="fu">tokens_ngrams</span><span class="op">(</span><span class="va">tokens</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2L</span>, <span class="fl">3L</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ngrams</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; Tokens consisting of 1 document.
+#&gt; text1 :
+#&gt; [1] "20,000_is"     "is_not"        "not_so"        "so_many"      
+#&gt; [5] "many_words"    "20,000_is_not" "is_not_so"     "not_so_many"  
+#&gt; [9] "so_many_words"</code></pre>
+</div>
 </div>
 </section><section id="skipgrams" class="level3" data-number="13.1.4"><h3 data-number="13.1.4" class="anchored" data-anchor-id="skipgrams">
 <span class="header-section-number">13.1.4</span> Skipgrams</h3>
 <p>Sometimes the most important combinations of words do not appear right next to each other. For example, it might be more useful to count occurrences of “not many” than it is to count occurrences of “not so many”. We can do this by using skipgrams—n-grams of non-adjacent words. In Quanteda, we can do this again with the <code>tokens_ngrams()</code>, now adding the argument <code>skip = c(0L, 1L)</code> to specify that we want both tokens of immediately adjacent words (<code>0L</code>), and tokens that skip one word in between (<code>1L</code>).</p>
 <div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">skipgrams</span> <span class="op">&lt;-</span> <span class="fu">tokens_ngrams</span><span class="op">(</span><span class="va">tokens</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2L</span>, <span class="fl">3L</span><span class="op">)</span>, skip <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0L</span>, <span class="fl">1L</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">skipgrams</span></span>
-<span><span class="co">#&gt; Tokens consisting of 1 document.</span></span>
-<span><span class="co">#&gt; text1 :</span></span>
-<span><span class="co">#&gt;  [1] "20,000_is"     "20,000_not"    "is_not"        "is_so"        </span></span>
-<span><span class="co">#&gt;  [5] "not_so"        "not_many"      "so_many"       "so_words"     </span></span>
-<span><span class="co">#&gt;  [9] "many_words"    "20,000_is_not" "20,000_is_so"  "20,000_not_so"</span></span>
-<span><span class="co">#&gt; [ ... and 9 more ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">skipgrams</span> <span class="op">&lt;-</span> <span class="fu">tokens_ngrams</span><span class="op">(</span><span class="va">tokens</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2L</span>, <span class="fl">3L</span><span class="op">)</span>, skip <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0L</span>, <span class="fl">1L</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">skipgrams</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; Tokens consisting of 1 document.
+#&gt; text1 :
+#&gt;  [1] "20,000_is"     "20,000_not"    "is_not"        "is_so"        
+#&gt;  [5] "not_so"        "not_many"      "so_many"       "so_words"     
+#&gt;  [9] "many_words"    "20,000_is_not" "20,000_is_so"  "20,000_not_so"
+#&gt; [ ... and 9 more ]</code></pre>
 </div>
-</section><section id="shingles" class="level3" data-number="13.1.5"><h3 data-number="13.1.5" class="anchored" data-anchor-id="shingles">
+</div>
+</section><section id="sec-shingles" class="level3" data-number="13.1.5"><h3 data-number="13.1.5" class="anchored" data-anchor-id="sec-shingles">
 <span class="header-section-number">13.1.5</span> Shingles</h3>
 <p>Sometimes even individual words are too coarse. For example, the fact that our sentence contains “20,000” might be too specific to be informative, but it might be useful to know that the sentence contains “,000”, which more generally signifies big, round numbers. To get tokens like this, we need to start back at the beginning, this time separating our text into individual characters.</p>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">char_tokens</span> <span class="op">&lt;-</span> <span class="fu">tokens</span><span class="op">(</span><span class="st">"20,000 is not so many words"</span>, </span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">char_tokens</span> <span class="op">&lt;-</span> <span class="fu">tokens</span><span class="op">(</span><span class="st">"20,000 is not so many words"</span>, </span>
 <span>                      what <span class="op">=</span> <span class="st">"character"</span><span class="op">)</span></span>
-<span><span class="va">char_tokens</span></span>
-<span><span class="co">#&gt; Tokens consisting of 1 document.</span></span>
-<span><span class="co">#&gt; text1 :</span></span>
-<span><span class="co">#&gt;  [1] "2" "0" "," "0" "0" "0" "i" "s" "n" "o" "t" "s"</span></span>
-<span><span class="co">#&gt; [ ... and 10 more ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">char_tokens</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; Tokens consisting of 1 document.
+#&gt; text1 :
+#&gt;  [1] "2" "0" "," "0" "0" "0" "i" "s" "n" "o" "t" "s"
+#&gt; [ ... and 10 more ]</code></pre>
+</div>
 </div>
 <p>Now we can create groupings of letters, called “shingles,” in the same way that we made n-grams, with the <code>tokens_ngrams()</code> function.</p>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">shingles</span> <span class="op">&lt;-</span> <span class="fu">tokens_ngrams</span><span class="op">(</span><span class="va">char_tokens</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4L</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">shingles</span></span>
-<span><span class="co">#&gt; Tokens consisting of 1 document.</span></span>
-<span><span class="co">#&gt; text1 :</span></span>
-<span><span class="co">#&gt;  [1] "2_0_,_0" "0_,_0_0" ",_0_0_0" "0_0_0_i" "0_0_i_s" "0_i_s_n" "i_s_n_o"</span></span>
-<span><span class="co">#&gt;  [8] "s_n_o_t" "n_o_t_s" "o_t_s_o" "t_s_o_m" "s_o_m_a"</span></span>
-<span><span class="co">#&gt; [ ... and 7 more ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">shingles</span> <span class="op">&lt;-</span> <span class="fu">tokens_ngrams</span><span class="op">(</span><span class="va">char_tokens</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4L</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">shingles</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; Tokens consisting of 1 document.
+#&gt; text1 :
+#&gt;  [1] "2_0_,_0" "0_,_0_0" ",_0_0_0" "0_0_0_i" "0_0_i_s" "0_i_s_n" "i_s_n_o"
+#&gt;  [8] "s_n_o_t" "n_o_t_s" "o_t_s_o" "t_s_o_m" "s_o_m_a"
+#&gt; [ ... and 7 more ]</code></pre>
+</div>
 </div>
 </section></section><section id="sec-custom-preprocessing" class="level2" data-number="13.2"><h2 data-number="13.2" class="anchored" data-anchor-id="sec-custom-preprocessing">
 <span class="header-section-number">13.2</span> Custom Preprocessing</h2>
@@ -519,24 +570,26 @@ div.csl-indent {
 <p>For now though, let’s start with the basics. The way to represent the number of times each token appears in each document is with a <strong>document-feature matrix (DFM)</strong>. This is a table where each row is a document (i.e.&nbsp;a text in our corpus) and each column is a feature (usually a token). The cells can then contain counts of how many times a particular feature appears in a particular document.</p>
 <p>Creating DFMs in Quanteda is done with the <code>dfm()</code> function. By default, <code>dfm()</code> will also convert all text to lower case. In this default setting, “The” and “the” will register as two instances of the same token.</p>
 <div class="cell">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_dfm</span> <span class="op">&lt;-</span> <span class="fu">dfm</span><span class="op">(</span><span class="va">hippocorpus_tokens</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_dfm</span>, max_ndoc <span class="op">=</span> <span class="fl">6</span>, max_nfeat <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Document-feature matrix of: 6,854 documents, 27,668 features (99.50% sparse) and 6 docvars.</span></span>
-<span><span class="co">#&gt;                                 features</span></span>
-<span><span class="co">#&gt; docs                             concerts are my most favorite thing</span></span>
-<span><span class="co">#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U        1   1  5    1        2     1</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2        0   0  5    0        0     0</span></span>
-<span><span class="co">#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61        0   0 10    3        0     1</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI        0   1  4    0        0     0</span></span>
-<span><span class="co">#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ        0   0  5    0        0     0</span></span>
-<span><span class="co">#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3        0   0  4    0        0     0</span></span>
-<span><span class="co">#&gt; [ reached max_ndoc ... 6,848 more documents, reached max_nfeat ... 27,662 more features ]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hippocorpus_dfm</span> <span class="op">&lt;-</span> <span class="fu">dfm</span><span class="op">(</span><span class="va">hippocorpus_tokens</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hippocorpus_dfm</span>, max_ndoc <span class="op">=</span> <span class="fl">6</span>, max_nfeat <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; Document-feature matrix of: 6,854 documents, 27,668 features (99.50% sparse) and 6 docvars.
+#&gt;                                 features
+#&gt; docs                             concerts are my most favorite thing
+#&gt;   32RIADZISTQWI5XIVG5BN0VMYFRS4U        1   1  5    1        2     1
+#&gt;   3018Q3ZVOJCZJFDMPSFXATCQ4DARA2        0   0  5    0        0     0
+#&gt;   3IRIK4HM3B6UQBC0HI8Q5TBJZLEC61        0   0 10    3        0     1
+#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG04RAI        0   1  4    0        0     0
+#&gt;   3MTMREQS4W44RBU8OMP3XSK8NMJAWZ        0   0  5    0        0     0
+#&gt;   3018Q3ZVOJCZJFDMPSFXATCQG06AR3        0   0  4    0        0     0
+#&gt; [ reached max_ndoc ... 6,848 more documents, reached max_nfeat ... 27,662 more features ]</code></pre>
+</div>
 </div>
 <p>Congratulations! You have turned texts into numbers! Now how do we use these numbers to measure psychological constructs?</p>
 <hr>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-hellman_2011" class="csl-entry" role="listitem">
 Hellman, A. B. (2011). Vocabulary size and depth of word knowledge in adult-onset second language acquisition. <em>International Journal of Applied Linguistics</em>, <em>21</em>(2), 162–182.
 </div>
@@ -623,10 +676,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/ds4psych\.com");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -636,8 +706,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -649,7 +728,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -693,6 +895,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -718,6 +921,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -777,23 +1006,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./quanteda.html" class="pagination-link">
+      <a href="./quanteda.html" class="pagination-link" aria-label="Introduction to Quanteda">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Introduction to Quanteda</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./word-counting.html" class="pagination-link">
+      <a href="./word-counting.html" class="pagination-link" aria-label="Dictionary-Based Word Counts">
         <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Dictionary-Based Word Counts</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
-    <div class="nav-footer-left">Data Science for Psychology was written by <a href="https://rimonim.github.io">Louis Teitelbaum</a> and <a href="https://almogsi.com">Almog Simchon</a>.</div>   
+    <div class="nav-footer-left">
+<p>Data Science for Psychology was written by <a href="https://rimonim.github.io">Louis Teitelbaum</a> and <a href="https://almogsi.com">Almog Simchon</a>.</p>
+</div>   
     <div class="nav-footer-center">
       &nbsp;
-    </div>
-    <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a> and is powered by <a href="https://www.netlify.com/">Netlify</a></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/rimonim/ds4psych/blob/main/tokenization.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>This book was built with <a href="https://quarto.org/">Quarto</a> and is powered by <a href="https://www.netlify.com/">Netlify</a></p>
+</div>
   </div>
 </footer>
 

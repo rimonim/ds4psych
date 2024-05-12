@@ -1,0 +1,15 @@
+{
+  "hash": "21b65883808f79aafa63bd8ee19caf24",
+  "result": {
+    "engine": "knitr",
+    "markdown": "# Additional Resources for Data Visualization {#sec-data-viz-resources}\n\n\n\n\n\n## General Data Visualization Materials\n\n-   [Fundamentals of Data Visualization](https://clauswilke.com/dataviz/): A textbook on dataviz methodology, covering topics outlined here in much greater detail\n-   [R Graph Gallery](https://r-graph-gallery.com/): Hundreds of example data visualization with tutorials on how to make them in R\n-   [R Graphics Cookbook](https://r-graphics.org): A textbook with detailed instructions for creating graphs in R.\n\n## Advanced Methods\n\n-   [Coloring in R's blind spot](https://www.zeileis.org/news/coloring/): Tutorial introducing more than 100 palettes now included with base R, as well as functions for manipulating colors (used in multiple visualizations in this chapter)\n-   [`ggnewscale`](https://eliocamp.github.io/ggnewscale/): An intuitive method for incorporating multiple color scales in a single `ggplot2` graphic (used in multiple visualizations in this chapter)\n-   [`ggrepel`](https://ggrepel.slowkow.com): Tools for avoiding overlapping text labels in `ggplot2` (used in multiple visualizations in this chapter)\n-   [`gganimate`](https://gganimate.com/): A principled approach to animating with `ggplot2`\n-   [`ggiraph`](https://www.ardata.fr/ggiraph-book/): Dynamic and interactive html graphics for `ggplot2`\n-   [`ggforce`](https://ggforce.data-imaginist.com): Various advanced shapes, lines, scales, and plot types for `ggplot2`\n-   [`ggborderline`](https://wurli.github.io/ggborderline/) Lines that pop in `ggplot2` (used in multiple visualizations in this chapter)\n-   [`rayshader`](https://www.tylermw.com/3d-ggplots-with-rayshader/): Cinematic 3D graphics for `ggplot2`\n\n## Packages for Unusual Plot Types\n\n-   [`ggwordcloud`](https://lepennec.github.io/ggwordcloud/): Word clouds\n-   [`ggbeeswarm`](https://github.com/eclarke/ggbeeswarm): Sina (AKA beeswarm) plots---almost always an improvement on box plots or violin plots\n-   [`ggcorrplot`](http://www.sthda.com/english/wiki/ggcorrplot-visualization-of-a-correlation-matrix-using-ggplot2): Correlation matrices\n-   [Different Ways of Plotting U.S. Map in R](https://jtr13.github.io/cc19/different-ways-of-plotting-u-s-map-in-r.html): A book chapter comparing eight different methods for plotting map data in R\n-   [`ggridges`](https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html): Ridgeline plots\n-   [`ggnetwork`](https://briatte.github.io/ggnetwork/articles/ggnetwork.html): Network data\n-   [`wormsplot`](https://rimonim.github.io/projects/wormsplot.html): step charts with smooth transitions (in development by one of the authors of this book)\n\nAdditional `ggplot2` extensions can be found [here](https://exts.ggplot2.tidyverse.org/gallery/).\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

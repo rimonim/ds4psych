@@ -144,7 +144,7 @@ skipgrams <- tokens_ngrams(tokens, n = c(2L, 3L), skip = c(0L, 1L))
 skipgrams
 ```
 
-### Shingles
+### Shingles {#sec-shingles}
 
 Sometimes even individual words are too coarse. For example, the fact that our sentence contains "20,000" might be too specific to be informative, but it might be useful to know that the sentence contains ",000", which more generally signifies big, round numbers. To get tokens like this, we need to start back at the beginning, this time separating our text into individual characters.
 

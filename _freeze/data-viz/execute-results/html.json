@@ -1,0 +1,15 @@
+{
+  "hash": "718e69ea80b089f5a9b2b04bc6357a5c",
+  "result": {
+    "engine": "knitr",
+    "markdown": "# Data Visualization {#sec-data-viz .unnumbered}\n\n\n\n\n\nThere are no objective rules for how to make a good data visualization. This is because not all data visualizations have the same purpose.\n\nHere are three common purposes for data visualization:\n\n1.  Getting a quick, intuitive understanding of the data you are working with\n2.  Looking for aspects of your data that common statistics might miss (like outliers or nonlinear relationships)\n3.  Communicating something to people who don't have a deep understanding of your data\n\nThe first two purposes are an important aspects of *exploratory data analysis* (EDA). They will be discussed in @sec-dla. The third one - **communication** - is the topic of this unit.\n\nCommunication is hard. It is especially hard for scientists, who often need to balance the needs of multiple target audiences. While insiders in a particular field may want detailed, objective analysis of results and the uncertainty surrounding them, **everyone else wants a story**.\n\nA story is clear, oversimplified and sensational. Stories are what grab people's attention and hold it. Even for experts, stories are what make one study (or news article, or social media post) stand out among many. If you tell a good story, people will want to learn more about the details. If you don't tell a good story, nobody will want to read your supplementary materials. In this way, **all scientists are journalists**.\n\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
