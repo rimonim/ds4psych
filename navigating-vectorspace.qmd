@@ -24,6 +24,8 @@ Potential workaround: reverse all of the statements in the questionnaire (as for
 
 ## Advanced Similarity Measures {#sec-advanced-similarity}
 
+### Dot Product
+
 ### Jaccard similarity
 
 ### Mutual Information

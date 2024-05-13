@@ -363,8 +363,14 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./lda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Topic Modeling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./linguistic-complexity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Measures of Linguistic Complexity</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Measures of Linguistic Complexity</span></span></a>
   </div>
 </li>
       </ul>
@@ -381,7 +387,7 @@ window.Quarto = {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./transcription.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Transcribing Audio</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Transcribing Audio</span></span></a>
   </div>
 </li>
       </ul>
@@ -389,7 +395,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resources.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
   </div>
 </li>
     </ul>
@@ -922,7 +928,7 @@ Disadvantages of Smoothing
 </div>
 <p>We find that imagined stories have significantly less surprise-related language than autobiographical stories (p = 0.043)!</p>
 <p>Despite the exciting result, we should be careful with this newfangled approach. As with dictionary-based methods, beware of problems with generalization—there is no guarantee that surprise in Tweets will look similar to surprise in autobiographical accounts. Likewise, keep in mind all of the regular challenges of machine learning. Notice for example that the intercept of this model is extremely low (0.057; surprise is measured between 0 and 1). This reflects the fact that the Crowdflower dataset is not balanced; there are very few Tweets labeled with surprise relative to the size of the dataset.</p>
-<p><strong>An example of machine learning approaches in research:</strong> <span class="citation" data-cites="zamani_etal_2018">Zamani et al. (<a href="#ref-zamani_etal_2018" role="doc-biblioref">2018</a>)</span> extracted n-grams from Facebook status updates. They then computed TF-IDF scores, binary tokenization, and LDA topics (<a href="decontextualized-embeddings.html#sec-lda" class="quarto-xref"><span>Section 18.5</span></a>), subjected all of these values to a dimensionality reduction process to reduce overfitting, and used the resulting features to train a ridge regression model to predict questionnaire-based measures of trustfulness. This regression model could then be used on novel texts to estimate the trustworthiness of their authors.</p>
+<p><strong>An example of machine learning approaches in research:</strong> <span class="citation" data-cites="zamani_etal_2018">Zamani et al. (<a href="#ref-zamani_etal_2018" role="doc-biblioref">2018</a>)</span> extracted n-grams from Facebook status updates. They then computed TF-IDF scores, binary tokenization, and LDA topics (<a href="lda.html" class="quarto-xref"><span>Chapter 21</span></a>), subjected all of these values to a dimensionality reduction process to reduce overfitting, and used the resulting features to train a ridge regression model to predict questionnaire-based measures of trustfulness. This regression model could then be used on novel texts to estimate the trustworthiness of their authors.</p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">

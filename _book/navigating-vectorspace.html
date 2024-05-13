@@ -47,7 +47,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./linguistic-complexity.html" rel="next">
+<link href="./lda.html" rel="next">
 <link href="./contextualized-embeddings.html" rel="prev">
 <link href="./images/favicon.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
@@ -304,8 +304,14 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./lda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Topic Modeling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./linguistic-complexity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Measures of Linguistic Complexity</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Measures of Linguistic Complexity</span></span></a>
   </div>
 </li>
       </ul>
@@ -322,7 +328,7 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./transcription.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Transcribing Audio</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Transcribing Audio</span></span></a>
   </div>
 </li>
       </ul>
@@ -330,7 +336,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resources.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
   </div>
 </li>
     </ul>
@@ -345,9 +351,10 @@ div.csl-indent {
   <li>
 <a href="#sec-advanced-similarity" id="toc-sec-advanced-similarity" class="nav-link" data-scroll-target="#sec-advanced-similarity"><span class="header-section-number">20.2</span> Advanced Similarity Measures</a>
   <ul class="collapse">
-<li><a href="#jaccard-similarity" id="toc-jaccard-similarity" class="nav-link" data-scroll-target="#jaccard-similarity"><span class="header-section-number">20.2.1</span> Jaccard similarity</a></li>
-  <li><a href="#mutual-information" id="toc-mutual-information" class="nav-link" data-scroll-target="#mutual-information"><span class="header-section-number">20.2.2</span> Mutual Information</a></li>
-  <li><a href="#jensenshannon-divergence" id="toc-jensenshannon-divergence" class="nav-link" data-scroll-target="#jensenshannon-divergence"><span class="header-section-number">20.2.3</span> Jensen–Shannon divergence</a></li>
+<li><a href="#dot-product" id="toc-dot-product" class="nav-link" data-scroll-target="#dot-product"><span class="header-section-number">20.2.1</span> Dot Product</a></li>
+  <li><a href="#jaccard-similarity" id="toc-jaccard-similarity" class="nav-link" data-scroll-target="#jaccard-similarity"><span class="header-section-number">20.2.2</span> Jaccard similarity</a></li>
+  <li><a href="#mutual-information" id="toc-mutual-information" class="nav-link" data-scroll-target="#mutual-information"><span class="header-section-number">20.2.3</span> Mutual Information</a></li>
+  <li><a href="#jensenshannon-divergence" id="toc-jensenshannon-divergence" class="nav-link" data-scroll-target="#jensenshannon-divergence"><span class="header-section-number">20.2.4</span> Jensen–Shannon divergence</a></li>
   </ul>
 </li>
   <li><a href="#sec-dimension-projection" id="toc-sec-dimension-projection" class="nav-link" data-scroll-target="#sec-dimension-projection"><span class="header-section-number">20.3</span> Dimension Projection</a></li>
@@ -391,12 +398,14 @@ This page is still under construction. Come back soon!
 <p>In CCR, for example, there’s a difference between agreeing with statements in a questionnaire and actually writing like a questionnaire. How do I know that I’m measuring how anxious/depressed the comments are and not how questionnaire-y they are? Potential workaround: reverse all of the statements in the questionnaire (as for reverse-coded items), add them to the original questionnaire, and get the average embedding of the construct-neutral questionnaire. Then subtract this embedding from the original questionnaire average embedding.</p>
 </section><section id="sec-advanced-similarity" class="level2" data-number="20.2"><h2 data-number="20.2" class="anchored" data-anchor-id="sec-advanced-similarity">
 <span class="header-section-number">20.2</span> Advanced Similarity Measures</h2>
-<section id="jaccard-similarity" class="level3" data-number="20.2.1"><h3 data-number="20.2.1" class="anchored" data-anchor-id="jaccard-similarity">
-<span class="header-section-number">20.2.1</span> Jaccard similarity</h3>
-</section><section id="mutual-information" class="level3" data-number="20.2.2"><h3 data-number="20.2.2" class="anchored" data-anchor-id="mutual-information">
-<span class="header-section-number">20.2.2</span> Mutual Information</h3>
-</section><section id="jensenshannon-divergence" class="level3" data-number="20.2.3"><h3 data-number="20.2.3" class="anchored" data-anchor-id="jensenshannon-divergence">
-<span class="header-section-number">20.2.3</span> Jensen–Shannon divergence</h3>
+<section id="dot-product" class="level3" data-number="20.2.1"><h3 data-number="20.2.1" class="anchored" data-anchor-id="dot-product">
+<span class="header-section-number">20.2.1</span> Dot Product</h3>
+</section><section id="jaccard-similarity" class="level3" data-number="20.2.2"><h3 data-number="20.2.2" class="anchored" data-anchor-id="jaccard-similarity">
+<span class="header-section-number">20.2.2</span> Jaccard similarity</h3>
+</section><section id="mutual-information" class="level3" data-number="20.2.3"><h3 data-number="20.2.3" class="anchored" data-anchor-id="mutual-information">
+<span class="header-section-number">20.2.3</span> Mutual Information</h3>
+</section><section id="jensenshannon-divergence" class="level3" data-number="20.2.4"><h3 data-number="20.2.4" class="anchored" data-anchor-id="jensenshannon-divergence">
+<span class="header-section-number">20.2.4</span> Jensen–Shannon divergence</h3>
 </section></section><section id="sec-dimension-projection" class="level2" data-number="20.3"><h2 data-number="20.3" class="anchored" data-anchor-id="sec-dimension-projection">
 <span class="header-section-number">20.3</span> Dimension Projection</h2>
 <p><span class="citation" data-cites="grand_etal_2022">Grand et al. (<a href="#ref-grand_etal_2022" role="doc-biblioref">2022</a>)</span></p>
@@ -840,8 +849,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./linguistic-complexity.html" class="pagination-link" aria-label="Measures of Linguistic Complexity">
-        <span class="nav-page-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Measures of Linguistic Complexity</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./lda.html" class="pagination-link" aria-label="Topic Modeling">
+        <span class="nav-page-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Topic Modeling</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

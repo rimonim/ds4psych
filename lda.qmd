@@ -1,0 +1,46 @@
+## Topic Modeling {#sec-lda}
+
+```{r setup}
+#| echo: false
+#| include: false
+
+source("_common.R")
+library(quanteda)
+
+hippocorpus_corp <- read_csv("data/hippocorpus-u20220112/hcV3-stories.csv") |> 
+  select(AssignmentId, story, memType, summary, WorkerId, 
+         annotatorGender, openness, timeSinceEvent) |> 
+  corpus(docid_field = "AssignmentId", 
+         text_field = "story")
+
+hippocorpus_dfm <- hippocorpus_corp |> 
+  tokens(remove_punct = TRUE) |> 
+  dfm() |> 
+  dfm_remove("~")
+```
+
+::: callout-important
+## This page is still under construction. Come back soon!
+:::
+
+@poldrack_etal_2012
+
+### Supervised LDA {#sec-slda}
+
+[sLDA in R](https://books.psychstat.org/textmining/topic-models.html#supervised-topic-modeling)
+
+### Semi-Supervised LDA {#sec-seededlda}
+
+[seededLDA in R](https://koheiw.github.io/seededlda/)
+
+::: {.callout-tip icon="false"}
+## Advantages of Topic Modeling
+
+-   **:**
+:::
+
+::: {.callout-important icon="false"}
+## Disadvantages of Topic Modeling
+
+-   **:**
+:::

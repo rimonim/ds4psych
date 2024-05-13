@@ -54,6 +54,7 @@ book:
         - decontextualized-embeddings.qmd
         - contextualized-embeddings.qmd
         - navigating-vectorspace.qmd
+        - lda.qmd
         - linguistic-complexity.qmd
         
     - part: audio-video-image.qmd

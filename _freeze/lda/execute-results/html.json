@@ -1,0 +1,15 @@
+{
+  "hash": "621179425a240e3b241378a95a42a7a7",
+  "result": {
+    "engine": "knitr",
+    "markdown": "## Topic Modeling {#sec-lda}\n\n\n\n\n\n::: callout-important\n## This page is still under construction. Come back soon!\n:::\n\n@poldrack_etal_2012\n\n### Supervised LDA {#sec-slda}\n\n[sLDA in R](https://books.psychstat.org/textmining/topic-models.html#supervised-topic-modeling)\n\n### Semi-Supervised LDA {#sec-seededlda}\n\n[seededLDA in R](https://koheiw.github.io/seededlda/)\n\n::: {.callout-tip icon=\"false\"}\n## Advantages of Topic Modeling\n\n-   **:**\n:::\n\n::: {.callout-important icon=\"false\"}\n## Disadvantages of Topic Modeling\n\n-   **:**\n:::",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

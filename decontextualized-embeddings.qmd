@@ -99,7 +99,7 @@ Now that you are comfortable with the concept of a word vector space (@sec-vecto
 
 ## LSA {#sec-lsa}
 
-Latent Semantic Analysis (LSA) is the simplest sort of DSM^[LSA was first introduced by @deerwester_etal_1990.]. You can think of it as the linear regression of the embeddings world. In its standard form, LSA is a simple dimensionality reduction technique---singular-value decomposition (SVD)---applied to the DFM. To illustrate what this means, let's start with a DFM describing the 862 posts on Reddit's r/relationship_advice that are featured on the cover of this book. For the sake of illustration, we'll only consider two features of this DFM: the words "I" and "me". 
+Latent Semantic Analysis (LSA) is the simplest sort of DSM.^[LSA was first introduced by @deerwester_etal_1990.] You can think of it as the linear regression of the embeddings world. In its standard form, LSA is a simple dimensionality reduction technique---singular-value decomposition (SVD)---applied to the DFM. To illustrate what this means, let's start with a DFM describing the 862 posts on Reddit's r/relationship_advice that are featured on the cover of this book. For the sake of illustration, we'll only consider two features of this DFM: the words "I" and "me". 
 
 ```{r}
 #| echo: false
@@ -121,7 +121,7 @@ Since we're only considering two features, we can visualize this DFM in two dime
 
 ```{r}
 #| echo: false
-ra_posts_dfm_2d |> 
+dfm_plot <- ra_posts_dfm_2d |> 
   convert("data.frame") |> 
   ggplot(aes(i, me)) +
     geom_hline(yintercept = 0, color = "red") +
@@ -130,6 +130,8 @@ ra_posts_dfm_2d |>
     labs(x = "I", y = "me") +
     theme_minimal() +
     theme(axis.title = element_text(size = 14))
+
+dfm_plot
 ```
 
 The terms "I" and "me" are strongly correlated with each other. LSA will recognize this and summarize the I/me-ness of each document with a single number, a combination of the two variables. How does it find this single number? 
@@ -141,6 +143,22 @@ It finds the line of best fit that goes through through the origin (0,0)---the l
 library(patchwork)
 source("scripts.R")
 
+# Arrow
+right_arrow <- ggplot() +
+  geom_segment(
+    aes(x = 0, y = 0, xend = 1, yend = 0), 
+    linewidth = 1, color = "royalblue4",
+    arrow = arrow(type = "closed")) +
+  theme_void() +
+  coord_fixed(80)
+
+# Step 1
+dfm_plot <- dfm_plot + 
+  labs(title = "Step 1") +
+  theme(plot.title = element_text(size = 20, hjust = .5, color = "royalblue4")) +
+  coord_fixed(ylim = c(0, 170))
+
+# Step 2
 ra_posts_raw <- ra_posts_dfm_2d |> 
   convert("data.frame") |> 
   select(-doc_id)
@@ -166,19 +184,48 @@ raw_plot <- ra_posts_raw |>
       guide = "none",
       mid = mean(ra_posts_raw$V1)
       ) +
-    labs(title = "Standard LSA\n(SVD)", x = "I", y = "me") +
+    labs(title = "Step 2", x = "I", y = "me") +
     coord_fixed(ylim = c(0, 170)) +
     theme_minimal() +
     theme(plot.title = element_text(size = 20, hjust = .5, color = "royalblue4"))
 
-raw_plot
+# Step 3
+embedding_plot <- ra_posts_raw |> 
+  ggplot(aes(V1*-norm(ra_posts_raw_svd$v)*norm(as.matrix(ra_posts_raw_svd$d)), 75, color = V1)) +
+    geom_hline(
+      yintercept = 75,
+      linewidth = 1.5
+    ) +
+    geom_point() +
+    guides(color = "none") +
+    colorspace::scale_color_continuous_diverging(
+      palette = "Tofino", 
+      guide = "none",
+      mid = mean(ra_posts_raw$V1)
+      ) +
+    labs(
+      title = "Step 3",
+      x = "I/me-ness"
+    ) +
+    theme_minimal() +
+    theme(
+      axis.text.y = element_blank(),
+      axis.title.y = element_blank(),
+      panel.grid.major.y = element_blank(),
+      panel.grid.minor.y = element_blank(),
+      plot.margin = margin(0, 10, 0, 10),
+      plot.title = element_text(size = 20, hjust = .5, color = "royalblue4")
+    ) +
+    coord_fixed(ylim = c(0, 170))
+
+dfm_plot | right_arrow | raw_plot | right_arrow | embedding_plot
 ```
 
 In this simple example, we started with two dimensions ("I" and "me") and reduced them to one. Our new one-dimensional document embeddings measure how far the document is along the line drawn by the LSA. 
 
 If we wanted a second dimension for the embedding space (which would be silly in this example since we only have two dimensions overall), LSA would draw a second line perpendicular to the first---the line of best fit to the spread not accounted for by the first line. In real applications, of course, we'll want to use tens of thousands of features, not two. And the embedding vectors we make might be hundreds of dimensions, not one. Nevertheless, the concept remains the same: Lines through the origin are found that best explain the variance between the documents (note that these lines will all be perpendicular to each other). These lines become the new dimensions: The embedding of a document describes the projection of that document point onto each line.
 
-As part of the process of producing an embedding for each document, LSA also produces an embedding for each _word_. In the simple example above, the new one-dimensional _word embeddings_ of "I" and "me" measure how much influence each word has on the summary line. In other words, the embedding of "me" is the rise of the line along the y axis, and the embedding of "I" is the run of the line along the x axis. This is equivalent to asking how much I/me-ness is in "I" or how much I/me-ness is in "me." In a real application with higher dimensional embeddings, the concept remains the same: The LSA embedding of a word describes the weights of that word count on each successive line of best fit.
+As part of the process of producing an embedding for each document, LSA also produces an embedding for each _word_. In the simple example above, the new one-dimensional _word embeddings_ of "I" and "me" measure how much influence each word has on the summary line from Step 2. In other words, the embedding of "me" is the rise of the line along the y axis, and the embedding of "I" is the run of the line along the x axis. This is equivalent to asking how much I/me-ness is in "I" or how much I/me-ness is in "me." In a real application with higher dimensional embeddings, the concept remains the same: The LSA embedding of a word describes the weights of that word count on each successive line of best fit.
 
 Performing LSA on a training dataset is made easy with the `textmodel_lsa()` function from the [`quanteda.textmodels`](https://github.com/quanteda/quanteda.textmodels) package. Let's try it on the full DFM from the r/relationship_advice posts, with all 14,897 features instead of just "I" and "me". 
 
@@ -194,6 +241,7 @@ ra_posts_lsa <- ra_posts_dfm |>
 Now that the model is set up, we can access the word embeddings with `ra_posts_lsa$features` and the document embeddings with `ra_posts_lsa$docs`. For example, the embedding of the word "surprised" would be `ra_posts_lsa$features["surprised",]` and the embedding of the first post in the dataset would be `ra_posts_lsa$docs["post1",]`. We could also look for the words closest in meaning to the word "surprised" by measuring their cosine similarity with the "surprised" embedding (see @sec-cosine-similarity).
 
 ```{r}
+#| warning: false
 surprise_embedding <- ra_posts_lsa$features["surprised",]
 
 # cosine similarity function
@@ -350,6 +398,8 @@ normalized_plot <- ra_posts_normalized |>
     theme_minimal() +
     theme(plot.title = element_text(size = 20, hjust = .5, color = "royalblue"))
 
+raw_plot <- raw_plot + labs(title = "Standard\nLSA")
+
 raw_plot + centered_plot + normalized_plot
 ```
 
@@ -402,7 +452,7 @@ LSA also suffers from an even more fundamental problem. Recall the warning from 
 
 ### Word2vec {#sec-word2vec}
 
-Word2vec was first introduced by @mikolov_etal_2013b and was refined by @mikolov_etal_2013c. They proposed a few variations on a simple neural network[^word2vec-1] that learns the relationships between words and contexts. Here we describe the most commonly used variation---continuous Skip-gram with negative sampling[^word2vec-2]. Imagine training the model on the following sentence:
+Word2vec was first introduced by @mikolov_etal_2013b and was refined by @mikolov_etal_2013c. They proposed a few variations on a simple neural network[^word2vec-1] that learns the relationships between words and contexts. Here we describe the most commonly used variation---continuous Skip-gram with negative sampling.[^word2vec-2] Imagine training the model on the following sentence:
 
 [^word2vec-1]: Some people think word2vec is too simple to be called a neural network. If you are one of these people, you are welcome to think of word2vec as a fancy sort of logistic regression instead.
 
@@ -521,11 +571,18 @@ context_embeddings <- context_embeddings_df |>
 word_embeddings + context_embeddings
 ```
 
-For each row of the training set, the model looks up the embedding for the target word and the embedding for the context word, and computes the dot product between the two vectors. The dot product is closely related to the cosine similarity, which we discussed in @sec-cosine-similarity---it measures how similar the two embeddings are. If the dot product is large (i.e. the word embedding and the context embedding are very similar), the model predicts that the two words are likely to be real neighbors. If the dot product is small, the model predicts that the two words were probably sampled at random. During training, the model learns which word embeddings and context embeddings will do best at this binary prediction task.
+For each row of the training set, the model looks up the embedding for the target word and the embedding for the context word, and computes the dot product between the two vectors. The dot product is closely related to the cosine similarity, which we discussed in @sec-cosine-similarity---it measures how similar the two embeddings are. If the dot product is large (i.e. the word embedding and the context embedding are very similar), the model predicts that the two words are likely to be real neighbors. If the dot product is small, the model predicts that the two words were probably sampled at random.[^word2vec-3] During training, the model learns which word embeddings and context embeddings will do best at this binary prediction task.
 
-Notice that word2vec gives each word two embeddings: one for when the word is the target and another for when it is the context [@goldberg_levy_2014]. This may seem strange, but it actually solves an important problem with LSA. Recall the case of "fridge" and "refrigerator", which almost never appear together in the same sentence, but do tend to appear next to similar groupings of other words. Because LSA is based directly on broad patterns of covariance in word frequencies, it will pick up on the fact that "fridge" and "refrigerator" are negatively correlated and push them further apart than they should be. Word2vec, on the other hand, can learn a context embedding for "refrigerator" that is not so close to the word embedding for "fridge", even when the word embeddings of the two words are very close. This allows word2vec to recognize that "refrigerator" and "fridge" tend to appear in similar contexts, but are unlikely to appear together. In this way, word2vec is truer to the distributional hypothesis than LSA.
+[^word2vec-3]: Cosine similarity is the dot product of two normalized vectors. In other words, the dot product is the same as cosine similarity, except that it gets larger as the vectors get farther away from the origin. In dot-product-based models like word2vec, the distance of a word vector from the origin (also called the norm or magnitude) is proportional to the informativeness of the word [@schakel_wilson_2015; @oyama_etal_2023]. Therefore, the norm of the embedding measures how representative it is of certain contexts as opposed to others, similar to averaging the TF-IDF of a word across the corpus (@sec-tfidf). This makes intuitive sense, because vectors with a larger norm will result in very positive or very negative dot products, making the model more confident in the pair of words either being neighbors or not. Since the informativeness of words is often irrelevant to analyses of similarity, cosine similarity is used to discount it. Ways to incorporate it in analyses will be discussed in @sec-navigating-vectorspace and @sec-linguistic-complexity.
 
-Word2vec was revolutionary when it came out. The main reason for this is the efficiency of the training process. This efficiency means that the model can be trained on massive datasets. Larger and more diverse datasets mean more reliable embeddings. Many pretrained models can be easily downloaded from the Internet (e.g. from [here](https://github.com/maxoodf/word2vec?tab=readme-ov-file#basic-usage) or [here](https://www.kaggle.com/datasets/pkugoodspeed/nlpword2vecembeddingspretrained)). Because these models are trained on very large datasets and are already known to perform well, it almost never makes sense to train your own word2vec from scratch.
+Notice that word2vec (and fastText and GloVe) give each word two embeddings: one for when the word is the target and another for when it is the context [@goldberg_levy_2014]. This may seem strange, but it actually solves two important problems with LSA: 
+
+1.    **A Nuance of the Distributional Hypothesis.** Recall the case of "fridge" and "refrigerator", which almost never appear together in the same sentence, but do tend to appear next to similar groupings of other words. Because LSA is based directly on broad patterns of covariance in word frequencies, it will pick up on the fact that "fridge" and "refrigerator" are negatively correlated and push them further apart than they should be. Word2vec, on the other hand, can learn a _context embedding_ for "refrigerator" that is not so close to the _word embedding_ for "fridge", even when the word embeddings of the two words are very close. This allows word2vec to recognize that "refrigerator" and "fridge" tend to appear in similar contexts, but are unlikely to appear together. In this way, word2vec is truer to the distributional hypothesis than LSA.
+2.    **Associative Asymmetry.** The cosine similarity between two word embeddings gives the best estimate of _conceptual similarity_ [@torabi-asr_etal_2018]. This is because conceptual similarity is not the same as association in language (or in the mind). In fact, psycholinguists have long known that human associations between two words are asymmetric. For example, people prompted with "leopard" are much more likely to think of "tiger" than people prompted with "tiger" are to think of "leopard" [@tversky_gati_1982]. These sorts of associative connections are closely tied to probabilities of co-occurrence in language and are therefore much better represented by the cosine similarity (or even the dot product) between a word embedding and a context embedding [@torabi-asr_etal_2018]. Thus the association between "leopard" and "tiger" would be represented by the similarity between the _word embedding_ of "leopard" and the _context embedding_ of "tiger", allowing for the asymmetry observed in mental associations.[^word2vec-4] Since LSA only produces one embedding per word, it cannot capture this asymmetry.
+
+[^word2vec-4]:  To the best of our knowledge, pretrained context embeddings are not available online. So if you are interested in associative (rather than conceptual) relationships between words, we recommend training your own model (see @sec-glove-training).
+
+Word2vec was revolutionary when it came out. The main reason for this is the efficiency of the training process. This efficiency means that the model can be trained on massive datasets. Larger and more diverse datasets mean more reliable embeddings. A few pretrained models can be easily downloaded from the Internet (e.g. from [here](https://github.com/maxoodf/word2vec?tab=readme-ov-file#basic-usage) or [here](https://www.kaggle.com/datasets/pkugoodspeed/nlpword2vecembeddingspretrained)). Because these models are trained on very large datasets and are already known to perform well, it almost never makes sense to train your own word2vec from scratch.
 
 Once you've downloaded a pretrained model (generally as a .bin file), you can open it in R with the [`word2vec` package](https://cran.r-project.org/web/packages/word2vec/readme/README.html). Here we'll be using a model trained on the entirety of Google news, downloaded from [here](https://www.kaggle.com/datasets/pkugoodspeed/nlpword2vecembeddingspretrained/download?datasetVersionNumber=1), which uses 300-dimensional embeddings.
 
@@ -542,7 +599,7 @@ word2vec_mod <- read.word2vec(file = word2vec_mod, normalize = TRUE)
 To find embeddings of specific words, use `predict(word2vec_mod, c("word1", "word2"), type = "embedding")`. To get embeddings for full documents, average the embeddings of the words in the document. Here we provide a function to compute document embeddings directly from a DFM.
 
 ```{r}
-textstat_word2vec <- function(dfm, model){
+textstat_embedding <- function(dfm, model){
   feats <- featnames(dfm)
   # find word embeddings
   feat_embeddings <- predict(model, feats, type = "embedding")
@@ -562,7 +619,7 @@ surprise_embedding <- predict(word2vec_mod, "surprised", type = "embedding") |>
 
 # document embeddings
 hippocorpus_word2vec <- hippocorpus_dfm |> 
-  textstat_word2vec(word2vec_mod)
+  textstat_embedding(word2vec_mod)
 
 # score documents by surprise
 hippocorpus_surprise_word2vec <- hippocorpus_word2vec |> 
@@ -582,7 +639,7 @@ surprise_mod_word2vec <- lm(surprise ~ memType, hippocorpus_surprise_word2vec)
 summary(surprise_mod_word2vec)
 ```
 
-Once again we found a significant difference between recalled and imagined stories (p < .001), but this time in the opposite direction---recalled stories have _less_ surprise-related language! We also found a significant difference between retold and imagined stories (p < .001) such that retold stories have less surprise-related language. These findings seem to go against those of @sap_etal_2022, but stick around for @sec-navigating-vectorspace to learn why this might be misleading.
+Once again we found a significant difference between recalled and imagined stories (p < .001), but this time in the opposite direction---recalled stories have _less_ surprise-related language! We also found a significant difference between retold and imagined stories (p < .001) such that retold stories have less surprise-related language. These findings seem to go against those of @sap_etal_2022, but stick around for @sec-navigating-vectorspace to learn why they might be misleading.
 
 **An example of word2vec in research:** @chatterjee_etal_2023 used word2vec to study the phenomenon of nominative determinism---the purported tendency to chose a profession or city with a first letter that matches the first letter of one's name (e.g. someone named Louis might choose to be a language researcher). They first used a word2vec model trained on Google News to obtain embeddings for 3,410 first names, 508 professions, and 14,856 US cities. They then averaged the embeddings of all names/professions/cities that begin with the same letter to obtain a vector representing names that begin with the letter "A", a vector representing professions that begin with the letter "A", etc. Using cosine similarity, they found that same-letter names and professions (e.g. Albert and Actuary) tend to be more similar than different-letter names and professions (e.g. Albert and Dentist), even when controlling for gender, ethnicity, and frequency. They found a similar pattern for names and cities.
 
@@ -590,7 +647,7 @@ Once again we found a significant difference between recalled and imagined stori
 ## Advantages of Word2vec
 
 -   **Accurately Represents Meaning:** By distinguishing between target and context words, word2vec stays true to the distributional hypothesis. Since it is not based on counts, it also avoids problems with non-linear relationships.
--   **Efficient for Large Datasets:** This means that models can be trained on enormous amounts of text. Multiple such models are available for download on the Internet.
+-   **Efficient for Large Datasets:** This means that models can be trained on enormous amounts of text. Some such models are available for download on the Internet.
 :::
 
 ::: {.callout-important icon="false"}
@@ -598,87 +655,123 @@ Once again we found a significant difference between recalled and imagined stori
 
 -   **Relies on Word-Level Meaning:** Word2vec assumes that each word has only one meaning. This means that it has trouble with words that can mean more than one thing (e.g. deep learning _model_ vs. fashion _model_). Word2vec will learn the average of these meanings.
 -   **Works Best in English:** English words are generally spelled the same no matter where they are in a sentence. Word2vec doesn't work as well for languages that have more prefixes, suffixes, conjugations, etc., since it has to relearn the meaning for each form of the word.
-:::
-
-### FastText {#sec-fasttext}
-
-FastText [@bojanowski_etal_2017] is a specialized version of word2vec, designed to work with languages in which words take different forms depending on their grammatical place. Rather than learning a word embedding and a context embedding for each full word (e.g. "quantify" and "quantification" each get their own embedding), FastText learns a vector for each shingle within a word (see @sec-shingles). For example, "quantify" might be broken up into "quant", "uanti", "antif", and "ntify". But it doesn't treat each shingle as its own word. Rather, it trains on words just like word2vec, but makes sure that the embedding of a word is equal to the _sum_ of all of the shingle vectors inside it. 
-
-This approach is mostly unnecessary for English, where words are generally spelled the same wherever they appear. But for more morphologically rich languages like Hebrew, Arabic, French, or Finnish, FastText works much better than word2vec. This is because there might not be enough data for word2vec to learn reliable representations of every form of every word, especially rare forms. FastText, on the other hand, can focus on the important subcomponents of the words that stay the same across different forms. This way it can learn rich representations even of rare forms of a word that don't appear in the training dataset (e.g. it could quantify the meaning of "מחשבותייך" even if it were only trained on "מחשבה", "מחשבות", "חבר", and "חברייך"). 
-
-You can use FastText in R through the [`fastText` package](https://github.com/mlampros/fastText) [@mouselimis_2021]. 
-
-```{r}
-library(fastText)
-
-
-```
-
-
-## Advantages of FastText
-
--   **:**Better representation of rare words.
-Capable of handling out-of-vocabulary words.
-Richer word representations due to subword information.
-:::
-
-::: {.callout-important icon="false"}
-## Disadvantages of FastText
-
--   **:**Increased model size due to n-gram information.
-Longer training times compared to Word2Vec.
+-   **Not Many Pretrained Models Available**
 :::
 
 ### GloVe {#sec-glove}
 
-@pennington_etal_2014
+Word2vec produces spectacularly rich and reliable vector embeddings, but their reliance on randomly sampled pairs of words and contexts makes them somewhat noisy and overly sensitive to frequent tokens. The developers of word2vec managed to fix these problems by strategically filtering the training dataset, but @pennington_etal_2014 came up with a more elegant solution: Global Vectors (GloVe) is designed on the same principles of word2vec, but it is computed from global patterns of co-occurrence rather than individual examples.[^glove-1]
 
-GloVe is built on the same metric that we used in @sec-word-viz and @sec-dla - relative frequency ratios. Rather than comparing two word frequencies in two groups of texts, it instead compares co-occurrence with one word to co-occurrence with another.
+[^glove-1]: GloVe is built on the same metric that we used in @sec-dla: relative frequency ratios. Rather than comparing two word frequencies in two groups of texts as we did in that chapter, it instead compares co-occurrence with one word to co-occurrence with another.
+
+Even though GloVe uses a different method of training, the embeddings it generates are very similar to those generated by word2vec. Because GloVe embeddings are so similar to word2vec embeddings, we will not go into detail here about the way the GloVe algorithm works. Nevertheless, GloVe does have one very important advantage over word2vec: Better pretrained models are available online. Whereas the most easily available word2vec model is trained on news, the [GloVe website](https://nlp.stanford.edu/projects/glove/) offers models trained on social media (`glove.twitter.27B.zip`) and on large portions of the Internet (Common Crawl). These models generalize better to social media texts (since they were trained on similar texts) and are likely to have richer representations of emotional or social content, since more examples of that content appear on social media than in the news or on Wikipedia.
+
+Since the pretrained GloVe models are available in .txt format, you don't need a wrapper package to use them in R. Simply download the pretrained model, input the path to the file as `path_to_glove`, and run the following code:
 
 ```{r}
-# gloVe <- read_csv(sep = " ")
+#| eval: false
+path_to_glove <- "data/glove/glove.twitter.27B.100d.txt"
+dimensions <- as.numeric(str_extract(path_to_glove, "[:digit:]+(?=d\\.txt)"))
 
+# matrix with token embeddings
+glove_pretrained <- read_delim(
+  path_to_glove, 
+  delim = " ",
+  quote = "",
+  escape_double = FALSE,
+  col_names = c("token", paste0("dim_", 1:dimensions))
+) |> column_to_rownames("token") |> as.matrix()
+
+# update class to "embeddings" (required for `predict.embeddings` function)
+class(glove_pretrained) <- "embeddings"
+
+# function to retrieve embeddings
+#   `object`: an "embeddings" object (matrix with character rownames)
+#   `newdata`: a character vector of tokens
+#   `type`: 'embedding' gives the embeddings of newdata. 
+#           'nearest' gives nearest embeddings by cosine similarity 
+#           (requires the cos_sim function)
+#   `top_n`: for `type = 'nearest'`, how many nearest neighbors to output?
+predict.embeddings <- function(object, newdata, 
+                               type = c("embedding", "nearest"), 
+                               top_n = 10L){
+  embeddings <- as.matrix(object)
+  if (type == "embedding") {
+    embeddings[newdata,]
+  }else{
+    if(length(newdata) > 1){
+      target <- as.vector(apply(embeddings[newdata,], 2, mean))
+    }else{
+      target <- as.vector(embeddings[newdata,])
+    }
+    sims <- apply(object, 1, cos_sim, target)
+    embeddings <- embeddings[rev(order(sims)),]
+    head(embeddings, top_n)
+  }
+}
 ```
 
-#### Training a Custom GloVe Model
+You can then proceed just as we did for word2vec, using the `textstat_embedding()` function provided in that section to compute document embeddings directly from a DFM.
 
-[Training a custom GloVe model in Quanteda](https://quanteda.io/articles/pkgdown/replication/text2vec.html)
+#### Training a Custom GloVe Model {#sec-glove-training}
+
+Since excellent pretrained GloVe embeddings are available online, it rarely makes sense to train your own model. Nevertheless, GloVe's elegant training procedure makes for easy integration with Quanteda. A tutorial on training a custom GloVe model in Quanteda can be found [here](https://quanteda.io/articles/pkgdown/replication/text2vec.html). 
+
+Why might you want to train a custom word embeddings model? Maybe you are interested in quantifying differences in individual word use between multiple large groups of text. For example, you might train a GloVe model on texts written by conservatives and another on texts written by liberals, and demonstrate that the word "skirt" is closer to the word "woman" in conservative language than it is in liberal language.
 
 ::: {.callout-tip icon="false"}
 ## Advantages of GloVe
 
--   **:**Efficiently captures global statistics of the corpus.
-Good at representing both semantic and syntactic relationships.
-Effective in capturing word analogies.
+-   **Elegant Training Procedure**
+-   **Psychologically Sensitive Pretrained Models**
 :::
 
 ::: {.callout-important icon="false"}
 ## Disadvantages of GloVe
 
--   **:**Requires more memory for storing co-occurrence matrices.
-Less effective with very small corpora.
+-   **Requires Large Training Sets**
+-   **Relies on Word-Level Meaning**
+-   **Works Best in English**
 :::
 
-## Topic Modeling {#sec-lda}
+### FastText {#sec-fasttext}
 
-@poldrack_etal_2012
+FastText [@bojanowski_etal_2017] is a specialized version of word2vec, designed to work with languages in which words take different forms depending on their grammatical place. Rather than learning a word embedding and a context embedding for each full word (e.g. "quantify" and "quantification" each get their own embedding), fastText learns a vector for each shingle within a word (see @sec-shingles). For example, "quantify" might be broken up into "quant", "uanti", "antif", and "ntify". But it doesn't treat each shingle as its own word. Rather, it trains on words just like word2vec and GloVe, but makes sure that the embedding of a word is equal to the _sum_ of all of the shingle vectors inside it. 
 
-### Supervised LDA {#sec-slda}
+This approach is mostly unnecessary for English, where words are generally spelled the same wherever they appear. But for more morphologically rich languages like Hebrew, Arabic, French, or Finnish, fastText works much better than word2vec and GloVe. This is because there might not be enough data for word2vec and GloVe to learn reliable representations of every form of every word, especially rare forms. FastText, on the other hand, can focus on the important subcomponents of the words that stay the same across different forms. This way it can learn rich representations even of rare forms of a word that don't appear in the training dataset (e.g. it could quantify the meaning of מחשבותייך even if it were only trained on מחשבה, מחשבות, חבר, and חברייך). 
 
-[sLDA in R](https://books.psychstat.org/textmining/topic-models.html#supervised-topic-modeling)
+After downloading a pretrained model from [this page](https://fasttext.cc/docs/en/crawl-vectors.html) [@grave_etal_2018], you can use fastText in R through the [`fastTextR` package](https://cran.r-project.org/web/packages/fastTextR/vignettes/Word_representations.html). Conveniently, `fastTextR` includes a dedicated function for obtaining full text embeddings, `ft_sentence_vectors()`.
 
-### Semi-Supervised LDA {#sec-seededlda}
+```{r}
+#| eval: false
+library(fastTextR)
 
-[seededLDA in R](https://koheiw.github.io/seededlda/)
+# example texts
+heb_words <- c("מחשבותייך", "מחשבה")
+heb_texts <- c("אל תחשוב שנקרא לשוננו לשון הקדש לגאותינו או לטעותינו, אבל הוא בדין, כי זה הלשון קדוש לא ימצאו בו שמות לאבר הבעילה בזכר או בנקבה", "הטעם שהזכיר על דעתי איננו אמת, כי מה שיכנו ישגלנה, ישכבנה, יורה כי משגל שם עצם לבעילה")
+
+# load pretrained model from file
+heb_model <- ft_load("data/cc.he.300.bin")
+
+# get word embeddings
+word_vecs <- ft_word_vectors(heb_model, heb_words)
+
+# get text embeddings
+text_vecs <- ft_sentence_vectors(heb_model, heb_texts)
+```
 
 ::: {.callout-tip icon="false"}
-## Advantages of Topic Modeling
+## Advantages of FastText
 
--   **:**
+-   **Better for Morphologically Rich Languages**
+-   **Better for Rare Words**
+-   **Can Infer Embeddings for Words That Were Not in Training Data**
 :::
 
 ::: {.callout-important icon="false"}
-## Disadvantages of Topic Modeling
+## Disadvantages of FastText
 
--   **:**
+-   **More Complex:** This means larger files to download when using pretrained models. It also increases the risk of overfitting. 
 :::
+
+---
