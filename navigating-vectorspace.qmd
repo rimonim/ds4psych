@@ -5,6 +5,50 @@
 #| include: false
 
 source("_common.R")
+library(quanteda)
+library(word2vec)
+
+# cosine similarity function
+cos_sim <- function(x, y){
+  dot <- x %*% y
+  normx <- sqrt(sum(x^2))
+  normy <- sqrt(sum(y^2))
+  as.vector( dot / (normx*normy) )
+}
+
+# prep word2vec
+word2vec_mod <- "data/GoogleNews-vectors-negative300.bin"
+word2vec_mod <- read.word2vec(file = word2vec_mod, normalize = TRUE)
+textstat_embedding <- function(dfm, model){
+  feats <- featnames(dfm)
+  # find word embeddings
+  feat_embeddings <- predict(model, feats, type = "embedding")
+  feat_embeddings[is.na(feat_embeddings)] <- 0
+  # average word embeddings of each document
+  out_mat <- (dfm %*% feat_embeddings)/ntoken(dfm)
+  colnames(out_mat) <- paste0("V", 1:ncol(out_mat))
+  as_tibble(as.matrix(out_mat), rownames = "doc_id")
+}
+
+# prep Hippocorpus
+hippocorpus_df <- read_csv("data/hippocorpus-u20220112/hcV3-stories.csv") |> 
+  select(AssignmentId, story, memType, summary, WorkerId, 
+         annotatorGender, openness, timeSinceEvent)
+
+hippocorpus_corp <- hippocorpus_df |> 
+  corpus(docid_field = "AssignmentId", 
+         text_field = "story")
+
+hippocorpus_dfm <- hippocorpus_corp |> 
+  tokens(remove_punct = TRUE) |> 
+  dfm() |> 
+  dfm_remove("~")
+
+# BERT embeddings
+hippocorpus_bert <- readRDS("data/hippocorpus_bert.rds")
+hippocorpus_bert <- hippocorpus_df |>
+  rename(ID = AssignmentId) |> 
+  left_join(hippocorpus_bert)
 ```
 
 ::: {.callout-important}
@@ -13,31 +57,138 @@ source("_common.R")
 
 @gunther_etal_2019
 
-## Parallelograms {#sec-parallelograms}
+## Representing Psychological Constructs
+
+In @sec-decontextualized-embeddings we measured the surprise in texts by comparing their embeddings to that of a single word: "surprised". 
+
+### Distributed Dictionary Representation (DDR)
+
+Now that we have contextualized embeddings for the Hippocorpus texts, how can we use them to test the hypothesis that true autobiographical stories include more surprise than imagined stories? 
+
+@garten_etal_2018
+
+- weight word embeddings by frequency in a corpus?
+  - since word vector magnitudes reflect informativeness [@schakel_wilson_2015; @oyama_etal_2023], averaging the embeddings of a text automatically controls for word frequency, similar to TF-IDF weighting (since more frequent words tend to be less informative) [@ethayarajh_etal_2019]. This is not true in a dictionary.
+
+```{r}
+# load surprise dictionary
+surprise_dict <- quanteda.sentiment::data_dictionary_NRC["surprise"]
+
+# estimate frequency of dictionary words
+surprise_dict_freqs <- hippocorpus_dfm |> 
+  dfm_keep(surprise_dict$surprise) |> 
+  quanteda.textstats::textstat_frequency() |> 
+  select(feature, frequency)
+
+# word2vec embeddings of dictionary words
+surprise_ddr <- predict(word2vec_mod, surprise_dict$surprise, type = "embedding") |> 
+  as_tibble(rownames = "feature") |> 
+  left_join(surprise_dict_freqs) |> 
+  replace_na(list(frequency = 0))
+
+# average dictionary embedding (weighted by frequency)
+surprise_ddr <- surprise_ddr |> 
+  summarise(across(V1:V300, ~weighted.mean(.x, frequency))) |> 
+  select(V1:V300) |> 
+  unlist()
+
+# document embeddings
+hippocorpus_word2vec <- hippocorpus_dfm |> 
+  textstat_embedding(word2vec_mod)
+
+# score documents by surprise
+hippocorpus_surprise_ddr <- hippocorpus_word2vec |> 
+  rowwise() |> 
+  mutate(
+    surprise = cos_sim(c_across(V1:V300), surprise_ddr)
+  ) |> 
+  ungroup() |> 
+  select(-c(V1:V300))
+
+# rejoin docvars
+hippocorpus_surprise_ddr <- hippocorpus_surprise_ddr |> 
+  bind_cols(docvars(hippocorpus_corp))
+
+surprise_mod_ddr <- lm(surprise ~ memType, hippocorpus_surprise_ddr)
+
+summary(surprise_mod_ddr)
+```
+
+These results look similar to the ones we got using only the embedding of the word "surprised": Both recalled and retold stories have _less_ surprise-related language than imagined ones (p < .001).
+
+### Contextualized Construct Representation (CCR)
+
+@atari_etal_2023
+
+Adapted from the scale used in @choi_choi_2010 and @choi_nisbett_2000
+
+```{r}
+surprise_items_pos <- c(
+  "I was extremely surprised by the outcome of the event.",
+  "The outcome of the event was extremely interesting.",
+  "The outcome of the event was extremely new."
+)
+
+surprise_items_neg <- c(
+  "I was not surprised at all by the outcome of the event.",
+  "The outcome of the event was not interesting at all.",
+  "The outcome of the event was not new at all."
+)
+```
+
+### Correlational Methods
+
+i.e. averaging from group in training set
+
+```{r}
+
+```
+
+## Reasoning in Vector Space: Beyond Cosine Similarity
+
+### Parallelograms {#sec-parallelograms}
 
 Introduced with word2vec by @mikolov_etal_2013
 
 Glove [@pennington_etal_2014] is designed with this property in mind. Transformer models are not.
 
+- Transformer models, including BERT, tend to generate embedding spaces that do not center at zero and which tend to form a narrow cone in the vector space [@ethayarajh_2019; @gao_etal_2019]
+  - in BERT, token embeddings in the same sentence become more dissimilar to each other in upper layers but are still more similar than randomly sampled words are on average
+  - BERT aggregated text embeddings perform worse than word2vec and GloVe when analyzed using cosine similarity [@reimers_gurevych_2019], though averaging the embeddings from the last two layers of BERT can improve this [@li_etal_2020]
+  
+  static embeddings created by taking the first principal component of a word’s contextualized representations out- perform GloVe and FastText embeddings on many word vector benchmarks [@ethayarajh_2019]
+
+```{r}
+
+```
+
+#### Improving CCR With Geometric Reasoning
+
 In CCR, for example, there’s a difference between agreeing with statements in a questionnaire and actually writing like a questionnaire. How do I know that I’m measuring how anxious/depressed the comments are and not how questionnaire-y they are?
 Potential workaround: reverse all of the statements in the questionnaire (as for reverse-coded items), add them to the original questionnaire, and get the average embedding of the construct-neutral questionnaire. Then subtract this embedding from the original questionnaire average embedding.
 
-## Advanced Similarity Measures {#sec-advanced-similarity}
+### Advanced Similarity Measures {#sec-advanced-similarity}
 
-### Dot Product
+#### Dot Product
 
-### Jaccard similarity
+#### Jaccard similarity
 
-### Mutual Information
+#### Mutual Information
 
-### Jensen–Shannon divergence
+#### Jensen–Shannon divergence
 
-## Dimension Projection {#sec-dimension-projection}
+### Semantic Projection {#sec-dimension-projection}
 
 @grand_etal_2022
 
-**An example of using dimension projection in research:** @simchon_etal_2023 collected 10,000 messages from the [r/depression](https://www.reddit.com/r/depression) subreddit, along with a control group of 100 messages each from 100 randomly selected subreddits. They then used a variant of the SBERT model called `all-MiniLM-L6-v2` to compute CCR embeddings (@sec-contextualized-embeddings) of a psychological questionnaire measuring "locus of control," the feeling that you have control over your own life. The questionnaire included items measuring an internal locus of control ("I have control"), and items measuring an external locus of control ("External forces have control"). Simchon et al. constructed an anchored vector to capture the direction between internal and external locus of control, and projected embeddings of the Reddit posts onto that vector to measure how much each post reflected an internal vs. an external locus of control. They found that posts in r/depression exhibited a more external locus of control than posts in the control group.
+#### Improving CCR With Semantic Projection
 
-## Machine Learning Methods {#sec-machine-learning-methods}
+**An example of using dimension projection and CCR in research:** @simchon_etal_2023 collected 10,000 messages from the [r/depression](https://www.reddit.com/r/depression) subreddit, along with a control group of 100 messages each from 100 randomly selected subreddits. They then used a variant of SBERT, `all-MiniLM-L6-v2` (see @sec-contextualized-embeddings), to compute CCR embeddings of a psychological questionnaire measuring "locus of control," the feeling that you have control over your own life. The questionnaire included items measuring an internal locus of control ("I have control"), and items measuring an external locus of control ("External forces have control"). Simchon et al. constructed an anchored vector to capture the direction between internal and external locus of control, and projected embeddings of the Reddit posts onto that vector to measure how much each post reflected an internal vs. an external locus of control. They found that posts in r/depression exhibited a more external locus of control than posts in the control group.
+
+### Machine Learning Methods {#sec-machine-learning-methods}
+
+@kjell_etal_2022
 
 @chersoni_etal_2021 used partial least squares regression to map distributional embeddings to human-rated semantic features derived from research in cognitive psychology.
+
+Some research advises using both the `[CLS]` token and an aggregation of the other token embeddings [@lee_etal_2023]

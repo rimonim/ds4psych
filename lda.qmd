@@ -23,7 +23,22 @@ hippocorpus_dfm <- hippocorpus_corp |>
 ## This page is still under construction. Come back soon!
 :::
 
+**Topic Modeling**
+
+LDA [@blei_etal_2003]
+
+Dirichlet is [generallly pronounced either "Deereekleh" or "Deerishleh"](https://german.stackexchange.com/questions/48498/pronunciation-of-dirichlet)
+
 @poldrack_etal_2012
+
+```{r}
+#| eval: false
+library(seededlda)
+
+lda <- textmodel_lda(dfm, k = 10, verbose = TRUE)
+```
+
+For larger corpora, set `batch_size` lower
 
 ### Supervised LDA {#sec-slda}
 
@@ -32,6 +47,8 @@ hippocorpus_dfm <- hippocorpus_corp |>
 ### Semi-Supervised LDA {#sec-seededlda}
 
 [seededLDA in R](https://koheiw.github.io/seededlda/)
+
+**An Example of Semi-Supervised LDA in Research:** @curini_valerio_2021
 
 ::: {.callout-tip icon="false"}
 ## Advantages of Topic Modeling

@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.4.553">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Louis Teitelbaum and Almog Simchon">
-<title>Data Science for Psychology: Natural Language - 19&nbsp; Contextualization and Large Language Models</title>
+<title>Data Science for Psychology: Natural Language - 19&nbsp; Contextualization With Large Language Models</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -17,6 +17,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 /* CSS for citations */
 div.csl-bib-body { }
@@ -93,7 +127,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./contextualized-embeddings.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./contextualized-embeddings.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Contextualization With Large Language Models</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -293,7 +327,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./contextualized-embeddings.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Contextualization With Large Language Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -347,15 +381,19 @@ div.csl-indent {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#hugging-face-and-the-text-package" id="toc-hugging-face-and-the-text-package" class="nav-link active" data-scroll-target="#hugging-face-and-the-text-package"><span class="header-section-number">19.1</span> Hugging Face and the <code>text</code> Package</a></li>
-  <li><a href="#distributed-dictionary-representation-ddr" id="toc-distributed-dictionary-representation-ddr" class="nav-link" data-scroll-target="#distributed-dictionary-representation-ddr"><span class="header-section-number">19.2</span> Distributed Dictionary Representation (DDR)</a></li>
-  <li><a href="#contextualized-construct-representation-ccr" id="toc-contextualized-construct-representation-ccr" class="nav-link" data-scroll-target="#contextualized-construct-representation-ccr"><span class="header-section-number">19.3</span> Contextualized Construct Representation (CCR)</a></li>
-  <li><a href="#correlational-methods" id="toc-correlational-methods" class="nav-link" data-scroll-target="#correlational-methods"><span class="header-section-number">19.4</span> Correlational Methods</a></li>
+<li>
+<a href="#hugging-face-and-the-text-package" id="toc-hugging-face-and-the-text-package" class="nav-link active" data-scroll-target="#hugging-face-and-the-text-package"><span class="header-section-number">19.1</span> Hugging Face and the <code>text</code> Package</a>
+  <ul class="collapse">
+<li><a href="#managing-computational-load" id="toc-managing-computational-load" class="nav-link" data-scroll-target="#managing-computational-load"><span class="header-section-number">19.1.1</span> Managing Computational Load</a></li>
+  <li><a href="#choosing-the-right-model" id="toc-choosing-the-right-model" class="nav-link" data-scroll-target="#choosing-the-right-model"><span class="header-section-number">19.1.2</span> Choosing the Right Model</a></li>
+  </ul>
+</li>
+  <li><a href="#dimensionality-reduction" id="toc-dimensionality-reduction" class="nav-link" data-scroll-target="#dimensionality-reduction"><span class="header-section-number">19.2</span> Dimensionality Reduction</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/rimonim/ds4psych/blob/main/contextualized-embeddings.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./contextualized-embeddings.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></a></li></ol></nav><div class="quarto-title">
-<h1 class="title"><span id="sec-contextualized-embeddings" class="quarto-section-identifier"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span></h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./contextualized-embeddings.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Contextualization With Large Language Models</span></a></li></ol></nav><div class="quarto-title">
+<h1 class="title"><span id="sec-contextualized-embeddings" class="quarto-section-identifier"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Contextualization With Large Language Models</span></span></h1>
 </div>
 
 
@@ -369,44 +407,208 @@ div.csl-indent {
   
 
 
-</header><div class="callout callout-style-simple callout-important callout-titled">
+</header><p>The models we discussed in <a href="decontextualized-embeddings.html#sec-word-embeddings" class="quarto-xref"><span>Section 18.3</span></a> represent the meaning of each token as a point in multidimensional space: a word embedding. Word embeddings generated by models like word2vec or GloVe are often referred to as <strong>decontextualized embeddings</strong>. This name is a bit confusing, since as we saw in <a href="decontextualized-embeddings.html#sec-word-embeddings" class="quarto-xref"><span>Section 18.3</span></a>, the whole point of those models is to associate tokens with the contexts in which they tend to appear. A better name might be <em>average context embeddings</em>, since the best they can hope to represent is the average of the contexts in which a token appears throughout the training corpus. For example, consider the following uses of the token “short”.</p>
+<blockquote class="blockquote">
+<p>My dad is very <em>short</em>.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>My blender broke because of a <em>short</em> circuit.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>That video was anything but <em>short</em>.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>I can’t pay because I’m <em>short</em> on cash at the moment.</p>
+</blockquote>
+<p>Any speaker of English can easily see that the word “short” means something different in each one of these examples. But because word2vec and similar models are trained to predict the context based on only a single word at a time, their representation of the word <em>short</em> will only capture that word’s average meaning.</p>
+<p>How can we move beyond the average meaning and capture the different meanings words take on in different contexts? You are probably already familiar with Large Language Models (LLMs) like ChatGPT and Claude. At their core, much of what these models do is exactly this: They find the intricate relationships between tokens in a text and use them to develop a new understanding of what these tokens mean in the particular context of that text. For this reason, embeddings produced by these models are often referred to as <strong>contextualized embeddings</strong>.</p>
+<p>Even if you are familiar with ChatGPT, you may not have realized that it uses embeddings. What do embeddings have to do with generating text? The core of all modern LLMs is a model called the <em>transformer</em>. We will not cover exactly how transformers work—for an intuitive introduction, see <a href="https://youtu.be/wjZofJX0v4M?si=Jx0fvQns3nqukk6e">3blue1brown’s video explanation</a>. For the purposes of this book, all you need to know is this: Transformers start by converting all the words in a text into word embeddings, just like word2vec or GloVe. At the start, these word embeddings represent the average meaning of each word. The transformer then estimates how each word in the text might be relevant for better understanding the meaning of the other words. For example, if “circuit” appears right after “short”, the embedding of “short” should probably be tweaked. Once it has identified this connection, the transformer computes what “circuit” should add to a word that it is associated with, moving the “short” embedding closer to embeddings for electrical concepts. A full LLM has many <em>layers</em>. In each layer, the LLM identifies more connections between embeddings and shifts the embeddings in the vector space to add more nuance to their representations. When it gets to the final layer, the LLM uses the enriched embeddings of the words in the text for whatever task it was trained to do (e.g.&nbsp;predicting what the next word will be, or identifying whether the text is spam or not).</p>
+<p>Even though LLMs can be extremely complex and capture many nonlinear relationships between concepts, the transformer architecture forces them to organize their embeddings in a roughly linear space in which each direction has a consistent meaning—a critical property for analyzing embeddings with cosine similarity and other straightforward methods. In order to extract an LLM’s rich, contextualized embeddings, all we need to do is run it on a text and stop it before it finishes predicting the next word (or whatever else it was trained to do). This way, we can read the LLM’s mind, capturing all of the rich associations it has with the text.</p>
+<section id="hugging-face-and-the-text-package" class="level2" data-number="19.1"><h2 data-number="19.1" class="anchored" data-anchor-id="hugging-face-and-the-text-package">
+<span class="header-section-number">19.1</span> Hugging Face and the <code>text</code> Package</h2>
+<p>Leading commercial LLMs like GPT-4 are hidden behind APIs so that their inner workings are kept secret. We therefore cannot access the embeddings of these high profile models. Nevertheless, plenty of models that are almost as good are open source and easily accessible through <a href="https://huggingface.co/docs/transformers/index">Hugging Face Transformers</a>. New open source models are added to Hugging Face every day, often by leading companies like Google and Meta. Any text-based transformer model can be accessed in R using the <a href="https://r-text.org"><code>text</code></a> package <span class="citation" data-cites="kjell_etal_2021">(<a href="#ref-kjell_etal_2021" role="doc-biblioref">Kjell et al., 2021</a>)</span>. The <code>text</code> package makes running models and extracting embeddings easy even for those of us who barely understand how the models work.</p>
+<p>The <code>text</code> package runs Python code behind the scenes, so you will have to set up a Python environment for it to run properly. For instructions on how to do this, see <a href="https://www.r-text.org/articles/huggingface_in_r_extended_installation_guide.html">here</a>. Once you have the package installed and working, you can begin generating contextualized embeddings for texts with the <code><a href="https://r-text.org/reference/textEmbed.html">textEmbed()</a></code> function. Let’s use the second to last layer of the <a href="https://huggingface.co/sentence-transformers/all-MiniLM-L12-v2"><code>all-MiniLM-L12-v2</code></a> model to embed the Hippocorpus texts as 384-dimensional vectors. Since the model includes preprocessing and tokenization built in, we can feed it the raw texts as a character vector. By default, <code><a href="https://r-text.org/reference/textEmbed.html">textEmbed()</a></code> creates the full text embedding by averaging the contextualized embeddings of each token in the text. This aggregation can take some time (especially for long texts like the Hippocorpus stories), so here we’ll just use the embedding of the <code>[CLS]</code> (classification) token. The <code>[CLS]</code> token is a special token that models based on <a href="https://jalammar.github.io/illustrated-bert/">BERT</a> add to each text. Because the <code>[CLS]</code> token does not have a “real” meaning, but rather is inserted at the same place in every text, its contextualized embedding represents the gist of each text as a whole. In training, BERT models use the contextualized embedding of the <code>[CLS]</code> token to predict whether a given text does or does not come after the input text. This makes it a good general use embedding for when aggregating across all tokens is too time-consuming<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Even when the output is limited to the <code>[CLS]</code> token, <code><a href="https://r-text.org/reference/textEmbed.html">textEmbed()</a></code> can take a few hours to run.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-text.org/">text</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># full texts (as character vector)</span></span>
+<span><span class="va">hippocorpus_texts</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_df</span><span class="op">$</span><span class="va">story</span></span>
+<span></span>
+<span><span class="co"># embed the texts</span></span>
+<span><span class="va">hippocorpus_sbert</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-text.org/reference/textEmbed.html">textEmbed</a></span><span class="op">(</span></span>
+<span>  <span class="va">hippocorpus_texts</span>,</span>
+<span>  model <span class="op">=</span> <span class="st">"sentence-transformers/all-MiniLM-L12-v2"</span>, <span class="co"># model name</span></span>
+<span>  layers <span class="op">=</span> <span class="op">-</span><span class="fl">2</span>,  <span class="co"># second to last layer (default)</span></span>
+<span>  tokens_select <span class="op">=</span> <span class="st">"[CLS]"</span>, <span class="co"># use only [CLS] token</span></span>
+<span>  dim_name <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  keep_token_embeddings <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># text embeddings as dataframe</span></span>
+<span><span class="va">hippocorpus_sbert</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_sbert</span><span class="op">$</span><span class="va">texts</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>ID <span class="op">=</span> <span class="va">hippocorpus_df</span><span class="op">$</span><span class="va">AssignmentId</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># rejoin other variables</span></span>
+<span><span class="va">hippocorpus_sbert</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_df</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">rename</span><span class="op">(</span>ID <span class="op">=</span> <span class="va">AssignmentId</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">left_join</span><span class="op">(</span><span class="va">hippocorpus_sbert</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="managing-computational-load" class="level3" data-number="19.1.1"><h3 data-number="19.1.1" class="anchored" data-anchor-id="managing-computational-load">
+<span class="header-section-number">19.1.1</span> Managing Computational Load</h3>
+<p>Running large neural networks on your personal computer can be time consuming at best. At worst, your computer runs out of memory and your R session crashes. If you are having problems like these, here are some ways you might lessen the computational load when calling <code><a href="https://r-text.org/reference/textEmbed.html">textEmbed()</a></code>:</p>
+<ul>
+<li>Use a smaller model. Hugging Face model pages generally state how many parameters the model has. This is generally a good indication of how much computational capacity the model needs. For example, consider using <code>distilbert-base-uncased</code> (67M params) or <code>albert-base-v2</code> (11.8M params) instead of <code>bert-base-uncased</code> (110M params).</li>
+<li>Make sure you are asking for only one layer at a time (e.g.&nbsp;<code>layers = -2</code>).</li>
+<li>If you do not need individual token embeddings, set <code>keep_token_embeddings = FALSE</code>.</li>
+<li>To avoid aggregation costs, only ask for individual token embeddings (e.g.&nbsp;<code>tokens_select = "[CLS]"</code>). Not every model uses <code>CLS</code>. make sure that you specify a token that is used by the model you are running—If you’re not sure which special tokens your model uses, try embedding a single text with <code>tokens_select = NULL</code> and <code>keep_token_embeddings = TRUE</code>, and examining the results.</li>
+<li>Run the model on your GPU with <code>device = 'gpu'</code> (not available for Apple M1 and M2 chips).</li>
+<li>If running the full dataset at once is too much for you or your computer, you can break it up into smaller groups of texts, run each on its own, and join them back together afterward.</li>
+</ul>
+<p>Before you run <code><a href="https://r-text.org/reference/textEmbed.html">textEmbed()</a></code> on your full dataset, always try running it on two or three texts first. This way, you can get a sense of how long it will take, and make sure that the output is to your liking.</p>
+</section><section id="choosing-the-right-model" class="level3" data-number="19.1.2"><h3 data-number="19.1.2" class="anchored" data-anchor-id="choosing-the-right-model">
+<span class="header-section-number">19.1.2</span> Choosing the Right Model</h3>
+<p>New LLMs are published on Hugging Face every day, and choosing one for your research can be daunting. Part of the beauty of LLMs is their ability to generalize—most popular models nowadays are trained on enormous datasets with a wide variety of content, and even the smaller models perform more than well enough to capture straightforward psychological concepts like emotional valence <span class="citation" data-cites="kjell_etal_2022">(<a href="#ref-kjell_etal_2022" role="doc-biblioref">Kjell et al., 2022</a>)</span>. Even if your model isn’t perfect on every text, research generally relies on statistical patterns, so if your sample size is large enough, it shouldn’t matter. Even with that disclaimer, we can give a few recommendations:</p>
+<ul>
+<li>
+<a href="https://huggingface.co/google-bert/bert-base-uncased">BERT</a> <span class="citation" data-cites="devlin_etal_2019">(<a href="#ref-devlin_etal_2019" role="doc-biblioref">Devlin et al., 2019</a>)</span> and <a href="https://huggingface.co/distilbert/distilbert-base-uncased">DistilBERT</a> <span class="citation" data-cites="sanh_etal_2020">(<a href="#ref-sanh_etal_2020" role="doc-biblioref">Sanh et al., 2020</a>)</span> models are reliable and well-studied. The BERT architecture was designed to be applicable to various tasks (not just next-word prediction, like GPT models), so it is likely to generalize well to whatever you need it for. Also, they use the <code>[CLS]</code> token, which provides a good general-purpose embedding for cases in which aggregating all token embeddings is too computationally demanding.</li>
+<li>
+<a href="https://huggingface.co/FacebookAI/roberta-base">RoBERTa</a> <span class="citation" data-cites="liu_etal_2019">(<a href="#ref-liu_etal_2019" role="doc-biblioref">Liu et al., 2019</a>)</span> is a refined version of BERT that is known to perform better in identifying personal characteristics of the author of a text. <span class="citation" data-cites="ganesan_etal_2021">Ganesan et al. (<a href="#ref-ganesan_etal_2021" role="doc-biblioref">2021</a>)</span> found that embeddings from the second to last layer of RoBERTa (averaged across tokens) outperformed BERT, <a href="https://huggingface.co/xlnet/xlnet-base-cased">XLNet</a>, and <a href="https://huggingface.co/openai-community/gpt2">GPT-2</a> on predicting gender, age, income, openness, extraversion, and suicide risk from social media posts and student essays. <span class="citation" data-cites="matero_etal_2022">Matero et al. (<a href="#ref-matero_etal_2022" role="doc-biblioref">2022</a>)</span> likewise found that RoBERTa was better than other models at predicting depression, and specifically recommended layer 19 when using the <code>roberta-large</code> model. <a href="https://huggingface.co/distilbert/distilroberta-base">DistilRoBERTa</a> is a lightweight alternative with only slightly worse performance <span class="citation" data-cites="matero_etal_2022">(<a href="#ref-matero_etal_2022" role="doc-biblioref">Matero et al., 2022</a>)</span>, and <a href="https://huggingface.co/docs/transformers/en/model_doc/xlm-roberta">XLM-RoBERTa</a> is favored for analysis of non-English texts. RoBERTa models use the <code>&lt;s&gt;</code> (start) token instead of <code>[CLS]</code>. Nevertheless since RoBERTa is not generally trained on next sentence prediction, the behavior of the <code>&lt;s&gt;</code> will depend on the way the particular model you are using was trained.</li>
+<li>
+<a href="https://huggingface.co/mental/mental-roberta-base">MentalRoBERTa</a> <span class="citation" data-cites="ji_etal_2021">(<a href="#ref-ji_etal_2021" role="doc-biblioref">Ji et al., 2021</a>)</span> is a version of RoBERTa that was fine-tuned on posts from Reddit communities dealing with mental health issues (e.g.&nbsp;r/depression, r/SuicideWatch, r/Anxiety).</li>
+<li>
+<a href="https://www.sbert.net/docs/pretrained_models.html">SBERT</a>: Word2vec, GloVe, and related models (<a href="decontextualized-embeddings.html#sec-word-embeddings" class="quarto-xref"><span>Section 18.3</span></a>) have architectures that guarantee vector spaces with consistent geometric properties, allowing researchers to confidently compute averages between vectors and interpret linear directions as encoding unique semantic meanings <span class="citation" data-cites="ethayarajh_etal_2019">(<a href="#ref-ethayarajh_etal_2019" role="doc-biblioref">Ethayarajh et al., 2019</a>)</span>. In contrast, the ways that LLMs organize meaning in their embedding spaces are not well understood and may not always lend themselves to simple measures like those described in this book <span class="citation" data-cites="cai_etal_2021 li_etal_2020 reif_etal_2019">(<a href="#ref-cai_etal_2021" role="doc-biblioref">Cai et al., 2021</a>; <a href="#ref-li_etal_2020" role="doc-biblioref">Li et al., 2020</a>; <a href="#ref-reif_etal_2019" role="doc-biblioref">Reif et al., 2019</a>)</span>. Some researchers have tried to fix this problem by creating models that encourage embeddings to spread out evenly in the embedding space, or that explicitly optimize for reliable cosine similarity metrics. One popular line of such models is <a href="https://www.sbert.net/docs/pretrained_models.html">SBERT</a>. These models, including <a href="https://huggingface.co/sentence-transformers/all-MiniLM-L12-v2"><code>all-MiniLM-L12-v2</code></a>, which we use here, have been demonstrated to work well for directional measures like cosine similarity.</li>
+</ul></section></section><section id="dimensionality-reduction" class="level2" data-number="19.2"><h2 data-number="19.2" class="anchored" data-anchor-id="dimensionality-reduction">
+<span class="header-section-number">19.2</span> Dimensionality Reduction</h2>
+<p>Some studies suggest that using Principle Component Analysis (PCA; see <a href="decontextualized-embeddings.html#sec-lsa-variations" class="quarto-xref"><span>Section 18.2.1</span></a>) to reduce the dimensionality of a set of contextualized embeddings can help their ability to quantify psychological characteristics. Specifically, <span class="citation" data-cites="ganesan_etal_2021">Ganesan et al. (<a href="#ref-ganesan_etal_2021" role="doc-biblioref">2021</a>)</span> found that reducing RoBERTa embeddings to 64 dimensions using PCA is sometimes better and never worse than using them raw (at least when mapping them to psychological characteristics using machine learning techniques; see <a href="navigating-vectorspace.html#sec-machine-learning-methods" class="quarto-xref"><span>Section 20.2.4</span></a>). This may be because PCA recenters the embeddings and emphasizes the salient differences between the documents of a particular dataset, which are otherwise fairly similar to each other. To reduce the dimensionality of your embeddings, use the function provided here:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># `data`: a dataframe with one embedding per row</span></span>
+<span><span class="co"># `cols`: tidyselect - columns that contain numeric embedding values</span></span>
+<span><span class="co"># `reduce_to`: number of dimensions to keep</span></span>
+<span><span class="co"># `scale`: perform scaling in addition to centering?</span></span>
+<span><span class="va">reduce_dimensionality</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">cols</span>, <span class="va">reduce_to</span>, <span class="va">scale</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="va">in_dat</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">data</span>, <span class="op">{</span><span class="op">{</span> <span class="va">cols</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span></span>
+<span>  <span class="va">pca</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/prcomp.html">prcomp</a></span><span class="op">(</span><span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">in_dat</span>, scale <span class="op">=</span> <span class="va">scale</span>, rank. <span class="op">=</span> <span class="va">reduce_to</span><span class="op">)</span></span>
+<span>  <span class="va">out_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">pca</span><span class="op">$</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html">bind_cols</a></span><span class="op">(</span> <span class="fu">select</span><span class="op">(</span><span class="va">data</span>, <span class="op">-</span><span class="op">{</span><span class="op">{</span> <span class="va">cols</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span>, <span class="va">out_dat</span> <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># reduce dimensionality of SBERT embeddings from 384 to 64</span></span>
+<span><span class="va">hippocorpus_sbert_64d</span> <span class="op">&lt;-</span> <span class="fu">reduce_dimensionality</span><span class="op">(</span></span>
+<span>  <span class="va">hippocorpus_sbert</span>, </span>
+<span>  <span class="va">Dim1</span><span class="op">:</span><span class="va">Dim384</span>, </span>
+<span>  reduce_to <span class="op">=</span> <span class="fl">64</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Dimensionality reduction can also be useful for visualizing your embeddings. Let’s plot our Hippocampus texts by reducing their 768-dimensional embeddings to 2 dimensions that can be mapped to the x and y axis.</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># reduce dimensionality of SBERT embeddings from 384 to 2</span></span>
+<span><span class="va">hippocorpus_sbert_2d</span> <span class="op">&lt;-</span> <span class="fu">reduce_dimensionality</span><span class="op">(</span></span>
+<span>  <span class="va">hippocorpus_bert</span>, </span>
+<span>  <span class="va">Dim1</span><span class="op">:</span><span class="va">Dim384</span>, </span>
+<span>  reduce_to <span class="op">=</span> <span class="fl">2</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># plot</span></span>
+<span><span class="va">hippocorpus_sbert_2d</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">PC1</span>, <span class="va">PC2</span>, color <span class="op">=</span> <span class="va">memType</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">geom_point</span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">.8</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">scale_color_brewer</span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Paired"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Hippocorpus Story Embeddings, Reduced Dimensionality"</span>,</span>
+<span>         color <span class="op">=</span> <span class="st">"Autobiographical\nStory Type"</span>,</span>
+<span>         x <span class="op">=</span> <span class="st">"Principle Component 1"</span>,</span>
+<span>         y <span class="op">=</span> <span class="st">"Principle Component 2"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="contextualized-embeddings_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The first two PCA components are the directions along which the embeddings in the dataset spread out the most. There do seem to be slightly more imagined stories in the bottom right, but otherwise story type seems mostly unrelated to these dimensions. This means that the main ways in which the stories are different from one another are not the ways that imagined, recalled, and retold stories are different from one another. This makes sense—the stories are about all sorts of events, and may even use slightly different dialects of English. The differences that we are interested in are more subtle.</p>
+<hr>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
-<i class="callout-icon"></i>
+<i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-This page is still under construction. Come back soon!
+Advantages of Contextualized Embeddings
 </div>
 </div>
 <div class="callout-body-container callout-body">
-
+<ul>
+<li><strong>Can Represent Multiple Senses of Each Word</strong></li>
+<li>
+<strong>Sensitive to Word Order and Negation:</strong> LLMs can tell the difference between “he’s funny but not smart” and “he’s smart but not funny.”</li>
+</ul>
 </div>
 </div>
-<section id="hugging-face-and-the-text-package" class="level2" data-number="19.1"><h2 data-number="19.1" class="anchored" data-anchor-id="hugging-face-and-the-text-package">
-<span class="header-section-number">19.1</span> Hugging Face and the <code>text</code> Package</h2>
-<p><span class="citation" data-cites="kjell_etal_2021">O. N. E. Kjell et al. (<a href="#ref-kjell_etal_2021" role="doc-biblioref">2021</a>)</span></p>
-<p><span class="citation" data-cites="kjell_etal_2022">O. Kjell et al. (<a href="#ref-kjell_etal_2022" role="doc-biblioref">2022</a>)</span></p>
-</section><section id="distributed-dictionary-representation-ddr" class="level2" data-number="19.2"><h2 data-number="19.2" class="anchored" data-anchor-id="distributed-dictionary-representation-ddr">
-<span class="header-section-number">19.2</span> Distributed Dictionary Representation (DDR)</h2>
-</section><section id="contextualized-construct-representation-ccr" class="level2" data-number="19.3"><h2 data-number="19.3" class="anchored" data-anchor-id="contextualized-construct-representation-ccr">
-<span class="header-section-number">19.3</span> Contextualized Construct Representation (CCR)</h2>
-<p><span class="citation" data-cites="atari_etal_2023">Atari et al. (<a href="#ref-atari_etal_2023" role="doc-biblioref">2023</a>)</span></p>
-</section><section id="correlational-methods" class="level2" data-number="19.4"><h2 data-number="19.4" class="anchored" data-anchor-id="correlational-methods">
-<span class="header-section-number">19.4</span> Correlational Methods</h2>
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Disadvantages of Contextualized Embeddings
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Computationally Expensive</strong></li>
+<li>
+<strong>Mysterious Vector Spaces:</strong> Unlike simple word embedding models (<a href="decontextualized-embeddings.html#sec-word-embeddings" class="quarto-xref"><span>Section 18.3</span></a>), LLMs may sometimes organize embeddings in nonlinear patterns. For example, GPT models tend to arrange their embeddings in a spiral <span class="citation" data-cites="cai_etal_2021">(<a href="#ref-cai_etal_2021" role="doc-biblioref">Cai et al., 2021</a>)</span>. Specialized models like <a href="https://www.sbert.net/docs/pretrained_models.html">SBERT</a> can help with this problem, but are unlikely to solve it entirely.</li>
+</ul>
+</div>
+</div>
+<hr>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
-<div id="ref-atari_etal_2023" class="csl-entry" role="listitem">
-Atari, M., Omrani, A., &amp; Dehghani, M. (2023). <em>Contextualized construct representation: Leveraging psychometric scales to advance theory-driven text analysis</em>. PsyArXiv. <a href="https://doi.org/10.31234/osf.io/m93pd">https://doi.org/10.31234/osf.io/m93pd</a>
+<div id="ref-cai_etal_2021" class="csl-entry" role="listitem">
+Cai, X., Huang, J., Bian, Y., &amp; Church, K. (2021). Isotropy in the contextual embedding space: Clusters and manifolds. <em>International Conference on Learning Representations</em>. <a href="https://openreview.net/forum?id=xYGNO86OWDH">https://openreview.net/forum?id=xYGNO86OWDH</a>
+</div>
+<div id="ref-devlin_etal_2019" class="csl-entry" role="listitem">
+Devlin, J., Chang, M.-W., Lee, K., &amp; Toutanova, K. (2019). <em>BERT: Pre-training of deep bidirectional transformers for language understanding</em>. <a href="https://arxiv.org/abs/1810.04805">https://arxiv.org/abs/1810.04805</a>
+</div>
+<div id="ref-ethayarajh_etal_2019" class="csl-entry" role="listitem">
+Ethayarajh, K., Duvenaud, D., &amp; Hirst, G. (2019). <em>Towards understanding linear word analogies</em>. <a href="https://arxiv.org/abs/1810.04882">https://arxiv.org/abs/1810.04882</a>
+</div>
+<div id="ref-ganesan_etal_2021" class="csl-entry" role="listitem">
+Ganesan, A., Matero, M., Ravula, A. R., Vu, H., &amp; Schwartz, H. A. (2021). Empirical evaluation of pre-trained transformers for human-level NLP: The role of sample size and dimensionality. <em>Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</em>. <a href="https://doi.org/10.18653/v1/2021.naacl-main.357">https://doi.org/10.18653/v1/2021.naacl-main.357</a>
+</div>
+<div id="ref-ji_etal_2021" class="csl-entry" role="listitem">
+Ji, S., Zhang, T., Ansari, L., Fu, J., Tiwari, P., &amp; Cambria, E. (2021). <em>MentalBERT: Publicly available pretrained language models for mental healthcare</em>. <a href="https://arxiv.org/abs/2110.15621">https://arxiv.org/abs/2110.15621</a>
 </div>
 <div id="ref-kjell_etal_2021" class="csl-entry" role="listitem">
-Kjell, O. N. E., Giorgi, S., &amp; Schwartz, H. A. (2021). <em>The text-package: An r-package for analyzing and visualizing human language using natural language processing and deep learning</em>. PsyArXiv. <a href="https://doi.org/10.31234/osf.io/293kt">https://doi.org/10.31234/osf.io/293kt</a>
+Kjell, O., Giorgi, S., &amp; Schwartz, H. A. (2021). <em>The text-package: An r-package for analyzing and visualizing human language using natural language processing and deep learning</em>. PsyArXiv. <a href="https://doi.org/10.31234/osf.io/293kt">https://doi.org/10.31234/osf.io/293kt</a>
 </div>
 <div id="ref-kjell_etal_2022" class="csl-entry" role="listitem">
 Kjell, O., Sikström, S., Kjell, K., &amp; Schwartz, H. (2022). Natural language analyzed with AI-based transformers predict traditional subjective well-being measures approaching the theoretical upper limits in accuracy. <em>Scientific Reports</em>, <em>12</em>, 3918. <a href="https://doi.org/10.1038/s41598-022-07520-w">https://doi.org/10.1038/s41598-022-07520-w</a>
 </div>
+<div id="ref-li_etal_2020" class="csl-entry" role="listitem">
+Li, B., Zhou, H., He, J., Wang, M., Yang, Y., &amp; Li, L. (2020). <em>On the sentence embeddings from pre-trained language models</em>. <a href="https://arxiv.org/abs/2011.05864">https://arxiv.org/abs/2011.05864</a>
 </div>
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+<div id="ref-liu_etal_2019" class="csl-entry" role="listitem">
+Liu, Y., Ott, M., Goyal, N., Du, J., Joshi, M., Chen, D., Levy, O., Lewis, M., Zettlemoyer, L., &amp; Stoyanov, V. (2019). <em>RoBERTa: A robustly optimized BERT pretraining approach</em>. <a href="https://arxiv.org/abs/1907.11692">https://arxiv.org/abs/1907.11692</a>
+</div>
+<div id="ref-matero_etal_2022" class="csl-entry" role="listitem">
+Matero, M., Hung, A., &amp; Schwartz, H. A. (2022). <em>Evaluating contextual embeddings and their extraction layers for depression assessment</em>. <a href="https://arxiv.org/abs/2112.13795">https://arxiv.org/abs/2112.13795</a>
+</div>
+<div id="ref-reif_etal_2019" class="csl-entry" role="listitem">
+Reif, E., Yuan, A., Wattenberg, M., Viegas, F. B., Coenen, A., Pearce, A., &amp; Kim, B. (2019). Visualizing and measuring the geometry of BERT. In H. Wallach, H. Larochelle, A. Beygelzimer, F. dAlché-Buc, E. Fox, &amp; R. Garnett (Eds.), <em>Advances in neural information processing systems</em> (Vol. 32). Curran Associates, Inc. <a href="https://proceedings.neurips.cc/paper_files/paper/2019/file/159c1ffe5b61b41b3c4d8f4c2150f6c4-Paper.pdf">https://proceedings.neurips.cc/paper_files/paper/2019/file/159c1ffe5b61b41b3c4d8f4c2150f6c4-Paper.pdf</a>
+</div>
+<div id="ref-reimers_gurevych_2019" class="csl-entry" role="listitem">
+Reimers, N., &amp; Gurevych, I. (2019). Sentence-<span>BERT</span>: Sentence embeddings using <span>S</span>iamese <span>BERT</span>-networks. In K. Inui, J. Jiang, V. Ng, &amp; X. Wan (Eds.), <em>Proceedings of the 2019 conference on empirical methods in natural language processing and the 9th international joint conference on natural language processing (EMNLP-IJCNLP)</em> (pp. 3982–3992). Association for Computational Linguistics. <a href="https://doi.org/10.18653/v1/D19-1410">https://doi.org/10.18653/v1/D19-1410</a>
+</div>
+<div id="ref-sanh_etal_2020" class="csl-entry" role="listitem">
+Sanh, V., Debut, L., Chaumond, J., &amp; Wolf, T. (2020). <em>DistilBERT, a distilled version of BERT: Smaller, faster, cheaper and lighter</em>. <a href="https://arxiv.org/abs/1910.01108">https://arxiv.org/abs/1910.01108</a>
+</div>
+</div>
+</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1"><p>Nevertheless, using <code>[CLS]</code> embeddings is slightly inferior to averaging the contextualized embeddings across tokens <span class="citation" data-cites="reimers_gurevych_2019">(<a href="#ref-reimers_gurevych_2019" role="doc-biblioref">Reimers &amp; Gurevych, 2019</a>)</span>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");

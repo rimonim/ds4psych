@@ -18,6 +18,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 /* CSS for citations */
 div.csl-bib-body { }
 div.csl-entry {
@@ -293,7 +327,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./contextualized-embeddings.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Contextualization With Large Language Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -347,18 +381,23 @@ div.csl-indent {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#sec-parallelograms" id="toc-sec-parallelograms" class="nav-link active" data-scroll-target="#sec-parallelograms"><span class="header-section-number">20.1</span> Parallelograms</a></li>
-  <li>
-<a href="#sec-advanced-similarity" id="toc-sec-advanced-similarity" class="nav-link" data-scroll-target="#sec-advanced-similarity"><span class="header-section-number">20.2</span> Advanced Similarity Measures</a>
+<li>
+<a href="#representing-psychological-constructs" id="toc-representing-psychological-constructs" class="nav-link active" data-scroll-target="#representing-psychological-constructs"><span class="header-section-number">20.1</span> Representing Psychological Constructs</a>
   <ul class="collapse">
-<li><a href="#dot-product" id="toc-dot-product" class="nav-link" data-scroll-target="#dot-product"><span class="header-section-number">20.2.1</span> Dot Product</a></li>
-  <li><a href="#jaccard-similarity" id="toc-jaccard-similarity" class="nav-link" data-scroll-target="#jaccard-similarity"><span class="header-section-number">20.2.2</span> Jaccard similarity</a></li>
-  <li><a href="#mutual-information" id="toc-mutual-information" class="nav-link" data-scroll-target="#mutual-information"><span class="header-section-number">20.2.3</span> Mutual Information</a></li>
-  <li><a href="#jensenshannon-divergence" id="toc-jensenshannon-divergence" class="nav-link" data-scroll-target="#jensenshannon-divergence"><span class="header-section-number">20.2.4</span> Jensen–Shannon divergence</a></li>
+<li><a href="#distributed-dictionary-representation-ddr" id="toc-distributed-dictionary-representation-ddr" class="nav-link" data-scroll-target="#distributed-dictionary-representation-ddr"><span class="header-section-number">20.1.1</span> Distributed Dictionary Representation (DDR)</a></li>
+  <li><a href="#contextualized-construct-representation-ccr" id="toc-contextualized-construct-representation-ccr" class="nav-link" data-scroll-target="#contextualized-construct-representation-ccr"><span class="header-section-number">20.1.2</span> Contextualized Construct Representation (CCR)</a></li>
+  <li><a href="#correlational-methods" id="toc-correlational-methods" class="nav-link" data-scroll-target="#correlational-methods"><span class="header-section-number">20.1.3</span> Correlational Methods</a></li>
   </ul>
 </li>
-  <li><a href="#sec-dimension-projection" id="toc-sec-dimension-projection" class="nav-link" data-scroll-target="#sec-dimension-projection"><span class="header-section-number">20.3</span> Dimension Projection</a></li>
-  <li><a href="#sec-machine-learning-methods" id="toc-sec-machine-learning-methods" class="nav-link" data-scroll-target="#sec-machine-learning-methods"><span class="header-section-number">20.4</span> Machine Learning Methods</a></li>
+  <li>
+<a href="#reasoning-in-vector-space-beyond-cosine-similarity" id="toc-reasoning-in-vector-space-beyond-cosine-similarity" class="nav-link" data-scroll-target="#reasoning-in-vector-space-beyond-cosine-similarity"><span class="header-section-number">20.2</span> Reasoning in Vector Space: Beyond Cosine Similarity</a>
+  <ul class="collapse">
+<li><a href="#sec-parallelograms" id="toc-sec-parallelograms" class="nav-link" data-scroll-target="#sec-parallelograms"><span class="header-section-number">20.2.1</span> Parallelograms</a></li>
+  <li><a href="#sec-advanced-similarity" id="toc-sec-advanced-similarity" class="nav-link" data-scroll-target="#sec-advanced-similarity"><span class="header-section-number">20.2.2</span> Advanced Similarity Measures</a></li>
+  <li><a href="#sec-dimension-projection" id="toc-sec-dimension-projection" class="nav-link" data-scroll-target="#sec-dimension-projection"><span class="header-section-number">20.2.3</span> Semantic Projection</a></li>
+  <li><a href="#sec-machine-learning-methods" id="toc-sec-machine-learning-methods" class="nav-link" data-scroll-target="#sec-machine-learning-methods"><span class="header-section-number">20.2.4</span> Machine Learning Methods</a></li>
+  </ul>
+</li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/rimonim/ds4psych/blob/main/navigating-vectorspace.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -391,33 +430,178 @@ This page is still under construction. Come back soon!
 </div>
 </div>
 <p><span class="citation" data-cites="gunther_etal_2019">Günther et al. (<a href="#ref-gunther_etal_2019" role="doc-biblioref">2019</a>)</span></p>
-<section id="sec-parallelograms" class="level2" data-number="20.1"><h2 data-number="20.1" class="anchored" data-anchor-id="sec-parallelograms">
-<span class="header-section-number">20.1</span> Parallelograms</h2>
+<section id="representing-psychological-constructs" class="level2" data-number="20.1"><h2 data-number="20.1" class="anchored" data-anchor-id="representing-psychological-constructs">
+<span class="header-section-number">20.1</span> Representing Psychological Constructs</h2>
+<p>In <a href="decontextualized-embeddings.html" class="quarto-xref"><span>Chapter 18</span></a> we measured the surprise in texts by comparing their embeddings to that of a single word: “surprised”.</p>
+<section id="distributed-dictionary-representation-ddr" class="level3" data-number="20.1.1"><h3 data-number="20.1.1" class="anchored" data-anchor-id="distributed-dictionary-representation-ddr">
+<span class="header-section-number">20.1.1</span> Distributed Dictionary Representation (DDR)</h3>
+<p>Now that we have contextualized embeddings for the Hippocorpus texts, how can we use them to test the hypothesis that true autobiographical stories include more surprise than imagined stories?</p>
+<p><span class="citation" data-cites="garten_etal_2018">Garten et al. (<a href="#ref-garten_etal_2018" role="doc-biblioref">2018</a>)</span></p>
+<ul>
+<li>weight word embeddings by frequency in a corpus?
+<ul>
+<li>since word vector magnitudes reflect informativeness <span class="citation" data-cites="schakel_wilson_2015 oyama_etal_2023">(<a href="#ref-oyama_etal_2023" role="doc-biblioref">Oyama et al., 2023</a>; <a href="#ref-schakel_wilson_2015" role="doc-biblioref">Schakel &amp; Wilson, 2015</a>)</span>, averaging the embeddings of a text automatically controls for word frequency, similar to TF-IDF weighting (since more frequent words tend to be less informative) <span class="citation" data-cites="ethayarajh_etal_2019">(<a href="#ref-ethayarajh_etal_2019" role="doc-biblioref">Ethayarajh et al., 2019</a>)</span>. This is not true in a dictionary.</li>
+</ul>
+</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># load surprise dictionary</span></span>
+<span><span class="va">surprise_dict</span> <span class="op">&lt;-</span> <span class="fu">quanteda.sentiment</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/quanteda.sentiment/man/data_dictionary_NRC.html">data_dictionary_NRC</a></span><span class="op">[</span><span class="st">"surprise"</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># estimate frequency of dictionary words</span></span>
+<span><span class="va">surprise_dict_freqs</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_dfm</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dfm_keep</span><span class="op">(</span><span class="va">surprise_dict</span><span class="op">$</span><span class="va">surprise</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">quanteda.textstats</span><span class="fu">::</span><span class="fu"><a href="https://quanteda.io/reference/textstat_frequency.html">textstat_frequency</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="va">feature</span>, <span class="va">frequency</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># word2vec embeddings of dictionary words</span></span>
+<span><span class="va">surprise_ddr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">word2vec_mod</span>, <span class="va">surprise_dict</span><span class="op">$</span><span class="va">surprise</span>, type <span class="op">=</span> <span class="st">"embedding"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">as_tibble</span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"feature"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">left_join</span><span class="op">(</span><span class="va">surprise_dict_freqs</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">replace_na</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>frequency <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; Warning: The `x` argument of `as_tibble.matrix()` must have unique column names if
+#&gt; `.name_repair` is omitted as of tibble 2.0.0.
+#&gt; ℹ Using compatibility `.name_repair`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; Joining with `by = join_by(feature)`</code></pre>
+</div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># average dictionary embedding (weighted by frequency)</span></span>
+<span><span class="va">surprise_ddr</span> <span class="op">&lt;-</span> <span class="va">surprise_ddr</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">summarise</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="va">V1</span><span class="op">:</span><span class="va">V300</span>, <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/stats/weighted.mean.html">weighted.mean</a></span><span class="op">(</span><span class="va">.x</span>, <span class="va">frequency</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="va">V1</span><span class="op">:</span><span class="va">V300</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># document embeddings</span></span>
+<span><span class="va">hippocorpus_word2vec</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_dfm</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">textstat_embedding</span><span class="op">(</span><span class="va">word2vec_mod</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># score documents by surprise</span></span>
+<span><span class="va">hippocorpus_surprise_ddr</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_word2vec</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">rowwise</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    surprise <span class="op">=</span> <span class="fu">cos_sim</span><span class="op">(</span><span class="fu">c_across</span><span class="op">(</span><span class="va">V1</span><span class="op">:</span><span class="va">V300</span><span class="op">)</span>, <span class="va">surprise_ddr</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">V1</span><span class="op">:</span><span class="va">V300</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># rejoin docvars</span></span>
+<span><span class="va">hippocorpus_surprise_ddr</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_surprise_ddr</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">bind_cols</span><span class="op">(</span><span class="fu">docvars</span><span class="op">(</span><span class="va">hippocorpus_corp</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">surprise_mod_ddr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">surprise</span> <span class="op">~</span> <span class="va">memType</span>, <span class="va">hippocorpus_surprise_ddr</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">surprise_mod_ddr</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; lm(formula = surprise ~ memType, data = hippocorpus_surprise_ddr)
+#&gt; 
+#&gt; Residuals:
+#&gt;       Min        1Q    Median        3Q       Max 
+#&gt; -0.216732 -0.013010  0.001501  0.014793  0.069393 
+#&gt; 
+#&gt; Coefficients:
+#&gt;                   Estimate Std. Error  t value Pr(&gt;|t|)    
+#&gt; (Intercept)      0.7192923  0.0004246 1694.092  &lt; 2e-16 ***
+#&gt; memTyperecalled -0.0049621  0.0005992   -8.281  &lt; 2e-16 ***
+#&gt; memTyperetold   -0.0054746  0.0007463   -7.336 2.46e-13 ***
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#&gt; 
+#&gt; Residual standard error: 0.02229 on 6851 degrees of freedom
+#&gt; Multiple R-squared:  0.01263,    Adjusted R-squared:  0.01234 
+#&gt; F-statistic: 43.83 on 2 and 6851 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>These results look similar to the ones we got using only the embedding of the word “surprised”: Both recalled and retold stories have <em>less</em> surprise-related language than imagined ones (p &lt; .001).</p>
+</section><section id="contextualized-construct-representation-ccr" class="level3" data-number="20.1.2"><h3 data-number="20.1.2" class="anchored" data-anchor-id="contextualized-construct-representation-ccr">
+<span class="header-section-number">20.1.2</span> Contextualized Construct Representation (CCR)</h3>
+<p><span class="citation" data-cites="atari_etal_2023">Atari et al. (<a href="#ref-atari_etal_2023" role="doc-biblioref">2023</a>)</span></p>
+<p>Adapted from the scale used in <span class="citation" data-cites="choi_choi_2010">D. Choi &amp; Choi (<a href="#ref-choi_choi_2010" role="doc-biblioref">2010</a>)</span> and <span class="citation" data-cites="choi_nisbett_2000">I. Choi &amp; Nisbett (<a href="#ref-choi_nisbett_2000" role="doc-biblioref">2000</a>)</span></p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">surprise_items_pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"I was extremely surprised by the outcome of the event."</span>,</span>
+<span>  <span class="st">"The outcome of the event was extremely interesting."</span>,</span>
+<span>  <span class="st">"The outcome of the event was extremely new."</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">surprise_items_neg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"I was not surprised at all by the outcome of the event."</span>,</span>
+<span>  <span class="st">"The outcome of the event was not interesting at all."</span>,</span>
+<span>  <span class="st">"The outcome of the event was not new at all."</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="correlational-methods" class="level3" data-number="20.1.3"><h3 data-number="20.1.3" class="anchored" data-anchor-id="correlational-methods">
+<span class="header-section-number">20.1.3</span> Correlational Methods</h3>
+<p>i.e.&nbsp;averaging from group in training set</p>
+</section></section><section id="reasoning-in-vector-space-beyond-cosine-similarity" class="level2" data-number="20.2"><h2 data-number="20.2" class="anchored" data-anchor-id="reasoning-in-vector-space-beyond-cosine-similarity">
+<span class="header-section-number">20.2</span> Reasoning in Vector Space: Beyond Cosine Similarity</h2>
+<section id="sec-parallelograms" class="level3" data-number="20.2.1"><h3 data-number="20.2.1" class="anchored" data-anchor-id="sec-parallelograms">
+<span class="header-section-number">20.2.1</span> Parallelograms</h3>
 <p>Introduced with word2vec by <span class="citation" data-cites="mikolov_etal_2013">Mikolov et al. (<a href="#ref-mikolov_etal_2013" role="doc-biblioref">2013</a>)</span></p>
 <p>Glove <span class="citation" data-cites="pennington_etal_2014">(<a href="#ref-pennington_etal_2014" role="doc-biblioref">Pennington et al., 2014</a>)</span> is designed with this property in mind. Transformer models are not.</p>
+<ul>
+<li>Transformer models, including BERT, tend to generate embedding spaces that do not center at zero and which tend to form a narrow cone in the vector space <span class="citation" data-cites="ethayarajh_2019 gao_etal_2019">(<a href="#ref-ethayarajh_2019" role="doc-biblioref">Ethayarajh, 2019</a>; <a href="#ref-gao_etal_2019" role="doc-biblioref">Gao et al., 2019</a>)</span>
+<ul>
+<li>in BERT, token embeddings in the same sentence become more dissimilar to each other in upper layers but are still more similar than randomly sampled words are on average</li>
+<li>BERT aggregated text embeddings perform worse than word2vec and GloVe when analyzed using cosine similarity <span class="citation" data-cites="reimers_gurevych_2019">(<a href="#ref-reimers_gurevych_2019" role="doc-biblioref">Reimers &amp; Gurevych, 2019</a>)</span>, though averaging the embeddings from the last two layers of BERT can improve this <span class="citation" data-cites="li_etal_2020">(<a href="#ref-li_etal_2020" role="doc-biblioref">Li et al., 2020</a>)</span>
+</li>
+</ul>
+static embeddings created by taking the first principal component of a word’s contextualized representations out- perform GloVe and FastText embeddings on many word vector benchmarks <span class="citation" data-cites="ethayarajh_2019">(<a href="#ref-ethayarajh_2019" role="doc-biblioref">Ethayarajh, 2019</a>)</span>
+</li>
+</ul>
+<section id="improving-ccr-with-geometric-reasoning" class="level4" data-number="20.2.1.1"><h4 data-number="20.2.1.1" class="anchored" data-anchor-id="improving-ccr-with-geometric-reasoning">
+<span class="header-section-number">20.2.1.1</span> Improving CCR With Geometric Reasoning</h4>
 <p>In CCR, for example, there’s a difference between agreeing with statements in a questionnaire and actually writing like a questionnaire. How do I know that I’m measuring how anxious/depressed the comments are and not how questionnaire-y they are? Potential workaround: reverse all of the statements in the questionnaire (as for reverse-coded items), add them to the original questionnaire, and get the average embedding of the construct-neutral questionnaire. Then subtract this embedding from the original questionnaire average embedding.</p>
-</section><section id="sec-advanced-similarity" class="level2" data-number="20.2"><h2 data-number="20.2" class="anchored" data-anchor-id="sec-advanced-similarity">
-<span class="header-section-number">20.2</span> Advanced Similarity Measures</h2>
-<section id="dot-product" class="level3" data-number="20.2.1"><h3 data-number="20.2.1" class="anchored" data-anchor-id="dot-product">
-<span class="header-section-number">20.2.1</span> Dot Product</h3>
-</section><section id="jaccard-similarity" class="level3" data-number="20.2.2"><h3 data-number="20.2.2" class="anchored" data-anchor-id="jaccard-similarity">
-<span class="header-section-number">20.2.2</span> Jaccard similarity</h3>
-</section><section id="mutual-information" class="level3" data-number="20.2.3"><h3 data-number="20.2.3" class="anchored" data-anchor-id="mutual-information">
-<span class="header-section-number">20.2.3</span> Mutual Information</h3>
-</section><section id="jensenshannon-divergence" class="level3" data-number="20.2.4"><h3 data-number="20.2.4" class="anchored" data-anchor-id="jensenshannon-divergence">
-<span class="header-section-number">20.2.4</span> Jensen–Shannon divergence</h3>
-</section></section><section id="sec-dimension-projection" class="level2" data-number="20.3"><h2 data-number="20.3" class="anchored" data-anchor-id="sec-dimension-projection">
-<span class="header-section-number">20.3</span> Dimension Projection</h2>
+</section></section><section id="sec-advanced-similarity" class="level3" data-number="20.2.2"><h3 data-number="20.2.2" class="anchored" data-anchor-id="sec-advanced-similarity">
+<span class="header-section-number">20.2.2</span> Advanced Similarity Measures</h3>
+<section id="dot-product" class="level4" data-number="20.2.2.1"><h4 data-number="20.2.2.1" class="anchored" data-anchor-id="dot-product">
+<span class="header-section-number">20.2.2.1</span> Dot Product</h4>
+</section><section id="jaccard-similarity" class="level4" data-number="20.2.2.2"><h4 data-number="20.2.2.2" class="anchored" data-anchor-id="jaccard-similarity">
+<span class="header-section-number">20.2.2.2</span> Jaccard similarity</h4>
+</section><section id="mutual-information" class="level4" data-number="20.2.2.3"><h4 data-number="20.2.2.3" class="anchored" data-anchor-id="mutual-information">
+<span class="header-section-number">20.2.2.3</span> Mutual Information</h4>
+</section><section id="jensenshannon-divergence" class="level4" data-number="20.2.2.4"><h4 data-number="20.2.2.4" class="anchored" data-anchor-id="jensenshannon-divergence">
+<span class="header-section-number">20.2.2.4</span> Jensen–Shannon divergence</h4>
+</section></section><section id="sec-dimension-projection" class="level3" data-number="20.2.3"><h3 data-number="20.2.3" class="anchored" data-anchor-id="sec-dimension-projection">
+<span class="header-section-number">20.2.3</span> Semantic Projection</h3>
 <p><span class="citation" data-cites="grand_etal_2022">Grand et al. (<a href="#ref-grand_etal_2022" role="doc-biblioref">2022</a>)</span></p>
-<p><strong>An example of using dimension projection in research:</strong> <span class="citation" data-cites="simchon_etal_2023">Simchon et al. (<a href="#ref-simchon_etal_2023" role="doc-biblioref">2023</a>)</span> collected 10,000 messages from the <a href="https://www.reddit.com/r/depression">r/depression</a> subreddit, along with a control group of 100 messages each from 100 randomly selected subreddits. They then used a variant of the SBERT model called <code>all-MiniLM-L6-v2</code> to compute CCR embeddings (<a href="contextualized-embeddings.html" class="quarto-xref"><span>Chapter 19</span></a>) of a psychological questionnaire measuring “locus of control,” the feeling that you have control over your own life. The questionnaire included items measuring an internal locus of control (“I have control”), and items measuring an external locus of control (“External forces have control”). Simchon et al.&nbsp;constructed an anchored vector to capture the direction between internal and external locus of control, and projected embeddings of the Reddit posts onto that vector to measure how much each post reflected an internal vs.&nbsp;an external locus of control. They found that posts in r/depression exhibited a more external locus of control than posts in the control group.</p>
-</section><section id="sec-machine-learning-methods" class="level2" data-number="20.4"><h2 data-number="20.4" class="anchored" data-anchor-id="sec-machine-learning-methods">
-<span class="header-section-number">20.4</span> Machine Learning Methods</h2>
+<section id="improving-ccr-with-semantic-projection" class="level4" data-number="20.2.3.1"><h4 data-number="20.2.3.1" class="anchored" data-anchor-id="improving-ccr-with-semantic-projection">
+<span class="header-section-number">20.2.3.1</span> Improving CCR With Semantic Projection</h4>
+<p><strong>An example of using dimension projection and CCR in research:</strong> <span class="citation" data-cites="simchon_etal_2023">Simchon et al. (<a href="#ref-simchon_etal_2023" role="doc-biblioref">2023</a>)</span> collected 10,000 messages from the <a href="https://www.reddit.com/r/depression">r/depression</a> subreddit, along with a control group of 100 messages each from 100 randomly selected subreddits. They then used a variant of SBERT, <code>all-MiniLM-L6-v2</code> (see <a href="contextualized-embeddings.html" class="quarto-xref"><span>Chapter 19</span></a>), to compute CCR embeddings of a psychological questionnaire measuring “locus of control,” the feeling that you have control over your own life. The questionnaire included items measuring an internal locus of control (“I have control”), and items measuring an external locus of control (“External forces have control”). Simchon et al.&nbsp;constructed an anchored vector to capture the direction between internal and external locus of control, and projected embeddings of the Reddit posts onto that vector to measure how much each post reflected an internal vs.&nbsp;an external locus of control. They found that posts in r/depression exhibited a more external locus of control than posts in the control group.</p>
+</section></section><section id="sec-machine-learning-methods" class="level3" data-number="20.2.4"><h3 data-number="20.2.4" class="anchored" data-anchor-id="sec-machine-learning-methods">
+<span class="header-section-number">20.2.4</span> Machine Learning Methods</h3>
+<p><span class="citation" data-cites="kjell_etal_2022">Kjell et al. (<a href="#ref-kjell_etal_2022" role="doc-biblioref">2022</a>)</span></p>
 <p><span class="citation" data-cites="chersoni_etal_2021">Chersoni et al. (<a href="#ref-chersoni_etal_2021" role="doc-biblioref">2021</a>)</span> used partial least squares regression to map distributional embeddings to human-rated semantic features derived from research in cognitive psychology.</p>
+<p>Some research advises using both the <code>[CLS]</code> token and an aggregation of the other token embeddings <span class="citation" data-cites="lee_etal_2023">(<a href="#ref-lee_etal_2023" role="doc-biblioref">Lee et al., 2023</a>)</span></p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-atari_etal_2023" class="csl-entry" role="listitem">
+Atari, M., Omrani, A., &amp; Dehghani, M. (2023). <em>Contextualized construct representation: Leveraging psychometric scales to advance theory-driven text analysis</em>. PsyArXiv. <a href="https://doi.org/10.31234/osf.io/m93pd">https://doi.org/10.31234/osf.io/m93pd</a>
+</div>
 <div id="ref-chersoni_etal_2021" class="csl-entry" role="listitem">
 Chersoni, E., Santus, E., Huang, C.-R., &amp; Lenci, A. (2021). Decoding word embeddings with brain-based semantic features. <em>Computational Linguistics</em>, <em>47</em>(3), 663–698. <a href="https://doi.org/10.1162/coli_a_00412">https://doi.org/10.1162/coli_a_00412</a>
+</div>
+<div id="ref-choi_choi_2010" class="csl-entry" role="listitem">
+Choi, D., &amp; Choi, I. (2010). A comparison of hindsight bias in groups and individuals: The moderating role of plausibility. <em>Journal of Applied Social Psychology</em>, <em>40</em>(2), 325–343. <a href="https://search.ebscohost.com/login.aspx?direct=true&amp;amp;db=sxi&amp;amp;AN=48116256&amp;amp;site=ehost-live">https://search.ebscohost.com/login.aspx?direct=true&amp;amp;db=sxi&amp;amp;AN=48116256&amp;amp;site=ehost-live</a>
+</div>
+<div id="ref-choi_nisbett_2000" class="csl-entry" role="listitem">
+Choi, I., &amp; Nisbett, R. E. (2000). Cultural psychology of surprise: Holistic theories and recognition of contradiction. <em>Journal of Personality and Social Psychology</em>, <em>79</em>(6), 890–905.
+</div>
+<div id="ref-ethayarajh_2019" class="csl-entry" role="listitem">
+Ethayarajh, K. (2019). <em>How contextual are contextualized word representations? Comparing the geometry of BERT, ELMo, and GPT-2 embeddings</em>. <a href="https://arxiv.org/abs/1909.00512">https://arxiv.org/abs/1909.00512</a>
+</div>
+<div id="ref-ethayarajh_etal_2019" class="csl-entry" role="listitem">
+Ethayarajh, K., Duvenaud, D., &amp; Hirst, G. (2019). <em>Towards understanding linear word analogies</em>. <a href="https://arxiv.org/abs/1810.04882">https://arxiv.org/abs/1810.04882</a>
+</div>
+<div id="ref-gao_etal_2019" class="csl-entry" role="listitem">
+Gao, J., He, D., Tan, X., Qin, T., Wang, L., &amp; Liu, T.-Y. (2019). <em>Representation degeneration problem in training natural language generation models</em>. <a href="https://arxiv.org/abs/1907.12009">https://arxiv.org/abs/1907.12009</a>
+</div>
+<div id="ref-garten_etal_2018" class="csl-entry" role="listitem">
+Garten, J., Hoover, J., Johnson, K. M., Boghrati, R., Iskiwitch, C., &amp; Dehghani, M. (2018). Dictionaries and distributions: Combining expert knowledge and large scale textual data content analysis: Distributed dictionary representation. <em>Behavior Research Methods</em>, <em>50</em>, 344–361.
 </div>
 <div id="ref-grand_etal_2022" class="csl-entry" role="listitem">
 Grand, G., Blank, I. A., Pereira, F., &amp; Fedorenko, E. (2022). Semantic projection recovers rich human knowledge of multiple object features from word embeddings. <em>Nature Human Behaviour</em>, <em>6</em>(7), 975–987. <a href="https://doi.org/10.1038/s41562-022-01316-8">https://doi.org/10.1038/s41562-022-01316-8</a>
@@ -425,17 +609,35 @@ Grand, G., Blank, I. A., Pereira, F., &amp; Fedorenko, E. (2022). Semantic proje
 <div id="ref-gunther_etal_2019" class="csl-entry" role="listitem">
 Günther, F., Rinaldi, L., &amp; Marelli, M. (2019). Vector-space models of semantic representation from a cognitive perspective: A discussion of common misconceptions. <em>Perspectives on Psychological Science</em>, <em>14</em>(6), 1006–1033. <a href="https://doi.org/10.1177/1745691619861372">https://doi.org/10.1177/1745691619861372</a>
 </div>
+<div id="ref-kjell_etal_2022" class="csl-entry" role="listitem">
+Kjell, O., Sikström, S., Kjell, K., &amp; Schwartz, H. (2022). Natural language analyzed with AI-based transformers predict traditional subjective well-being measures approaching the theoretical upper limits in accuracy. <em>Scientific Reports</em>, <em>12</em>, 3918. <a href="https://doi.org/10.1038/s41598-022-07520-w">https://doi.org/10.1038/s41598-022-07520-w</a>
+</div>
+<div id="ref-lee_etal_2023" class="csl-entry" role="listitem">
+Lee, K., Choi, G., &amp; Choi, C. (2023). Use all tokens method to improve semantic relationship learning. <em>Expert Systems with Applications</em>, <em>233</em>, 120911. https://doi.org/<a href="https://doi.org/10.1016/j.eswa.2023.120911">https://doi.org/10.1016/j.eswa.2023.120911</a>
+</div>
+<div id="ref-li_etal_2020" class="csl-entry" role="listitem">
+Li, B., Zhou, H., He, J., Wang, M., Yang, Y., &amp; Li, L. (2020). <em>On the sentence embeddings from pre-trained language models</em>. <a href="https://arxiv.org/abs/2011.05864">https://arxiv.org/abs/2011.05864</a>
+</div>
 <div id="ref-mikolov_etal_2013" class="csl-entry" role="listitem">
 Mikolov, T., Yih, W., &amp; Zweig, G. (2013). Linguistic regularities in continuous space word representations. In L. Vanderwende, H. Daumé III, &amp; K. Kirchhoff (Eds.), <em>Proceedings of the 2013 conference of the north <span>A</span>merican chapter of the association for computational linguistics: Human language technologies</em> (pp. 746–751). Association for Computational Linguistics. <a href="https://aclanthology.org/N13-1090">https://aclanthology.org/N13-1090</a>
 </div>
+<div id="ref-oyama_etal_2023" class="csl-entry" role="listitem">
+Oyama, M., Yokoi, S., &amp; Shimodaira, H. (2023). <em>Norm of word embedding encodes information gain</em>. <a href="https://arxiv.org/abs/2212.09663">https://arxiv.org/abs/2212.09663</a>
+</div>
 <div id="ref-pennington_etal_2014" class="csl-entry" role="listitem">
 Pennington, J., Socher, R., &amp; Manning, C. D. (2014). GloVe: Global vectors for word representation. <em>Empirical Methods in Natural Language Processing (EMNLP)</em>, 1532–1543. <a href="http://www.aclweb.org/anthology/D14-1162">http://www.aclweb.org/anthology/D14-1162</a>
+</div>
+<div id="ref-reimers_gurevych_2019" class="csl-entry" role="listitem">
+Reimers, N., &amp; Gurevych, I. (2019). Sentence-<span>BERT</span>: Sentence embeddings using <span>S</span>iamese <span>BERT</span>-networks. In K. Inui, J. Jiang, V. Ng, &amp; X. Wan (Eds.), <em>Proceedings of the 2019 conference on empirical methods in natural language processing and the 9th international joint conference on natural language processing (EMNLP-IJCNLP)</em> (pp. 3982–3992). Association for Computational Linguistics. <a href="https://doi.org/10.18653/v1/D19-1410">https://doi.org/10.18653/v1/D19-1410</a>
+</div>
+<div id="ref-schakel_wilson_2015" class="csl-entry" role="listitem">
+Schakel, A. M. J., &amp; Wilson, B. J. (2015). <em>Measuring word significance using distributed representations of words</em>. <a href="https://arxiv.org/abs/1508.02297">https://arxiv.org/abs/1508.02297</a>
 </div>
 <div id="ref-simchon_etal_2023" class="csl-entry" role="listitem">
 Simchon, A., Hadar, B., &amp; Gilead, M. (2023). A computational text analysis investigation of the relation between personal and linguistic agency. <em>Communications Psychology</em>, 1–9. <a href="https://doi.org/10.1038/s44271-023-00020-1">https://doi.org/10.1038/s44271-023-00020-1</a>
 </div>
 </div>
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -844,8 +1046,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./contextualized-embeddings.html" class="pagination-link" aria-label="Contextualization and Large Language Models">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Contextualization and Large Language Models</span></span>
+      <a href="./contextualized-embeddings.html" class="pagination-link" aria-label="Contextualization With Large Language Models">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Contextualization With Large Language Models</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

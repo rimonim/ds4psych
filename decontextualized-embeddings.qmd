@@ -19,10 +19,6 @@ hippocorpus_dfm <- hippocorpus_corp |>
   dfm_remove("~")
 ```
 
-::: callout-important
-## This page is still under construction. Come back soon!
-:::
-
 ## The Distributional Hypothesis
 
 This textbook assumes that words have psychologically interesting content. For example, certain words are associated with surprise, while others may be associated with concrete thought. But what does it mean for a word to be associated with an emotion or a cognitive process? How do words come to have any meaning at all? One answer: People associate a word with surprise because they often hear it in surprising situations. Because people associate surprise-related words with surprising situations, they use those words more when they are thinking about surprising situations.
@@ -57,7 +53,7 @@ example_words <- c(
   "sad", "miserable", "happy", "furious",
   "ecstatic", "surprised", "depressed", 
   "depression", "manic", "bipolar", "anxious", "nervous"
-)
+  )
 
 example_embeddings <- predict(word2vec_mod, example_words, type = "embedding")
 example_embeddings <- RSpectra::svds(as.matrix(example_embeddings), k = 3, nu = 3, nv = 0)$u
@@ -76,6 +72,7 @@ write_csv(example_embeddings2, "data/example_embeddings2.csv")
 ```
 
 ```{r}
+#| echo: false
 #| output: false
 example_embeddings <- read_csv("data/example_embeddings.csv")
 library(plotly)
@@ -195,7 +192,7 @@ embedding_plot <- ra_posts_raw |>
     geom_hline(
       yintercept = 75,
       linewidth = 1.5
-    ) +
+      ) +
     geom_point() +
     guides(color = "none") +
     colorspace::scale_color_continuous_diverging(
@@ -206,7 +203,7 @@ embedding_plot <- ra_posts_raw |>
     labs(
       title = "Step 3",
       x = "I/me-ness"
-    ) +
+      ) +
     theme_minimal() +
     theme(
       axis.text.y = element_blank(),
@@ -215,17 +212,17 @@ embedding_plot <- ra_posts_raw |>
       panel.grid.minor.y = element_blank(),
       plot.margin = margin(0, 10, 0, 10),
       plot.title = element_text(size = 20, hjust = .5, color = "royalblue4")
-    ) +
+      ) +
     coord_fixed(ylim = c(0, 170))
 
 dfm_plot | right_arrow | raw_plot | right_arrow | embedding_plot
 ```
 
-In this simple example, we started with two dimensions ("I" and "me") and reduced them to one. Our new one-dimensional document embeddings measure how far the document is along the line drawn by the LSA. 
+In this simple example, we started with two dimensions ("I" and "me") and reduced them to one. Our new one-dimensional document embeddings measure how far the document is along the line drawn by the LSA.^[The scale in Step 3 above has been modified for clarity. In reality, the values of LSA embeddings may be scaled down or flipped relative to the original word counts. Since reasoning in vector space relies on relative distances and angles, this change of scale has no effect on measurements.]
 
 If we wanted a second dimension for the embedding space (which would be silly in this example since we only have two dimensions overall), LSA would draw a second line perpendicular to the first---the line of best fit to the spread not accounted for by the first line. In real applications, of course, we'll want to use tens of thousands of features, not two. And the embedding vectors we make might be hundreds of dimensions, not one. Nevertheless, the concept remains the same: Lines through the origin are found that best explain the variance between the documents (note that these lines will all be perpendicular to each other). These lines become the new dimensions: The embedding of a document describes the projection of that document point onto each line.
 
-As part of the process of producing an embedding for each document, LSA also produces an embedding for each _word_. In the simple example above, the new one-dimensional _word embeddings_ of "I" and "me" measure how much influence each word has on the summary line from Step 2. In other words, the embedding of "me" is the rise of the line along the y axis, and the embedding of "I" is the run of the line along the x axis. This is equivalent to asking how much I/me-ness is in "I" or how much I/me-ness is in "me." In a real application with higher dimensional embeddings, the concept remains the same: The LSA embedding of a word describes the weights of that word count on each successive line of best fit.
+As part of the process of producing an embedding for each document, LSA also produces an embedding for each _word_. In the simple example above, the new one-dimensional _word embeddings_ of "I" and "me" measure how much influence each word has on the summary line from Step 2. In other words, the embedding of "me" is the rise of the line along the y axis, and the embedding of "I" is the run of the line along the x axis. This is equivalent to asking how much I/me-ness is in "I" or how much I/me-ness is in "me." In a real application with higher dimensional embeddings, the concept remains the same: The LSA embedding of a word describes the weights of that word count on each successive line of best fit.^[LSA document embeddings are sometimes explained as the sum of LSA word embeddings for each document. Mathematically, this is equivalent to the explanation provided here.]
 
 Performing LSA on a training dataset is made easy with the `textmodel_lsa()` function from the [`quanteda.textmodels`](https://github.com/quanteda/quanteda.textmodels) package. Let's try it on the full DFM from the r/relationship_advice posts, with all 14,897 features instead of just "I" and "me". 
 
@@ -290,7 +287,7 @@ hippocorpus_surprise <- hippocorpus_lsa$docs |>
   rowwise() |> 
   mutate(
     surprise = cos_sim(c_across(V1:V100), surprise_embedding)
-  ) |> 
+    ) |> 
   ungroup()
 
 # rejoin docvars
@@ -337,7 +334,7 @@ ra_posts_centered <- ra_posts_centered %>%
   bind_cols(
     as.data.frame(ra_posts_centered_svd$u),
     project_points_onto_line(c(0, 0), ra_posts_centered_svd$d, .)
-  )
+    )
 
 centered_slope <- ra_posts_centered_svd$d[2]/ra_posts_centered_svd$d[1]
 centered_plot <- ra_posts_centered |> 
@@ -372,7 +369,7 @@ ra_posts_normalized <- ra_posts_normalized %>%
   bind_cols(
     as.data.frame(ra_posts_normalized_svd$u),
     project_points_onto_line(c(0, 0), ra_posts_normalized_svd$d, .)
-  )
+    )
 
 normalized_slope <- ra_posts_normalized_svd$d[2]/ra_posts_normalized_svd$d[1]
 normalized_plot <- ra_posts_normalized |> 
@@ -403,7 +400,9 @@ raw_plot <- raw_plot + labs(title = "Standard\nLSA")
 raw_plot + centered_plot + normalized_plot
 ```
 
-Other problems with LSA are familiar from @sec-word-counting-improvements: For example, LSA can only model linear relationships, but the relationships between word counts are not necessarily linear. In fact, the scatterplots above make it fairly clear that the relationship between the number of "I"s and the number of "we"s in a Reddit post is curved. Similarly, LSA (and SVD in general) works best with normally distributed data [see @rosario_2001], and word counts are anything but normally distributed. Also, standard LSA is sensitive to text length and may not generalize well to a dataset with texts that are much shorter or much longer than the training set. All of these problems can be remedied using the methods discussed in @sec-word-counting-improvements. For example, one might calculate TF-IDF scores (@sec-tfidf) before performing LSA to emphasize topical content. Alternatively, one might perform smoothing (@sec-smoothing) followed by relative tokenization (@sec-relative-tokenization) and the Anscombe transform (@sec-anscombe) to standardize word counts across text length and get them closer to a normal distribution.
+Other problems with LSA are familiar from @sec-word-counting-improvements: For example, LSA can only model linear relationships, but the relationships between word counts are not necessarily linear. In fact, the scatterplots above make it fairly clear that the relationship between the number of "I"s and the number of "we"s in a Reddit post is curved. Similarly, LSA (and SVD in general) works best with normally distributed data [see @rosario_2001], and word counts are anything but normally distributed. Also, standard LSA is sensitive to text length and may not generalize well to a dataset with texts that are much shorter or much longer than the training set. All of these problems can be remedied using the methods discussed in @sec-word-counting-improvements. For example, one might calculate TF-IDF scores (@sec-tfidf) before performing LSA to emphasize topical content. Alternatively, one might perform smoothing (@sec-smoothing) followed by relative tokenization (@sec-relative-tokenization) and the Anscombe transform (@sec-anscombe) to standardize word counts across text length and get them closer to a normal distribution. The original designers of LSA advocated for a transformation similar to TF-IDF which they justified in cognitive terms[^lsa-1] [@landauer_dumais_1997].
+
+[^lsa-1]: Cognitive scientists have long debated the extent to which the way DSMs learn meaning is similar to the way humans learn meaning. For an interesting recent paper in this field, see @kauf_etal_2024.
 
 Another difficulty with LSA is that it relies on documents to define the context of words. This works well if each document only deals with one topic (or emotion), but not so well with documents that include multiple topics. One solution to this (if you have reasonably long texts) is to use a moving _context window_: Extract all segments of, say, 10 words, and use each one as a separate document for training the LSA. This can be accomplished in R by applying the following code to your texts before tokenization:
 
@@ -411,7 +410,7 @@ Another difficulty with LSA is that it relies on documents to define the context
 example_texts <- c(
   "One solution to this is to use a moving context window",
   "extracting all segments of, say, 10 words, and using each one as a separate document for training the LSA."
-)
+  )
 
 # function to split text with moving window
 str_split_window <- function(string, window_size){
@@ -486,9 +485,10 @@ neg_text <- "happy olive jump"
 bind_rows(
   lapply(str_split_1(text1, " ")[1:2], skipgram_df, text1),
   lapply(str_split_1(text1, " ")[1:2], skipgram_df, neg_text)
-) |> mutate(
-  neighbors = rep(c(1,0), each = 6)
-)
+  ) |> 
+  mutate(
+    neighbors = rep(c(1,0), each = 6)
+    )
 ```
 
 The word2vec model takes the first two columns as input and tries to predict whether the two words are neighbors or not. It does this by learning two separate sets of embeddings: word embeddings and context embeddings.
@@ -503,17 +503,17 @@ word_embeddings_df <- example_embeddings2 |>
   mutate(
     across(V1:V5, \(x) as.character(round(x, 2))),
     V3 = "..."
-  ) |> 
+    ) |> 
   add_row(word = "...", V1 = "...", V2 = "...",
           V3 = "...", V4 = "...", V5 = "...") |> 
   pivot_longer(
     V1:V5, 
     names_to = "dim"
-  ) |> 
+    ) |> 
   mutate(
     val_num = as.numeric(value),
     word = factor(word, levels = rev(c(example_embeddings2$word[1:4], "...", example_embeddings2$word[5:7])))
-  )
+    )
 
 word_embeddings <- word_embeddings_df |> 
   ggplot(aes(dim, word, label = value)) +
@@ -528,9 +528,9 @@ word_embeddings <- word_embeddings_df |>
       plot.title = element_text(
         color = "red4", size = 18, 
         hjust = .5, face = "bold"
-      ),
+        ),
       plot.margin = margin(0, 10, 0, 10)
-    )
+      )
 
 set.seed(2024)
 context_embeddings_df <- example_embeddings2 |> 
@@ -539,17 +539,19 @@ context_embeddings_df <- example_embeddings2 |>
     across(V1:V5, \(x) x + rnorm(7, sd = .5)), # fake context embeddings
     across(V1:V5, \(x) as.character(round(x, 2))),
     V3 = "..."
-  ) |> 
-  add_row(word = "...", V1 = "...", V2 = "...",
-          V3 = "...", V4 = "...", V5 = "...") |> 
+    ) |> 
+  add_row(
+    word = "...", V1 = "...", V2 = "...",
+    V3 = "...", V4 = "...", V5 = "..."
+    ) |> 
   pivot_longer(
     V1:V5, 
     names_to = "dim"
-  ) |> 
+    ) |> 
   mutate(
     val_num = as.numeric(value),
     word = factor(word, levels = rev(c(example_embeddings2$word[1:4], "...", example_embeddings2$word[5:7])))
-  )
+    )
 
 context_embeddings <- context_embeddings_df |> 
   ggplot(aes(dim, word, label = value)) +
@@ -564,9 +566,9 @@ context_embeddings <- context_embeddings_df |>
       plot.title = element_text(
         color = "blue4", size = 18, 
         hjust = .5, face = "bold"
-      ),
+        ),
       plot.margin = margin(0, 10, 0, 10)
-    )
+      )
 
 word_embeddings + context_embeddings
 ```
@@ -606,6 +608,7 @@ textstat_embedding <- function(dfm, model){
   feat_embeddings[is.na(feat_embeddings)] <- 0
   # average word embeddings of each document
   out_mat <- (dfm %*% feat_embeddings)/ntoken(dfm)
+  colnames(out_mat) <- paste0("V", 1:ncol(out_mat))
   as_tibble(as.matrix(out_mat), rownames = "doc_id")
 }
 ```
@@ -626,7 +629,7 @@ hippocorpus_surprise_word2vec <- hippocorpus_word2vec |>
   rowwise() |> 
   mutate(
     surprise = cos_sim(c_across(V1:V300), surprise_embedding)
-  ) |> 
+    ) |> 
   ungroup() |> 
   select(-c(V1:V300))
 
@@ -664,7 +667,9 @@ Word2vec produces spectacularly rich and reliable vector embeddings, but their r
 
 [^glove-1]: GloVe is built on the same metric that we used in @sec-dla: relative frequency ratios. Rather than comparing two word frequencies in two groups of texts as we did in that chapter, it instead compares co-occurrence with one word to co-occurrence with another.
 
-Even though GloVe uses a different method of training, the embeddings it generates are very similar to those generated by word2vec. Because GloVe embeddings are so similar to word2vec embeddings, we will not go into detail here about the way the GloVe algorithm works. Nevertheless, GloVe does have one very important advantage over word2vec: Better pretrained models are available online. Whereas the most easily available word2vec model is trained on news, the [GloVe website](https://nlp.stanford.edu/projects/glove/) offers models trained on social media (`glove.twitter.27B.zip`) and on large portions of the Internet (Common Crawl). These models generalize better to social media texts (since they were trained on similar texts) and are likely to have richer representations of emotional or social content, since more examples of that content appear on social media than in the news or on Wikipedia.
+Even though GloVe uses a different method of training, the embeddings it generates are very similar to those generated by word2vec. Because GloVe embeddings are so similar to word2vec embeddings, we will not go into detail here about the way the GloVe algorithm works. Nevertheless, GloVe does have one very important advantage over word2vec: Better pretrained models are available online. Whereas the most easily available word2vec model is trained on news, the [GloVe website](https://nlp.stanford.edu/projects/glove/) offers models trained on social media (`glove.twitter.27B.zip`) and on large portions of the Internet (Common Crawl). These models generalize better to social media texts (since they were trained on similar texts) and are likely to have richer representations of emotional or social content, since more examples of that content appear on social media than in the news or on Wikipedia.[^glove-2]
+
+[^glove-2]: Another notable difference between GloVe and word2vec is that the GLoVe averages the word embeddings and context embeddings rather than using only the word embeddings as word2vec does. This makes GloVe embeddings slightly better at representing overall meaning, but may blur the distinction between conceptual similarity and mental/linguistic association [@torabi-asr_etal_2018].
 
 Since the pretrained GloVe models are available in .txt format, you don't need a wrapper package to use them in R. Simply download the pretrained model, input the path to the file as `path_to_glove`, and run the following code:
 
@@ -680,7 +685,7 @@ glove_pretrained <- read_delim(
   quote = "",
   escape_double = FALSE,
   col_names = c("token", paste0("dim_", 1:dimensions))
-) |> column_to_rownames("token") |> as.matrix()
+  ) |> column_to_rownames("token") |> as.matrix()
 
 # update class to "embeddings" (required for `predict.embeddings` function)
 class(glove_pretrained) <- "embeddings"
