@@ -289,7 +289,7 @@ cos_plot <- personality |>
     geom_point(aes(openness, neuroticism, color = person), size = 4) +
     geom_text(aes(openness + .5, neuroticism + .5, label = person)) +
     scale_color_manual(
-      breaks = c("Elizabeth", "Amos"),
+      breaks = c("Vector A", "Vector B"),
       values = c("forestgreen", "purple")
     ) +
     guides(color = "none") +
@@ -312,7 +312,7 @@ euc_plot <- personality |>
              x = 5, y = 4.1, color = "royalblue", fontface = "bold") +
     geom_text(aes(openness + .7, neuroticism + .5, label = person)) +
     scale_color_manual(
-      breaks = c("Elizabeth", "Amos"),
+      breaks = c("Vector A", "Vector B"),
       values = c("forestgreen", "purple")
     ) +
     guides(color = "none") +

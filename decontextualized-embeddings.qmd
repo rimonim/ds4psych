@@ -138,7 +138,7 @@ It finds the line of best fit that goes through through the origin (0,0)---the l
 ```{r}
 #| echo: false
 library(patchwork)
-source("scripts.R")
+source("vector_scripts.R")
 
 # Arrow
 right_arrow <- ggplot() +
@@ -289,17 +289,31 @@ hippocorpus_surprise <- hippocorpus_lsa$docs |>
     surprise = cos_sim(c_across(V1:V100), surprise_embedding)
     ) |> 
   ungroup()
+```
+
+Since cosine similarity can only be between -1 and 1 (@sec-cosine-similarity), linear regression is an inappropriate statistical model. Instead, we will use logistic regression. This requires us to transform the cosine similarity to range between 0 and 1 before modeling.
+
+```{r}
+#| warning: false
+# transform cosine similarity to stay between 0 and 1
+hippocorpus_surprise <- hippocorpus_surprise |> 
+  mutate(surprise = surprise/2 + 1/2)
 
 # rejoin docvars
 hippocorpus_surprise <- hippocorpus_surprise |> 
   bind_cols(docvars(hippocorpus_corp))
 
-surprise_mod_lsa <- lm(surprise ~ memType, hippocorpus_surprise)
+# logistic regression
+surprise_mod_lsa <- glm(
+  surprise ~ memType, 
+  hippocorpus_surprise, 
+  family = binomial
+  )
 
 summary(surprise_mod_lsa)
 ```
 
-We found a significant difference between recalled and imagined stories (p < .001), such that recalled stories have more surprise-related language! We also found a significant difference between retold and imagined stories (p < .001), such that retold stories have more surprise-related language. Both of these findings replicate the results of @sap_etal_2022.
+We found no significant difference in surprise between recalled and imagined stories, and no significant difference between retold and imagined stories.
 
 ### Variations on LSA {#sec-lsa-variations}
 
@@ -575,7 +589,7 @@ word_embeddings + context_embeddings
 
 For each row of the training set, the model looks up the embedding for the target word and the embedding for the context word, and computes the dot product between the two vectors. The dot product is closely related to the cosine similarity, which we discussed in @sec-cosine-similarity---it measures how similar the two embeddings are. If the dot product is large (i.e. the word embedding and the context embedding are very similar), the model predicts that the two words are likely to be real neighbors. If the dot product is small, the model predicts that the two words were probably sampled at random.[^word2vec-3] During training, the model learns which word embeddings and context embeddings will do best at this binary prediction task.
 
-[^word2vec-3]: Cosine similarity is the dot product of two normalized vectors. In other words, the dot product is the same as cosine similarity, except that it gets larger as the vectors get farther away from the origin. In dot-product-based models like word2vec, the distance of a word vector from the origin (also called the norm or magnitude) is proportional to the informativeness of the word [@schakel_wilson_2015; @oyama_etal_2023]. Therefore, the norm of the embedding measures how representative it is of certain contexts as opposed to others, similar to averaging the TF-IDF of a word across the corpus (@sec-tfidf). This makes intuitive sense, because vectors with a larger norm will result in very positive or very negative dot products, making the model more confident in the pair of words either being neighbors or not. Since the informativeness of words is often irrelevant to analyses of similarity, cosine similarity is used to discount it. Ways to incorporate it in analyses will be discussed in @sec-navigating-vectorspace and @sec-linguistic-complexity.
+[^word2vec-3]: To learn why models like word2vec use dot products instead of cosine similarity, see @sec-embedding-magnitude below.
 
 Notice that word2vec (and fastText and GloVe) give each word two embeddings: one for when the word is the target and another for when it is the context [@goldberg_levy_2014]. This may seem strange, but it actually solves two important problems with LSA: 
 
@@ -616,6 +630,7 @@ textstat_embedding <- function(dfm, model){
 Let's use word2vec embeddings and cosine similarity to reanalyze the Hippocorpus data.
 
 ```{r}
+#| warning: false
 # embedding of the word "surprised"
 surprise_embedding <- predict(word2vec_mod, "surprised", type = "embedding") |> 
   as.vector()
@@ -628,7 +643,9 @@ hippocorpus_word2vec <- hippocorpus_dfm |>
 hippocorpus_surprise_word2vec <- hippocorpus_word2vec |> 
   rowwise() |> 
   mutate(
-    surprise = cos_sim(c_across(V1:V300), surprise_embedding)
+    surprise = cos_sim(c_across(V1:V300), surprise_embedding),
+    # transform cosine similarity to stay between 0 and 1
+    surprise = surprise/2 + 1/2
     ) |> 
   ungroup() |> 
   select(-c(V1:V300))
@@ -637,12 +654,17 @@ hippocorpus_surprise_word2vec <- hippocorpus_word2vec |>
 hippocorpus_surprise_word2vec <- hippocorpus_surprise_word2vec |> 
   bind_cols(docvars(hippocorpus_corp))
 
-surprise_mod_word2vec <- lm(surprise ~ memType, hippocorpus_surprise_word2vec)
+# logistic regression
+surprise_mod_word2vec <- glm(
+  surprise ~ memType, 
+  hippocorpus_surprise_word2vec, 
+  family = binomial
+  )
 
 summary(surprise_mod_word2vec)
 ```
 
-Once again we found a significant difference between recalled and imagined stories (p < .001), but this time in the opposite direction---recalled stories have _less_ surprise-related language! We also found a significant difference between retold and imagined stories (p < .001) such that retold stories have less surprise-related language. These findings seem to go against those of @sap_etal_2022, but stick around for @sec-navigating-vectorspace to learn why they might be misleading.
+Once again we found no significant difference between recalled and imagined stories.
 
 **An example of word2vec in research:** @chatterjee_etal_2023 used word2vec to study the phenomenon of nominative determinism---the purported tendency to chose a profession or city with a first letter that matches the first letter of one's name (e.g. someone named Louis might choose to be a language researcher). They first used a word2vec model trained on Google News to obtain embeddings for 3,410 first names, 508 professions, and 14,856 US cities. They then averaged the embeddings of all names/professions/cities that begin with the same letter to obtain a vector representing names that begin with the letter "A", a vector representing professions that begin with the letter "A", etc. Using cosine similarity, they found that same-letter names and professions (e.g. Albert and Actuary) tend to be more similar than different-letter names and professions (e.g. Albert and Dentist), even when controlling for gender, ethnicity, and frequency. They found a similar pattern for names and cities.
 
@@ -778,5 +800,64 @@ text_vecs <- ft_sentence_vectors(heb_model, heb_texts)
 
 -   **More Complex:** This means larger files to download when using pretrained models. It also increases the risk of overfitting. 
 :::
+
+### Interpreting Advanced Word Embeddings {#sec-embedding-magnitude}
+
+Advanced word embedding algorithms like word2vec, GloVe, and fastText use the dot product of embeddings to measure how likely two words are to appear together. The dot product is the same as cosine similarity, except that it gets larger as the vectors get farther away from the origin (i.e. cosine similarity is the dot product of two normalized vectors). 
+
+```{r}
+dot_prod <- function(x, y){
+  dot <- x %*% y
+  as.vector(dot)
+}
+```
+
+```{r}
+#| echo: false
+library(patchwork)
+
+vec_plot <- function(x, y, subtitle, angle){
+  tibble(
+    vec = c("Vector A", "Vector B"),
+    x = x,
+    y = y
+  ) |> 
+  ggplot() +
+    geom_hline(yintercept = 0, linetype = 2, color = "grey") +
+    geom_vline(xintercept = 0, linetype = 2, color = "grey") +
+    geom_segment(aes(x, y, xend = 0, yend = 0)) +
+    ggforce::geom_arc(
+      aes(x0 = 0, y0 = 0, r = 1/3, start = pi/2, end = angle),
+      linewidth = 2, color = "red4",
+      data = tibble()
+      ) +
+    geom_point(aes(x, y, color = vec), size = 4) +
+    geom_text(aes(x + .2*sign(-x)*if_else(y>0, 1, -1), y + .4, label = vec)) +
+    guides(color = "none") +
+    coord_fixed(xlim = c(-2, 2), ylim = c(-1, 3)) +
+    labs(
+      subtitle = subtitle,
+      x = "", y = ""
+      ) +
+    theme_minimal() +
+    theme(plot.subtitle = element_text(size = 12, hjust = .5, color = "red4", face = "bold"))
+}
+
+dot0_1 <- vec_plot(c(0, 1), c(1, 0), "Cosine Similarity = 0\nDot Product = 0", 0)
+dot0_2 <- vec_plot(c(0, 1), c(2, 0), "Cosine Similarity = 0\nDot Product = 0", 0)
+dot1_1 <- vec_plot(c(sqrt(2)/2, 1), c(sqrt(2)/2, 0), "Cosine Similarity = 0.7\nDot Product = 0.7", pi/4)
+dot1_2 <- vec_plot(c(sqrt(2), 1), c(sqrt(2), 0), "Cosine Similarity = 0.7\nDot Product = 1.4", pi/4)
+dot3_1 <- vec_plot(c(-sqrt(2)/2, 1), c(sqrt(2)/2, 0), "Cosine Similarity = -0.7\nDot Product = -0.7", -pi/4)
+dot3_2 <- vec_plot(c(-sqrt(2), 1), c(sqrt(2), 0), "Cosine Similarity = -0.7\nDot Product = -1.4", -pi/4)
+
+(dot0_1 | dot1_1 | dot3_1) /
+(dot0_2 | dot1_2 | dot3_2)
+```
+
+Recall that in models like word2vec and GloVe, the dot product corresponds to the probability that two words occur together. Vectors with that are farther away from the origin will result in very positive or very negative dot products, making the model more confident in the pair of words either being neighbors or not. This means that the distance of a word embedding from the origin (also called the norm or magnitude) is proportional to the informativeness of the word [@schakel_wilson_2015; @oyama_etal_2023]. Therefore, the magnitude of the embedding measures how representative it is of certain contexts as opposed to others, similar to averaging the TF-IDF of a word across a corpus (@sec-tfidf). 
+
+The fact that the magnitude of a word embedding represents its informativeness is important, because it is the reason why an accurate embedding of a full text can be obtained by averaging the embeddings of each of its words---the embeddings automatically devalue frequent and uninformative words, and emphasize the words that are representative of the text's specific meaning [@ethayarajh_etal_2019].
+
+Once average embeddings are computed, we almost always use cosine similarity to assess the relationships between embeddings. **The cosine similarity measures only the meanings of the two embeddings, while ignoring how specific they are to those meanings.** If the specificity of texts to your construct of interest is important to your analysis, consider using the dot product instead of cosine similarity. For more applications of word embedding magnitude, see @sec-navigating-vectorspace and @sec-linguistic-complexity.
 
 ---

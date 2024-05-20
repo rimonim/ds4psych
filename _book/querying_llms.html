@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.553">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="author" content="Louis Teitelbaum and Almog Simchon">
-
-<title>Data Science for Psychology: Natural Language - 7&nbsp; Experiments</title>
+<title>Data Science for Psychology: Natural Language - 23&nbsp; Just Ask an LLM</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,28 +18,7 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
-
+</style>
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
@@ -51,8 +27,8 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./corpora.html" rel="next">
-<link href="./data-sources.html" rel="prev">
+<link href="./audio-video-image.html" rel="next">
+<link href="./linguistic-complexity.html" rel="prev">
 <link href="./images/favicon.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -62,8 +38,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -90,33 +65,24 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
-
-
 </head>
-
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./data-sources.html">Sources of Data</a></li><li class="breadcrumb-item"><a href="./experiments.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Experiments</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./querying_llms.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Just Ask an LLM</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Data Science for Psychology: Natural Language</a> 
         <div class="sidebar-tools-main tools-wide">
@@ -124,26 +90,26 @@ div.csl-indent {
     <div class="dropdown">
       <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
-          <li>
-            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=%7Curl%7C">
               <i class="bi bi-bi-twitter pe-1"></i>
             Twitter
             </a>
           </li>
           <li>
-            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=%7Curl%7C">
               <i class="bi bi-bi-facebook pe-1"></i>
             Facebook
             </a>
           </li>
           <li>
-            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=%7Curl%7C">
               <i class="bi bi-bi-linkedin pe-1"></i>
             LinkedIn
             </a>
           </li>
       </ul>
-    </div>
+</div>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -159,7 +125,7 @@ div.csl-indent {
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Welcome</span></a>
@@ -185,8 +151,8 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./aesthetics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Why Aesthetic Choices are Important</span></span></a>
@@ -211,7 +177,7 @@ div.csl-indent {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./data-sources.html" class="sidebar-item-text sidebar-link">
@@ -220,10 +186,10 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./experiments.html" class="sidebar-item-text sidebar-link active">
+  <a href="./experiments.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Experiments</span></span></a>
   </div>
 </li>
@@ -246,7 +212,7 @@ div.csl-indent {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./quantification.html" class="sidebar-item-text sidebar-link">
@@ -255,8 +221,8 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./look-at-your-data.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Look at Your Data</span></span></a>
@@ -330,12 +296,12 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./querying_llms.html" class="sidebar-item-text sidebar-link">
+  <a href="./querying_llms.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Just Ask an LLM</span></span></a>
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./audio-video-image.html" class="sidebar-item-text sidebar-link">
@@ -344,15 +310,15 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./transcription.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Transcribing Audio</span></span></a>
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resources.html" class="sidebar-item-text sidebar-link">
@@ -360,19 +326,15 @@ div.csl-indent {
   </div>
 </li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./data-sources.html">Sources of Data</a></li><li class="breadcrumb-item"><a href="./experiments.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Experiments</span></a></li></ol></nav>
-<div class="quarto-title">
-<h1 class="title"><span id="sec-experiments" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Experiments</span></span></h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./quantification.html">Quantifying Psychological Properties of Text</a></li><li class="breadcrumb-item"><a href="./querying_llms.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Just Ask an LLM</span></a></li></ol></nav><div class="quarto-title">
+<h1 class="title"><span id="sec-querying-llms" class="quarto-section-identifier"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Just Ask an LLM</span></span></h1>
 </div>
 
 
@@ -386,58 +348,23 @@ div.csl-indent {
   
 
 
-</header>
-
-
-<p>Experiments are the backbone of causal inference, and text analysis is no exception. Whether in a laboratory or on <a href="https://www.mturk.com">Amazon’s Mechanical Turk</a>, experiments can be carefully controlled and are a good way to mitigate the effects of confounding variables. Though many people associate advanced natural language processing with “big data,” the methods discussed in this book can be used effectively even in small-scale laboratory experiments.</p>
-<p><strong>An example of using experiments in quantitative language research:</strong> <span class="citation" data-cites="sap_etal_2020">Sap et al. (<a href="#ref-sap_etal_2020" role="doc-biblioref">2020</a>)</span> had online participants write either true stories that happened to them recently, or fictional stories about the same topic. They then used a large language model, GPT, to measure two likelihoods for each sentence in the story: the likelihood of the sentence given the previous sentence, and the likelihood of the sentence given a rough summary of the story. The ratio of these two likelihoods is a measure of how predictably the story flows from one point to another. <span class="citation" data-cites="sap_etal_2020">Sap et al. (<a href="#ref-sap_etal_2020" role="doc-biblioref">2020</a>)</span> found that fictional stories flow much more predictably than true ones. They also found that true stories begin to flow more predictably when they are retold 2-3 months later. <span class="citation" data-cites="sap_etal_2022">Sap et al. (<a href="#ref-sap_etal_2022" role="doc-biblioref">2022</a>)</span> reproduced these findings using a more advanced language model, GPT-3. We will discuss these and other methods of measuring linguistic complexity in <a href="linguistic-complexity.html" class="quarto-xref"><span>Chapter 22</span></a>.</p>
-<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+</header><div class="callout callout-style-simple callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
+<i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Advantages of Experimental Data Collection
+This section has not yet been written. Check again in a few months!
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<ul>
-<li><strong>Control:</strong> Experiments mitigate the effects of confounding variables.</li>
-<li><strong>Customization:</strong> Experimenters can tailor the experiment to fit their particular research questions.</li>
-</ul>
-</div>
-</div>
-<div class="callout callout-style-simple callout-important no-icon callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Disadvantages of Experimental Data Collection
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><strong>Expensive</strong></li>
-<li><strong>Time-Consuming</strong></li>
-<li><strong>Small Sample Size:</strong> Because they are costly and time-consuming, experiments generally result in small datasets.</li>
-</ul>
-</div>
-</div>
-<hr>
 
-
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
-<div id="ref-sap_etal_2020" class="csl-entry" role="listitem">
-Sap, M., Horvitz, E., Choi, Y., Smith, N. A., &amp; Pennebaker, J. (2020). Recollection versus imagination: Exploring human memory and cognition via neural language models. In D. Jurafsky, J. Chai, N. Schluter, &amp; J. Tetreault (Eds.), <em>Proceedings of the 58th annual meeting of the association for computational linguistics</em> (pp. 1970–1978). Association for Computational Linguistics. <a href="https://doi.org/10.18653/v1/2020.acl-main.178">https://doi.org/10.18653/v1/2020.acl-main.178</a>
-</div>
-<div id="ref-sap_etal_2022" class="csl-entry" role="listitem">
-Sap, M., Jafarpour, A., Choi, Y., Smith, N. A., Pennebaker, J. W., &amp; Horvitz, E. (2022). Quantifying the narrative flow of imagined versus autobiographical stories. <em>Proceedings of the National Academy of Sciences</em>, <em>119</em>(45), e2211715119. <a href="https://doi.org/10.1073/pnas.2211715119">https://doi.org/10.1073/pnas.2211715119</a>
 </div>
 </div>
 
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+
+
+</main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -845,35 +772,30 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="./data-sources.html" class="pagination-link" aria-label="Sources of Data">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Sources of Data</span>
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./linguistic-complexity.html" class="pagination-link" aria-label="Measures of Linguistic Complexity">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Measures of Linguistic Complexity</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./corpora.html" class="pagination-link" aria-label="Corpus Data">
-        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Corpus Data</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./audio-video-image.html" class="pagination-link" aria-label="Audio, Video, and Image Data">
+        <span class="nav-page-text">Audio, Video, and Image Data</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">
 <p>Data Science for Psychology was written by <a href="https://rimonim.github.io">Louis Teitelbaum</a> and <a href="https://almogsi.com">Almog Simchon</a>.</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/rimonim/ds4psych/blob/main/experiments.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions"><ul><li><a href="https://github.com/rimonim/ds4psych/blob/main/querying_llms.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org/">Quarto</a> and is powered by <a href="https://www.netlify.com/">Netlify</a></p>
 </div>
   </div>
 </footer>
-
-
 
 
 </body></html>

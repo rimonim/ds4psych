@@ -42,6 +42,8 @@ For larger corpora, set `batch_size` lower
 
 ### Supervised LDA {#sec-slda}
 
+@blei_mcauliffe_2010
+
 [sLDA in R](https://books.psychstat.org/textmining/topic-models.html#supervised-topic-modeling)
 
 ### Semi-Supervised LDA {#sec-seededlda}

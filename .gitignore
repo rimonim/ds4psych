@@ -33,3 +33,7 @@ assignments/assignment_chapt17-20.qmd
 assignments/assignment_chapt15-16.qmd
 assignments/assignment_chapt11-14.qmd
 data/GoogleNews-vectors-negative300.bin
+data/CCR/CCR_clean_behavioral.csv
+data/CCR/Questionnaires - Experiment - Questionnaire.csv
+data/CCR/questionnaires_neg.csv
+*.rds

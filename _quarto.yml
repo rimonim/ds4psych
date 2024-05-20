@@ -56,7 +56,8 @@ book:
         - navigating-vectorspace.qmd
         - lda.qmd
         - linguistic-complexity.qmd
-        
+        - querying_llms.qmd
+
     - part: audio-video-image.qmd
       chapters: 
         - transcription.qmd

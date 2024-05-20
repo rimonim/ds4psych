@@ -118,7 +118,12 @@ div.csl-indent {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
+}</script><style>
+.r-output code {
+  word-break: break-wor !important;
+  white-space: pre-wrap !important;
+}
+</style>
 </head>
 <body class="nav-sidebar floating">
 
@@ -348,6 +353,12 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Measures of Linguistic Complexity</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./querying_llms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Just Ask an LLM</span></span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -362,7 +373,7 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./transcription.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Transcribing Audio</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Transcribing Audio</span></span></a>
   </div>
 </li>
       </ul>
@@ -370,7 +381,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resources.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Additional Resources</span></span></a>
   </div>
 </li>
     </ul>
@@ -429,21 +440,21 @@ This page is still under construction. Come back soon!
 
 </div>
 </div>
-<p><span class="citation" data-cites="gunther_etal_2019">Günther et al. (<a href="#ref-gunther_etal_2019" role="doc-biblioref">2019</a>)</span></p>
 <section id="representing-psychological-constructs" class="level2" data-number="20.1"><h2 data-number="20.1" class="anchored" data-anchor-id="representing-psychological-constructs">
 <span class="header-section-number">20.1</span> Representing Psychological Constructs</h2>
-<p>In <a href="decontextualized-embeddings.html" class="quarto-xref"><span>Chapter 18</span></a> we measured the surprise in texts by comparing their embeddings to that of a single word: “surprised”.</p>
+<p>In <a href="decontextualized-embeddings.html" class="quarto-xref"><span>Chapter 18</span></a> we measured the surprise in texts by comparing their embeddings to that of a single word: “surprised”. But does the embedding of the word “surprised” fully capture the concept of surprise as an emotion? Faced with this question of construct validity, we have two options:</p>
+<ol type="1">
+<li>
+<strong>Conduct a Validation Study:</strong> We could find or construct a dataset of texts that were rated by a human (or ideally, multiple humans) on the extent to which they reflect the emotion of surprise. We could then compare our embedding-based surprise scores to the human rating and demonstrate that they correlate strongly. We could further note areas of disagreement between the human and embedding-based measures and investigate whether these reflect a difference between the constructs they are measuring.</li>
+<li>
+<strong>Use an Already-Validated Construct Definition:</strong> Properly validating a new measure is hard work. When possible, psychology researchers often prefer to use an existing measure that has already been carefully validated in the past. But embeddings are very new to the field, so few if any validated vector representations of constructs are available. As it turns out, this is not a problem—any language-based psychological measure can be represented as a vector!</li>
+</ol>
 <section id="distributed-dictionary-representation-ddr" class="level3" data-number="20.1.1"><h3 data-number="20.1.1" class="anchored" data-anchor-id="distributed-dictionary-representation-ddr">
 <span class="header-section-number">20.1.1</span> Distributed Dictionary Representation (DDR)</h3>
-<p>Now that we have contextualized embeddings for the Hippocorpus texts, how can we use them to test the hypothesis that true autobiographical stories include more surprise than imagined stories?</p>
-<p><span class="citation" data-cites="garten_etal_2018">Garten et al. (<a href="#ref-garten_etal_2018" role="doc-biblioref">2018</a>)</span></p>
-<ul>
-<li>weight word embeddings by frequency in a corpus?
-<ul>
-<li>since word vector magnitudes reflect informativeness <span class="citation" data-cites="schakel_wilson_2015 oyama_etal_2023">(<a href="#ref-oyama_etal_2023" role="doc-biblioref">Oyama et al., 2023</a>; <a href="#ref-schakel_wilson_2015" role="doc-biblioref">Schakel &amp; Wilson, 2015</a>)</span>, averaging the embeddings of a text automatically controls for word frequency, similar to TF-IDF weighting (since more frequent words tend to be less informative) <span class="citation" data-cites="ethayarajh_etal_2019">(<a href="#ref-ethayarajh_etal_2019" role="doc-biblioref">Ethayarajh et al., 2019</a>)</span>. This is not true in a dictionary.</li>
-</ul>
-</li>
-</ul>
+<p>Let’s begin with a straightforward sort of psychological measure—the dictionary. We have already discussed dictionaries extensively in <a href="word-counting.html" class="quarto-xref"><span>Chapter 14</span></a> and noted that psychology researchers have been constructing, validating, and publicizing dictionaries for decades (<a href="word-counting.html#sec-dictionary-sources" class="quarto-xref"><span>Section 14.6</span></a>). But these dictionaries are designed for word counting—How do we apply them to a vector-based analysis? <span class="citation" data-cites="garten_etal_2018">Garten et al. (<a href="#ref-garten_etal_2018" role="doc-biblioref">2018</a>)</span> propose a simple solution: Get word embeddings (<a href="decontextualized-embeddings.html#sec-word-embeddings" class="quarto-xref"><span>Section 18.3</span></a>) for each word in the dictionary, and average them together to create a single Distributed Dictionary Representation (DDR). The dictionary construct can then be measured by comparing text embeddings to the DDR.</p>
+<p>DDR cannot entirely replace word counts; for linguistic concepts like pronoun use or the passive voice, dictionary-based word counts are still necessary. But DDR is ideal for studies of abstract constructs like emotions, that refer to the general gist of a text rather than particular words. The rich representations of word embeddings allow DDR to capture even the subtlest associations between words and constructs, and to precisely reflect the <em>extent</em> to which the words are associated with that construct. It can do this even for texts that do not contain any dictionary words. Because embeddings are continuous and already calibrated to the probabilities of word use in language, DDR also avoids the difficult statistical problems that arise due to the strange distributions of word counts (<a href="word-counting-improvements.html" class="quarto-xref"><span>Chapter 16</span></a>).</p>
+<p><span class="citation" data-cites="garten_etal_2018">Garten et al. (<a href="#ref-garten_etal_2018" role="doc-biblioref">2018</a>)</span> found that DDR works best with smaller dictionaries of only the words most directly connected to the construct being measured (around 30 words worked best in their experiments). The diminished effectiveness of longer dictionaries is likely due to the properties of word embeddings—while the <em>direction</em> of a word embedding represents its meaning (i.e.&nbsp;its average context), the <em>magnitude</em> of a word embedding (i.e.&nbsp;how far it would move another vector if the two were added together) represents how specific it is to that context (<a href="decontextualized-embeddings.html#sec-embedding-magnitude" class="quarto-xref"><span>Section 18.3.4</span></a>). This is why an accurate embedding of a full text can be obtained by averaging the embeddings of each of its words—the embeddings automatically devalue frequent and uninformative words, and emphasize the words that are representative of the text’s specific meaning <span class="citation" data-cites="ethayarajh_etal_2019">(<a href="#ref-ethayarajh_etal_2019" role="doc-biblioref">Ethayarajh et al., 2019</a>)</span>. Overvaluing informative words is a desirable property for raw texts, in which uninformative words tend to be very frequent. But dictionaries only include one of each word. In longer dictionaries with more infrequent, tangentially connected words, averaging word embeddings will therefore <em>overvalue</em> those infrequent words and skew the DDR. This can be fixed with Garten et al.’s method of picking out only the most informative words. Alternatively, it could be fixed by measuring the frequency of each dictionary word in a corpus and weighting the average embedding by that frequency. This method is actually more consistent with the way most dictionaries are validated, by counting the frequencies of dictionary words in text (<a href="word-counting.html" class="quarto-xref"><span>Chapter 14</span></a>).</p>
+<p>Let’s measure surprise in the Hippocorpus texts by computing a DDR of the NRC Word-Emotion Association Lexicon <span class="citation" data-cites="mohammad_turney_2010 mohammad_turney_2013">(<a href="#ref-mohammad_turney_2013" role="doc-biblioref">S. M. Mohammad &amp; Turney, 2013</a>; <a href="#ref-mohammad_turney_2010" role="doc-biblioref">S. Mohammad &amp; Turney, 2010</a>)</span> which we used in <a href="word-counting.html" class="quarto-xref"><span>Chapter 14</span></a>. To correct for word informativeness, we will weight the dictionary word embeddings by their frequency in the corpus.</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># load surprise dictionary</span></span>
 <span><span class="va">surprise_dict</span> <span class="op">&lt;-</span> <span class="fu">quanteda.sentiment</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/quanteda.sentiment/man/data_dictionary_NRC.html">data_dictionary_NRC</a></span><span class="op">[</span><span class="st">"surprise"</span><span class="op">]</span></span>
@@ -458,16 +469,9 @@ This page is still under construction. Come back soon!
 <span><span class="va">surprise_ddr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">word2vec_mod</span>, <span class="va">surprise_dict</span><span class="op">$</span><span class="va">surprise</span>, type <span class="op">=</span> <span class="st">"embedding"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">as_tibble</span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"feature"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">left_join</span><span class="op">(</span><span class="va">surprise_dict_freqs</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">replace_na</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>frequency <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>#&gt; Warning: The `x` argument of `as_tibble.matrix()` must have unique column names if
-#&gt; `.name_repair` is omitted as of tibble 2.0.0.
-#&gt; ℹ Using compatibility `.name_repair`.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>#&gt; Joining with `by = join_by(feature)`</code></pre>
-</div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># average dictionary embedding (weighted by frequency)</span></span>
+<span>  <span class="fu">replace_na</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>frequency <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># average dictionary embedding (weighted by frequency)</span></span>
 <span><span class="va">surprise_ddr</span> <span class="op">&lt;-</span> <span class="va">surprise_ddr</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">summarise</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="va">V1</span><span class="op">:</span><span class="va">V300</span>, <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/stats/weighted.mean.html">weighted.mean</a></span><span class="op">(</span><span class="va">.x</span>, <span class="va">frequency</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">select</span><span class="op">(</span><span class="va">V1</span><span class="op">:</span><span class="va">V300</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -481,57 +485,266 @@ This page is still under construction. Come back soon!
 <span><span class="va">hippocorpus_surprise_ddr</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_word2vec</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">rowwise</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
-<span>    surprise <span class="op">=</span> <span class="fu">cos_sim</span><span class="op">(</span><span class="fu">c_across</span><span class="op">(</span><span class="va">V1</span><span class="op">:</span><span class="va">V300</span><span class="op">)</span>, <span class="va">surprise_ddr</span><span class="op">)</span></span>
+<span>    surprise <span class="op">=</span> <span class="fu">cos_sim</span><span class="op">(</span><span class="fu">c_across</span><span class="op">(</span><span class="va">V1</span><span class="op">:</span><span class="va">V300</span><span class="op">)</span>, <span class="va">surprise_ddr</span><span class="op">)</span>,</span>
+<span>    <span class="co"># transform cosine similarity to stay between 0 and 1</span></span>
+<span>    surprise <span class="op">=</span> <span class="va">surprise</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span> <span class="fl">1</span><span class="op">/</span><span class="fl">2</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">V1</span><span class="op">:</span><span class="va">V300</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># rejoin docvars</span></span>
 <span><span class="va">hippocorpus_surprise_ddr</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_surprise_ddr</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">bind_cols</span><span class="op">(</span><span class="fu">docvars</span><span class="op">(</span><span class="va">hippocorpus_corp</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">surprise_mod_ddr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">surprise</span> <span class="op">~</span> <span class="va">memType</span>, <span class="va">hippocorpus_surprise_ddr</span><span class="op">)</span></span>
+<span>  <span class="fu">bind_cols</span><span class="op">(</span><span class="fu">docvars</span><span class="op">(</span><span class="va">hippocorpus_corp</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>With the new measure of surprise, we can retest the hypothesis that true autobiographical stories include more surprise than imagined stories.</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># logistic regression</span></span>
+<span><span class="va">surprise_mod_ddr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span></span>
+<span>  <span class="va">surprise</span> <span class="op">~</span> <span class="va">memType</span>, </span>
+<span>  family <span class="op">=</span> <span class="va">binomial</span>,</span>
+<span>  <span class="va">hippocorpus_surprise_ddr</span></span>
+<span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">surprise_mod_ddr</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; 
+<pre class="r-output"><code>#&gt; 
 #&gt; Call:
-#&gt; lm(formula = surprise ~ memType, data = hippocorpus_surprise_ddr)
-#&gt; 
-#&gt; Residuals:
-#&gt;       Min        1Q    Median        3Q       Max 
-#&gt; -0.216732 -0.013010  0.001501  0.014793  0.069393 
+#&gt; glm(formula = surprise ~ memType, family = binomial, data = hippocorpus_surprise_ddr)
 #&gt; 
 #&gt; Coefficients:
-#&gt;                   Estimate Std. Error  t value Pr(&gt;|t|)    
-#&gt; (Intercept)      0.7192923  0.0004246 1694.092  &lt; 2e-16 ***
-#&gt; memTyperecalled -0.0049621  0.0005992   -8.281  &lt; 2e-16 ***
-#&gt; memTyperetold   -0.0054746  0.0007463   -7.336 2.46e-13 ***
+#&gt;                 Estimate Std. Error z value Pr(&gt;|z|)    
+#&gt; (Intercept)      1.81235    0.05484  33.049    memTyperecalled -0.02041    0.07711  -0.265    0.791    
+#&gt; memTyperetold   -0.02250    0.09587  -0.235    0.814    
 #&gt; ---
 #&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #&gt; 
-#&gt; Residual standard error: 0.02229 on 6851 degrees of freedom
-#&gt; Multiple R-squared:  0.01263,    Adjusted R-squared:  0.01234 
-#&gt; F-statistic: 43.83 on 2 and 6851 DF,  p-value: &lt; 2.2e-16</code></pre>
+#&gt; (Dispersion parameter for binomial family taken to be 1)
+#&gt; 
+#&gt;     Null deviance: 6.9881  on 6853  degrees of freedom
+#&gt; Residual deviance: 6.8986  on 6851  degrees of freedom
+#&gt; AIC: 2103.6
+#&gt; 
+#&gt; Number of Fisher Scoring iterations: 5
+</code></pre>
 </div>
-</div>
-<p>These results look similar to the ones we got using only the embedding of the word “surprised”: Both recalled and retold stories have <em>less</em> surprise-related language than imagined ones (p &lt; .001).</p>
-</section><section id="contextualized-construct-representation-ccr" class="level3" data-number="20.1.2"><h3 data-number="20.1.2" class="anchored" data-anchor-id="contextualized-construct-representation-ccr">
-<span class="header-section-number">20.1.2</span> Contextualized Construct Representation (CCR)</h3>
-<p><span class="citation" data-cites="atari_etal_2023">Atari et al. (<a href="#ref-atari_etal_2023" role="doc-biblioref">2023</a>)</span></p>
-<p>Adapted from the scale used in <span class="citation" data-cites="choi_choi_2010">D. Choi &amp; Choi (<a href="#ref-choi_choi_2010" role="doc-biblioref">2010</a>)</span> and <span class="citation" data-cites="choi_nisbett_2000">I. Choi &amp; Nisbett (<a href="#ref-choi_nisbett_2000" role="doc-biblioref">2000</a>)</span></p>
+<p>We again find no significant difference in surprise between remembered and recalled stories. This is consistent with our results from <a href="word-counting.html" class="quarto-xref"><span>Chapter 14</span></a>, where we tested the same hypothesis with the same dictionary, but used word counts rather than embeddings.</p>
+<section id="ddr-for-word-by-word-analysis" class="level4" data-number="20.1.1.1"><h4 data-number="20.1.1.1" class="anchored" data-anchor-id="ddr-for-word-by-word-analysis">
+<span class="header-section-number">20.1.1.1</span> DDR For Word-by-Word Analysis</h4>
+<p>Another advantage of DDR over dictionary-based word counts is that DDR enables word-by-word analysis of text. It is not very informative to count how many surprise words are in each word (it will either be one or zero), but we can compare the embedding of each word to the surprise DDR. This allows us to see how a construct spreads out within a single text. As an example, let’s take a single story from the Hippocorpus:</p>
 <div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">surprise_items_pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># full text as string</span></span>
+<span><span class="va">story</span> <span class="op">&lt;-</span> <span class="fu">word</span><span class="op">(</span><span class="va">hippocorpus_df</span><span class="op">$</span><span class="va">story</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>, end <span class="op">=</span> <span class="fl">140L</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">story</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="r-output"><code>#&gt; It seems just like yesterday but today makes five months ago it happened. I had been watching my phone like an owl for the past week. I was waiting for a work related call that my team was waiting for to close a important deal. It wasnt the call I expected though. It was for  my sister was in labor with the twins. My sister is only 7 months pregnant. I got the call shortly after arriving at work. Just as fast I was back out the door and on my way to the hospital. When I arrived my sister had just delivered and I just was in awe. Even though they were a bit small they were mighty. They were the most precious things I had ever seen. I held my niece and nephew and couldnt stop crying.
+</code></pre>
+</div>
+<p>To visualize surprise within this text, we can separate it into words and find the embedding of each word. Rather than averaging all of these embeddings together to get the embedding of the full text, we can compute a rolling average, averaging each word’s embedding with those of its neighbors.</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># separate into vector of tokens</span></span>
+<span><span class="va">story</span> <span class="op">&lt;-</span> <span class="fu">word</span><span class="op">(</span><span class="va">hippocorpus_df</span><span class="op">$</span><span class="va">story</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>, end <span class="op">=</span> <span class="fl">140L</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">tokens</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="co"># rolling average of embeddings</span></span>
+<span><span class="va">story_surprise</span> <span class="op">&lt;-</span> <span class="fu">as_tibble</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">word2vec_mod</span>, <span class="va">story</span>, type <span class="op">=</span> <span class="st">"embedding"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    <span class="fu">across</span><span class="op">(</span></span>
+<span>      <span class="va">V1</span><span class="op">:</span><span class="va">V300</span>, </span>
+<span>      <span class="op">~</span><span class="fu">zoo</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/zoo/man/rollapply.html">rollapply</a></span><span class="op">(</span></span>
+<span>        <span class="va">.x</span>, <span class="fl">4</span>, <span class="va">mean</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>        align <span class="op">=</span> <span class="st">"center"</span>,</span>
+<span>        fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">.x</span>, <span class="fl">1</span><span class="op">)</span>, <span class="cn">NA</span>, <span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">.x</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  </span>
+<span><span class="co"># vector of computed surprise (cosine similarity)</span></span>
+<span><span class="va">story_surprise</span> <span class="op">&lt;-</span> <span class="va">story_surprise</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">rowwise</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>surprise <span class="op">=</span> <span class="fu">cos_sim</span><span class="op">(</span><span class="fu">c_across</span><span class="op">(</span><span class="va">V1</span><span class="op">:</span><span class="va">V300</span><span class="op">)</span>, <span class="va">surprise_ddr</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">pull</span><span class="op">(</span><span class="va">surprise</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can now visualize the surprise in each word of the text. Since <code>ggplot2</code> makes it difficult to plot dynamically colored text in one continuous chunk, we will use ANSI color codes to print the our text directly to the console.</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># (see https://www.hackitu.de/termcolor256/ for info on ANSI colors)</span></span>
+<span><span class="co"># blue-red heat scale</span></span>
+<span><span class="va">ansi_scale</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>  <span class="fl">063</span>, <span class="fl">105</span>, <span class="fl">147</span>, <span class="fl">189</span>, <span class="fl">188</span>, <span class="fl">230</span>, <span class="fl">223</span>, </span>
+<span>  <span class="fl">224</span>, <span class="fl">217</span>, <span class="fl">210</span>, <span class="fl">203</span>, <span class="fl">196</span>, <span class="fl">160</span>, <span class="fl">124</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># turn scale value into ANSI color code</span></span>
+<span><span class="va">map_to_ansi</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">ansi_scale</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="va">x_new</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">*</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">ansi_scale</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/diff.html">diff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span></span>
+<span>  <span class="va">x_new</span></span>
+<span>  <span class="va">ansi_scale</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">x_new</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">story_surprise</span> <span class="op">&lt;-</span> <span class="fu">map_to_ansi</span><span class="op">(</span><span class="va">story_surprise</span>, <span class="va">ansi_scale</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># print</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">story_surprise</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">story_surprise</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">story</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">" "</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="kw">else</span><span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"\033[48;5;"</span>, <span class="va">story_surprise</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"m"</span>, <span class="va">story</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">" \033[0m"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="r-output"><code>#&gt; <span style="background-color: #D7D7FF;">It </span><span style="background-color: #AF0000;">seems just </span>like  <span style="background-color: #FF5F5F;">yesterday </span><span style="background-color: #FFD7D7;">but </span><span style="background-color: #FF8787;">today </span><span style="background-color: #D7D7D7;">makes </span><span style="background-color: #D7D7FF;">five </span><span style="background-color: #FFFFD7;">months </span><span style="background-color: #FFAFAF;">ago it </span><span style="background-color: #FF0000;">happened </span><span style="background-color: #FF8787;">. </span><span style="background-color: #FFD7AF;">I </span><span style="background-color: #FF8787;">had been watching </span><span style="background-color: #FF0000;">my </span><span style="background-color: #FF8787;">phone </span><span style="background-color: #FFD7D7;">like </span><span style="background-color: #FFAFAF;">an </span><span style="background-color: #D7D7D7;">owl </span><span style="background-color: #FFFFD7;">for the </span><span style="background-color: #D7D7D7;">past </span><span style="background-color: #FFD7D7;">week </span><span style="background-color: #FFAFAF;">. </span><span style="background-color: #FF0000;">I was </span><span style="background-color: #FFD7D7;">waiting </span><span style="background-color: #FF8787;">for </span><span style="background-color: #D7D7FF;">a </span><span style="background-color: #AFAFFF;">work </span><span style="background-color: #FFD7AF;">related </span><span style="background-color: #FFAFAF;">call </span><span style="background-color: #D70000;">that </span><span style="background-color: #FF0000;">my </span><span style="background-color: #D70000;">team </span><span style="background-color: #FF8787;">was </span><span style="background-color: #FFD7D7;">waiting </span><span style="background-color: #FF8787;">for </span><span style="background-color: #FFFFD7;">to </span><span style="background-color: #FFD7D7;">close </span><span style="background-color: #FF8787;">a </span><span style="background-color: #FFD7D7;">important </span><span style="background-color: #FF8787;">deal </span><span style="background-color: #FFFFD7;">. </span><span style="background-color: #FFD7D7;">It wasnt </span><span style="background-color: #FF8787;">the </span><span style="background-color: #FF5F5F;">call </span><span style="background-color: #FF0000;">I </span><span style="background-color: #FF5F5F;">expected </span><span style="background-color: #FFAFAF;">though . </span><span style="background-color: #FFD7AF;">It </span><span style="background-color: #FF8787;">was </span><span style="background-color: #FFAFAF;">for my sister </span><span style="background-color: #FFFFD7;">was </span><span style="background-color: #D7D7D7;">in labor </span><span style="background-color: #FFD7AF;">with the </span><span style="background-color: #FFD7D7;">twins </span><span style="background-color: #D7D7D7;">. My </span><span style="background-color: #FFD7D7;">sister </span><span style="background-color: #FFFFD7;">is only 7 </span><span style="background-color: #5F5FFF;">months </span><span style="background-color: #FFD7AF;">pregnant </span><span style="background-color: #FF0000;">. </span><span style="background-color: #D70000;">I got </span><span style="background-color: #FF5F5F;">the </span><span style="background-color: #FFD7AF;">call shortly </span><span style="background-color: #FFFFD7;">after </span><span style="background-color: #FFAFAF;">arriving </span><span style="background-color: #FFD7AF;">at </span><span style="background-color: #FFD7D7;">work . </span><span style="background-color: #FFD7AF;">Just </span><span style="background-color: #FF8787;">as fast </span><span style="background-color: #FF0000;">I </span><span style="background-color: #FF5F5F;">was </span><span style="background-color: #FF8787;">back </span><span style="background-color: #FFD7D7;">out </span><span style="background-color: #FFFFD7;">the </span><span style="background-color: #D7D7FF;">door </span><span style="background-color: #FFFFD7;">and </span><span style="background-color: #FF8787;">on my </span><span style="background-color: #FF5F5F;">way </span><span style="background-color: #FF8787;">to </span><span style="background-color: #D7D7D7;">the </span><span style="background-color: #FFD7AF;">hospital </span><span style="background-color: #FFAFAF;">. </span><span style="background-color: #FF5F5F;">When </span><span style="background-color: #FF0000;">I </span><span style="background-color: #FF5F5F;">arrived </span><span style="background-color: #FF8787;">my </span><span style="background-color: #D70000;">sister </span><span style="background-color: #FF5F5F;">had </span><span style="background-color: #FF8787;">just </span><span style="background-color: #FF0000;">delivered and </span><span style="background-color: #D70000;">I just was </span><span style="background-color: #FFAFAF;">in awe . Even </span><span style="background-color: #FFD7D7;">though they </span><span style="background-color: #FFAFAF;">were </span><span style="background-color: #FFD7D7;">a </span><span style="background-color: #FF5F5F;">bit </span><span style="background-color: #FF8787;">small </span><span style="background-color: #FFD7D7;">they were </span><span style="background-color: #FFFFD7;">mighty . </span><span style="background-color: #D7D7D7;">They </span><span style="background-color: #FFFFD7;">were </span><span style="background-color: #FFD7AF;">the </span><span style="background-color: #FF5F5F;">most </span><span style="background-color: #FF0000;">precious </span><span style="background-color: #AF0000;">things </span><span style="background-color: #FF0000;">I </span><span style="background-color: #FFAFAF;">had </span><span style="background-color: #FFFFD7;">ever </span><span style="background-color: #FFD7D7;">seen </span><span style="background-color: #FFD7AF;">. </span><span style="background-color: #FFD7D7;">I </span><span style="background-color: #FF8787;">held </span><span style="background-color: #FFD7AF;">my </span><span style="background-color: #FFFFD7;">niece </span><span style="background-color: #8787FF;">and </span><span style="background-color: #D7D7D7;">nephew </span><span style="background-color: #FFD7AF;">and </span><span style="background-color: #FFAFAF;">couldnt stop </span>crying  .
+</code></pre>
+</div>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Advantages of DDR
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Richer, More Robust Construct Representation Than Word Counting</strong></li>
+<li><strong>Avoids Statistical Problems With Word Count Distributions</strong></li>
+<li><strong>Enables Word-by-Word Analysis</strong></li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Disadvantages of DDR
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>
+<strong>Can Implicitly Encode Associated Constructs:</strong> For example, if surprised texts tend to have positive valence in the data used to train the word embedding model, the DDR for surprise may embed some positive valence as well. This can be remedied by constructing a DDR for positive valence as well, and using it as a statistical control when testing hypotheses.</li>
+<li>
+<strong>May Not Work With Contextualized Embeddings:</strong> Even if we assume that contextualized embeddings conform to the geometrical properties associated with word embeddings, LLMs are not designed to embed single words, which is required for DDR.</li>
+<li>
+<strong>Not Appropriate for Linguistic Measures:</strong> Word embeddings encode the general gist of a text, whereas constructs like passive voice or pronoun use refer to specific words.</li>
+</ul>
+</div>
+</div>
+</section></section><section id="contextualized-construct-representation-ccr" class="level3" data-number="20.1.2"><h3 data-number="20.1.2" class="anchored" data-anchor-id="contextualized-construct-representation-ccr">
+<span class="header-section-number">20.1.2</span> Contextualized Construct Representation (CCR)</h3>
+<p>Dictionaries are not the only validated psychological measures that we can apply using embeddings. With contextualized embeddings, we can extract the gist of any text and compare it to that of any other text. <span class="citation" data-cites="atari_etal_2023">Atari et al. (<a href="#ref-atari_etal_2023" role="doc-biblioref">2023</a>)</span> propose to do this with the most popular form of psychometric scale: the questionnaire. Psychologists have been using questionnaires to measure things for over a century, and tens of thousands of validated questionnaires are now available <a href="https://www.apa.org/pubs/databases/psyctests">online</a>. The LLM embedding of a questionnaire is referred to as a Contextualized Construct Representation (CCR).</p>
+<p>We can use CCR to measure surprise in the Hippocorpus texts. For our questionnaire, we will use an adapted version of the surprise scale used in <span class="citation" data-cites="choi_choi_2010">D. Choi &amp; Choi (<a href="#ref-choi_choi_2010" role="doc-biblioref">2010</a>)</span> and <span class="citation" data-cites="choi_nisbett_2000">I. Choi &amp; Nisbett (<a href="#ref-choi_nisbett_2000" role="doc-biblioref">2000</a>)</span>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">surprise_items</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"I was extremely surprised by the outcome of the event."</span>,</span>
 <span>  <span class="st">"The outcome of the event was extremely interesting."</span>,</span>
 <span>  <span class="st">"The outcome of the event was extremely new."</span></span>
-<span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-simple callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Beware of Reverse Coding!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Many questionnaires include reverse-coded items (e.g.&nbsp;“I often feel happy” on a depression questionnaire). The easiest way to deal with these is to manually add negations to flip their meaning (e.g.&nbsp;“I <em>do not</em> often feel happy”).</p>
+</div>
+</div>
+<p>The first step in using CCR is to compute contextualized embeddings for the texts in our dataset. We already did this in <a href="contextualized-embeddings.html" class="quarto-xref"><span>Chapter 19</span></a>. The next step is to compute contextualized embeddings for the items in the questionnaire, and average them to produce a CCR.</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># embed items (using the same model as we used before)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-text.org/">text</a></span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="va">surprise_sbert</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-text.org/reference/textEmbed.html">textEmbed</a></span><span class="op">(</span></span>
+<span>  <span class="va">surprise_items</span>,</span>
+<span>  model <span class="op">=</span> <span class="st">"sentence-transformers/all-MiniLM-L12-v2"</span>, <span class="co"># model name</span></span>
+<span>  layers <span class="op">=</span> <span class="op">-</span><span class="fl">2</span>,  <span class="co"># second to last layer (default)</span></span>
+<span>  tokens_select <span class="op">=</span> <span class="st">"[CLS]"</span>, <span class="co"># use only [CLS] token</span></span>
+<span>  dim_name <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  keep_token_embeddings <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="va">surprise_items_neg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
-<span>  <span class="st">"I was not surprised at all by the outcome of the event."</span>,</span>
-<span>  <span class="st">"The outcome of the event was not interesting at all."</span>,</span>
-<span>  <span class="st">"The outcome of the event was not new at all."</span></span>
-<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co"># compute CCR by averaging item embeddings</span></span>
+<span><span class="va">surprise_ccr</span> <span class="op">&lt;-</span> <span class="va">surprise_sbert</span><span class="op">$</span><span class="va">texts</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">summarise</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">everything</span><span class="op">(</span><span class="op">)</span>, <span class="va">mean</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can now measure surprise in the Hippocorpus texts by computing the cosine similarity between their embeddings and the surprise CCR.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># score documents by surprise</span></span>
+<span><span class="va">hippocorpus_surprise_ccr</span> <span class="op">&lt;-</span> <span class="va">hippocorpus_sbert</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">rowwise</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    surprise <span class="op">=</span> <span class="fu">cos_sim</span><span class="op">(</span><span class="fu">c_across</span><span class="op">(</span><span class="va">Dim1</span><span class="op">:</span><span class="va">Dim384</span><span class="op">)</span>, <span class="va">surprise_ccr</span><span class="op">)</span>,</span>
+<span>    <span class="co"># transform cosine similarity to stay between 0 and 1</span></span>
+<span>    surprise <span class="op">=</span> <span class="va">surprise</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span> <span class="fl">1</span><span class="op">/</span><span class="fl">2</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">Dim1</span><span class="op">:</span><span class="va">Dim384</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># logistic regression</span></span>
+<span><span class="va">surprise_mod_ccr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span></span>
+<span>  <span class="va">surprise</span> <span class="op">~</span> <span class="va">memType</span>, </span>
+<span>  family <span class="op">=</span> <span class="va">binomial</span>,</span>
+<span>  <span class="va">hippocorpus_surprise_ccr</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">surprise_mod_ccr</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="r-output"><code>#&gt; 
+#&gt; Call:
+#&gt; glm(formula = surprise ~ memType, family = binomial, data = hippocorpus_surprise_ccr)
+#&gt; 
+#&gt; Coefficients:
+#&gt;                 Estimate Std. Error z value Pr(&gt;|z|)    
+#&gt; (Intercept)      5.63709    0.32025  17.602    memTyperecalled -0.02168    0.44955  -0.048    0.962    
+#&gt; memTyperetold   -0.02781    0.55768  -0.050    0.960    
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#&gt; 
+#&gt; (Dispersion parameter for binomial family taken to be 1)
+#&gt; 
+#&gt;     Null deviance: 0.57625  on 6853  degrees of freedom
+#&gt; Residual deviance: 0.57283  on 6851  degrees of freedom
+#&gt; AIC: 55.455
+#&gt; 
+#&gt; Number of Fisher Scoring iterations: 9
+</code></pre>
+</div>
+<p>Once again we find no significant difference in surprise between remembered and recalled stories. Don’t take this result too seriously though, since CCR has a fundamental problem that needs to be addressed.</p>
+<p>Embeddings capture the overall “vibes” of a text, including its tone and dialect. With CCR, we are comparing the “vibes” of a questionnaire written by academics to the “vibes” of narratives written by Hippocorpus participants. By comparing these vectors, we are not just measuring how much surprise is in each text—we are also measuring the extent to which each text is written in the style of a questionnaire written by academics. This introduces a confounding variable into our analysis—questionnaire-ness.</p>
+<p>How can we be sure that we are measuring surprise and not questionnaire-ness? We can’t, but there are some methods that might help. We will explore these in <a href="#sec-ccr-improvement" class="quarto-xref"><span>Section 20.2.1.1</span></a> and <a href="#sec-dimension-projection" class="quarto-xref"><span>Section 20.2.3</span></a>.</p>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Advantages of CCR
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><hr></li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Disadvantages of CCR
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><hr></li>
+</ul>
+</div>
 </div>
 </section><section id="correlational-methods" class="level3" data-number="20.1.3"><h3 data-number="20.1.3" class="anchored" data-anchor-id="correlational-methods">
 <span class="header-section-number">20.1.3</span> Correlational Methods</h3>
@@ -552,9 +765,22 @@ This page is still under construction. Come back soon!
 static embeddings created by taking the first principal component of a word’s contextualized representations out- perform GloVe and FastText embeddings on many word vector benchmarks <span class="citation" data-cites="ethayarajh_2019">(<a href="#ref-ethayarajh_2019" role="doc-biblioref">Ethayarajh, 2019</a>)</span>
 </li>
 </ul>
-<section id="improving-ccr-with-geometric-reasoning" class="level4" data-number="20.2.1.1"><h4 data-number="20.2.1.1" class="anchored" data-anchor-id="improving-ccr-with-geometric-reasoning">
+<section id="sec-ccr-improvement" class="level4" data-number="20.2.1.1"><h4 data-number="20.2.1.1" class="anchored" data-anchor-id="sec-ccr-improvement">
 <span class="header-section-number">20.2.1.1</span> Improving CCR With Geometric Reasoning</h4>
 <p>In CCR, for example, there’s a difference between agreeing with statements in a questionnaire and actually writing like a questionnaire. How do I know that I’m measuring how anxious/depressed the comments are and not how questionnaire-y they are? Potential workaround: reverse all of the statements in the questionnaire (as for reverse-coded items), add them to the original questionnaire, and get the average embedding of the construct-neutral questionnaire. Then subtract this embedding from the original questionnaire average embedding.</p>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">surprise_items_pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"I was extremely surprised by the outcome of the event."</span>,</span>
+<span>  <span class="st">"The outcome of the event was extremely interesting."</span>,</span>
+<span>  <span class="st">"The outcome of the event was extremely new."</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">surprise_items_neg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"I was not surprised at all by the outcome of the event."</span>,</span>
+<span>  <span class="st">"The outcome of the event was not interesting at all."</span>,</span>
+<span>  <span class="st">"The outcome of the event was not new at all."</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section></section><section id="sec-advanced-similarity" class="level3" data-number="20.2.2"><h3 data-number="20.2.2" class="anchored" data-anchor-id="sec-advanced-similarity">
 <span class="header-section-number">20.2.2</span> Advanced Similarity Measures</h3>
 <section id="dot-product" class="level4" data-number="20.2.2.1"><h4 data-number="20.2.2.1" class="anchored" data-anchor-id="dot-product">
@@ -606,9 +832,6 @@ Garten, J., Hoover, J., Johnson, K. M., Boghrati, R., Iskiwitch, C., &amp; Dehgh
 <div id="ref-grand_etal_2022" class="csl-entry" role="listitem">
 Grand, G., Blank, I. A., Pereira, F., &amp; Fedorenko, E. (2022). Semantic projection recovers rich human knowledge of multiple object features from word embeddings. <em>Nature Human Behaviour</em>, <em>6</em>(7), 975–987. <a href="https://doi.org/10.1038/s41562-022-01316-8">https://doi.org/10.1038/s41562-022-01316-8</a>
 </div>
-<div id="ref-gunther_etal_2019" class="csl-entry" role="listitem">
-Günther, F., Rinaldi, L., &amp; Marelli, M. (2019). Vector-space models of semantic representation from a cognitive perspective: A discussion of common misconceptions. <em>Perspectives on Psychological Science</em>, <em>14</em>(6), 1006–1033. <a href="https://doi.org/10.1177/1745691619861372">https://doi.org/10.1177/1745691619861372</a>
-</div>
 <div id="ref-kjell_etal_2022" class="csl-entry" role="listitem">
 Kjell, O., Sikström, S., Kjell, K., &amp; Schwartz, H. (2022). Natural language analyzed with AI-based transformers predict traditional subjective well-being measures approaching the theoretical upper limits in accuracy. <em>Scientific Reports</em>, <em>12</em>, 3918. <a href="https://doi.org/10.1038/s41598-022-07520-w">https://doi.org/10.1038/s41598-022-07520-w</a>
 </div>
@@ -621,8 +844,11 @@ Li, B., Zhou, H., He, J., Wang, M., Yang, Y., &amp; Li, L. (2020). <em>On the se
 <div id="ref-mikolov_etal_2013" class="csl-entry" role="listitem">
 Mikolov, T., Yih, W., &amp; Zweig, G. (2013). Linguistic regularities in continuous space word representations. In L. Vanderwende, H. Daumé III, &amp; K. Kirchhoff (Eds.), <em>Proceedings of the 2013 conference of the north <span>A</span>merican chapter of the association for computational linguistics: Human language technologies</em> (pp. 746–751). Association for Computational Linguistics. <a href="https://aclanthology.org/N13-1090">https://aclanthology.org/N13-1090</a>
 </div>
-<div id="ref-oyama_etal_2023" class="csl-entry" role="listitem">
-Oyama, M., Yokoi, S., &amp; Shimodaira, H. (2023). <em>Norm of word embedding encodes information gain</em>. <a href="https://arxiv.org/abs/2212.09663">https://arxiv.org/abs/2212.09663</a>
+<div id="ref-mohammad_turney_2013" class="csl-entry" role="listitem">
+Mohammad, S. M., &amp; Turney, P. D. (2013). Crowdsourcing a word-emotion association lexicon. <em>Computational Intelligence</em>, <em>29</em>(3), 436–465.
+</div>
+<div id="ref-mohammad_turney_2010" class="csl-entry" role="listitem">
+Mohammad, S., &amp; Turney, P. (2010). Emotions evoked by common words and phrases: Using <span>M</span>echanical <span>T</span>urk to create an emotion lexicon. <em>Proceedings of the <span>NAACL</span> <span>HLT</span> 2010 Workshop on Computational Approaches to Analysis and Generation of Emotion in Text</em>, 26–34. <a href="https://aclanthology.org/W10-0204">https://aclanthology.org/W10-0204</a>
 </div>
 <div id="ref-pennington_etal_2014" class="csl-entry" role="listitem">
 Pennington, J., Socher, R., &amp; Manning, C. D. (2014). GloVe: Global vectors for word representation. <em>Empirical Methods in Natural Language Processing (EMNLP)</em>, 1532–1543. <a href="http://www.aclweb.org/anthology/D14-1162">http://www.aclweb.org/anthology/D14-1162</a>
@@ -630,14 +856,14 @@ Pennington, J., Socher, R., &amp; Manning, C. D. (2014). GloVe: Global vectors f
 <div id="ref-reimers_gurevych_2019" class="csl-entry" role="listitem">
 Reimers, N., &amp; Gurevych, I. (2019). Sentence-<span>BERT</span>: Sentence embeddings using <span>S</span>iamese <span>BERT</span>-networks. In K. Inui, J. Jiang, V. Ng, &amp; X. Wan (Eds.), <em>Proceedings of the 2019 conference on empirical methods in natural language processing and the 9th international joint conference on natural language processing (EMNLP-IJCNLP)</em> (pp. 3982–3992). Association for Computational Linguistics. <a href="https://doi.org/10.18653/v1/D19-1410">https://doi.org/10.18653/v1/D19-1410</a>
 </div>
-<div id="ref-schakel_wilson_2015" class="csl-entry" role="listitem">
-Schakel, A. M. J., &amp; Wilson, B. J. (2015). <em>Measuring word significance using distributed representations of words</em>. <a href="https://arxiv.org/abs/1508.02297">https://arxiv.org/abs/1508.02297</a>
-</div>
 <div id="ref-simchon_etal_2023" class="csl-entry" role="listitem">
 Simchon, A., Hadar, B., &amp; Gilead, M. (2023). A computational text analysis investigation of the relation between personal and linguistic agency. <em>Communications Psychology</em>, 1–9. <a href="https://doi.org/10.1038/s44271-023-00020-1">https://doi.org/10.1038/s44271-023-00020-1</a>
 </div>
 </div>
-</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1"><p>Cosine similarity is appropriate here because our contextualized embeddings were generated by an SBERT model which was designed to be used with cosine similarity. If we had used another model such as RoBERTa, Euclidean distance might be more appropriate.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
