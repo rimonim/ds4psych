@@ -37,3 +37,5 @@ data/CCR/CCR_clean_behavioral.csv
 data/CCR/Questionnaires - Experiment - Questionnaire.csv
 data/CCR/questionnaires_neg.csv
 *.rds
+data/glove/.DS_Store
+data/glove/glove.twitter.27B.100d.txt

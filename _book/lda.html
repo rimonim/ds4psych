@@ -387,8 +387,9 @@ div.csl-indent {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#sec-slda" id="toc-sec-slda" class="nav-link active" data-scroll-target="#sec-slda"><span class="header-section-number">21.0.1</span> Supervised LDA</a></li>
-  <li><a href="#sec-seededlda" id="toc-sec-seededlda" class="nav-link" data-scroll-target="#sec-seededlda"><span class="header-section-number">21.0.2</span> Semi-Supervised LDA</a></li>
+<li><a href="#sec-slda" id="toc-sec-slda" class="nav-link active" data-scroll-target="#sec-slda"><span class="header-section-number">21.1</span> Supervised LDA</a></li>
+  <li><a href="#sec-seededlda" id="toc-sec-seededlda" class="nav-link" data-scroll-target="#sec-seededlda"><span class="header-section-number">21.2</span> Semi-Supervised LDA</a></li>
+  <li><a href="#bertopic-neural-topic-modeling" id="toc-bertopic-neural-topic-modeling" class="nav-link" data-scroll-target="#bertopic-neural-topic-modeling"><span class="header-section-number">21.3</span> BERTopic: Neural Topic Modeling</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/rimonim/ds4psych/blob/main/lda.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -430,14 +431,21 @@ This page is still under construction. Come back soon!
 <span><span class="va">lda</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://koheiw.github.io/seededlda/reference/textmodel_lda.html">textmodel_lda</a></span><span class="op">(</span><span class="va">dfm</span>, k <span class="op">=</span> <span class="fl">10</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>For larger corpora, set <code>batch_size</code> lower</p>
-<section id="sec-slda" class="level3" data-number="21.0.1"><h3 data-number="21.0.1" class="anchored" data-anchor-id="sec-slda">
-<span class="header-section-number">21.0.1</span> Supervised LDA</h3>
+<p>https://psycnet.apa.org/record/2021-27454-001</p>
+<section id="sec-slda" class="level2" data-number="21.1"><h2 data-number="21.1" class="anchored" data-anchor-id="sec-slda">
+<span class="header-section-number">21.1</span> Supervised LDA</h2>
 <p><span class="citation" data-cites="blei_mcauliffe_2010">Blei &amp; McAuliffe (<a href="#ref-blei_mcauliffe_2010" role="doc-biblioref">2010</a>)</span></p>
 <p><a href="https://books.psychstat.org/textmining/topic-models.html#supervised-topic-modeling">sLDA in R</a></p>
-</section><section id="sec-seededlda" class="level3" data-number="21.0.2"><h3 data-number="21.0.2" class="anchored" data-anchor-id="sec-seededlda">
-<span class="header-section-number">21.0.2</span> Semi-Supervised LDA</h3>
+</section><section id="sec-seededlda" class="level2" data-number="21.2"><h2 data-number="21.2" class="anchored" data-anchor-id="sec-seededlda">
+<span class="header-section-number">21.2</span> Semi-Supervised LDA</h2>
 <p><a href="https://koheiw.github.io/seededlda/">seededLDA in R</a></p>
 <p><strong>An Example of Semi-Supervised LDA in Research:</strong> <span class="citation" data-cites="curini_valerio_2021">Curini &amp; Vignoli (<a href="#ref-curini_valerio_2021" role="doc-biblioref">2021</a>)</span></p>
+</section><section id="bertopic-neural-topic-modeling" class="level2" data-number="21.3"><h2 data-number="21.3" class="anchored" data-anchor-id="bertopic-neural-topic-modeling">
+<span class="header-section-number">21.3</span> BERTopic: Neural Topic Modeling</h2>
+<p><span class="citation" data-cites="grootendorst_2022">Grootendorst (<a href="#ref-grootendorst_2022" role="doc-biblioref">2022</a>)</span></p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"abresler/bertopic"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -479,6 +487,9 @@ Blei, D. M., Ng, A. Y., &amp; Jordan, M. I. (2003). Latent dirichlet allocation.
 </div>
 <div id="ref-curini_valerio_2021" class="csl-entry" role="listitem">
 Curini, L., &amp; Vignoli, V. (2021). <span class="nocase">Committed Moderates and Uncommitted Extremists: Ideological Leaning and Parties’ Narratives on Military Interventions in Italy</span>. <em>Foreign Policy Analysis</em>, <em>17</em>(3), orab016. <a href="https://doi.org/10.1093/fpa/orab016">https://doi.org/10.1093/fpa/orab016</a>
+</div>
+<div id="ref-grootendorst_2022" class="csl-entry" role="listitem">
+Grootendorst, M. (2022). BERTopic: Neural topic modeling with a class-based TF-IDF procedure. <em>arXiv Preprint arXiv:2203.05794</em>.
 </div>
 <div id="ref-poldrack_etal_2012" class="csl-entry" role="listitem">
 Poldrack, R. A., Mumford, J. A., Schonberg, T., Kalar, D., Barman, B., &amp; Yarkoni, T. (2012). Discovering <span>Relations</span> <span>Between</span> <span>Mind</span>, <span>Brain</span>, and <span>Mental</span> <span>Disorders</span> <span>Using</span> <span>Topic</span> <span>Mapping</span>. <em>PLOS Computational Biology</em>, <em>8</em>(10), e1002707. <a href="https://doi.org/10.1371/journal.pcbi.1002707">https://doi.org/10.1371/journal.pcbi.1002707</a>

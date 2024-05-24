@@ -1,4 +1,4 @@
-## Topic Modeling {#sec-lda}
+# Topic Modeling {#sec-lda}
 
 ```{r setup}
 #| echo: false
@@ -40,17 +40,29 @@ lda <- textmodel_lda(dfm, k = 10, verbose = TRUE)
 
 For larger corpora, set `batch_size` lower
 
-### Supervised LDA {#sec-slda}
+https://psycnet.apa.org/record/2021-27454-001
+
+## Supervised LDA {#sec-slda}
 
 @blei_mcauliffe_2010
 
 [sLDA in R](https://books.psychstat.org/textmining/topic-models.html#supervised-topic-modeling)
 
-### Semi-Supervised LDA {#sec-seededlda}
+## Semi-Supervised LDA {#sec-seededlda}
 
 [seededLDA in R](https://koheiw.github.io/seededlda/)
 
 **An Example of Semi-Supervised LDA in Research:** @curini_valerio_2021
+
+## BERTopic: Neural Topic Modeling
+
+@grootendorst_2022
+
+```{r}
+#| eval: false
+devtools::install_github("abresler/bertopic")
+```
+
 
 ::: {.callout-tip icon="false"}
 ## Advantages of Topic Modeling

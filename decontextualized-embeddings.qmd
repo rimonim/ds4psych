@@ -723,6 +723,11 @@ predict.embeddings <- function(object, newdata,
                                type = c("embedding", "nearest"), 
                                top_n = 10L){
   embeddings <- as.matrix(object)
+  embeddings <- rbind(
+    embeddings, 
+    matrix(ncol = ncol(embeddings), dimnames = list("NOT_IN_DICT"))
+    )
+  newdata[!(newdata %in% rownames(embeddings))] <- "NOT_IN_DICT"
   if (type == "embedding") {
     embeddings[newdata,]
   }else{
@@ -854,10 +859,10 @@ dot3_2 <- vec_plot(c(-sqrt(2), 1), c(sqrt(2), 0), "Cosine Similarity = -0.7\nDot
 (dot0_2 | dot1_2 | dot3_2)
 ```
 
-Recall that in models like word2vec and GloVe, the dot product corresponds to the probability that two words occur together. Vectors with that are farther away from the origin will result in very positive or very negative dot products, making the model more confident in the pair of words either being neighbors or not. This means that the distance of a word embedding from the origin (also called the norm or magnitude) is proportional to the informativeness of the word [@schakel_wilson_2015; @oyama_etal_2023]. Therefore, the magnitude of the embedding measures how representative it is of certain contexts as opposed to others, similar to averaging the TF-IDF of a word across a corpus (@sec-tfidf). 
+Recall that in models like word2vec and GloVe, the dot product corresponds to the probability that two words occur together. Vectors that are farther away from the origin will result in very positive or very negative dot products, making the model more confident in the pair of words either being neighbors or not. This means that the distance of a word embedding from the origin (also called the norm or magnitude) is proportional to the informativeness of the word [@schakel_wilson_2015; @oyama_etal_2023]. For example, the word "the" has a very low magnitude because it does not indicate a specific context, while the word "psychology" has a very high magnitude because its use is associated with a very specific context. Therefore, the magnitude of the embedding measures how representative it is of certain contexts as opposed to others, similar to averaging the TF-IDF of a word across a corpus (@sec-tfidf). 
 
-The fact that the magnitude of a word embedding represents its informativeness is important, because it is the reason why an accurate embedding of a full text can be obtained by averaging the embeddings of each of its words---the embeddings automatically devalue frequent and uninformative words, and emphasize the words that are representative of the text's specific meaning [@ethayarajh_etal_2019].
+This is the reason why an accurate embedding of a full text can be obtained by averaging the embeddings of each of its words. You might think that averaging word embeddings will lead to overvaluing common words, like "the" and "I", which appear more frequently but are not very informative about the text's meaning. Don't worry, because the magnitude of a word embedding is smaller for common words, which means that common words have less impact on the average [@ethayarajh_etal_2019].
 
-Once average embeddings are computed, we almost always use cosine similarity to assess the relationships between embeddings. **The cosine similarity measures only the meanings of the two embeddings, while ignoring how specific they are to those meanings.** If the specificity of texts to your construct of interest is important to your analysis, consider using the dot product instead of cosine similarity. For more applications of word embedding magnitude, see @sec-navigating-vectorspace and @sec-linguistic-complexity.
+Once average embeddings are computed, we almost always use cosine similarity to assess the relationships between embeddings. **The cosine similarity measures only the meanings of the two embeddings, while ignoring how specific they are to those meanings.** If the specificity of texts to your construct of interest is important to your analysis, consider using the dot product instead of cosine similarity. Despite its unpopularity as a similarity metric, the dot product may sometimes be optimal for analyzing texts with decontextualized embeddings (@sec-ccr-validation). For more applications of word embedding magnitude, see @sec-navigating-vectorspace and @sec-linguistic-complexity.
 
 ---

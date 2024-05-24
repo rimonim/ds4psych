@@ -154,7 +154,7 @@ The first two PCA components are the directions along which the embeddings in th
 ## Disadvantages of Contextualized Embeddings
 
 -   **Computationally Expensive** 
--   **Mysterious Vector Spaces:** Unlike simple word embedding models (@sec-word-embeddings), LLMs may sometimes organize embeddings in nonlinear patterns. For example, GPT models tend to arrange their embeddings in a spiral [@cai_etal_2021]. Specialized models like [SBERT](https://www.sbert.net/docs/pretrained_models.html) can help with this problem, but are unlikely to solve it entirely.
+-   **Mysterious Vector Spaces:** Unlike simple word embedding models (@sec-word-embeddings), LLMs may sometimes organize embeddings in nonlinear patterns. For example, GPT models tend to arrange their embeddings in a spiral [@cai_etal_2021]. This is why BERT text embeddings actually perform worse than word2vec and GloVe when analyzed using cosine similarity [@reimers_gurevych_2019]. Specialized models like [SBERT](https://www.sbert.net/docs/pretrained_models.html) can help with this problem, but are unlikely to solve it entirely.
 :::
 
 ---
