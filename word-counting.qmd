@@ -176,7 +176,8 @@ hippocorpus_surprise_anticipation_df <-
   convert("data.frame") |> 
   right_join(
     hippocorpus_corp |> 
-      convert("data.frame") # convert to dataframe
+      convert("data.frame"), # convert to dataframe
+    by = "doc_id"
     ) |> 
   mutate(wc = ntoken(hippocorpus_dfm))
 ```

@@ -21,7 +21,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -344,7 +364,14 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#related-textbooks" id="toc-related-textbooks" class="nav-link active" data-scroll-target="#related-textbooks"><span class="header-section-number">25.1</span> Related Textbooks</a></li>
+  <li><a href="#sec-hebrew" id="toc-sec-hebrew" class="nav-link" data-scroll-target="#sec-hebrew"><span class="header-section-number">25.2</span> Resources for Text Analysis in Hebrew</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/rimonim/ds4psych/blob/main/resources.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -368,8 +395,52 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<div class="callout callout-style-simple callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+This page is still under construction. Come back soon!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+<ul>
+<li><a href="https://www.liwc.app">LIWC</a>: High quality dictionary-based analysis for psychology</li>
+<li><a href="https://www.wwbp.org/">World Well-Being Project</a></li>
+<li><a href="https://books.google.com/ngrams/">Google Ngram Viewer</a></li>
+<li><a href="https://github.com/favstats/peRspective">peRspective API</a></li>
+<li><a href="http://wordvec.colorado.edu/">Word embedding analysis API</a></li>
+</ul>
+<section id="related-textbooks" class="level2" data-number="25.1">
+<h2 data-number="25.1" class="anchored" data-anchor-id="related-textbooks"><span class="header-section-number">25.1</span> Related Textbooks</h2>
+<ul>
+<li><a href="https://r4ds.hadley.nz">R for Data Science</a></li>
+<li><a href="https://www.tidytextmining.com/">Tidy Text Mining</a></li>
+<li><a href="https://web.stanford.edu/~jurafsky/slp3/">Speech and Language Processing</a></li>
+<li><a href="https://datasciencebox.org/content">Data Science in a Box</a></li>
+<li><a href="https://bookdown.org/hneth/ds4psy/">Data Science for Psychologists</a></li>
+<li><a href="https://christophm.github.io/interpretable-ml-book/index.html">Interpretable Machine Learning</a></li>
+</ul>
+</section>
+<section id="sec-hebrew" class="level2" data-number="25.2">
+<h2 data-number="25.2" class="anchored" data-anchor-id="sec-hebrew"><span class="header-section-number">25.2</span> Resources for Text Analysis in Hebrew</h2>
+<ul>
+<li><a href="https://github.com/NNLP-IL/Hebrew-Resources">Hebrew NLP Resources</a></li>
+<li><a href="https://almogsi.github.io/hebnoRms/">hebnoRms</a>: Affect Norms for Hebrew https://tutorials.quanteda.io/multilingual/arabic-hebrew/</li>
+<li>Hebrew Psychological Lexicons <span class="citation" data-cites="shapira_etal_2021">(<a href="#ref-shapira_etal_2021" role="doc-biblioref">Shapira et al., 2021</a>)</span></li>
+</ul>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-shapira_etal_2021" class="csl-entry" role="listitem">
+Shapira, N., Atzil-Slonim, D., Juravski, D., Baruch, M., Stolowicz-Melman, D., Paz, A., Alfi-Yogev, T., Azoulay, R., Singer, A., Revivo, M., Dahbash, C., Dayan, L., Naim, T., Gez, L., Yanai, B., Maman, A., Nadaf, A., Sarfati, E., Baloum, A., … Goldberg, Y. (2021). <span>H</span>ebrew psychological lexicons. In N. Goharian, P. Resnik, A. Yates, M. Ireland, K. Niederhoffer, &amp; R. Resnik (Eds.), <em>Proceedings of the seventh workshop on computational linguistics and clinical psychology: Improving access</em> (pp. 55–69). Association for Computational Linguistics. <a href="https://doi.org/10.18653/v1/2021.clpsych-1.6">https://doi.org/10.18653/v1/2021.clpsych-1.6</a>
+</div>
+</div>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -798,7 +869,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/rimonim/ds4psych/blob/main/resources.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/rimonim/ds4psych/blob/main/resources.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/rimonim/ds4psych/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org/">Quarto</a> and is powered by <a href="https://www.netlify.com/">Netlify</a></p>
 </div>

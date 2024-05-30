@@ -1,1 +1,27 @@
 # Additional Resources {#sec-resources}
+
+::: callout-important
+## This page is still under construction. Come back soon!
+:::
+
+-   [LIWC](https://www.liwc.app): High quality dictionary-based analysis for psychology
+-   [World Well-Being Project](https://www.wwbp.org/) 
+-   [Google Ngram Viewer](https://books.google.com/ngrams/)
+-   [peRspective API](https://github.com/favstats/peRspective)
+-   [Word embedding analysis API](http://wordvec.colorado.edu/) 
+
+## Related Textbooks
+
+-   [R for Data Science](https://r4ds.hadley.nz)
+-   [Tidy Text Mining](https://www.tidytextmining.com/)
+-   [Speech and Language Processing](https://web.stanford.edu/~jurafsky/slp3/)
+-   [Data Science in a Box](https://datasciencebox.org/content)
+-   [Data Science for Psychologists](https://bookdown.org/hneth/ds4psy/)
+-   [Interpretable Machine Learning](https://christophm.github.io/interpretable-ml-book/index.html)
+
+## Resources for Text Analysis in Hebrew {#sec-hebrew}
+
+-   [Hebrew NLP Resources](https://github.com/NNLP-IL/Hebrew-Resources)
+-   [hebnoRms](https://almogsi.github.io/hebnoRms/): Affect Norms for Hebrew
+https://tutorials.quanteda.io/multilingual/arabic-hebrew/
+-   Hebrew Psychological Lexicons [@shapira_etal_2021]
