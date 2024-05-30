@@ -64,10 +64,6 @@ knitr::knit_hooks$set(
 )
 ```
 
-::: {.callout-important}
-## This page is still under construction. Come back soon!
-:::
-
 ## Representing Psychological Constructs
 
 In @sec-decontextualized-embeddings we measured the surprise in texts by comparing their embeddings to that of a single word: "surprised". But does the embedding of the word "surprised" fully capture the concept of surprise as an emotion? Faced with this question of construct validity, we have two options:
@@ -136,17 +132,16 @@ With the new measure of surprise, we can retest the hypothesis that true autobio
 
 ```{r}
 #| warning: false
-# logistic regression
-surprise_mod_ddr <- glm(
+# beta regression
+surprise_mod_ddr <- betareg::betareg(
   surprise ~ memType, 
-  family = binomial,
-  hippocorpus_surprise_ddr
+  data = hippocorpus_surprise_ddr
   )
 
 summary(surprise_mod_ddr)
 ```
 
-We again find no significant difference in surprise between remembered and recalled stories. This is consistent with our results from @sec-word-counting, where we tested the same hypothesis with the same dictionary, but used word counts rather than embeddings.
+We again find significant differences in surprise between imagined and recalled stories, in the opposite of the expected direction. This is different from our results in @sec-word-counting, where we tested the same hypothesis with the same dictionary, but used word counts rather than embeddings.
 
 #### DDR for Word-by-Word Analysis
 
@@ -290,17 +285,16 @@ hippocorpus_surprise_ccr <- hippocorpus_sbert |>
   ungroup() |> 
   select(-c(Dim1:Dim384))
 
-# logistic regression
-surprise_mod_ccr <- glm(
-  surprise ~ memType, 
-  family = binomial,
+# beta regression
+surprise_mod_ccr <- betareg::betareg(
+  surprise ~ memType,
   hippocorpus_surprise_ccr
   )
 
 summary(surprise_mod_ccr)
 ```
 
-Once again, we find no significant difference in surprise between remembered and recalled stories. However, CCR has a fundamental problem that needs to be addressed.
+Once again, a significant difference in surprise between remembered and recalled stories in the opposite of the expected direction. However, CCR has a fundamental problem that needs to be addressed.
 
 Embeddings capture the overall "vibes" of a text, including its tone and dialect. With CCR, we are comparing the "vibes" of a questionnaire written by academics to the "vibes" of narratives written by Hippocorpus participants. By comparing these vectors, we are not just measuring how much surprise is in each text---we are also measuring the extent to which each text is in the style of a questionnaire written by academics. This introduces a confounding variable into our analysis---questionnaire-ness.
 
@@ -588,7 +582,8 @@ crowdflower <- read_csv("data/text_emotion.csv") |>
   rename(text = content) |> 
   mutate(
     doc_id = as.character(tweet_id),
-    surprise = if_else(sentiment == "surprise", "surprise", "no surprise")
+    surprise = if_else(sentiment == "surprise", "surprise", "no surprise"),
+    surprise = factor(surprise, levels = c("no surprise", "surprise"))
   )
 
 crowdflower_dfm <- crowdflower |> 
@@ -604,7 +599,7 @@ crowdflower <- crowdflower |>
   left_join(crowdflower_word2vec, by = "doc_id")
 ```
 
-With Partial Least Squares (PLS) regression, which finds directions in the feature space that best correlate with the dependent variable (in this case, surprise), we can create a **correlational anchored vector**. 
+With Partial Least Squares (PLS) regression [@mevik_wehrens_2007; @wold_etal_2001], which finds directions in the feature space that best correlate with the dependent variable (in this case, surprise), we can create a **correlational anchored vector**. 
 
 ```{r}
 library(caret)
@@ -650,12 +645,54 @@ Once again we find significant results in support of @sap_etal_2022!
 
 After @sec-correlational-anchors, you may wonder why we stopped at a single direction in embedding space. Why not go all out with the machine learning? If you wondered this, great job! Psychologists are increasingly training machine learning algorithms on text embeddings to quantify relevant constructs [@kjell_etal_2022]. Indeed, this is the approach used to generate [the cover of this book](https://github.com/rimonim/ds4psych/blob/main/cover.R).
 
-With machine learning approaches, the nonlinearity of contextualized embedding spaces becomes less of a problem. 
+With machine learning approaches, the nonlinearity of contextualized embedding spaces becomes less of a problem. Given enough training data, we can specify a model that can capture nonlinear patterns, such as a [support vector machine](https://rpubs.com/uky994/593668). We could also simultaneously use embeddings from multiple layers of the LLM with `aggregation_from_layers_to_tokens = "concatenate"` in `textEmbed()`. Some research advises using both the `[CLS]` token and an average of the other token embeddings as input to the machine learning model [@lee_etal_2023]. There is no blanket rule about which machine learning algorithms work best with embeddings, but @kjell_etal_2022 recommend ridge regression for continuous outputs, and random forest for classification. If you are not comfortable fitting machine learning algorithms in R, you can use the convenience function, `textTrain()`, provided by the `text` package. In the example code below, we train a random forest model on the Crowdflower dataset, and use it to identify surprise in the Hippocorpus texts.
 
-The `text` package provides 
+```{r}
+#| eval: false
+library(text)
 
-A few pretrained embedding-based valence models: https://osf.io/v4jb5
+# embed Hippocorpus texts
+hippocorpus_subset_distilroberta <- textEmbed(
+  hippocorpus_df$story,
+  model = "distilroberta-base",
+  layers = c(-2, -1),  # last two layers
+  # aggregate token embeddings in each layer, then concatenate layers
+  aggregation_from_tokens_to_texts = "mean", 
+  aggregation_from_layers_to_tokens = "concatenate", 
+  dim_name = FALSE,
+  keep_token_embeddings = FALSE
+  )
 
-@chersoni_etal_2021 used partial least squares regression to map distributional embeddings to human-rated semantic features derived from research in cognitive psychology.
+# load training set
+set.seed(2024)
+crowdflower_subset <- crowdflower |> 
+  select(doc_id, text, surprise) |> 
+  group_by(surprise) |> 
+  slice_sample(n = 2000)
 
-Some research advises using both the `[CLS]` token and an aggregation of the other token embeddings [@lee_etal_2023]
+# embed training set
+crowdflower_subset_distilroberta <- textEmbed(
+  crowdflower_subset$text,
+  model = "distilroberta-base",
+  layers = c(-2, -1),  # last two layers
+  # aggregate token embeddings in each layer, then concatenate layers
+  aggregation_from_tokens_to_texts = "mean", 
+  aggregation_from_layers_to_tokens = "concatenate", 
+  dim_name = FALSE,
+  keep_token_embeddings = FALSE
+  )
+
+# fit random forest model
+surprise_randomforest <- textTrain(
+  x = crowdflower_subset_distilroberta$texts$texts,
+  y = crowdflower_subset$surprise
+  )
+
+# predict on Hippocorpus texts
+surprise_pred <- textPredict(
+  surprise_randomforest,
+  hippocorpus_subset_distilroberta$texts$texts
+  )
+```
+
+**An example of using embedding-based machine learning models trained in research:** @chersoni_etal_2021 used PLS regression to map word embeddings from various models (including word2vec, fastText, GloVe, and BERT) to human-rated semantic features derived from research in cognitive psychology. By comparing the performance of the different models, they could draw inferences about the types of information encoded in words. They found that cognition, causal reasoning, and social content were best predicted across models. General categories (e.g. vision, arousal) tended to be better predicted than specific characteristics (e.g. dark, light, happy, sad).

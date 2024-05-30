@@ -291,7 +291,7 @@ hippocorpus_surprise <- hippocorpus_lsa$docs |>
   ungroup()
 ```
 
-Since cosine similarity can only be between -1 and 1 (@sec-cosine-similarity), linear regression is an inappropriate statistical model. Instead, we will use logistic regression. This requires us to transform the cosine similarity to range between 0 and 1 before modeling.
+Since cosine similarity can only be between -1 and 1 (@sec-cosine-similarity), we will use beta regression^[Many researchers use linear regression in situations like this, despite the violation of the linearity assumption. Generally this is fine, since linear regression is surprisingly robust [@knief_forstmeier_2021].]. This requires us to transform the cosine similarity to range between 0 and 1 before modeling.
 
 ```{r}
 #| warning: false
@@ -303,17 +303,16 @@ hippocorpus_surprise <- hippocorpus_surprise |>
 hippocorpus_surprise <- hippocorpus_surprise |> 
   bind_cols(docvars(hippocorpus_corp))
 
-# logistic regression
-surprise_mod_lsa <- glm(
+# beta regression
+surprise_mod_lsa <- betareg::betareg(
   surprise ~ memType, 
   hippocorpus_surprise, 
-  family = binomial
   )
 
 summary(surprise_mod_lsa)
 ```
 
-We found no significant difference in surprise between recalled and imagined stories, and no significant difference between retold and imagined stories.
+We found a significant difference between recalled and imagined stories, such that recalled stories had more surprise (p < .001) and a significant difference between retold and imagined stories such that retold stories had more surprise (p < .001).
 
 ### Variations on LSA {#sec-lsa-variations}
 
@@ -654,17 +653,16 @@ hippocorpus_surprise_word2vec <- hippocorpus_word2vec |>
 hippocorpus_surprise_word2vec <- hippocorpus_surprise_word2vec |> 
   bind_cols(docvars(hippocorpus_corp))
 
-# logistic regression
-surprise_mod_word2vec <- glm(
+# beta regression
+surprise_mod_word2vec <- betareg::betareg(
   surprise ~ memType, 
-  hippocorpus_surprise_word2vec, 
-  family = binomial
+  hippocorpus_surprise_word2vec
   )
 
 summary(surprise_mod_word2vec)
 ```
 
-Once again we found no significant difference between recalled and imagined stories.
+Once again we found a significant difference between recalled and imagined stories, this time in the opposite direction (though see @sec-navigating-vectorspace for some ways in which this may be misleading).
 
 **An example of word2vec in research:** @chatterjee_etal_2023 used word2vec to study the phenomenon of nominative determinism---the purported tendency to chose a profession or city with a first letter that matches the first letter of one's name (e.g. someone named Louis might choose to be a language researcher). They first used a word2vec model trained on Google News to obtain embeddings for 3,410 first names, 508 professions, and 14,856 US cities. They then averaged the embeddings of all names/professions/cities that begin with the same letter to obtain a vector representing names that begin with the letter "A", a vector representing professions that begin with the letter "A", etc. Using cosine similarity, they found that same-letter names and professions (e.g. Albert and Actuary) tend to be more similar than different-letter names and professions (e.g. Albert and Dentist), even when controlling for gender, ethnicity, and frequency. They found a similar pattern for names and cities.
 
@@ -701,13 +699,15 @@ path_to_glove <- "data/glove/glove.twitter.27B.100d.txt"
 dimensions <- as.numeric(str_extract(path_to_glove, "[:digit:]+(?=d\\.txt)"))
 
 # matrix with token embeddings
-glove_pretrained <- read_delim(
+glove_pretrained <- data.table::fread(
   path_to_glove, 
-  delim = " ",
   quote = "",
-  escape_double = FALSE,
-  col_names = c("token", paste0("dim_", 1:dimensions))
-  ) |> column_to_rownames("token") |> as.matrix()
+  col.names = c("token", paste0("dim_", 1:dimensions))
+  ) |> 
+  distinct(token, .keep_all = TRUE) |> 
+  remove_rownames() |> 
+  column_to_rownames("token") |> 
+  as.matrix()
 
 # update class to "embeddings" (required for `predict.embeddings` function)
 class(glove_pretrained) <- "embeddings"
@@ -780,7 +780,7 @@ library(fastTextR)
 
 # example texts
 heb_words <- c("מחשבותייך", "מחשבה")
-heb_texts <- c("אל תחשוב שנקרא לשוננו לשון הקדש לגאותינו או לטעותינו, אבל הוא בדין, כי זה הלשון קדוש לא ימצאו בו שמות לאבר הבעילה בזכר או בנקבה", "הטעם שהזכיר על דעתי איננו אמת, כי מה שיכנו ישגלנה, ישכבנה, יורה כי משגל שם עצם לבעילה")
+heb_texts <- c("הדבור מיחד את האדם מן החי, הדומם והצומח, הלשון היא – נפש חיה – רוח ממללה", "לשון היא המבדלת בין אומה אחת לחברתה, והיא החוט, שעליו נחרזות תמורות הנפש הרבות")
 
 # load pretrained model from file
 heb_model <- ft_load("data/cc.he.300.bin")

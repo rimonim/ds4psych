@@ -426,20 +426,7 @@ div.csl-indent {
   
 
 
-</header><div class="callout callout-style-simple callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-This page is still under construction. Come back soon!
-</div>
-</div>
-<div class="callout-body-container callout-body">
-
-</div>
-</div>
-<section id="representing-psychological-constructs" class="level2" data-number="20.1"><h2 data-number="20.1" class="anchored" data-anchor-id="representing-psychological-constructs">
+</header><section id="representing-psychological-constructs" class="level2" data-number="20.1"><h2 data-number="20.1" class="anchored" data-anchor-id="representing-psychological-constructs">
 <span class="header-section-number">20.1</span> Representing Psychological Constructs</h2>
 <p>In <a href="decontextualized-embeddings.html" class="quarto-xref"><span>Chapter 18</span></a> we measured the surprise in texts by comparing their embeddings to that of a single word: “surprised”. But does the embedding of the word “surprised” fully capture the concept of surprise as an emotion? Faced with this question of construct validity, we have two options:</p>
 <ol type="1">
@@ -498,35 +485,37 @@ This page is still under construction. Come back soon!
 </div>
 <p>With the new measure of surprise, we can retest the hypothesis that true autobiographical stories include more surprise than imagined stories.</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># logistic regression</span></span>
-<span><span class="va">surprise_mod_ddr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># beta regression</span></span>
+<span><span class="va">surprise_mod_ddr</span> <span class="op">&lt;-</span> <span class="fu">betareg</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betareg.html">betareg</a></span><span class="op">(</span></span>
 <span>  <span class="va">surprise</span> <span class="op">~</span> <span class="va">memType</span>, </span>
-<span>  family <span class="op">=</span> <span class="va">binomial</span>,</span>
-<span>  <span class="va">hippocorpus_surprise_ddr</span></span>
+<span>  data <span class="op">=</span> <span class="va">hippocorpus_surprise_ddr</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">surprise_mod_ddr</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="r-output"><code>#&gt; 
 #&gt; Call:
-#&gt; glm(formula = surprise ~ memType, family = binomial, data = hippocorpus_surprise_ddr)
+#&gt; betareg::betareg(formula = surprise ~ memType, data = hippocorpus_surprise_ddr)
 #&gt; 
-#&gt; Coefficients:
-#&gt;                 Estimate Std. Error z value Pr(&gt;|z|)    
-#&gt; (Intercept)      1.81235    0.05484  33.049    memTyperecalled -0.02041    0.07711  -0.265    0.791    
-#&gt; memTyperetold   -0.02250    0.09587  -0.235    0.814    
-#&gt; ---
-#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#&gt; Standardized weighted residuals 2:
+#&gt;     Min      1Q  Median      3Q     Max 
+#&gt; -7.7985 -0.6101  0.0368  0.6529  3.4828 
 #&gt; 
-#&gt; (Dispersion parameter for binomial family taken to be 1)
+#&gt; Coefficients (mean model with logit link):
+#&gt;                  Estimate Std. Error  z value Pr(&gt;|z|)    
+#&gt; (Intercept)      1.812197   0.001729 1048.008   memTyperecalled -0.020202   0.002431   -8.312   memTyperetold   -0.022232   0.003022   -7.357 1.88e-13 ***
 #&gt; 
-#&gt;     Null deviance: 6.9881  on 6853  degrees of freedom
-#&gt; Residual deviance: 6.8986  on 6851  degrees of freedom
-#&gt; AIC: 2103.6
+#&gt; Phi coefficients (precision model with identity link):
+#&gt;       Estimate Std. Error z value Pr(&gt;|z|)    
+#&gt; (phi)  1003.36      17.14   58.55    ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
 #&gt; 
-#&gt; Number of Fisher Scoring iterations: 5
+#&gt; Type of estimator: ML (maximum likelihood)
+#&gt; Log-likelihood: 2.119e+04 on 4 Df
+#&gt; Pseudo R-squared: 0.01286
+#&gt; Number of iterations: 21 (BFGS) + 2 (Fisher scoring)
 </code></pre>
 </div>
-<p>We again find no significant difference in surprise between remembered and recalled stories. This is consistent with our results from <a href="word-counting.html" class="quarto-xref"><span>Chapter 14</span></a>, where we tested the same hypothesis with the same dictionary, but used word counts rather than embeddings.</p>
+<p>We again find significant differences in surprise between imagined and recalled stories, in the opposite of the expected direction. This is different from our results in <a href="word-counting.html" class="quarto-xref"><span>Chapter 14</span></a>, where we tested the same hypothesis with the same dictionary, but used word counts rather than embeddings.</p>
 <section id="ddr-for-word-by-word-analysis" class="level4" data-number="20.1.1.1"><h4 data-number="20.1.1.1" class="anchored" data-anchor-id="ddr-for-word-by-word-analysis">
 <span class="header-section-number">20.1.1.1</span> DDR for Word-by-Word Analysis</h4>
 <p>Another advantage of DDR over dictionary-based word counts is that DDR enables word-by-word analysis of text. It is not very informative to count how many surprise words are in each word (it will either be one or zero), but we can compare the embedding of each word to the surprise DDR—how close are they in the vector space? This allows us to see how a construct spreads out within a single text. As an example, let’s take a single story from the Hippocorpus:</p>
@@ -687,35 +676,38 @@ Beware of Reverse Coding!
 <span>  <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">Dim1</span><span class="op">:</span><span class="va">Dim384</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># logistic regression</span></span>
-<span><span class="va">surprise_mod_ccr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span></span>
-<span>  <span class="va">surprise</span> <span class="op">~</span> <span class="va">memType</span>, </span>
-<span>  family <span class="op">=</span> <span class="va">binomial</span>,</span>
+<span><span class="co"># beta regression</span></span>
+<span><span class="va">surprise_mod_ccr</span> <span class="op">&lt;-</span> <span class="fu">betareg</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betareg.html">betareg</a></span><span class="op">(</span></span>
+<span>  <span class="va">surprise</span> <span class="op">~</span> <span class="va">memType</span>,</span>
 <span>  <span class="va">hippocorpus_surprise_ccr</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">surprise_mod_ccr</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="r-output"><code>#&gt; 
 #&gt; Call:
-#&gt; glm(formula = surprise ~ memType, family = binomial, data = hippocorpus_surprise_ccr)
+#&gt; betareg::betareg(formula = surprise ~ memType, data = hippocorpus_surprise_ccr)
 #&gt; 
-#&gt; Coefficients:
-#&gt;                 Estimate Std. Error z value Pr(&gt;|z|)    
-#&gt; (Intercept)      5.63709    0.32025  17.602    memTyperecalled -0.02168    0.44955  -0.048    0.962    
-#&gt; memTyperetold   -0.02781    0.55768  -0.050    0.960    
-#&gt; ---
-#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#&gt; Standardized weighted residuals 2:
+#&gt;     Min      1Q  Median      3Q     Max 
+#&gt; -6.1295 -0.6100  0.0520  0.6634  3.6654 
 #&gt; 
-#&gt; (Dispersion parameter for binomial family taken to be 1)
+#&gt; Coefficients (mean model with logit link):
+#&gt;                  Estimate Std. Error  z value Pr(&gt;|z|)    
+#&gt; (Intercept)      5.636437   0.002885 1953.487   memTyperecalled -0.020755   0.004042   -5.135 2.83e-07 ***
+#&gt; memTyperetold   -0.026428   0.005016   -5.269 1.37e-07 ***
 #&gt; 
-#&gt;     Null deviance: 0.57625  on 6853  degrees of freedom
-#&gt; Residual deviance: 0.57283  on 6851  degrees of freedom
-#&gt; AIC: 55.455
+#&gt; Phi coefficients (precision model with identity link):
+#&gt;       Estimate Std. Error z value Pr(&gt;|z|)    
+#&gt; (phi)  12226.6      209.2   58.43    ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
 #&gt; 
-#&gt; Number of Fisher Scoring iterations: 9
+#&gt; Type of estimator: ML (maximum likelihood)
+#&gt; Log-likelihood: 4.187e+04 on 4 Df
+#&gt; Pseudo R-squared: 0.005735
+#&gt; Number of iterations: 59 (BFGS) + 14 (Fisher scoring)
 </code></pre>
 </div>
-<p>Once again, we find no significant difference in surprise between remembered and recalled stories. However, CCR has a fundamental problem that needs to be addressed.</p>
+<p>Once again, a significant difference in surprise between remembered and recalled stories in the opposite of the expected direction. However, CCR has a fundamental problem that needs to be addressed.</p>
 <p>Embeddings capture the overall “vibes” of a text, including its tone and dialect. With CCR, we are comparing the “vibes” of a questionnaire written by academics to the “vibes” of narratives written by Hippocorpus participants. By comparing these vectors, we are not just measuring how much surprise is in each text—we are also measuring the extent to which each text is in the style of a questionnaire written by academics. This introduces a confounding variable into our analysis—questionnaire-ness.</p>
 <p>The questionnaire-ness problem means that CCR is most effective for analyzing texts that bear a strong similarity to the questionnaire itself. For example, if you are analyzing participant descriptions of their own values, and your questionnaire items are statements about values in the first person (as any questionnaires are), CCR is likely to work well, especially with the improvement described in <a href="#sec-dimension-projection" class="quarto-xref"><span>Section 20.2.2</span></a> and <a href="#sec-ccr-improvement" class="quarto-xref"><span>Section 20.2.2.2</span></a>. With this method, you can compare participant responses to the questionnaire without actually administering the questionnaire itself; participants can answer in their own words, which CCR will compare to the wording of the questionnaire.</p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
@@ -957,7 +949,8 @@ Additive Analogies in Contextualized Embeddings
 <span>  <span class="fu">rename</span><span class="op">(</span>text <span class="op">=</span> <span class="va">content</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
 <span>    doc_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">tweet_id</span><span class="op">)</span>,</span>
-<span>    surprise <span class="op">=</span> <span class="fu">if_else</span><span class="op">(</span><span class="va">sentiment</span> <span class="op">==</span> <span class="st">"surprise"</span>, <span class="st">"surprise"</span>, <span class="st">"no surprise"</span><span class="op">)</span></span>
+<span>    surprise <span class="op">=</span> <span class="fu">if_else</span><span class="op">(</span><span class="va">sentiment</span> <span class="op">==</span> <span class="st">"surprise"</span>, <span class="st">"surprise"</span>, <span class="st">"no surprise"</span><span class="op">)</span>,</span>
+<span>    surprise <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">surprise</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"no surprise"</span>, <span class="st">"surprise"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">crowdflower_dfm</span> <span class="op">&lt;-</span> <span class="va">crowdflower</span> <span class="op">|&gt;</span> </span>
@@ -972,7 +965,7 @@ Additive Analogies in Contextualized Embeddings
 <span><span class="va">crowdflower</span> <span class="op">&lt;-</span> <span class="va">crowdflower</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">left_join</span><span class="op">(</span><span class="va">crowdflower_word2vec</span>, by <span class="op">=</span> <span class="st">"doc_id"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>With Partial Least Squares (PLS) regression, which finds directions in the feature space that best correlate with the dependent variable (in this case, surprise), we can create a <strong>correlational anchored vector</strong>.</p>
+<p>With Partial Least Squares (PLS) regression <span class="citation" data-cites="mevik_wehrens_2007 wold_etal_2001">(<a href="#ref-mevik_wehrens_2007" role="doc-biblioref">Mevik &amp; Wehrens, 2007</a>; <a href="#ref-wold_etal_2001" role="doc-biblioref">Wold et al., 2001</a>)</span>, which finds directions in the feature space that best correlate with the dependent variable (in this case, surprise), we can create a <strong>correlational anchored vector</strong>.</p>
 <div class="cell">
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/topepo/caret/">caret</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="r-output"><code>#&gt; Loading required package: lattice
@@ -1036,11 +1029,54 @@ Additive Analogies in Contextualized Embeddings
 </section><section id="sec-machine-learning-methods" class="level3" data-number="20.2.4"><h3 data-number="20.2.4" class="anchored" data-anchor-id="sec-machine-learning-methods">
 <span class="header-section-number">20.2.4</span> Machine Learning Methods</h3>
 <p>After <a href="#sec-correlational-anchors" class="quarto-xref"><span>Section 20.2.3</span></a>, you may wonder why we stopped at a single direction in embedding space. Why not go all out with the machine learning? If you wondered this, great job! Psychologists are increasingly training machine learning algorithms on text embeddings to quantify relevant constructs <span class="citation" data-cites="kjell_etal_2022">(<a href="#ref-kjell_etal_2022" role="doc-biblioref">Kjell et al., 2022</a>)</span>. Indeed, this is the approach used to generate <a href="https://github.com/rimonim/ds4psych/blob/main/cover.R">the cover of this book</a>.</p>
-<p>With machine learning approaches, the nonlinearity of contextualized embedding spaces becomes less of a problem.</p>
-<p>The <code>text</code> package provides</p>
-<p>A few pretrained embedding-based valence models: https://osf.io/v4jb5</p>
-<p><span class="citation" data-cites="chersoni_etal_2021">Chersoni et al. (<a href="#ref-chersoni_etal_2021" role="doc-biblioref">2021</a>)</span> used partial least squares regression to map distributional embeddings to human-rated semantic features derived from research in cognitive psychology.</p>
-<p>Some research advises using both the <code>[CLS]</code> token and an aggregation of the other token embeddings <span class="citation" data-cites="lee_etal_2023">(<a href="#ref-lee_etal_2023" role="doc-biblioref">Lee et al., 2023</a>)</span></p>
+<p>With machine learning approaches, the nonlinearity of contextualized embedding spaces becomes less of a problem. Given enough training data, we can specify a model that can capture nonlinear patterns, such as a <a href="https://rpubs.com/uky994/593668">support vector machine</a>. We could also simultaneously use embeddings from multiple layers of the LLM with <code>aggregation_from_layers_to_tokens = "concatenate"</code> in <code><a href="https://r-text.org/reference/textEmbed.html">textEmbed()</a></code>. Some research advises using both the <code>[CLS]</code> token and an average of the other token embeddings as input to the machine learning model <span class="citation" data-cites="lee_etal_2023">(<a href="#ref-lee_etal_2023" role="doc-biblioref">Lee et al., 2023</a>)</span>. There is no blanket rule about which machine learning algorithms work best with embeddings, but <span class="citation" data-cites="kjell_etal_2022">Kjell et al. (<a href="#ref-kjell_etal_2022" role="doc-biblioref">2022</a>)</span> recommend ridge regression for continuous outputs, and random forest for classification. If you are not comfortable fitting machine learning algorithms in R, you can use the convenience function, <code><a href="https://r-text.org/reference/textTrain.html">textTrain()</a></code>, provided by the <code>text</code> package. In the example code below, we train a random forest model on the Crowdflower dataset, and use it to identify surprise in the Hippocorpus texts.</p>
+<div class="cell">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-text.org/">text</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># embed Hippocorpus texts</span></span>
+<span><span class="va">hippocorpus_subset_distilroberta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-text.org/reference/textEmbed.html">textEmbed</a></span><span class="op">(</span></span>
+<span>  <span class="va">hippocorpus_df</span><span class="op">$</span><span class="va">story</span>,</span>
+<span>  model <span class="op">=</span> <span class="st">"distilroberta-base"</span>,</span>
+<span>  layers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>,  <span class="co"># last two layers</span></span>
+<span>  <span class="co"># aggregate token embeddings in each layer, then concatenate layers</span></span>
+<span>  aggregation_from_tokens_to_texts <span class="op">=</span> <span class="st">"mean"</span>, </span>
+<span>  aggregation_from_layers_to_tokens <span class="op">=</span> <span class="st">"concatenate"</span>, </span>
+<span>  dim_name <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  keep_token_embeddings <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># load training set</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
+<span><span class="va">crowdflower_subset</span> <span class="op">&lt;-</span> <span class="va">crowdflower</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="va">doc_id</span>, <span class="va">text</span>, <span class="va">surprise</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">surprise</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">slice_sample</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># embed training set</span></span>
+<span><span class="va">crowdflower_subset_distilroberta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-text.org/reference/textEmbed.html">textEmbed</a></span><span class="op">(</span></span>
+<span>  <span class="va">crowdflower_subset</span><span class="op">$</span><span class="va">text</span>,</span>
+<span>  model <span class="op">=</span> <span class="st">"distilroberta-base"</span>,</span>
+<span>  layers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>,  <span class="co"># last two layers</span></span>
+<span>  <span class="co"># aggregate token embeddings in each layer, then concatenate layers</span></span>
+<span>  aggregation_from_tokens_to_texts <span class="op">=</span> <span class="st">"mean"</span>, </span>
+<span>  aggregation_from_layers_to_tokens <span class="op">=</span> <span class="st">"concatenate"</span>, </span>
+<span>  dim_name <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  keep_token_embeddings <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># fit random forest model</span></span>
+<span><span class="va">surprise_randomforest</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-text.org/reference/textTrain.html">textTrain</a></span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="va">crowdflower_subset_distilroberta</span><span class="op">$</span><span class="va">texts</span><span class="op">$</span><span class="va">texts</span>,</span>
+<span>  y <span class="op">=</span> <span class="va">crowdflower_subset</span><span class="op">$</span><span class="va">surprise</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># predict on Hippocorpus texts</span></span>
+<span><span class="va">surprise_pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-text.org/reference/textPredict.html">textPredict</a></span><span class="op">(</span></span>
+<span>  <span class="va">surprise_randomforest</span>,</span>
+<span>  <span class="va">hippocorpus_subset_distilroberta</span><span class="op">$</span><span class="va">texts</span><span class="op">$</span><span class="va">texts</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>An example of using embedding-based machine learning models trained in research:</strong> <span class="citation" data-cites="chersoni_etal_2021">Chersoni et al. (<a href="#ref-chersoni_etal_2021" role="doc-biblioref">2021</a>)</span> used PLS regression to map word embeddings from various models (including word2vec, fastText, GloVe, and BERT) to human-rated semantic features derived from research in cognitive psychology. By comparing the performance of the different models, they could draw inferences about the types of information encoded in words. They found that cognition, causal reasoning, and social content were best predicted across models. General categories (e.g.&nbsp;vision, arousal) tended to be better predicted than specific characteristics (e.g.&nbsp;dark, light, happy, sad).</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
@@ -1080,6 +1116,9 @@ Lee, K., Choi, G., &amp; Choi, C. (2023). Use all tokens method to improve seman
 <div id="ref-li_etal_2020" class="csl-entry" role="listitem">
 Li, B., Zhou, H., He, J., Wang, M., Yang, Y., &amp; Li, L. (2020). <em>On the sentence embeddings from pre-trained language models</em>. <a href="https://arxiv.org/abs/2011.05864">https://arxiv.org/abs/2011.05864</a>
 </div>
+<div id="ref-mevik_wehrens_2007" class="csl-entry" role="listitem">
+Mevik, B.-H., &amp; Wehrens, R. (2007). The pls package: Principal component and partial least squares regression in r. <em>Journal of Statistical Software</em>, <em>18</em>(2), 1–23. <a href="https://doi.org/10.18637/jss.v018.i02">https://doi.org/10.18637/jss.v018.i02</a>
+</div>
 <div id="ref-mikolov_etal_2013" class="csl-entry" role="listitem">
 Mikolov, T., Yih, W., &amp; Zweig, G. (2013). Linguistic regularities in continuous space word representations. In L. Vanderwende, H. Daumé III, &amp; K. Kirchhoff (Eds.), <em>Proceedings of the 2013 conference of the north <span>A</span>merican chapter of the association for computational linguistics: Human language technologies</em> (pp. 746–751). Association for Computational Linguistics. <a href="https://aclanthology.org/N13-1090">https://aclanthology.org/N13-1090</a>
 </div>
@@ -1100,6 +1139,9 @@ Sap, M., Jafarpour, A., Choi, Y., Smith, N. A., Pennebaker, J. W., &amp; Horvitz
 </div>
 <div id="ref-simchon_etal_2023" class="csl-entry" role="listitem">
 Simchon, A., Hadar, B., &amp; Gilead, M. (2023). A computational text analysis investigation of the relation between personal and linguistic agency. <em>Communications Psychology</em>, 1–9. <a href="https://doi.org/10.1038/s44271-023-00020-1">https://doi.org/10.1038/s44271-023-00020-1</a>
+</div>
+<div id="ref-wold_etal_2001" class="csl-entry" role="listitem">
+Wold, S., Sjöström, M., &amp; Eriksson, L. (2001). PLS-regression: A basic tool of chemometrics. <em>Chemometrics and Intelligent Laboratory Systems</em>, <em>58</em>, 109–130. <a href="https://api.semanticscholar.org/CorpusID:11920190">https://api.semanticscholar.org/CorpusID:11920190</a>
 </div>
 </div>
 </section></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
